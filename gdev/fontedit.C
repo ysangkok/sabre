@@ -24,6 +24,8 @@
 
 #include "fontedit.h"
 
+#include <cstdlib>
+
 // --
 // -- main( options ) 
 // --

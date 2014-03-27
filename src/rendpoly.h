@@ -24,6 +24,7 @@
 #include "grafix.h"
 #include "clip.h"
 #include "convpoly.h"
+#include "port_3d.h"
 
 int rendpoly(R_3DPoint *poly, int n, int color, Port_3D &port, int zclip = 1);
 int project_poly(R_3DPoint *poly, int n, int color,

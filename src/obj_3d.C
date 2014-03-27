@@ -645,14 +645,9 @@ void C_DrawList2::read(istream &is)
   READ_TOKI('(',is,c)
     is >> n_objects >> n_groups;
   READ_TOK(')',is,c)
-#ifdef SABREWIN
    objects = new C_3DObject2[n_objects];
   for (i=0;i<n_objects;i++)
     objects[i].im = im;
-#else
-  objects = new C_3DObject2[n_objects](im);
-  MYCHECK(objects != NULL);
-#endif
   groups = new C_3DObject_Group[n_groups];
   MYCHECK(groups != NULL);
   idx = 0;

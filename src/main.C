@@ -25,6 +25,9 @@
  * Author : Dan Hammer                           *
  * Main file                                     *
  *************************************************/
+/* Small fix by Milan Zamazal <pdm@debian.org> in 1999 to disable big security
+   hole, see #ifdef DEBIAN.
+   1999-12-17: Without SVGAlib compilation fix. */
 #define USING_SOUNDCLIENT
 
 #include <stdio.h>
@@ -40,12 +43,18 @@
 #include <fstream.h>
 #include <setjmp.h>
 #include <stdarg.h>
+#ifdef DEBIAN
+#ifndef DEBIAN_NO_LIBVGA
+#include <vga.h>
+#endif
+#else
+#include <vga.h>
+#endif
 
 #include "siminc.h"
 #include "simsnd.h"
 #include "game.h"
 #include "scnedit.h"
-#include "simsnd.h"
 #include "sbrkeys.h"
 
 #ifndef REV_DATE
@@ -119,6 +128,16 @@ void mysigfpe(int fp);
  *************************************************************/
 main(int argc, char *argv[])
 {
+#ifdef DEBIAN
+#ifndef DEBIAN_NO_LIBVGA
+  vga_disabledriverreport();
+  if (vga_init())
+    {
+      printf("Cannot initialize VGA device.\n");
+      return -1;
+    }
+#endif
+#endif
   int i;
   int m;
   printf("Sabre Fighter Plane Simulator Version %s %s\n",

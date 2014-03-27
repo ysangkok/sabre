@@ -26,6 +26,8 @@
  * Device input (mouse & joystick)               *
  * 12/98 David Vandewalle : SDL Port             *
  *************************************************/
+/* Small fix by Milan Zamazal <pdm@debian.org> on 1999-10-03 to allow
+   compilation with gcc 2.95, see #ifdef DEBIAN. */
 #define HAVE_LIBSDL
 
 #include <stdio.h>
@@ -101,9 +103,13 @@ void Mouse::Update( void )
 {
 #ifdef HAVE_LIBSDL
      float scx,scy;
+#ifdef DEBIAN
+     int SDL_x,SDL_y;
+#else
      unsigned short SDL_x,SDL_y;
+#endif
      SDL_PollEvent(NULL);
-     buttons = SDL_GetMouseState(&SDL_x, &SDL_y);    
+     buttons = SDL_GetMouseState(&SDL_x, &SDL_y);
      screenx = SDL_x;
      screeny = SDL_y;
      scx = (float) screenx;

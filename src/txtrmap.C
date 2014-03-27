@@ -27,6 +27,8 @@
  *          compressed files to make compatible  *
  *          with 64bit machines                  *
  *************************************************/
+/* 2001-07-22: Modified by Milan Zamazal <pdm@debian.org> to make the file
+   compilable with gcc 3.  See `#ifdef DEBIAN' for more details. */
 #ifdef SABREWIN
 #include <windows.h>
 #endif
@@ -181,9 +183,15 @@ ofstream os;
 #endif
 			if (open_libos(os,fname))
 			{
+#ifdef DEBIAN
+				os.write((char *)&map_w,sizeof(map_w));
+				os.write((char *)&map_h,sizeof(map_h));
+				os.write((char *)&n,sizeof(n));
+#else
 				os.write((unsigned char *)&map_w,sizeof(map_w));
 				os.write((unsigned char *)&map_h,sizeof(map_h));
 				os.write((unsigned char *)&n,sizeof(n));
+#endif
 				os.write(tgt,n);
 			}
 			delete [] fname;

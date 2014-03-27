@@ -24,6 +24,8 @@
 
 #include "hello.h"
 
+#include <cmath>
+
 // --
 // -- main( options ) 
 // --

@@ -34,6 +34,7 @@
 #include "simerr.h"
 #include "simfile.h"
 #include "rendpoly.h"
+#include "port_3d.h"
 
 /**********************************************************
  * Non z-buffered, flat color poly rendering             *

@@ -20,6 +20,8 @@
 /******************************************************************
  * globals                                                        *
  ******************************************************************/
+/* 1999-12-08: Changed by Milan Zamazal <pdm@debian.org> to point to default
+   library location on Debian, see #ifdef DEBIAN. */
 #include "stdio.h"
 #include "string.h"
 #include "vmath.h"
@@ -35,7 +37,11 @@
 #ifdef SABREWIN
 #define DEFAULT_LIB ".\\lib"
 #else
+#ifdef DEBIAN
+#define DEFAULT_LIB "/usr/share/games/sabre/lib"
+#else
 #define DEFAULT_LIB "./lib"
+#endif
 #endif
 #endif
 

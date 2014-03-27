@@ -26,6 +26,8 @@
  * Defines skill levels, maneuver stack and      *
  * attacker list behavior.                       *
  *************************************************/
+/* Small fix by Milan Zamazal <pdm@debian.org> on 1999-10-03 to allow
+   compilation with gcc 2.95, see #ifdef DEBIAN. */
 #ifndef __aibase_h
 #define __aibase_h
 
@@ -144,7 +146,11 @@ protected:
    int            affiliation;               /* whose side we're on          */
    int            active;                    /* active status                */
    char           handle[aiB_HANDLE_SIZE];   /* call sign                    */
+#ifdef DEBIAN
+   const char     *dbg;                      /* debug string                 */
+#else
    char           *dbg;                      /* debug string                 */
+#endif
    int            task;                      /* current task                 */
 
    sREAL          timeFrame;                 /* time in secs from last update*/

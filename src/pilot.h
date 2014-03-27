@@ -17,6 +17,9 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
+/* 1999-12-08: Small patch by Milan Zamazal <pdm@debian.org> to allow
+   compilation on Debian, see #ifdef DEBIAN. */
+
 #ifndef __pilot_h
 #define __pilot_h
 
@@ -138,7 +141,11 @@ public:
   static Pilot   *pilots[];
   static int     npilots;
   static int     maxpilots;
+#ifdef DEBIAN
+  static int initPilot();
+#else
   static initPilot();
+#endif
   static Pilot *getPilot(char *hndle);
   static float xpixel_adjust, ypixel_adjust;
 

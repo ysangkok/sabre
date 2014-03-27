@@ -579,3 +579,12 @@ void vga13_drawprep()
 
 }
 
+#ifdef DEBIAN
+void vga13_begin_scene()
+{
+}
+
+void vga13_end_scene()
+{
+}
+#endif
