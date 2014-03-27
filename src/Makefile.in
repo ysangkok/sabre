@@ -1,6 +1,6 @@
-# Makefile.in generated automatically by automake 1.3 from Makefile.am
+# Makefile.in generated automatically by automake 1.4-p6 from Makefile.am
 
-# Copyright (C) 1994, 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
+# Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
@@ -12,9 +12,14 @@
 
 # This is part of Dan Hammer's SABRE Fighter Plane Simulator
 # portions donated by Antti Barck
+#
+# 2000-01-22: Modified by Milan Zamazal <pdm@debian.org> for Debian
+# compilation.
+# 2000-02-12: Modified by Milan Zamazal <pdm@debian.org> for non-SVGAlib
+# compilation.
 
 
-SHELL = /bin/sh
+SHELL = @SHELL@
 
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
@@ -35,7 +40,7 @@ mandir = @mandir@
 includedir = @includedir@
 oldincludedir = /usr/include
 
-DISTDIR =
+DESTDIR =
 
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
@@ -49,7 +54,7 @@ AUTOMAKE = @AUTOMAKE@
 AUTOHEADER = @AUTOHEADER@
 
 INSTALL = @INSTALL@
-INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@ $(AM_INSTALL_PROGRAM_FLAGS)
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 transform = @program_transform_name@
@@ -66,31 +71,39 @@ AUTOCONF = @AUTOCONF@
 AUTOMAKE = @AUTOMAKE@
 CC = @CC@
 CXX = @CXX@
+HAVE_LIB = @HAVE_LIB@
+LIB = @LIB@
+LTLIB = @LTLIB@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 REV_DATE = @REV_DATE@
 VERSION = @VERSION@
 
 AUTOMAKE_OPTIONS = foreign
-bin_PROGRAMS = sabre
-sabre_SOURCES = main.C game.C scnedit.C vga_13.C vmath.C traveler.C pen.C \
-		transblt.C port_3d.C clip.C cpoly.C obj_3d.C group_3d.C \
-		copoly.C txtrmap.C bits.C convpoly.C rendpoly.C rndrpoly.C \
-		rndzpoly.C zview.C rotate.C terrain.C earth.C colormap.C \
-		dvector.C flight.C weapons.C pilot.C fltlite.C \
-		moveable.C unguided.C fltzview.C viewobj.C fltmngr.C \
-		grndunit.C font8x8.C plltt.C input.C key_map.C linux_joy.C \
-		kbdhit.C siminput.C simfile.C hud.C cockpit.C instrmnt.C \
-		ppm.C mytimer.C colorspc.C globals.C portkey.C vtable2.C \
-		led2.C aaaunit.C waypoint.C fltobj.C simfilex.C simmath.C \
-		target.C sbrkeys.C aibase.C aiflite.C aigunner.C aipilot.C \
-		aipilot2.C aipilot3.C aipilot4.C aipilot5.C aipilot6.C sairfld.C \
-		sarray.C sattkr.C sfltmdl.C sfrmtn.C smath.C smnvrst.C \
-		spilcaps.C splncaps.C srunway.C sslewer.C stact.C starget.C \
-                sweapon.C sbfltmdl.C simsnd.C dhlist.c stime.c spid.c pilobj.C
+@SVGALIB_TRUE@bin_PROGRAMS = sabre
+@SVGALIB_TRUE@SVGALIBSRCS = main.C vga_13.C input.C kbdhit.C
+@SVGALIB_FALSE@SVGALIBSRCS = 
+# sabre_SOURCES = main.C game.C scnedit.C vga_13.C vmath.C traveler.C pen.C \
+# 		transblt.C port_3d.C clip.C cpoly.C obj_3d.C group_3d.C \
+# 		copoly.C txtrmap.C bits.C convpoly.C rendpoly.C rndrpoly.C \
+# 		rndzpoly.C zview.C rotate.C terrain.C earth.C colormap.C \
+# 		dvector.C flight.C weapons.C pilot.C fltlite.C \
+# 		moveable.C unguided.C fltzview.C viewobj.C fltmngr.C \
+# 		grndunit.C font8x8.C plltt.C input.C key_map.C linux_joy.C \
+# 		kbdhit.C siminput.C simfile.C hud.C cockpit.C instrmnt.C \
+# 		ppm.C mytimer.C colorspc.C globals.C portkey.C vtable2.C \
+# 		led2.C aaaunit.C waypoint.C fltobj.C simfilex.C simmath.C \
+# 		target.C sbrkeys.C aibase.C aiflite.C aigunner.C aipilot.C \
+# 		aipilot2.C aipilot3.C aipilot4.C aipilot5.C aipilot6.C sairfld.C \
+# 		sarray.C sattkr.C sfltmdl.C sfrmtn.C smath.C smnvrst.C \
+# 		spilcaps.C splncaps.C srunway.C sslewer.C stact.C starget.C \
+#                 sweapon.C sbfltmdl.C simsnd.C dhlist.c stime.c spid.c pilobj.C
+sabre_SOURCES = $(SVGALIBSRCS) game.C scnedit.C vmath.C traveler.C pen.C 		transblt.C port_3d.C clip.C cpoly.C obj_3d.C group_3d.C 		copoly.C txtrmap.C bits.C convpoly.C rendpoly.C rndrpoly.C 		rndzpoly.C zview.C rotate.C terrain.C earth.C colormap.C 		dvector.C flight.C weapons.C pilot.C fltlite.C 		moveable.C unguided.C fltzview.C viewobj.C fltmngr.C 		grndunit.C font8x8.C plltt.C key_map.C linux_joy.C 		siminput.C simfile.C hud.C cockpit.C instrmnt.C 		ppm.C mytimer.C colorspc.C globals.C portkey.C vtable2.C 		led2.C aaaunit.C waypoint.C fltobj.C simfilex.C simmath.C 		target.C sbrkeys.C aibase.C aiflite.C aigunner.C aipilot.C 		aipilot2.C aipilot3.C aipilot4.C aipilot5.C aipilot6.C sairfld.C 		sarray.C sattkr.C sfltmdl.C sfrmtn.C smath.C smnvrst.C 		spilcaps.C splncaps.C srunway.C sslewer.C stact.C starget.C                 sweapon.C sbfltmdl.C simsnd.C dhlist.c stime.c spid.c pilobj.C
+
 sabre_LDADD = ../libzip/libcomp.a ../libzip/libuncl.a ../gdev/libgdev.a
 EXTRA_DIST = *.h *.c
-INCLUDES=-I../gdev -I../libzip
+INCLUDES = -I../gdev -I../libzip
+CXXFLAGS = @CXXFLAGS@ -DDEBIAN
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_CLEAN_FILES = 
 PROGRAMS =  $(bin_PROGRAMS)
@@ -100,46 +113,90 @@ DEFS = @DEFS@ -I. -I$(srcdir)
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
-sabre_OBJECTS =  main.o game.o scnedit.o vga_13.o vmath.o traveler.o \
-pen.o transblt.o port_3d.o clip.o cpoly.o obj_3d.o group_3d.o copoly.o \
-txtrmap.o bits.o convpoly.o rendpoly.o rndrpoly.o rndzpoly.o zview.o \
-rotate.o terrain.o earth.o colormap.o dvector.o flight.o weapons.o \
-pilot.o fltlite.o moveable.o unguided.o fltzview.o viewobj.o fltmngr.o \
-grndunit.o font8x8.o plltt.o input.o key_map.o linux_joy.o kbdhit.o \
-siminput.o simfile.o hud.o cockpit.o instrmnt.o ppm.o mytimer.o \
-colorspc.o globals.o portkey.o vtable2.o led2.o aaaunit.o waypoint.o \
-fltobj.o simfilex.o simmath.o target.o sbrkeys.o aibase.o aiflite.o \
-aigunner.o aipilot.o aipilot2.o aipilot3.o aipilot4.o aipilot5.o \
-aipilot6.o sairfld.o sarray.o sattkr.o sfltmdl.o sfrmtn.o smath.o \
-smnvrst.o spilcaps.o splncaps.o srunway.o sslewer.o stact.o starget.o \
-sweapon.o sbfltmdl.o simsnd.o dhlist.o stime.o spid.o pilobj.o
+@SVGALIB_TRUE@sabre_OBJECTS =  main.o vga_13.o input.o kbdhit.o game.o \
+@SVGALIB_TRUE@scnedit.o vmath.o traveler.o pen.o transblt.o port_3d.o \
+@SVGALIB_TRUE@clip.o cpoly.o obj_3d.o group_3d.o copoly.o txtrmap.o \
+@SVGALIB_TRUE@bits.o convpoly.o rendpoly.o rndrpoly.o rndzpoly.o \
+@SVGALIB_TRUE@zview.o rotate.o terrain.o earth.o colormap.o dvector.o \
+@SVGALIB_TRUE@flight.o weapons.o pilot.o fltlite.o moveable.o \
+@SVGALIB_TRUE@unguided.o fltzview.o viewobj.o fltmngr.o grndunit.o \
+@SVGALIB_TRUE@font8x8.o plltt.o key_map.o linux_joy.o siminput.o \
+@SVGALIB_TRUE@simfile.o hud.o cockpit.o instrmnt.o ppm.o mytimer.o \
+@SVGALIB_TRUE@colorspc.o globals.o portkey.o vtable2.o led2.o aaaunit.o \
+@SVGALIB_TRUE@waypoint.o fltobj.o simfilex.o simmath.o target.o \
+@SVGALIB_TRUE@sbrkeys.o aibase.o aiflite.o aigunner.o aipilot.o \
+@SVGALIB_TRUE@aipilot2.o aipilot3.o aipilot4.o aipilot5.o aipilot6.o \
+@SVGALIB_TRUE@sairfld.o sarray.o sattkr.o sfltmdl.o sfrmtn.o smath.o \
+@SVGALIB_TRUE@smnvrst.o spilcaps.o splncaps.o srunway.o sslewer.o \
+@SVGALIB_TRUE@stact.o starget.o sweapon.o sbfltmdl.o simsnd.o dhlist.o \
+@SVGALIB_TRUE@stime.o spid.o pilobj.o
+@SVGALIB_FALSE@sabre_OBJECTS =  game.o scnedit.o vmath.o traveler.o \
+@SVGALIB_FALSE@pen.o transblt.o port_3d.o clip.o cpoly.o obj_3d.o \
+@SVGALIB_FALSE@group_3d.o copoly.o txtrmap.o bits.o convpoly.o \
+@SVGALIB_FALSE@rendpoly.o rndrpoly.o rndzpoly.o zview.o rotate.o \
+@SVGALIB_FALSE@terrain.o earth.o colormap.o dvector.o flight.o \
+@SVGALIB_FALSE@weapons.o pilot.o fltlite.o moveable.o unguided.o \
+@SVGALIB_FALSE@fltzview.o viewobj.o fltmngr.o grndunit.o font8x8.o \
+@SVGALIB_FALSE@plltt.o key_map.o linux_joy.o siminput.o simfile.o hud.o \
+@SVGALIB_FALSE@cockpit.o instrmnt.o ppm.o mytimer.o colorspc.o \
+@SVGALIB_FALSE@globals.o portkey.o vtable2.o led2.o aaaunit.o \
+@SVGALIB_FALSE@waypoint.o fltobj.o simfilex.o simmath.o target.o \
+@SVGALIB_FALSE@sbrkeys.o aibase.o aiflite.o aigunner.o aipilot.o \
+@SVGALIB_FALSE@aipilot2.o aipilot3.o aipilot4.o aipilot5.o aipilot6.o \
+@SVGALIB_FALSE@sairfld.o sarray.o sattkr.o sfltmdl.o sfrmtn.o smath.o \
+@SVGALIB_FALSE@smnvrst.o spilcaps.o splncaps.o srunway.o sslewer.o \
+@SVGALIB_FALSE@stact.o starget.o sweapon.o sbfltmdl.o simsnd.o dhlist.o \
+@SVGALIB_FALSE@stime.o spid.o pilobj.o
 sabre_DEPENDENCIES =  ../libzip/libcomp.a ../libzip/libuncl.a \
 ../gdev/libgdev.a
 sabre_LDFLAGS = 
-CXXFLAGS = @CXXFLAGS@
-CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CXXFLAGS)
-CXXLINK = $(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@
+CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+CXXLD = $(CXX)
+CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(LDFLAGS) -o $@
 CFLAGS = @CFLAGS@
-COMPILE = $(CC) $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CFLAGS)
-LINK = $(CC) $(CFLAGS) $(LDFLAGS) -o $@
+COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
 DIST_COMMON =  COPYING Makefile.am Makefile.in
 
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
 TAR = tar
-GZIP = --best
+GZIP_ENV = --best
+DEP_FILES =  .deps/aaaunit.P .deps/aibase.P .deps/aiflite.P \
+.deps/aigunner.P .deps/aipilot.P .deps/aipilot2.P .deps/aipilot3.P \
+.deps/aipilot4.P .deps/aipilot5.P .deps/aipilot6.P .deps/bits.P \
+.deps/clip.P .deps/cockpit.P .deps/colormap.P .deps/colorspc.P \
+.deps/convpoly.P .deps/copoly.P .deps/cpoly.P .deps/dhlist.P \
+.deps/dvector.P .deps/earth.P .deps/flight.P .deps/fltlite.P \
+.deps/fltmngr.P .deps/fltobj.P .deps/fltzview.P .deps/font8x8.P \
+.deps/game.P .deps/globals.P .deps/grndunit.P .deps/group_3d.P \
+.deps/hud.P .deps/input.P .deps/instrmnt.P .deps/kbdhit.P \
+.deps/key_map.P .deps/led2.P .deps/linux_joy.P .deps/main.P \
+.deps/moveable.P .deps/mytimer.P .deps/obj_3d.P .deps/pen.P \
+.deps/pilobj.P .deps/pilot.P .deps/plltt.P .deps/port_3d.P \
+.deps/portkey.P .deps/ppm.P .deps/rendpoly.P .deps/rndrpoly.P \
+.deps/rndzpoly.P .deps/rotate.P .deps/sairfld.P .deps/sarray.P \
+.deps/sattkr.P .deps/sbfltmdl.P .deps/sbrkeys.P .deps/scnedit.P \
+.deps/sfltmdl.P .deps/sfrmtn.P .deps/simfile.P .deps/simfilex.P \
+.deps/siminput.P .deps/simmath.P .deps/simsnd.P .deps/smath.P \
+.deps/smnvrst.P .deps/spid.P .deps/spilcaps.P .deps/splncaps.P \
+.deps/srunway.P .deps/sslewer.P .deps/stact.P .deps/starget.P \
+.deps/stime.P .deps/sweapon.P .deps/target.P .deps/terrain.P \
+.deps/transblt.P .deps/traveler.P .deps/txtrmap.P .deps/unguided.P \
+.deps/vga_13.P .deps/viewobj.P .deps/vmath.P .deps/vtable2.P \
+.deps/waypoint.P .deps/weapons.P .deps/zview.P
 SOURCES = $(sabre_SOURCES)
 OBJECTS = $(sabre_OBJECTS)
 
-all: Makefile $(PROGRAMS)
-
+all: all-redirect
 .SUFFIXES:
 .SUFFIXES: .C .S .c .o .s
-$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4)
-	cd $(top_srcdir) && $(AUTOMAKE) --foreign --include-deps src/Makefile
+$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+	cd $(top_srcdir) && $(AUTOMAKE) --foreign src/Makefile
 
-Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
 	cd $(top_builddir) \
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
@@ -158,19 +215,16 @@ install-binPROGRAMS: $(bin_PROGRAMS)
 	$(mkinstalldirs) $(DESTDIR)$(bindir)
 	@list='$(bin_PROGRAMS)'; for p in $$list; do \
 	  if test -f $$p; then \
-	    echo "  $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/`echo $$p|sed '$(transform)'`"; \
-	     $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/`echo $$p|sed '$(transform)'`; \
+	    echo "  $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`"; \
+	     $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`; \
 	  else :; fi; \
 	done
 
 uninstall-binPROGRAMS:
 	@$(NORMAL_UNINSTALL)
 	list='$(bin_PROGRAMS)'; for p in $$list; do \
-	  rm -f $(DESTDIR)$(bindir)/`echo $$p|sed '$(transform)'`; \
+	  rm -f $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`; \
 	done
-
-.c.o:
-	$(COMPILE) -c $<
 
 .s.o:
 	$(COMPILE) -c $<
@@ -197,8 +251,12 @@ sabre: $(sabre_OBJECTS) $(sabre_DEPENDENCIES)
 tags: TAGS
 
 ID: $(HEADERS) $(SOURCES) $(LISP)
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
 	here=`pwd` && cd $(srcdir) \
-	  && mkid -f$$here/ID $(SOURCES) $(HEADERS) $(LISP)
+	  && mkid -f$$here/ID $$unique $(LISP)
 
 TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) $(LISP)
 	tags=; \
@@ -208,7 +266,7 @@ TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) $(LISP)
 	  awk '    { files[$$0] = 1; } \
 	       END { for (i in files) print i; }'`; \
 	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
-	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $$unique $(LISP) -o $$here/TAGS)
+	  || (cd $(srcdir) && etags -o $$here/TAGS $(ETAGS_ARGS) $$tags  $$unique $(LISP))
 
 mostlyclean-tags:
 
@@ -224,114 +282,146 @@ distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 subdir = src
 
 distdir: $(DISTFILES)
+	here=`cd $(top_builddir) && pwd`; \
+	top_distdir=`cd $(top_distdir) && pwd`; \
+	distdir=`cd $(distdir) && pwd`; \
+	cd $(top_srcdir) \
+	  && $(AUTOMAKE) --include-deps --build-dir=$$here --srcdir-name=$(top_srcdir) --output-dir=$$top_distdir --foreign src/Makefile
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
-	  test -f $(distdir)/$$file \
-	  || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
-	  || cp -p $$d/$$file $(distdir)/$$file; \
+	  if test -d $$d/$$file; then \
+	    cp -pr $$d/$$file $(distdir)/$$file; \
+	  else \
+	    test -f $(distdir)/$$file \
+	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	    || cp -p $$d/$$file $(distdir)/$$file || :; \
+	  fi; \
 	done
-game.o: game.C sim.h rtkey.h siminc.h simerr.h simfile.h colorspc.h \
-	font8x8.h defs.h grafix.h colormap.h vga_13.h traveler.h pen.h \
-	transblt.h vmath.h port_3d.h clip.h target.h cpoly.h rendpoly.h \
-	convpoly.h rndrpoly.h txtrmap.h clstypes.h obj_3d.h group_3d.h \
-	copoly.h bits.h rndzpoly.h zview.h rotate.h dvmath.h flight.h \
-	fltobj.h spid.h smath.h fltlite.h viewobj.h moveable.h \
-	weapons.h unguided.h fltzview.h pilot.h aipilot.h sobject.h \
-	stypes.h sarray.h sfltmdl.h sslewer.h scntrl.h starget.h \
-	stact.h splncaps.h spilcaps.h sweapon.h smnvrst.h swaypnt.h \
-	sattkr.h dhlist.h aigunner.h aibase.h aicomm.h sbfltmdl.h \
-	pilobj.h fltmngr.h grndunit.h instrmnt.h cockpit.h hud.h \
-	input.h linux_joy.h pc_keys.h kbdhit.h key_map.h siminput.h \
-	sbrvkeys.h portkey.h earth.h terrain.h plltt.h mytimer.h \
-	globals.h simsnd.h game.h stime.h sfrmtn.h
-linux_joy.o: linux_joy.C linux_joy.h
-main.o: main.C siminc.h simerr.h sim.h rtkey.h simfile.h colorspc.h \
-	font8x8.h defs.h grafix.h colormap.h vga_13.h traveler.h pen.h \
-	transblt.h vmath.h port_3d.h clip.h target.h cpoly.h rendpoly.h \
-	convpoly.h rndrpoly.h txtrmap.h clstypes.h obj_3d.h group_3d.h \
-	copoly.h bits.h rndzpoly.h zview.h rotate.h dvmath.h flight.h \
-	fltobj.h spid.h smath.h fltlite.h viewobj.h moveable.h \
-	weapons.h unguided.h fltzview.h pilot.h aipilot.h sobject.h \
-	stypes.h sarray.h sfltmdl.h sslewer.h scntrl.h starget.h \
-	stact.h splncaps.h spilcaps.h sweapon.h smnvrst.h swaypnt.h \
-	sattkr.h dhlist.h aigunner.h aibase.h aicomm.h sbfltmdl.h \
-	pilobj.h fltmngr.h grndunit.h instrmnt.h cockpit.h hud.h \
-	input.h linux_joy.h pc_keys.h kbdhit.h key_map.h siminput.h \
-	sbrvkeys.h portkey.h earth.h terrain.h plltt.h mytimer.h \
-	globals.h simsnd.h game.h scnedit.h sbrkeys.h
-siminput.o: siminput.C defs.h pc_keys.h key_map.h vmath.h port_3d.h \
-	vga_13.h grafix.h clip.h rtkey.h sim.h cpoly.h target.h \
-	rendpoly.h convpoly.h rndrpoly.h txtrmap.h colormap.h \
-	clstypes.h obj_3d.h copoly.h input.h linux_joy.h simfile.h \
-	simerr.h flight.h dvmath.h fltobj.h spid.h smath.h fltlite.h \
-	weapons.h pilot.h aipilot.h sobject.h stypes.h sarray.h \
-	sfltmdl.h sslewer.h scntrl.h starget.h stact.h splncaps.h \
-	spilcaps.h sweapon.h smnvrst.h swaypnt.h sattkr.h dhlist.h \
-	aigunner.h aibase.h aicomm.h sbfltmdl.h pilobj.h zview.h \
-	fltzview.h unguided.h viewobj.h moveable.h fltmngr.h terrain.h \
-	kbdhit.h siminput.h sbrvkeys.h globals.h
 
-info:
-dvi:
-check: all
-	$(MAKE)
-installcheck:
-install-exec: install-binPROGRAMS
-	@$(NORMAL_INSTALL)
+DEPS_MAGIC := $(shell mkdir .deps > /dev/null 2>&1 || :)
 
-install-data: 
-	@$(NORMAL_INSTALL)
+-include $(DEP_FILES)
 
-install: install-exec install-data all
-	@:
+mostlyclean-depend:
 
-uninstall: uninstall-binPROGRAMS
+clean-depend:
 
+distclean-depend:
+	-rm -rf .deps
+
+maintainer-clean-depend:
+
+%.o: %.c
+	@echo '$(COMPILE) -c $<'; \
+	$(COMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
+	@-cp .deps/$(*F).pp .deps/$(*F).P; \
+	tr ' ' '\012' < .deps/$(*F).pp \
+	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
+	    >> .deps/$(*F).P; \
+	rm .deps/$(*F).pp
+
+%.lo: %.c
+	@echo '$(LTCOMPILE) -c $<'; \
+	$(LTCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
+	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
+	  < .deps/$(*F).pp > .deps/$(*F).P; \
+	tr ' ' '\012' < .deps/$(*F).pp \
+	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
+	    >> .deps/$(*F).P; \
+	rm -f .deps/$(*F).pp
+
+%.o: %.C
+	@echo '$(CXXCOMPILE) -c $<'; \
+	$(CXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
+	@-cp .deps/$(*F).pp .deps/$(*F).P; \
+	tr ' ' '\012' < .deps/$(*F).pp \
+	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
+	    >> .deps/$(*F).P; \
+	rm .deps/$(*F).pp
+
+%.lo: %.C
+	@echo '$(LTCXXCOMPILE) -c $<'; \
+	$(LTCXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
+	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
+	  < .deps/$(*F).pp > .deps/$(*F).P; \
+	tr ' ' '\012' < .deps/$(*F).pp \
+	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
+	    >> .deps/$(*F).P; \
+	rm -f .deps/$(*F).pp
+info-am:
+info: info-am
+dvi-am:
+dvi: dvi-am
+check-am: all-am
+check: check-am
+installcheck-am:
+installcheck: installcheck-am
+install-exec-am: install-binPROGRAMS
+install-exec: install-exec-am
+
+install-data-am:
+install-data: install-data-am
+
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+install: install-am
+uninstall-am: uninstall-binPROGRAMS
+uninstall: uninstall-am
+all-am: Makefile $(PROGRAMS) all-local
+all-redirect: all-am
 install-strip:
-	$(MAKE) INSTALL_PROGRAM='$(INSTALL_PROGRAM) -s' INSTALL_SCRIPT='$(INSTALL_PROGRAM)' install
+	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
 installdirs:
-	$(mkinstalldirs)  $(DATADIR)$(bindir)
+	$(mkinstalldirs)  $(DESTDIR)$(bindir)
 
 
 mostlyclean-generic:
-	-test -z "$(MOSTLYCLEANFILES)" || rm -f $(MOSTLYCLEANFILES)
 
 clean-generic:
-	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
-	-rm -f Makefile $(DISTCLEANFILES)
+	-rm -f Makefile $(CONFIG_CLEAN_FILES)
 	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
-	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 
 maintainer-clean-generic:
-	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
-	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
-mostlyclean:  mostlyclean-binPROGRAMS mostlyclean-compile \
-		mostlyclean-tags mostlyclean-generic
+mostlyclean-am:  mostlyclean-binPROGRAMS mostlyclean-compile \
+		mostlyclean-tags mostlyclean-depend mostlyclean-generic
 
-clean:  clean-binPROGRAMS clean-compile clean-tags clean-generic \
-		mostlyclean
+mostlyclean: mostlyclean-am
 
-distclean:  distclean-binPROGRAMS distclean-compile distclean-tags \
-		distclean-generic clean
-	-rm -f config.status
+clean-am:  clean-binPROGRAMS clean-compile clean-tags clean-depend \
+		clean-generic mostlyclean-am
 
-maintainer-clean:  maintainer-clean-binPROGRAMS maintainer-clean-compile \
-		maintainer-clean-tags maintainer-clean-generic \
-		distclean
+clean: clean-am
+
+distclean-am:  distclean-binPROGRAMS distclean-compile distclean-tags \
+		distclean-depend distclean-generic clean-am
+
+distclean: distclean-am
+
+maintainer-clean-am:  maintainer-clean-binPROGRAMS \
+		maintainer-clean-compile maintainer-clean-tags \
+		maintainer-clean-depend maintainer-clean-generic \
+		distclean-am
 	@echo "This command is intended for maintainers to use;"
 	@echo "it deletes files that may require special tools to rebuild."
+
+maintainer-clean: maintainer-clean-am
 
 .PHONY: mostlyclean-binPROGRAMS distclean-binPROGRAMS clean-binPROGRAMS \
 maintainer-clean-binPROGRAMS uninstall-binPROGRAMS install-binPROGRAMS \
 mostlyclean-compile distclean-compile clean-compile \
 maintainer-clean-compile tags mostlyclean-tags distclean-tags \
-clean-tags maintainer-clean-tags distdir info dvi installcheck \
-install-exec install-data install uninstall all installdirs \
+clean-tags maintainer-clean-tags distdir mostlyclean-depend \
+distclean-depend clean-depend maintainer-clean-depend info-am info \
+dvi-am dvi check check-am installcheck-am installcheck install-exec-am \
+install-exec install-data-am install-data install-am install \
+uninstall-am uninstall all-local all-redirect all-am all installdirs \
 mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
+
+@SVGALIB_FALSE@all-local: $(sabre_OBJECTS)
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
