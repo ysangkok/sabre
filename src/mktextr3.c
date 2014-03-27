@@ -26,6 +26,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include <math.h>
+#include "swap.h"
 
 #define MAXLEN 70
 #define NO_ERR 0
@@ -68,20 +69,19 @@ rgb_info rgb_infos[256];
 int found_palette;
 
 typedef struct PCX_HEADER {
-  char manufacturer;
-  char version;
-  char encoding;
-  char bits_per_pixel;
-  short  xmin,ymin;
-  short  xmax,ymax;
-  short  hres;
-  short  vres;
-  char palette16[48];
-  char reserved;
-  char color_planes;
-  short  bytes_per_line;
-  short  palette_type;
-  char filler[58];
+  int8_t  manufacturer;
+  int8_t  version;
+  int8_t  encoding;
+  int8_t  bits_per_pixel;
+  int16_t xmin, ymin;
+  int16_t xmax, ymax;
+  int16_t hres, vres;
+  int8_t  palette16[48];
+  int8_t  reserved;
+  int8_t  color_planes;
+  int16_t bytes_per_line;
+  int16_t palette_type;
+  int8_t  filler[58];
 } pcx_header;
 
 struct IMG {
@@ -418,6 +418,12 @@ void loadpcx(char * filename)
     error_exit(1,"Couldn't Open %s",filename);
   fseek(infile,0L,SEEK_SET);
   fread(&pcxhead,sizeof(pcx_header),1,infile);
+  pcxhead.xmin = ltohs(pcxhead.xmin);
+  pcxhead.xmax = ltohs(pcxhead.xmax);
+  pcxhead.ymin = ltohs(pcxhead.ymin);
+  pcxhead.ymax = ltohs(pcxhead.ymax);
+  pcxhead.hres = ltohs(pcxhead.hres);
+  pcxhead.vres = ltohs(pcxhead.vres);
   image.xsize = (pcxhead.xmax-pcxhead.xmin) + 1;
   image.ysize = (pcxhead.ymax-pcxhead.ymin) + 1;
   fprintf(stderr,"xsize: %d, ysize %d\n",

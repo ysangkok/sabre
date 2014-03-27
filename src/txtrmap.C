@@ -39,6 +39,7 @@
 #include <limits.h>
 #include <values.h>
 #include <string.h>
+#include "swap.h"
 #include "defs.h"
 #include "grafix.h"
 #include "vga_13.h"
@@ -184,9 +185,13 @@ ofstream os;
 			if (open_libos(os,fname))
 			{
 #ifdef DEBIAN
-				os.write((char *)&map_w,sizeof(map_w));
-				os.write((char *)&map_h,sizeof(map_h));
-				os.write((char *)&n,sizeof(n));
+				uint32_t tmp;
+				tmp = ltohl(map_w);
+				os.write((char *)&tmp,sizeof(tmp));
+				tmp = ltohl(map_h);
+				os.write((char *)&tmp,sizeof(tmp));
+				tmp = ltohl(n);
+				os.write((char *)&tmp,sizeof(tmp));
 #else
 				os.write((unsigned char *)&map_w,sizeof(map_w));
 				os.write((unsigned char *)&map_h,sizeof(map_h));
@@ -204,7 +209,7 @@ ofstream os;
 
 void TextrMap::read_compressed(int cflg)
 {
-unsigned int      n;
+uint32_t          n;
 char              *fname;
 FILE              *f;
 int               nread;
@@ -224,8 +229,11 @@ char              *open_params;
 	if ((f = fopen(path,open_params)) != NULL)
 	{
 		fread(&map_w,sizeof(map_w),1,f);
+		map_w = ltohl(map_w);
 		fread(&map_h,sizeof(map_h),1,f);
+		map_h = ltohl(map_h);
 		fread(&n,sizeof(n),1,f);
+		n = ltohl(n);
 		size = map_w * map_h;
 		csize = n;
 		cbytes = new unsigned char[csize];

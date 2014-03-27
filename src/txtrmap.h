@@ -41,8 +41,8 @@ private:
 	unsigned char *bytes;
 public:
 	unsigned char *cbytes;
-	int map_w;
-	int map_h;
+	int32_t map_w;
+	int32_t map_h;
 	int trans_colr;
 	int delf;
 	char id[32];
