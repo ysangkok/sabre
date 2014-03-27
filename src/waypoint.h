@@ -75,24 +75,24 @@ public:
 		return *this;
 	}
 
-  void read(istream &);
-  friend istream &operator >> (istream & is, WayPoint &wp)
+  void read(std::istream &);
+  friend std::istream &operator >> (std::istream & is, WayPoint &wp)
     {
       wp.read(is);
       return(is);
     }
-  void write(ostream &);
-  friend ostream &operator << (ostream &os, WayPoint &wp)
+  void write(std::ostream &);
+  friend std::ostream &operator << (std::ostream &os, WayPoint &wp)
     {
       wp.write(os);
       return(os);
     }
 
-  static void readWayPoints(istream &is);
-  static void writeWayPoints(ostream &os);
+  static void readWayPoints(std::istream &is);
+  static void writeWayPoints(std::ostream &os);
   static void readWayPointFile(char *);
   static void writeWayPointFile(char *);
-  static WayPoint *readWayPointChain(istream &is, int &);
+  static WayPoint *readWayPointChain(std::istream &is, int &);
   static WayPoint **gwaypoints;
   static int        n_waypoints;
   static WayPoint *getWayPoint(char *);

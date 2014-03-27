@@ -139,10 +139,10 @@ public:
 
   friend inline int operator ==(const poly_params & p1, const poly_params & p2);
 
-  void read(istream &);
-  void write(ostream &);
-  friend inline istream &operator >>(istream & is, poly_params &ps);
-  friend inline ostream &operator <<(ostream & os, poly_params &ps);
+  void read(std::istream &);
+  void write(std::ostream &);
+  friend inline std::istream &operator >>(std::istream & is, poly_params &ps);
+  friend inline std::ostream &operator <<(std::ostream & os, poly_params &ps);
 } ;
 
 
@@ -153,13 +153,13 @@ inline int operator ==(const poly_params &p1, const poly_params &p2)
 	  && (p1.tmap == p2.tmap));
 }
 
-inline istream &operator >>(istream &is, poly_params &ps)
+inline std::istream &operator >>(std::istream &is, poly_params &ps)
 {
   ps.read(is);
   return(is);
 }
 
-inline ostream &operator <<(ostream &os, poly_params &ps)
+inline std::ostream &operator <<(std::ostream &os, poly_params &ps)
 {
   ps.write(os);
   return(os);
@@ -206,19 +206,19 @@ public:
 
   void add(const poly_params &);
 
-  void read(istream &);
-  void write(ostream &);
-  friend inline istream & operator >>(istream &, shape_params &);
-  friend inline ostream & operator <<(ostream &, shape_params &);
+  void read(std::istream &);
+  void write(std::ostream &);
+  friend inline std::istream & operator >>(std::istream &, shape_params &);
+  friend inline std::ostream & operator <<(std::ostream &, shape_params &);
 } ;
 
-inline istream & operator >>(istream &is, shape_params &sp)
+inline std::istream & operator >>(std::istream &is, shape_params &sp)
 {
   sp.read(is);
   return(is);
 }
 
-inline ostream & operator <<(ostream &os, shape_params &sp)
+inline std::ostream & operator <<(std::ostream &os, shape_params &sp)
 {
   sp.write(os);
   return(os);
@@ -268,21 +268,21 @@ public:
 
   void copy(const C_PolyInfo &);
 
-  void read(istream &);
-  void write(ostream &);
+  void read(std::istream &);
+  void write(std::ostream &);
 
-  friend inline istream &operator >>(istream &is, C_PolyInfo &cp);
-  friend inline ostream &operator <<(ostream &os, C_PolyInfo &cp);
+  friend inline std::istream &operator >>(std::istream &is, C_PolyInfo &cp);
+  friend inline std::ostream &operator <<(std::ostream &os, C_PolyInfo &cp);
 
 };
 
-inline istream &operator >>(istream &is, C_PolyInfo &cp)
+inline std::istream &operator >>(std::istream &is, C_PolyInfo &cp)
 {
   cp.read(is);
   return(is);
 }
 
-inline ostream &operator <<(ostream &os, C_PolyInfo &cp)
+inline std::ostream &operator <<(std::ostream &os, C_PolyInfo &cp)
 {
   cp.write(os);
   return(os);
@@ -329,20 +329,20 @@ public:
   void copy(const C_ShapeInfo &);
   void add(const C_PolyInfo &ip);
 
-  void read(istream &);
-  void write(ostream &);
+  void read(std::istream &);
+  void write(std::ostream &);
 
-  friend inline istream &operator >>(istream &, C_ShapeInfo &);
-  friend inline ostream &operator <<(ostream &, C_ShapeInfo &);
+  friend inline std::istream &operator >>(std::istream &, C_ShapeInfo &);
+  friend inline std::ostream &operator <<(std::ostream &, C_ShapeInfo &);
 };
 
-inline istream &operator >>(istream &is, C_ShapeInfo &cp)
+inline std::istream &operator >>(std::istream &is, C_ShapeInfo &cp)
 {
   cp.read(is);
   return(is);
 }
 
-inline ostream &operator <<(ostream &os, C_ShapeInfo &cp)
+inline std::ostream &operator <<(std::ostream &os, C_ShapeInfo &cp)
 {
   cp.write(os);
   return(os);
@@ -379,19 +379,19 @@ public:
 
   void readFile(char *path);
   void writeFile(char *path);
-  void read(istream &);
-  void write(ostream &);
-  friend inline istream &operator >>(istream &is, C_3DObjectInfo &co);
-  friend inline ostream &operator <<(ostream &os, C_3DObjectInfo &co);
+  void read(std::istream &);
+  void write(std::ostream &);
+  friend inline std::istream &operator >>(std::istream &is, C_3DObjectInfo &co);
+  friend inline std::ostream &operator <<(std::ostream &os, C_3DObjectInfo &co);
 };
 
-inline istream &operator >>(istream &is, C_3DObjectInfo &co)
+inline std::istream &operator >>(std::istream &is, C_3DObjectInfo &co)
 {
   co.read(is);
   return(is);
 }
 
-inline ostream &operator <<(ostream &os, C_3DObjectInfo &co)
+inline std::ostream &operator <<(std::ostream &os, C_3DObjectInfo &co)
 {
   co.write(os);
   return(os);
@@ -428,7 +428,7 @@ public:
   void set_shadow(REAL_TYPE z_value, Vector &light_source);
   void draw_shadow(Port_3D &theport, int z_clip, int shadow_color);
   virtual void set_poly_icolor(Vector &);
-  friend istream &operator >>(istream &, C_Poly &);
+  friend std::istream &operator >>(std::istream &, C_Poly &);
   void set_params(poly_params *prms);
   void set_params(const C_Poly &);
   virtual void set_scale(REAL_TYPE x)
@@ -461,7 +461,7 @@ public:
   virtual void set_shadow(REAL_TYPE , Vector &);
   virtual void draw(Port_3D &, R_3DPoint &);
   void set_poly_icolor(Vector &);
-  friend istream & operator >>(istream &, C_Shape &);
+  friend std::istream & operator >>(std::istream &, C_Shape &);
   virtual void set_params(shape_params *);
   virtual void set_scale(REAL_TYPE);
   virtual void getBounds(bounding_cube &);

@@ -71,15 +71,15 @@ public:
   Z_Node_Manager();
   ~Z_Node_Manager();
 
-  friend istream & operator >>(istream &, Z_Node_Manager &);
-  void read(istream &is);
+  friend std::istream & operator >>(std::istream &, Z_Node_Manager &);
+  void read(std::istream &is);
   int read_file(char *);
   void create();
-  friend ostream & operator <<(ostream &, Z_Node_Manager &);
-  void write(ostream &os);
+  friend std::ostream & operator <<(std::ostream &, Z_Node_Manager &);
+  void write(std::ostream &os);
   int write_file(char *);
   void add(C_ShapeInfo &new_shape, shape_params &new_params);
-  void write_params(ostream &os, int);
+  void write_params(std::ostream &os, int);
   void deleteShape(int which);
   void buildShapes();
   void setId(char *);
@@ -132,8 +132,8 @@ public:
   REAL_TYPE draw_prep(Port_3D &);
   void build_bounding_cube();
   void calc_screen_bounds(Port_3D &, R_3DPoint *);
-  friend ostream &operator <<(ostream &os, Z_Viewer &zv);
-  void write(ostream &os);
+  friend std::ostream &operator <<(std::ostream &os, Z_Viewer &zv);
+  void write(std::ostream &os);
   void setReferencePort(Port_3D *prt)
     {
       reference_port = prt;

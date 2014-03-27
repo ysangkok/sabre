@@ -26,8 +26,8 @@
  *************************************************/
 #include <stdio.h>
 #include <stdlib.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include <string.h>
 #include <math.h>
 #include <limits.h>
@@ -43,7 +43,7 @@
 WayPoint ** WayPoint::gwaypoints = NULL;
 int WayPoint::n_waypoints = 0;
 
-void WayPoint::read(istream &is)
+void WayPoint::read(std::istream &is)
 {
   char c = ' ';
   READ_TOK('(',is,c)
@@ -54,14 +54,14 @@ void WayPoint::read(istream &is)
     average_speed = kts2fps(average_speed);
 }
 
-void WayPoint::write(ostream &os)
+void WayPoint::write(std::ostream &os)
 {
   os << "(\n" << mode << " " <<  mode_x << " " << mode_y << "\n";
   os << location << " " << fps2kts(average_speed) << "\n";
   os << ")\n";
 }
 
-void WayPoint::readWayPoints(istream &is)
+void WayPoint::readWayPoints(std::istream &is)
 {
   int i;
   int n;
@@ -78,7 +78,7 @@ void WayPoint::readWayPoints(istream &is)
     }
 }
 
-WayPoint *WayPoint::readWayPointChain(istream &is, int &n)
+WayPoint *WayPoint::readWayPointChain(std::istream &is, int &n)
 {
   char c;
   WayPoint *result = NULL;
@@ -102,19 +102,19 @@ WayPoint *WayPoint::readWayPointChain(istream &is, int &n)
 
 void WayPoint::readWayPointFile(char *path)
 {
-  ifstream is;
+  std::ifstream is;
   if (open_is(is,path))
     readWayPoints(is);
 }
 
-void WayPoint::writeWayPoints(ostream &)
+void WayPoint::writeWayPoints(std::ostream &)
 {
 
 }
 
 void WayPoint::writeWayPointFile(char *path)
 {
-  ofstream os;
+  std::ofstream os;
   if (open_libos(os,path))
     writeWayPoints(os);
 }

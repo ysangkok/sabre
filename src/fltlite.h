@@ -96,10 +96,10 @@ public:
     return *this;
   }
   
-  void read(istream &);
-  void write(ostream &);
-  friend istream &operator >>(istream &, FlightLight_Specs &fs);
-  friend ostream &operator <<(ostream &, FlightLight_Specs &fs);
+  void read(std::istream &);
+  void write(std::ostream &);
+  friend std::istream &operator >>(std::istream &, FlightLight_Specs &fs);
+  friend std::ostream &operator <<(std::ostream &, FlightLight_Specs &fs);
 };
 
 

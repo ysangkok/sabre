@@ -29,7 +29,7 @@
 #include <stdio.h>
 #include <values.h>
 #include <math.h>
-#include <iostream.h>
+#include <iostream>
 #include <string.h>
 #include "vmath.h"
 #include "rendpoly.h"
@@ -56,7 +56,7 @@ inline void set_context()
   file_context = fcontext_buff;
 }
 
-void C_PolyInfo::read(istream &is)
+void C_PolyInfo::read(std::istream &is)
 {
   char c;
   int txtflag;
@@ -104,7 +104,7 @@ void C_PolyInfo::read(istream &is)
 }
 
 
-void C_PolyInfo::write(ostream &os)
+void C_PolyInfo::write(std::ostream &os)
 {
   int txtflg = (tpoints != NULL);
   os << '[' << npoints << " " << txtflg << " ";
@@ -181,7 +181,7 @@ C_PolyInfo &C_PolyInfo::operator +=(const R_3DPoint &p)
 
 }
 
-void C_ShapeInfo::read(istream &is)
+void C_ShapeInfo::read(std::istream &is)
 {
   char c;
   set_context();
@@ -202,7 +202,7 @@ void C_ShapeInfo::read(istream &is)
   READ_TOKX('}','{',is,c)
 }
 
-void C_ShapeInfo::write(ostream &os)
+void C_ShapeInfo::write(std::ostream &os)
 {
   os << "{\n";
   os << npolys <<  "\n";
@@ -268,7 +268,7 @@ C_ShapeInfo &C_ShapeInfo::operator +=(const R_3DPoint &p)
   return (*this);
 }
 
-void poly_params::read(istream &is)
+void poly_params::read(std::istream &is)
 {
   char c;
   READ_TOKI('(',is,c)
@@ -277,12 +277,12 @@ void poly_params::read(istream &is)
   READ_TOK(')',is,c)
 }
 
-void poly_params::write(ostream &os)
+void poly_params::write(std::ostream &os)
 {
   os << '(' << color << " " << tmap << " " << flags << " " << color_range << ')';
 }
 
-void shape_params::read(istream &is)
+void shape_params::read(std::istream &is)
 {
   char c;
   if (p_params)
@@ -308,7 +308,7 @@ void shape_params::read(istream &is)
     READ_TOK(']',is,c)
 }
 
-void shape_params::write(ostream &os)
+void shape_params::write(std::ostream &os)
 {
   if (p_params)
     {
@@ -365,7 +365,7 @@ void shape_params::add(const poly_params &pm)
 
 void C_3DObjectInfo::readFile(char *path)
 {
-  ifstream is;
+  std::ifstream is;
   if (this->path)
     delete this->path;
   this->path = strdup(path);
@@ -375,7 +375,7 @@ void C_3DObjectInfo::readFile(char *path)
 
 void C_3DObjectInfo::writeFile(char *path)
 {
-  ofstream os;
+  std::ofstream os;
   MYCHECK(path != NULL);
   if (this->path == NULL)
     this->path = strdup(path);
@@ -388,7 +388,7 @@ void C_3DObjectInfo::writeFile(char *path)
     write(os);
 }
 
-void C_3DObjectInfo::read(istream &is)
+void C_3DObjectInfo::read(std::istream &is)
 {
   char c;
   if (shapes)
@@ -398,7 +398,7 @@ void C_3DObjectInfo::read(istream &is)
   READ_TOKI('{',is,c)
     is >> id;
   is >> nshapes;
-  // cout << id << ": " << nshapes << " shapes\n";
+  // std::cout << id << ": " << nshapes << " shapes\n";
   shapes = new C_ShapeInfo[nshapes];
   MYCHECK(shapes != NULL);
   dflt_params = new shape_params[nshapes];
@@ -416,7 +416,7 @@ void C_3DObjectInfo::read(istream &is)
     
     }
 
-void C_3DObjectInfo::write(ostream &os)
+void C_3DObjectInfo::write(std::ostream &os)
 {
   if (shapes)
     {
@@ -472,7 +472,7 @@ void C_Poly::set_params(const C_Poly &cp)
   base_color  = cp.base_color;
 }
 
-istream & operator >>(istream &is, C_Poly &cp)
+std::istream & operator >>(std::istream &is, C_Poly &cp)
 {
   char c;
   is >> c;
@@ -750,7 +750,7 @@ C_Shape::~C_Shape()
     delete [] polys;
 }
 
-istream & operator >>(istream &is, C_Shape &cs)
+std::istream & operator >>(std::istream &is, C_Shape &cs)
 {
   is >> cs.flags;
   if (cs.flags & CPY_PARAMS)

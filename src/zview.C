@@ -39,8 +39,8 @@
  * z-buffer                                        *
  ***************************************************/
 #include <stdio.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include <math.h>
 #include <string.h>
 #include <limits.h>
@@ -127,7 +127,7 @@ static char *zzpath;
 int Z_Node_Manager::read_file(char *path)
 {
   int result = 0;
-  ifstream infile;
+  std::ifstream infile;
   if (open_is(infile,path))
     {
       zzpath = path;
@@ -139,7 +139,7 @@ int Z_Node_Manager::read_file(char *path)
 }
 extern int shape_cnt;
 
-void Z_Node_Manager::read(istream &is)
+void Z_Node_Manager::read(std::istream &is)
 {
   char c;
   READ_TOKI('{',is,c)
@@ -190,7 +190,7 @@ void Z_Node_Manager::read(istream &is)
     reference_shape[i].create(&(reference_info[i]));
 }
 
-istream & operator >>(istream &is, Z_Node_Manager &zm)
+std::istream & operator >>(std::istream &is, Z_Node_Manager &zm)
 {
   zm.read(is);
   return(is);
@@ -293,7 +293,7 @@ void Z_Node_Manager::create()
 int Z_Node_Manager::write_file(char *path)
 {
   int result = 0;
-  ofstream ofile;
+  std::ofstream ofile;
   if (open_os(ofile,path))
     {
       result = 1;
@@ -303,7 +303,7 @@ int Z_Node_Manager::write_file(char *path)
   return result;
 }
 
-void Z_Node_Manager::write(ostream &os)
+void Z_Node_Manager::write(std::ostream &os)
 {
   int i;
   os << "{\n";
@@ -337,7 +337,7 @@ void Z_Node_Manager::write(ostream &os)
   os << "}\n";
 }
 
-void Z_Node_Manager::write_params(ostream &os, int i)
+void Z_Node_Manager::write_params(std::ostream &os, int i)
 {
   if (i >= 0 && i < n_shapes)
     {
@@ -347,7 +347,7 @@ void Z_Node_Manager::write_params(ostream &os, int i)
     }
 }
 
-ostream & operator <<(ostream &os, Z_Node_Manager &zm)
+std::ostream & operator <<(std::ostream &os, Z_Node_Manager &zm)
 {
   zm.write(os);
   return os;
@@ -582,7 +582,7 @@ void Z_Viewer::calc_screen_bounds(Port_3D &port, R_3DPoint *)
     }
 }
 
-void Z_Viewer::write(ostream &os)
+void Z_Viewer::write(std::ostream &os)
 {
   os << "{\n";
   os << "XXXXXX\n";
@@ -602,7 +602,7 @@ void Z_Viewer::write(ostream &os)
   os << "}\n";
 }
 
-ostream &operator <<(ostream &os, Z_Viewer &zv)
+std::ostream &operator <<(std::ostream &os, Z_Viewer &zv)
 {
   zv.write(os);
   return os;

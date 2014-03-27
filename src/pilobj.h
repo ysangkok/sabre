@@ -53,7 +53,7 @@ public:
 	 negG = -3.0;
 	 log = 0;
   }
-  friend istream &operator>>(istream &, Pilot_Params &);
+  friend std::istream &operator>>(std::istream &, Pilot_Params &);
 };
 
 class Pilot;

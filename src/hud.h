@@ -69,7 +69,7 @@ public:
   void show_gunsight(Pilot &, Port_3D &);
   void do_hud(Flight_Node &);
   void do_hud_stuff(int, int, Flight &);
-  friend istream & operator >>(istream &, Hud &);
+  friend std::istream & operator >>(std::istream &, Hud &);
   void read_file(char *path);
 
   void do_hud_formation_geometry(const sTargetGeometry &, Port_3D &);

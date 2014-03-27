@@ -26,8 +26,8 @@
  *************************************************/
 #include <stdio.h>
 #include <stdlib.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include <math.h>
 #include <limits.h>
 #include <values.h>

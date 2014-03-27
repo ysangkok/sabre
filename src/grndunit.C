@@ -25,8 +25,8 @@
  * Author : Dan Hammer                           *
  *************************************************/
 #include <stdio.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include <string.h>
 #include <math.h>
 #include <limits.h>
@@ -65,7 +65,7 @@ Ground_Unit_Specs::~Ground_Unit_Specs()
     */
 }
 
-void Ground_Unit_Specs::read(istream &is)
+void Ground_Unit_Specs::read(std::istream &is)
 {
   char c;
   char specs_id[32];
@@ -230,7 +230,7 @@ R_3DPoint *Ground_Unit::get_position()
   return (&position);
 }
 
-void Ground_Unit::read(istream &is)
+void Ground_Unit::read(std::istream &is)
 {
   char c;
   file_context = "Ground_Unit";
@@ -247,7 +247,7 @@ void Ground_Unit::read(istream &is)
   init();
 }
 
-void Ground_Unit::write(ostream &os)
+void Ground_Unit::write(std::ostream &os)
 {
   os << "{\n";
   os << affiliation << view << '\n';
@@ -255,13 +255,13 @@ void Ground_Unit::write(ostream &os)
   os << "}\n";
 }
 
-istream &operator >>(istream &is, Ground_Unit &gu)
+std::istream &operator >>(std::istream &is, Ground_Unit &gu)
 {
   gu.read(is);
   return(is);
 }
 
-ostream &operator <<(ostream &os, Ground_Unit &gu)
+std::ostream &operator <<(std::ostream &os, Ground_Unit &gu)
 {
   gu.write(os);
   return(os);
@@ -306,7 +306,7 @@ void Ground_Unit_Manager::add_draw_list(DrawList &dl, Port_3D &port)
       units[i]->add_draw_list(dl,port);
 }
 
-istream &operator >>(istream &is, Ground_Unit_Manager &gum)
+std::istream &operator >>(std::istream &is, Ground_Unit_Manager &gum)
 {
   gum.read(is);
   return(is);
@@ -314,13 +314,13 @@ istream &operator >>(istream &is, Ground_Unit_Manager &gum)
 
 void Ground_Unit_Manager::read_file(char *path)
 {
-  ifstream is;
+  std::ifstream is;
   file_context = "Ground_Unit_Manager";
   if (open_is(is,path))
     read(is);
 }
 
-void Ground_Unit_Manager::read(istream &is)
+void Ground_Unit_Manager::read(std::istream &is)
 {
   char c;
   int gu_idx;
@@ -370,7 +370,7 @@ void Ground_Unit_Manager::read(istream &is)
     }  
 }
 
-ostream &operator >>(ostream &os, Ground_Unit_Manager &gum)
+std::ostream &operator >>(std::ostream &os, Ground_Unit_Manager &gum)
 {
   gum.write(os);
   return(os);
@@ -378,12 +378,12 @@ ostream &operator >>(ostream &os, Ground_Unit_Manager &gum)
 
 void Ground_Unit_Manager::write_file(char *path)
 {
-  ofstream os;
+  std::ofstream os;
   if (open_libos(os,path))
     write(os);
 }
 
-void Ground_Unit_Manager::write(ostream &)
+void Ground_Unit_Manager::write(std::ostream &)
 {
 
 }

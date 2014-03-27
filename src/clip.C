@@ -26,7 +26,7 @@
  * clipping algorythm.                           *
  *************************************************/
 #include <stdio.h>
-#include <iostream.h>
+#include <iostream>
 #include <math.h>
 #include "defs.h"
 #include "grafix.h"

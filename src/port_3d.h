@@ -134,10 +134,10 @@ public:
 	inline void set_look_from(const R_3DPoint &);
 	inline const Vector &calc_view_normal();
 	friend class C_Shape;
-	friend istream &operator >>(istream &is, Port_3D &port);
-	void read(istream &is);
-	friend ostream &operator <<(ostream &os, Port_3D &port);
-	void write(ostream &os);
+	friend std::istream &operator >>(std::istream &is, Port_3D &port);
+	void read(std::istream &is);
+	friend std::ostream &operator <<(std::ostream &os, Port_3D &port);
+	void write(std::ostream &os);
 
 
 	int IsVisible(int x, int y)

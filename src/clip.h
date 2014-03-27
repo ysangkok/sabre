@@ -105,14 +105,14 @@ public:
   void set(const bounding_cube &bc);
   R_3DPoint centerPoint();
 
-  void write(ostream &os)
+  void write(std::ostream &os)
     {
       os << "[ " << min_x << " " << max_x << " ]\n"; 
       os << "[ " << min_y << " " << max_y << " ]\n"; 
       os << "[ " << min_z << " " << max_z << " ]\n"; 
     }
 
-  friend ostream &operator <<(ostream &os, bounding_cube &bc)
+  friend std::ostream &operator <<(std::ostream &os, bounding_cube &bc)
     {
       bc.write(os);
       return (os);

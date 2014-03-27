@@ -19,8 +19,8 @@
 */
 #include <stdio.h>
 #include <stdlib.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include <string.h>
 #include <math.h>
 #include <limits.h>
@@ -37,7 +37,7 @@
 #include "flight.h"
 #include "pilobj.h"
 
-istream &operator >>(istream &is, Pilot_Params &ps)
+std::istream &operator >>(std::istream &is, Pilot_Params &ps)
 {
 	char c= ' ';
 	READ_TOK('(',is,c);

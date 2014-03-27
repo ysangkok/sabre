@@ -24,7 +24,7 @@
 #include "simfile.h"
 #include "simfilex.h"
 
-int simfileX::readint(istream &is, char tok0, char tok1)
+int simfileX::readint(std::istream &is, char tok0, char tok1)
 {
   int result;
   char c;
@@ -41,7 +41,7 @@ int simfileX::readint(istream &is, char tok0, char tok1)
   return (result);
 }
 
-int simfileX::readstr(istream &is, char *buff, int maxlen, char tok0, char tok1)
+int simfileX::readstr(std::istream &is, char *buff, int maxlen, char tok0, char tok1)
 {
   char c0,c1=0;
   int l;
@@ -89,7 +89,7 @@ int simfileX::isstringinput(char *buff)
   return (0);
 }
 
-int simfileX::readinput(istream &is, char *buff, int maxlen, int &i, 
+int simfileX::readinput(std::istream &is, char *buff, int maxlen, int &i, 
 			char tok0,
 			char tok1)
 {
@@ -103,7 +103,7 @@ int simfileX::readinput(istream &is, char *buff, int maxlen, int &i,
   return (result);
 }
 
-int simfileX::readdictinput(istream &is, char *buff, int maxlen, int &val,
+int simfileX::readdictinput(std::istream &is, char *buff, int maxlen, int &val,
 			    dict *d, int d_cnt,
 			    char tok0,
 			    char tok1)

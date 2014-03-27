@@ -26,8 +26,8 @@
  * background rendering of earth & sky           *
  *************************************************/
 #include <stdio.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include <math.h>
 #include <limits.h>
 #include <values.h>
@@ -101,7 +101,7 @@ C_3DPoly **resizePolyPtr(C_3DPoly **polys, int old_size, int amt)
   return (result);
 }
 
-void Earth_Watch::read(istream &is)
+void Earth_Watch::read(std::istream &is)
 {
   char c;
   int i,j,idx;
@@ -183,7 +183,7 @@ void Earth_Watch::read(istream &is)
   READ_TOKI('}',is,c)
 }
 
-istream &operator >>(istream &is, Earth_Watch &ew)
+std::istream &operator >>(std::istream &is, Earth_Watch &ew)
 {
   ew.read(is);
   return is;
@@ -488,13 +488,13 @@ void Earth_Watch::render_ground(Port_3D &port)
   t_render_ground(port);
 }
 
-void Earth_Watch2::read(istream &is)
+void Earth_Watch2::read(std::istream &is)
 {
   char c;
   int i,j;
   int rsrv;
   char terrain_path[100];
-  ifstream ts;
+  std::ifstream ts;
   float dab_min;
 
   R_3DPoint loc;

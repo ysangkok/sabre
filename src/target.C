@@ -27,7 +27,7 @@
 #include <stdio.h>
 #include <values.h>
 #include <math.h>
-#include <iostream.h>
+#include <iostream>
 #include <string.h>
 #include "vmath.h"
 #include "target.h"

@@ -28,7 +28,7 @@
 #include <windowsx.h> 
 #include <mmsystem.h>
 #include <objbase.h>
-#include <iostream.h>
+#include <iostream>
 #include <conio.h>
 #include <stdlib.h>
 #include <malloc.h>

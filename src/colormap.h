@@ -69,16 +69,16 @@ public:
       n = cm.n;
     }
 
-  void read(istream &is);
-  void write(ostream &os);
+  void read(std::istream &is);
+  void write(std::ostream &os);
   
-  friend istream &operator >>(istream &is, ColorMap &cm)
+  friend std::istream &operator >>(std::istream &is, ColorMap &cm)
     {
       cm.read(is);
       return(is);
     }
 
-  friend ostream &operator <<(ostream &os, ColorMap &cm)
+  friend std::ostream &operator <<(std::ostream &os, ColorMap &cm)
     {
       cm.write(os);
       return(os);

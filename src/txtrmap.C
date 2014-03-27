@@ -33,8 +33,8 @@
 #include <windows.h>
 #endif
 #include <stdio.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include <math.h>
 #include <limits.h>
 #include <values.h>
@@ -85,7 +85,7 @@ void TextrMap::copy(TextrMap &tm)
 	}
 }
 
-void TextrMap::read(istream &is)
+void TextrMap::read(std::istream &is)
 {
 char *cptr;
 int ii;
@@ -141,20 +141,20 @@ char c = ' ';
 	READ_TOK('}',is,c);
 }
 
-void TextrMap::write(ostream &os)
+void TextrMap::write(std::ostream &os)
 {
   os << "{\n" << id << "*\n" << trans_colr << "\n";
   compress();
   os << "}\n";
 }
 
-istream & operator >>(istream &is, TextrMap &tm)
+std::istream & operator >>(std::istream &is, TextrMap &tm)
 {
   tm.read(is);
   return (is);
 }
 
-ostream & operator <<(ostream &os, TextrMap &tm)
+std::ostream & operator <<(std::ostream &os, TextrMap &tm)
 {
   tm.write(os);
   return (os);
@@ -167,7 +167,7 @@ unsigned long tgtsize;
 unsigned long srcsize;
 char     *tgt;
 char     *fname;
-ofstream os;
+std::ofstream os;
 
 	if (bytes != NULL)
 	{
@@ -812,7 +812,7 @@ int TextrMap_Manager::add_map(TextrMap &tm)
     return 0;
 }
 
-void TextrMap_Manager::read(istream &is)
+void TextrMap_Manager::read(std::istream &is)
 {
 int n;
 
@@ -844,7 +844,7 @@ int n;
 	}
 }
 
-istream &operator >>(istream &is, TextrMap_Manager &tm)
+std::istream &operator >>(std::istream &is, TextrMap_Manager &tm)
 {
   tm.read(is);
   return (is);
@@ -852,12 +852,12 @@ istream &operator >>(istream &is, TextrMap_Manager &tm)
 
 void TextrMap_Manager::read_file(char *path)
 {
-  ifstream is;
+  std::ifstream is;
   if (open_is(is,path))
     is >> *this;
 }
 
-void TextrMap_Manager::write(ostream &os)
+void TextrMap_Manager::write(std::ostream &os)
 {
   os << nxt << '\n';
   for (int i=0;i<nxt;i++)
@@ -865,7 +865,7 @@ void TextrMap_Manager::write(ostream &os)
 }
 
 
-ostream &operator <<(ostream &os, TextrMap_Manager &tm)
+std::ostream &operator <<(std::ostream &os, TextrMap_Manager &tm)
 {
   tm.write(os);
   return (os);
@@ -873,7 +873,7 @@ ostream &operator <<(ostream &os, TextrMap_Manager &tm)
 
 void TextrMap_Manager::write_file(char *path)
 {
-  ofstream os;
+  std::ofstream os;
   if (open_libos(os,path))
     write(os);
 }

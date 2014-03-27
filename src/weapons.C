@@ -27,8 +27,8 @@
  *************************************************/
 #include <stdio.h>
 #include <stdlib.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include <math.h>
 #include <limits.h>
 #include <values.h>
@@ -51,7 +51,7 @@ Weapons_Manager *Weapons_Manager::the_weapons_manager = NULL;
 /***************************************************
  * Weapon_Specs methods                            *
  ***************************************************/
-void Weapon_Specs::read(istream &is)
+void Weapon_Specs::read(std::istream &is)
 {
   is >> wep_name;
   is >> flt_specs;
@@ -60,7 +60,7 @@ void Weapon_Specs::read(istream &is)
   is >> damage_factor;
 }
 
-void Weapon_Specs::write(ostream &os)
+void Weapon_Specs::write(std::ostream &os)
 {
   os << wep_name << '\n';
   os << flt_specs << '\n';
@@ -70,7 +70,7 @@ void Weapon_Specs::write(ostream &os)
 /***************************************************
  * Gun_Specs methods                               *
  ***************************************************/
-void Gun_Specs::read(istream &is)
+void Gun_Specs::read(std::istream &is)
 {
   int clr,dummy;
   char c =  ' ';
@@ -87,7 +87,7 @@ void Gun_Specs::read(istream &is)
   rounds_per_second = 1.0 / (rounds_per_second / 60);
 }
 
-void Gun_Specs::write(ostream &os)
+void Gun_Specs::write(std::ostream &os)
 {
   color_spec cs(tracer_color);
   os << '(' << '\n';
@@ -100,7 +100,7 @@ void Gun_Specs::write(ostream &os)
 /***************************************************
  * Cannon_Specs methods                            *
  ***************************************************/
-void Cannon_Specs::read(istream &is)
+void Cannon_Specs::read(std::istream &is)
 {
   char c;
   int clr;
@@ -128,7 +128,7 @@ void Cannon_Specs::read(istream &is)
   rounds_per_second = 1.0 / (rounds_per_second / 60);
 }
 
-void Cannon_Specs::write(ostream &os)
+void Cannon_Specs::write(std::ostream &os)
 {
   color_spec cs(tracer_color);
   os << '(' << '\n';
@@ -162,7 +162,7 @@ void Bomb_Specs::createZManager(char *path)
   zm->read_file(path);
 }
 
-void Bomb_Specs::read(istream &is)
+void Bomb_Specs::read(std::istream &is)
 {
   char c;
   READ_TOKI('(',is,c);
@@ -179,7 +179,7 @@ void Bomb_Specs::read(istream &is)
   blast_map_size *= world_scale;
 }
 
-void Bomb_Specs::write(ostream &os)
+void Bomb_Specs::write(std::ostream &os)
 {
   os << '(' << '\n';
   Weapon_Specs::write(os);
@@ -195,7 +195,7 @@ void Bomb_Specs::write(ostream &os)
 /***************************************************
  * Rocket_Specs methods                            *
  ***************************************************/
-void Rocket_Specs::read(istream &is)
+void Rocket_Specs::read(std::istream &is)
 {
   char c;
   READ_TOKI('(',is,c);
@@ -220,7 +220,7 @@ void Rocket_Specs::read(istream &is)
   flume_delta_size *= world_scale;
 }
 
-void Rocket_Specs::write(ostream &os)
+void Rocket_Specs::write(std::ostream &os)
 {
   os << '(' << '\n';
   Weapon_Specs::write(os);
@@ -273,7 +273,7 @@ Weapon::Weapon(Weapon_Specs *ws)
   wep_i = NULL;
 }
 
-void Weapon::read(istream &is)
+void Weapon::read(std::istream &is)
 {
   char c;
   READ_TOKI('{',is,c);
@@ -297,7 +297,7 @@ void Weapon::read(istream &is)
   READ_TOK('}',is,c);
 }
 
-void Weapon::write(ostream &)
+void Weapon::write(std::ostream &)
 {
 
 }
@@ -401,7 +401,7 @@ REAL_TYPE Weapon::calc_hvtime(Flight &host_flight, R_3DPoint &p)
 /*****************************************************
  * Guns methods                                      *
  *****************************************************/
-istream & operator >>(istream &is, Guns &gp)
+std::istream & operator >>(std::istream &is, Guns &gp)
 {
   ((Weapon &)gp).read(is);
   return is;
@@ -445,7 +445,7 @@ int Guns::update(Flight &hf, Unguided_Manager *um, Weapon_Instance *wi,
 /********************************************************
  * Bombs methods                                        *
  ********************************************************/
-istream & operator >>(istream &is, Bombs &b)
+std::istream & operator >>(std::istream &is, Bombs &b)
 {
   ((Weapon &)b).read(is);
   return is;
@@ -480,7 +480,7 @@ int Bombs::update(Flight &hf, Unguided_Manager *um, Weapon_Instance *wi,
 /********************************************************
  * Rockets methods                                        *
  ********************************************************/
-istream & operator >>(istream &is, Rockets &r)
+std::istream & operator >>(std::istream &is, Rockets &r)
 {
   ((Weapon &)r).read(is);
   return is;
@@ -516,7 +516,7 @@ int Rockets::update(Flight &hf, Unguided_Manager *um,
 /********************************************************
  * Missiles methods                                     *
  ********************************************************/
-istream & operator >>(istream &is, Missiles &r)
+std::istream & operator >>(std::istream &is, Missiles &r)
 {
   ((Weapon &)r).read(is);
   return is;
@@ -551,7 +551,7 @@ int Missiles::update(Flight &hf, Unguided_Manager *um,
 /********************************************************
  * FuelTanks methods                                     *
  ********************************************************/
-istream & operator >>(istream &is, FuelTanks &r)
+std::istream & operator >>(std::istream &is, FuelTanks &r)
 {
   ((Weapon &)r).read(is);
   return is;
@@ -809,7 +809,7 @@ Weapon_List *Weapons_Manager::get_list(int n)
 
 void Weapons_Manager::read_file(char *path)
 {
-  ifstream infile;
+  std::ifstream infile;
   if (open_is(infile,path))
     infile >> *this;
   infile.close();
@@ -826,7 +826,7 @@ simfileX::dict wptypes[NWPTYPES] =
   { "cannon_type",cannon_t }
 };
 
-void Weapons_Manager::read(istream &is)
+void Weapons_Manager::read(std::istream &is)
 {
   int i,j,ndx,ndx2;
   int wep_type,sz;
@@ -993,7 +993,7 @@ void Weapons_Manager::read(istream &is)
   READ_TOKI('}',is,c);
 }
 
-istream & operator >>(istream &is, Weapons_Manager &wp)
+std::istream & operator >>(std::istream &is, Weapons_Manager &wp)
 {
   wp.read(is);
   return is;

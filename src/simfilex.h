@@ -31,13 +31,13 @@ typedef struct dict_str
   char *str;
   int  val;
 } dict;
-static int readint(istream &is, char tok0 = 0, char tok1 = 0);
-static int readstr(istream &is, char *bff, int maxlen, char tok0 = 0, 
+static int readint(std::istream &is, char tok0 = 0, char tok1 = 0);
+static int readstr(std::istream &is, char *bff, int maxlen, char tok0 = 0, 
 		   char tok1 = 0);
-static int readinput(istream &is, char *buff, int maxlen, int &i, 
+static int readinput(std::istream &is, char *buff, int maxlen, int &i, 
 	      char tok0 = 0,
 	      char tok1 = 0);
-static int readdictinput(istream &is, char *buff, int maxlen, int &i,
+static int readdictinput(std::istream &is, char *buff, int maxlen, int &i,
 			dict *d, int d_cnt,
 			char tok0 = 0,
 			char tok1 = 0);

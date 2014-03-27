@@ -152,10 +152,10 @@ public:
 			delete [] mc;
 	}
 
-	friend istream &operator >>(istream &is, TextrMap &tm);
-	friend ostream &operator >>(ostream &os, TextrMap &tm);
-	void read(istream &is);
-	void write(ostream &os);
+	friend std::istream &operator >>(std::istream &is, TextrMap &tm);
+	friend std::ostream &operator >>(std::ostream &os, TextrMap &tm);
+	void read(std::istream &is);
+	void write(std::ostream &os);
 	void compress();
 	void read_compressed(int = 0);
 	unsigned char *getBytes(int = 0);
@@ -220,13 +220,13 @@ public:
 
 	int add_map(TextrMap &);
 
-	void read(istream &is);
+	void read(std::istream &is);
 	void read_file(char *);
-	friend istream &operator >>(istream &is, TextrMap_Manager &);
+	friend std::istream &operator >>(std::istream &is, TextrMap_Manager &);
 
-	void write(ostream &os);
+	void write(std::ostream &os);
 	void write_file(char *);
-	friend ostream &operator <<(ostream &os, TextrMap_Manager &);
+	friend std::ostream &operator <<(std::ostream &os, TextrMap_Manager &);
 
 
 	TextrMap &get_map(int n)

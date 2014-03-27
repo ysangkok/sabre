@@ -39,8 +39,8 @@
 #include <math.h>
 #include <signal.h>
 #include <ctype.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include <setjmp.h>
 #include <stdarg.h>
 #ifdef DEBIAN
@@ -363,7 +363,7 @@ void doGame()
 		      demo,
 		      messageLoop);
   theGame.doGame();
-  theGame.printResults(cout);
+  theGame.printResults(std::cout);
 }
 
 void doSceneEdit()

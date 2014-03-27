@@ -29,8 +29,8 @@
  *************************************************/
 #include <stdio.h>
 #include <stdlib.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include <string.h>
 #include <math.h>
 #include <limits.h>

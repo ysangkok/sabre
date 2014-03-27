@@ -167,14 +167,14 @@ public:
 
   Flight_Specs();
 
-  void read(istream &);
-  void write(ostream &);
-  friend istream &operator >>(istream &is, Flight_Specs &fs)
+  void read(std::istream &);
+  void write(std::ostream &);
+  friend std::istream &operator >>(std::istream &is, Flight_Specs &fs)
     {
       fs.read(is);
       return(is);
     }
-  friend ostream &operator <<(ostream &os, Flight_Specs &fs)
+  friend std::ostream &operator <<(std::ostream &os, Flight_Specs &fs)
     {
       fs.write(os);
       return(os);
@@ -286,14 +286,14 @@ public:
 	 auto_coord = 0;
   }
 
-  void read(istream &is);
-  void write(ostream &os);
-  friend istream & operator >>(istream &is, Flight_Controls &fc)
+  void read(std::istream &is);
+  void write(std::ostream &os);
+  friend std::istream & operator >>(std::istream &is, Flight_Controls &fc)
     {
       fc.read(is);
       return(is);
     }
-  friend ostream & operator <<(ostream &os, Flight_Controls &fc)
+  friend std::ostream & operator <<(std::ostream &os, Flight_Controls &fc)
     {
       fc.write(os);
       return(os);
@@ -331,13 +331,13 @@ public:
   friend Vector_Q operator +(Vector_Q &, Vector_Q &);
   friend DVector operator +(DVector &, Vector_Q &);
 
-  friend ostream &operator <<(ostream &os, Vector_Q &vq)
+  friend std::ostream &operator <<(std::ostream &os, Vector_Q &vq)
   {
     os << '(' << vq.magnitude << ' ' << vq.direction << ')';
     return os;
   }
 
-  friend istream &operator >>(istream &is, Vector_Q &vq);
+  friend std::istream &operator >>(std::istream &is, Vector_Q &vq);
 };
 
 /***********************************************************
@@ -445,17 +445,17 @@ public:
     fuel = 0.0;
     elapsed_time = 0.0;
   }
-  void read(istream &is);
-  void write(ostream &os)
+  void read(std::istream &is);
+  void write(std::ostream &os)
     {
       os << velocity.magnitude << flight_port;
     }
-  friend istream &operator >>(istream &is, Flight_State &fp)
+  friend std::istream &operator >>(std::istream &is, Flight_State &fp)
     {
       fp.read(is);
       return(is);
     }
-  friend ostream &operator <<(ostream &os, Flight_State &fp)
+  friend std::ostream &operator <<(std::ostream &os, Flight_State &fp)
     {
       fp.write(os);
       return(os);

@@ -73,8 +73,8 @@ public:
 	void update_flight();
 	void draw_flight(Port_3D *pport = NULL);
 	void doPaletteEffect();
-	void printResults(ostream &);
-	void printResult(Flight_Node &, ostream &);
+	void printResults(std::ostream &);
+	void printResult(Flight_Node &, std::ostream &);
 	void __cdecl show_message(int bot, char *str, ... );
 	Flight_Controls *getFlightControls()
 	{

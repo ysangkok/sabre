@@ -25,8 +25,8 @@
  *************************************************/
 #include <stdio.h>
 #include <string.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include <math.h>
 #include <limits.h>
 #include <values.h>
@@ -130,7 +130,7 @@ Flight_Specs *result = NULL;
 int Flight_Specs::read_file(char *path)
 {
 int result = 0;
-ifstream infile;
+std::ifstream infile;
 
 	if (open_is(infile,path))
 	{
@@ -145,7 +145,7 @@ int Flight_Specs::write_file(char *path)
 {
 int result = 0;
 
-	ofstream outfile;
+	std::ofstream outfile;
 	if (open_libos(outfile,path))
 	{
 		result = 1;
@@ -155,7 +155,7 @@ int result = 0;
 	return (result);
 }
 
-void Flight_Specs::read(istream &is)
+void Flight_Specs::read(std::istream &is)
 {
 char c;
 
@@ -204,7 +204,7 @@ char c;
 	READ_TOK('}',is,c);
 }
 
-void Flight_Specs::write(ostream &os)
+void Flight_Specs::write(std::ostream &os)
 {
 	os << "{\n";
 	os << weight << max_thrust << fps2kts(max_speed) << fps2kts(corner_speed);
@@ -228,7 +228,7 @@ void Flight_Specs::write(ostream &os)
 	os << "}\n";
 }
 
-void Flight_Controls::read(istream &is)
+void Flight_Controls::read(std::istream &is)
 {
 	is >> throttle >> landing_gear >> wheel_brakes;
 	is >> cockpit >> hud_on >> vextern;
@@ -241,14 +241,14 @@ void Flight_Controls::read(istream &is)
 	radar = 1;
 }
 
-void Flight_Controls::write(ostream &os)
+void Flight_Controls::write(std::ostream &os)
 {
 	os << elevators << ' ' << ailerons << ' '  << throttle << '\n';
 	os << rudder << ' ' << speed_brakes << '\n' ;
 	os << flaps << ' ' << wheel_brakes << ' ' << landing_gear << '\n';
 }
 
-istream &operator >>(istream &is, Vector_Q &vq)
+std::istream &operator >>(std::istream &is, Vector_Q &vq)
 {
 	char c;
 	is >> c;
@@ -298,7 +298,7 @@ DVector v_result = v1 + v2;
 	return Vector_Q(r_mag,v_result);
 }
 
-void Flight_State::read(istream &is)
+void Flight_State::read(std::istream &is)
 {
 float kph;
 

@@ -22,14 +22,14 @@
  * floating-point equivalents of vectors                        *
  ****************************************************************/
 #include <stdio.h>
-#include <iostream.h>
+#include <iostream>
 #include <math.h>
 #ifdef USING_FIXED
 #include "fixpoint.h"
 #endif
 #include "vmath.h"
 #include "dvmath.h"
-istream &operator >> (istream &is, DVector &v)
+std::istream &operator >> (std::istream &is, DVector &v)
 {
 	char c;
 	is >> c;

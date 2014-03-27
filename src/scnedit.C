@@ -33,8 +33,8 @@
 #include <math.h>
 #include <signal.h>
 #include <ctype.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include <setjmp.h>
 #include <stdarg.h>
 #include "sim.h"
@@ -68,7 +68,7 @@ void SceneEdit::doEdit()
 
 void SceneEdit::readWorldFile()
 {
-ifstream is;
+std::ifstream is;
 char c;
 float pixl_ratio;
 char buff[100];

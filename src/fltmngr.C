@@ -24,8 +24,8 @@
  * Author : Dan Hammer                           *
  *************************************************/
 #include <stdio.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include <math.h>
 #include <limits.h>
 #include <values.h>
@@ -58,7 +58,7 @@ extern int no_crash;
 #define F2FIX(a) (a)
 #define FIX2F(a) (a)
 
-void Flight_Node::read(istream &is)
+void Flight_Node::read(std::istream &is)
 {
   char buff[64];
   int n;
@@ -157,7 +157,7 @@ void Flight_Node::read(istream &is)
   viewer->affiliation = pilot->getAffiliation();
 }
 
-istream &operator >>(istream &is, Flight_Node &fn)
+std::istream &operator >>(std::istream &is, Flight_Node &fn)
 {
   fn.read(is);
   return is;
@@ -413,7 +413,7 @@ Flight_Manager::~Flight_Manager()
 int Flight_Manager::read_file(char *path)
 {
   int result = 0;
-  ifstream infile;
+  std::ifstream infile;
 
   if (open_is(infile,path))
     {
@@ -424,11 +424,11 @@ int Flight_Manager::read_file(char *path)
   return result;
 }
 
-void Flight_Manager::read(istream &is)
+void Flight_Manager::read(std::istream &is)
 {
   char buff[BUFSIZ];
   int got_line;
-  ifstream is2;
+  std::ifstream is2;
   int i;
 
   is.seekg(0L);
@@ -530,13 +530,13 @@ void Flight_Manager::read(istream &is)
     }
 }
 
-istream & operator >>(istream &is, Flight_Manager &fm)
+std::istream & operator >>(std::istream &is, Flight_Manager &fm)
 {
   fm.read(is);
   return is;
 }
 
-void Flight_Manager::readNodes(istream &is)
+void Flight_Manager::readNodes(std::istream &is)
 {
   int i;
 
@@ -561,14 +561,14 @@ void Flight_Manager::readNodes(istream &is)
 
 void Flight_Manager::readNodeFile(char *path)
 {
-  ifstream is;
+  std::ifstream is;
 
   if (open_is(is,path))
     readNodes(is);
 }
 
 
-void Flight_Manager::readFlites(istream &is)
+void Flight_Manager::readFlites(std::istream &is)
 {
 #define MAX_SWAYPOINT_INFOS 16
   swaypoint_info waypoints[MAX_SWAYPOINT_INFOS];
@@ -722,7 +722,7 @@ void Flight_Manager::readFlites(istream &is)
 
 void Flight_Manager::readFliteFile(char *path)
 {
-  ifstream is;
+  std::ifstream is;
 
   if (open_is(is,path))
     readFlites(is);

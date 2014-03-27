@@ -18,11 +18,11 @@
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 #include <stdio.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include "colorspc.h"
 
-istream &operator >>(istream &is, color_spec &cs)
+std::istream &operator >>(std::istream &is, color_spec &cs)
 {
   char c;
   is >> c;

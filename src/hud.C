@@ -28,8 +28,8 @@
 #include <values.h>
 #include <string.h>
 #include <math.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include "defs.h"
 #include "pc_keys.h"
 #include "grafix.h"
@@ -71,12 +71,12 @@ extern float raw_time;
 
 void Hud::read_file(char *path)
 {
-	ifstream is;
+	std::ifstream is;
 	if (open_is(is,path))
 		is >> *this;
 }
 
-istream &operator >>(istream &is, Hud &hd)
+std::istream &operator >>(std::istream &is, Hud &hd)
 {
 	char c = ' ';
 

@@ -27,7 +27,7 @@
 #include <time.h>
 #include <string.h>
 #include <math.h>
-#include <iostream.h>
+#include <iostream>
 #include "defs.h"
 #include "grafix.h"
 #include "vga_13.h"

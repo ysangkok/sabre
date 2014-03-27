@@ -27,8 +27,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include <math.h>
 #include "vmath.h"
 #include "defs.h"
@@ -63,7 +63,7 @@ char *build_libpath(char *filename)
 
 void read_texture_file(char *path)
 {
-  ifstream is;
+  std::ifstream is;
 #ifdef SABREWIN
   if (map_man)
     delete map_man;
@@ -84,7 +84,7 @@ void read_texture_file(char *path)
 void read_palette_file(char *path)
 {
   color_spec cs;
-  ifstream is;
+  std::ifstream is;
   current_path = path;
   if (open_is(is,path))
     {
@@ -96,7 +96,7 @@ void read_palette_file(char *path)
 
 void read_sound_file(char *path)
 {
-  ifstream is;
+  std::ifstream is;
   int		nsounds;
   int		gotline;
   char		buff[BUFSIZ];
@@ -128,7 +128,7 @@ void read_sound_file(char *path)
     }
 }
 
-int get_line(istream &is, char *buff, int size)
+int get_line(std::istream &is, char *buff, int size)
 {
   int l;
   while (is)
@@ -154,7 +154,7 @@ int get_line(istream &is, char *buff, int size)
   return 0;
 }
 
-int open_is(ifstream &is, char *path)
+int open_is(std::ifstream &is, char *path)
 {
   char *lpath = build_libpath(path);
   current_path = lpath;
@@ -167,7 +167,7 @@ int open_is(ifstream &is, char *path)
 }
 
 
-int open_os(ofstream &os, char *path)
+int open_os(std::ofstream &os, char *path)
 {
   os.open(path);
   if (!os.good())
@@ -175,7 +175,7 @@ int open_os(ofstream &os, char *path)
   return (os.good());
 }
 
-int open_libos(ofstream &os, char *path)
+int open_libos(std::ofstream &os, char *path)
 {
   char *lpath = build_libpath(path);
   os.open(lpath);
@@ -185,7 +185,7 @@ int open_libos(ofstream &os, char *path)
   return (os.good());
 }
 
-int read_int(istream &is)
+int read_int(std::istream &is)
 {
   char c;
   int result = 0;

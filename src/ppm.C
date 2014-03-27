@@ -28,8 +28,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include "vga_13.h"
 
 static int fcount = 0;
@@ -46,11 +46,11 @@ void buffer2ppm()
   if (!buffer_ptr)
 	return;
   sprintf(buff,"sbr%04d.ppm",fcount++);
-  ofstream os(buff);
+  std::ofstream os(buff);
   if (os)
     {
       os << "P3\n";
-      os << "# CREATOR: Sabre Fighter Plane Simulator Version " << VERSION << " " << __DATE__ << endl;
+      os << "# CREATOR: Sabre Fighter Plane Simulator Version " << VERSION << " " << __DATE__ << std::endl;
       os << SCREEN_WIDTH << " " << SCREEN_HEIGHT << "\n";
       os << 63 << '\n';
       pptr = buffer_ptr;

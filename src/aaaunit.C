@@ -24,8 +24,8 @@
  * Author : Dan Hammer                           *
  *************************************************/
 #include <stdio.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include <string.h>
 #include <math.h>
 #include <limits.h>
@@ -139,7 +139,7 @@ float t,hd;
 		lp = target->position;
 }
 
-void AAA_Unit::read(istream &is)
+void AAA_Unit::read(std::istream &is)
 {
 char c;
 
@@ -157,7 +157,7 @@ char c;
 	init();
 }
 
-void AAA_Unit::write(ostream &os)
+void AAA_Unit::write(std::ostream &os)
 {
 	os << "{\n";
 	os << view << '\n';

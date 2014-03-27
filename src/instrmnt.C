@@ -31,8 +31,8 @@
 #include <string.h>
 #include <math.h>
 #include <ctype.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include "defs.h"
 #include "grafix.h"
 #include "vga_13.h"
@@ -315,7 +315,7 @@ void Instrument_Panel::add_indicator(Indicator *ind)
     indicators[indicators_idx++] = ind;
 }
 
-istream &operator >>(istream &is, Instrument_Panel &ip)
+std::istream &operator >>(std::istream &is, Instrument_Panel &ip)
 {
   char c;
   int i;
@@ -393,7 +393,7 @@ void setup_instruments(char *path, Instrument_Panel &ip)
   ip.add_indicator(&compass);
   ip.add_indicator(&throttle_i);
 
-  ifstream is;
+  std::ifstream is;
   if (open_is(is,path))
     is >> ip;
   is.close();

@@ -21,7 +21,7 @@
 #define __vmath_h
 
 #include <math.h>
-#include <iostream.h>
+#include <iostream>
 
 
 #ifndef REAL_TYPE
@@ -118,10 +118,10 @@ public:
     X -= v.X; Y -= v.Y; Z -= v.Z;
   }
 
-  friend ostream &operator << (ostream &os,Vector &v)
+  friend std::ostream &operator << (std::ostream &os,Vector &v)
   { return os  << '<' << v.X << ' ' << v.Y << ' ' << v.Z << '>' ; }
 
-  friend istream &operator >> (istream &is,Vector &v);
+  friend std::istream &operator >> (std::istream &is,Vector &v);
 
   void SetZero( void )
   {
@@ -338,10 +338,10 @@ public:
   REAL_TYPE _z()
     { return z; }
 
-  friend ostream &operator << (ostream &os,R_3DPoint &r3D)
+  friend std::ostream &operator << (std::ostream &os,R_3DPoint &r3D)
     { return os  << '<' << r3D.x << ' ' << r3D.y << ' ' << r3D.z << '>' ; }
 
-  friend istream &operator >> (istream &is,R_3DPoint &r3D);
+  friend std::istream &operator >> (std::istream &is,R_3DPoint &r3D);
 
   friend R_3DPoint operator +(const R_3DPoint &r1, const R_3DPoint &r2)
     { return R_3DPoint(r1.x+r2.x,r1.y+r2.y,r1.z+r2.z); }
@@ -509,10 +509,10 @@ public:
   TXTP_TYPE _i()
     { return i; }
 
-  friend ostream &operator << (ostream &os,TxtPoint &r3D)
+  friend std::ostream &operator << (std::ostream &os,TxtPoint &r3D)
     { return os  << '<' << r3D.u << ' ' << r3D.v << ' ' << r3D.i << '>' ; }
 
-  friend istream &operator >> (istream &is,TxtPoint &r3D);
+  friend std::istream &operator >> (std::istream &is,TxtPoint &r3D);
 
   friend TxtPoint operator +(const TxtPoint &r1, const TxtPoint &r2)
     { return TxtPoint(r1.u+r2.u,r1.v+r2.v,r1.i+r2.i); }
@@ -753,9 +753,9 @@ public:
   REAL_TYPE _rho()
     { return rho; }
 
-  friend istream &operator >>( istream &is, S_3DPoint &s3D);
+  friend std::istream &operator >>( std::istream &is, S_3DPoint &s3D);
 
-  friend ostream &operator << ( ostream &os, S_3DPoint &s3D)
+  friend std::ostream &operator << ( std::ostream &os, S_3DPoint &s3D)
     { return os  << "<" << s3D.theta << " " << s3D.phi << " " << s3D.rho << ">"; }
 
   friend S_3DPoint operator +(const S_3DPoint &s1, const S_3DPoint &s2)

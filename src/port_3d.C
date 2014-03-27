@@ -26,8 +26,8 @@
  *************************************************/
 #include <stdio.h>
 #include <math.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include "vmath.h"
 #include "rtkey.h"
 #include "vga_13.h"
@@ -52,7 +52,7 @@ REAL_TYPE Port_3D::fovx = 300;
 REAL_TYPE Port_3D::fovy = 280;
 extern REAL_TYPE world_scale;
 
-void Port_3D::read(istream &is)
+void Port_3D::read(std::istream &is)
 {
   /* used to be fovx */
   float ignore;
@@ -68,20 +68,20 @@ void Port_3D::read(istream &is)
   cos_roll = cos(roll);
 }
 
-istream &operator >>(istream &is, Port_3D &port)
+std::istream &operator >>(std::istream &is, Port_3D &port)
 {
   port.read(is);
   return is;
 }
 
-void Port_3D::write(ostream &os)
+void Port_3D::write(std::ostream &os)
 {
   os << slook_from  << "\n";
   os << look_from << "\n";
   os << look_at << "\n";
 }
 
-ostream &operator <<(ostream &os, Port_3D &port)
+std::ostream &operator <<(std::ostream &os, Port_3D &port)
 {
   port.write(os);
   return os;

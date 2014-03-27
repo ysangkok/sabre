@@ -21,8 +21,8 @@
  * flight.cpp                                          *
  *******************************************************/
 #include <stdio.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include <math.h>
 #include <limits.h>
 #include <values.h>
@@ -57,7 +57,7 @@ DVector FlightLight::to_world(DVector &v)
   return (DVector(r_w));
 }
 
-void FlightLight_Specs::read(istream &is)
+void FlightLight_Specs::read(std::istream &is)
 {
   char c = ' ';
   READ_TOK('{',is,c);
@@ -68,7 +68,7 @@ void FlightLight_Specs::read(istream &is)
   mass = weight / g;
 }
 
-void FlightLight_Specs::write(ostream &os)
+void FlightLight_Specs::write(std::ostream &os)
 {
   os << "{\n";
   os << weight << thrust;
@@ -77,13 +77,13 @@ void FlightLight_Specs::write(ostream &os)
   os << "}\n";
 }
 
-istream &operator >>(istream &is, FlightLight_Specs &fs)
+std::istream &operator >>(std::istream &is, FlightLight_Specs &fs)
 {
   fs.read(is);
   return (is);
 }
 
-ostream &operator <<(ostream &os, FlightLight_Specs &fs)
+std::ostream &operator <<(std::ostream &os, FlightLight_Specs &fs)
 {
   fs.write(os);
   return (os);

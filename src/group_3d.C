@@ -27,7 +27,7 @@
 #include <stdio.h>
 #include <values.h>
 #include <math.h>
-#include <iostream.h>
+#include <iostream>
 #include "simerr.h"
 #include "grafix.h"
 #include "vmath.h"

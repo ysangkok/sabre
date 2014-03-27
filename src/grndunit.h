@@ -57,15 +57,15 @@ public:
 
   ~Ground_Unit_Specs();
 
-  void read(istream &);
-  void write(ostream &);
+  void read(std::istream &);
+  void write(std::ostream &);
 
-  friend istream &operator >>(istream &is, Ground_Unit_Specs &gsp)
+  friend std::istream &operator >>(std::istream &is, Ground_Unit_Specs &gsp)
     {
       gsp.read(is);
       return (is);
     }
-  friend ostream &operator <<(ostream &os, Ground_Unit_Specs &gsp)
+  friend std::ostream &operator <<(std::ostream &os, Ground_Unit_Specs &gsp)
     {
       gsp.write(os);
       return (os);
@@ -122,10 +122,10 @@ public:
 
   void updatePosition();
   void setPosition();
-  virtual void read(istream &);
-  virtual void write(ostream &);
-  friend istream &operator >>(istream &, Ground_Unit &);
-  friend ostream &operator <<(ostream &, Ground_Unit &);
+  virtual void read(std::istream &);
+  virtual void write(std::ostream &);
+  friend std::istream &operator >>(std::istream &, Ground_Unit &);
+  friend std::ostream &operator <<(std::ostream &, Ground_Unit &);
 };
 
 class AAA_Unit : public Ground_Unit
@@ -160,8 +160,8 @@ public:
   void calcLead(R_3DPoint &, R_3DPoint &);
   void youHit(Target *tg);
   void update(Unguided_Manager *, Target_List &);
-  void read(istream &);
-  void write(ostream &);
+  void read(std::istream &);
+  void write(std::ostream &);
 };
 
 class Ground_Unit_Manager
@@ -179,12 +179,12 @@ public:
   void update(Unguided_Manager *, Target_List &);
   void add_draw_list(DrawList &, Port_3D &);
 
-  void read(istream &);
-  friend istream &operator >>(istream &, Ground_Unit_Manager &);
+  void read(std::istream &);
+  friend std::istream &operator >>(std::istream &, Ground_Unit_Manager &);
   void read_file(char *);
 
-  void write(ostream &);
-  friend ostream &operator <<(ostream &, Ground_Unit_Manager &);
+  void write(std::ostream &);
+  friend std::ostream &operator <<(std::ostream &, Ground_Unit_Manager &);
   void write_file(char *);
   void addTargetList(Target_List &);
   Ground_Unit_Specs *getSpecs(char *);

@@ -144,19 +144,19 @@ public:
 
   void readFile(char *path);
   void writeFile(char *path);
-  void read(istream &);
-  void write(ostream &);
-  friend inline istream &operator >>(istream &, C_3DInfoManager &);
-  friend inline ostream &operator <<(ostream &, C_3DInfoManager &);
+  void read(std::istream &);
+  void write(std::ostream &);
+  friend inline std::istream &operator >>(std::istream &, C_3DInfoManager &);
+  friend inline std::ostream &operator <<(std::ostream &, C_3DInfoManager &);
 } ;
 
-istream &operator >>(istream &is, C_3DInfoManager &cm)
+std::istream &operator >>(std::istream &is, C_3DInfoManager &cm)
 {
   cm.read(is);
   return(is);
 }
 
-ostream &operator <<(ostream &os, C_3DInfoManager &cm)
+std::ostream &operator <<(std::ostream &os, C_3DInfoManager &cm)
 {
   cm.write(os);
   return(os);
@@ -236,19 +236,19 @@ public:
       return (C_3DOBJECT_T); 
     }
 
-  void read(istream &);
-  void write(ostream &);
-  friend inline istream &operator >>(istream & is, C_3DObject2 &ob);
-  friend inline ostream &operator <<(ostream & os, C_3DObject2 &ob);
+  void read(std::istream &);
+  void write(std::ostream &);
+  friend inline std::istream &operator >>(std::istream & is, C_3DObject2 &ob);
+  friend inline std::ostream &operator <<(std::ostream & os, C_3DObject2 &ob);
 };
 
-istream & operator >>(istream &is, C_3DObject2 &ob)
+std::istream & operator >>(std::istream &is, C_3DObject2 &ob)
 {
   ob.read(is);
   return(is);
 }
 
-ostream & operator <<(ostream &os, C_3DObject2 &ob)
+std::ostream & operator <<(std::ostream &os, C_3DObject2 &ob)
 {
   ob.write(os);
   return(os);
@@ -273,8 +273,8 @@ public:
   }
 
   ~C_DrawList2();
-  friend istream & operator >>(istream &is, C_DrawList2 &cs);
-  void read(istream &is);
+  friend std::istream & operator >>(std::istream &is, C_DrawList2 &cs);
+  void read(std::istream &is);
   void translate(R_3DPoint &);
   void add_draw_list(DrawList &, Port_3D &port);
   void get_targets(Target_List &);

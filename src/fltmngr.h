@@ -77,8 +77,8 @@ public:
 			delete [] wi;
 	}
 
-	friend istream &operator >>(istream &, Flight_Node &);
-	void read(istream &);
+	friend std::istream &operator >>(std::istream &, Flight_Node &);
+	void read(std::istream &);
 
 	void start()
 	{
@@ -134,8 +134,8 @@ public:
 
 	~Flight_Manager();
 	int read_file(char *);
-	friend istream &operator >>(istream &, Flight_Manager &);
-	void read(istream &);
+	friend std::istream &operator >>(std::istream &, Flight_Manager &);
+	void read(std::istream &);
 	void update(Unguided_Manager *um = NULL);
 	void start();
 	void pause();
@@ -180,9 +180,9 @@ public:
 			return NULL;
 	}
 	void readNodeFile(char *);
-	void readNodes(istream &is);
+	void readNodes(std::istream &is);
 	void readFliteFile(char *);
-	void readFlites(istream &is);
+	void readFlites(std::istream &is);
 };
 
 #endif

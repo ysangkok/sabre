@@ -21,7 +21,7 @@
  * vector.cpp                                                   *
  ****************************************************************/
 #include <stdio.h>
-#include <iostream.h>
+#include <iostream>
 #include <math.h>
 #include "simfile.h"
 #include "vmath.h"
@@ -33,7 +33,7 @@ const REAL_TYPE zfact = REAL_TYPE(1L << Z_PREC);
 const REAL_TYPE zfact = REAL_TYPE(1.0);
 #endif
 
-istream &operator >> (istream &is, Vector &v)
+std::istream &operator >> (std::istream &is, Vector &v)
 {
   char c;
   READ_TOKI('<',is,c);
@@ -42,7 +42,7 @@ istream &operator >> (istream &is, Vector &v)
   return is;
 }
 
-istream &operator >> (istream &is,R_3DPoint &r3D)
+std::istream &operator >> (std::istream &is,R_3DPoint &r3D)
 {
   char c;
   READ_TOKI('<',is,c)
@@ -56,7 +56,7 @@ istream &operator >> (istream &is,R_3DPoint &r3D)
 
 
 
-istream &operator >> (istream &is, S_3DPoint &s3D)
+std::istream &operator >> (std::istream &is, S_3DPoint &s3D)
 {
   char c;
   READ_TOKI('<',is,c)
@@ -65,7 +65,7 @@ istream &operator >> (istream &is, S_3DPoint &s3D)
     return is;
 }
 
-istream &operator >> (istream &is, TxtPoint &tp)
+std::istream &operator >> (std::istream &is, TxtPoint &tp)
 {
   char c;
   READ_TOKI('<',is,c)

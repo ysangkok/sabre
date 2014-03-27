@@ -23,8 +23,8 @@
 #include <math.h>
 #include <signal.h>
 #include <ctype.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include <setjmp.h>
 #include "defs.h"
 #include "pc_keys.h"

@@ -71,8 +71,8 @@ public:
 		     int shadow_color,
 		     Port_3D &ref_port);
   void draw(Port_3D &theport, Port_3D &ref_port, int = 1);
-  friend ostream & operator <<(ostream &, C_Oriented_Poly &);
-  void write(ostream &os);
+  friend std::ostream & operator <<(std::ostream &, C_Oriented_Poly &);
+  void write(std::ostream &os);
   int getScreenPoints(Port_3D &, Port_3D &, R_2DPoint *spoints);
   int getScreenPoints(Port_3D &, Port_3D &, TR_2DPoint *spoints);
 
@@ -101,9 +101,9 @@ public:
   void set_poly_icolor(Vector &light);
   void set_poly_color(int n, int color);
   int drawn_flag;
-  friend istream &operator >>(istream &, C_Oriented_Shape &);
+  friend std::istream &operator >>(std::istream &, C_Oriented_Shape &);
   void set_params(shape_params *);
-  friend ostream &operator <<(ostream &, C_Oriented_Shape &);
+  friend std::ostream &operator <<(std::ostream &, C_Oriented_Shape &);
   void create_points(Port_3D &ref_port);
   void delete_points();
 };

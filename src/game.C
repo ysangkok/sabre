@@ -32,8 +32,8 @@
 #include <math.h>
 #include <signal.h>
 #include <ctype.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include <setjmp.h>
 #include <stdarg.h>
 #include "sim.h"
@@ -114,12 +114,12 @@ void GameSession::doGame()
 		sound_off(SNDGLOBAL_INTRO);
 	}
 	sound_off_all();
-	printResults(cout);
+	printResults(std::cout);
 }
 
 void GameSession::readWorldFile()
 {
-ifstream is;
+std::ifstream is;
 char c;
 Port_3D port;
 float pixl_ratio;
@@ -669,9 +669,9 @@ void GameSession::doPaletteEffect()
 }
 
 #ifndef SABREWIN
-inline void PRINTLN(ostream &os, char *s, ...)
+inline void PRINTLN(std::ostream &os, char *s, ...)
 #else
-void __cdecl PRINTLN(ostream &os, char *s, ...)
+void __cdecl PRINTLN(std::ostream &os, char *s, ...)
 #endif
 {
   va_list ap;
@@ -688,7 +688,7 @@ void __cdecl PRINTLN(ostream &os, char *s, ...)
 }
 
 
-void GameSession::printResults(ostream &os)
+void GameSession::printResults(std::ostream &os)
 {
   int i;
   PRINTLN(os, "\nMission Debrief\n");
@@ -702,7 +702,7 @@ void GameSession::printResults(ostream &os)
 }
 
 
-void GameSession::printResult(Flight_Node &fn, ostream &os)
+void GameSession::printResult(Flight_Node &fn, std::ostream &os)
 {
 
   Flight *flight = fn.flight;

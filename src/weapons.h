@@ -45,8 +45,8 @@ public:
   float max_range;
   int damage_factor;
   int wep_type;
-  void read(istream &is);
-  void write(ostream &os);
+  void read(std::istream &is);
+  void write(std::ostream &os);
  
   Weapon_Specs()
     {
@@ -55,12 +55,12 @@ public:
       wep_type = -1;
     }
 
-  friend istream &operator >>(istream &is, Weapon_Specs &ws)
+  friend std::istream &operator >>(std::istream &is, Weapon_Specs &ws)
     {
       ws.read(is);
       return(is);
     }
-  friend ostream &operator <<(ostream &os, Weapon_Specs &ws)
+  friend std::ostream &operator <<(std::ostream &os, Weapon_Specs &ws)
     {
       ws.write(os);
       return(os);
@@ -116,14 +116,14 @@ public:
       wep_type = gun_t;
       rounds_per_second = 0.0;
     }
-  void read(istream &is);
-  void write(ostream &os);
-  friend istream &operator >>(istream &is, Gun_Specs &ws)
+  void read(std::istream &is);
+  void write(std::ostream &os);
+  friend std::istream &operator >>(std::istream &is, Gun_Specs &ws)
     {
       ws.read(is);
       return(is);
     }
-  friend ostream &operator <<(ostream &os, Gun_Specs &ws)
+  friend std::ostream &operator <<(std::ostream &os, Gun_Specs &ws)
     {
       ws.write(os);
       return(os);
@@ -175,14 +175,14 @@ public:
       return (smoke_map);
     }
 
-  void read(istream &is);
-  void write(ostream &os);
-  friend istream &operator >>(istream &is, Cannon_Specs &cs)
+  void read(std::istream &is);
+  void write(std::ostream &os);
+  friend std::istream &operator >>(std::istream &is, Cannon_Specs &cs)
     {
       cs.read(is);
       return(is);
     }
-  friend ostream &operator <<(ostream &os, Cannon_Specs &cs)
+  friend std::ostream &operator <<(std::ostream &os, Cannon_Specs &cs)
     {
       cs.write(os);
       return(os);
@@ -212,14 +212,14 @@ public:
   
   virtual ~Bomb_Specs();
   void createZManager(char *path);
-  void read(istream &is);
-  void write(ostream &os);
-  friend istream &operator >>(istream &is, Bomb_Specs &ws)
+  void read(std::istream &is);
+  void write(std::ostream &os);
+  friend std::istream &operator >>(std::istream &is, Bomb_Specs &ws)
     {
       ws.read(is);
       return(is);
     }
-  friend ostream &operator <<(ostream &os, Bomb_Specs &ws)
+  friend std::ostream &operator <<(std::ostream &os, Bomb_Specs &ws)
     {
       ws.write(os);
       return(os);
@@ -272,14 +272,14 @@ public:
       strcpy(flume_flame_map,"fire");
       strcpy(flume_smoke_map,"smoke");
     }
-  void read(istream &is);
-  void write(ostream &os);
-  friend istream &operator >>(istream &is, Rocket_Specs &rs)
+  void read(std::istream &is);
+  void write(std::ostream &os);
+  friend std::istream &operator >>(std::istream &is, Rocket_Specs &rs)
     {
       rs.read(is);
       return(is);
     }
-  friend ostream &operator <<(ostream &os, Rocket_Specs &rs)
+  friend std::ostream &operator <<(std::ostream &os, Rocket_Specs &rs)
     {
       rs.write(os);
       return(os);
@@ -368,14 +368,14 @@ public:
     {
       return (n);
     }
-  void read(istream &is);
-  void write(ostream &os);
-  friend istream &operator >>(istream &is, Weapon &wp)
+  void read(std::istream &is);
+  void write(std::ostream &os);
+  friend std::istream &operator >>(std::istream &is, Weapon &wp)
     {
       wp.read(is);
       return(is);
     }
-  friend ostream &operator <<(ostream &os, Weapon &wp)
+  friend std::ostream &operator <<(std::ostream &os, Weapon &wp)
     {
       wp.write(os);
       return(os);
@@ -393,7 +393,7 @@ public:
       gun_specs = spcs;
     }
 
-  friend istream &operator >>(istream &is, Guns &gp);
+  friend std::istream &operator >>(std::istream &is, Guns &gp);
   int update(Flight &host_flight, Unguided_Manager *um, 
 	     Weapon_Instance *, Target *);
   int getMaxRounds();
@@ -408,7 +408,7 @@ public:
     {
       bomb_specs = spcs;
     }
-  friend istream &operator >>(istream &is, Bombs &b);
+  friend std::istream &operator >>(std::istream &is, Bombs &b);
   int update(Flight &host_flight, Unguided_Manager *um, 
 	     Weapon_Instance *, Target *);
 };
@@ -422,7 +422,7 @@ public:
     {
       rocket_specs = spcs;
     }
-  friend istream &operator >>(istream &is, Rockets &r);
+  friend std::istream &operator >>(std::istream &is, Rockets &r);
   int update(Flight &host_flight, Unguided_Manager *um, 
 	     Weapon_Instance *, Target *);
 };
@@ -436,7 +436,7 @@ public:
     {
       missile_specs = spcs;
     }
-  friend istream &operator >>(istream &is, Missiles &m);
+  friend std::istream &operator >>(std::istream &is, Missiles &m);
   int update(Flight &host_flight, Unguided_Manager *um, 
 	     Weapon_Instance *, Target *);
 };
@@ -450,7 +450,7 @@ public:
     {
       fueltank_specs = spcs;
     }
-  friend istream &operator >>(istream &is, FuelTanks &m);
+  friend std::istream &operator >>(std::istream &is, FuelTanks &m);
   int update(Flight &host_flight, Unguided_Manager *um, 
 	     Weapon_Instance *, Target *);
 };
@@ -635,8 +635,8 @@ public:
   Weapons_Manager();
   ~Weapons_Manager();
   void read_file(char *);
-  friend istream & operator >>(istream &is, Weapons_Manager &wp);
-  void read(istream &);
+  friend std::istream & operator >>(std::istream &is, Weapons_Manager &wp);
+  void read(std::istream &);
   Weapon_List *get_list(int n);
   Weapon_List *get_list(char *);
   Weapon_Instance *build_instance_list(int n, int *cnt, char *id = NULL);

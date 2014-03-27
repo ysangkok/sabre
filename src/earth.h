@@ -75,8 +75,8 @@ public:
   void draw_horizon_grade(Port_3D &);
   void render_ground(Port_3D &);
   void t_render_ground(Port_3D &);
-  friend istream &operator >>(istream &is, Earth_Watch &);
-  virtual void read(istream &is);
+  friend std::istream &operator >>(std::istream &is, Earth_Watch &);
+  virtual void read(std::istream &is);
 };
 
 class Earth_Watch2 : public Earth_Watch
@@ -84,7 +84,7 @@ class Earth_Watch2 : public Earth_Watch
 public:
   Terrain_Shape *tshapes;
   int            ntshapes;
-  virtual void read(istream &is);
+  virtual void read(std::istream &is);
   REAL_TYPE getGroundLevel(R_3DPoint &p);
 };
 

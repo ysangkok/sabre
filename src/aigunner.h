@@ -31,7 +31,7 @@
 #define aiGUN_YAW_RATE        (_degree * 20.0)
 
 #ifdef __cplusplus
-#include "fstream.h"
+#include "fstream"
 #include "sobject.h"
 #include "sarray.h"
 #include "sfltmdl.h"

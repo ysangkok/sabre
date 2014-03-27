@@ -47,8 +47,8 @@ public:
       red = r; green = g; blue = b;
     }
 
-  friend istream &operator >>(istream &is, color_spec &cs);
-  friend ostream &operator <<(ostream &os, color_spec &cs)
+  friend std::istream &operator >>(std::istream &is, color_spec &cs);
+  friend std::ostream &operator <<(std::ostream &os, color_spec &cs)
     {
       os << '(' << ' ' << cs.color << ' ' << cs.red << ' ';
       os << cs.green << ' ' << cs.blue << " )";

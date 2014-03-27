@@ -21,18 +21,18 @@
 #define __simfile_h
 #include "sim.h"
 #include "simerr.h"
-#include "iostream.h"
-#include "fstream.h"
+#include <iostream>
+#include <fstream>
 
 void read_palette_file(char *);
 void read_texture_file(char *);
 void read_sound_file(char *);
-int get_line(istream &, char *, int);
-int open_is(ifstream &, char *);
-int open_os(ofstream &, char *);
-int open_libos(ofstream &, char *);
+int get_line(std::istream &, char *, int);
+int open_is(std::ifstream &, char *);
+int open_os(std::ofstream &, char *);
+int open_libos(std::ofstream &, char *);
 char *build_libpath(char *);
-int read_int(istream &);
+int read_int(std::istream &);
 
 extern char *current_path;
 extern char *file_context;

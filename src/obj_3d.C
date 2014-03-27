@@ -29,7 +29,7 @@
 #include <stdio.h>
 #include <values.h>
 #include <math.h>
-#include <iostream.h>
+#include <iostream>
 #include <string.h>
 #include "vmath.h"
 #include "rendpoly.h"
@@ -316,7 +316,7 @@ C_3DObjectInfo *C_3DInfoManager::getInfo(char *id)
 
 void C_3DInfoManager::readFile(char *path)
 {
-  ifstream is;
+  std::ifstream is;
   if (this->path)
     delete this->path;
   this->path = strdup(path);
@@ -326,7 +326,7 @@ void C_3DInfoManager::readFile(char *path)
 
 void C_3DInfoManager::writeFile(char *path)
 {
-  ofstream os;
+  std::ofstream os;
   MYCHECK(path != NULL);
   if (this->path == NULL)
     this->path = strdup(path);
@@ -339,7 +339,7 @@ void C_3DInfoManager::writeFile(char *path)
     write(os);
 }
 
-void C_3DInfoManager::read(istream &is)
+void C_3DInfoManager::read(std::istream &is)
 {
   char c;
   char buff[256];
@@ -361,7 +361,7 @@ void C_3DInfoManager::read(istream &is)
   READ_TOKI('}',is,c)
 }
 
-void C_3DInfoManager::write(ostream &os)
+void C_3DInfoManager::write(std::ostream &os)
 {
   os << "{\n" << ninfos << "\n";
   for (int i=0;i<ninfos;i++)
@@ -377,7 +377,7 @@ void C_3DInfoManager::write(ostream &os)
  * C_3DObject2 Methods                                         *
  ***************************************************************/
 
-void C_3DObject2::read(istream &is)
+void C_3DObject2::read(std::istream &is)
 {
   char c;
   int i;
@@ -389,7 +389,7 @@ void C_3DObject2::read(istream &is)
   ci = im->getInfo(obj_id);
   if (ci == NULL)
     {
-      cout << "C_3DObject2: object id " << obj_id << "not found!\n";
+      std::cout << "C_3DObject2: object id " << obj_id << "not found!\n";
       READ_TOKI('}',is,c);
       return;
     }
@@ -635,7 +635,7 @@ C_DrawList2::~C_DrawList2()
     delete [] groups;
 }
 
-void C_DrawList2::read(istream &is)
+void C_DrawList2::read(std::istream &is)
 {
   int i,j,idx,n;
   char c;
@@ -667,7 +667,7 @@ void C_DrawList2::read(istream &is)
     }
 }
 
-istream &operator >>(istream &is, C_DrawList2 &cd)
+std::istream &operator >>(std::istream &is, C_DrawList2 &cd)
 {
   cd.read(is);
   return is;

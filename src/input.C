@@ -31,8 +31,8 @@
 #include <math.h>
 #include <string.h>
 #include <time.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include "defs.h"
 #include "vga_13.h"
 #include "input.h"

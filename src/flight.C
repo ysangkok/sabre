@@ -55,8 +55,8 @@
  * ain't no function of velocity
  */
 #include <stdio.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include <math.h>
 #include <limits.h>
 #include <values.h>
@@ -82,7 +82,7 @@ REAL_TYPE Flight::rot_acc_max = 24.0;
 REAL_TYPE Flight::rot_rate_max = _PI34;
 REAL_TYPE Flight::rot_max = _PI2 * 0.4;
 
-void Flight::read(istream &is)
+void Flight::read(std::istream &is)
 {
   char c;
   READ_TOKI('{',is,c);
@@ -94,7 +94,7 @@ void Flight::read(istream &is)
   state.weight = specs->weight;
 }
 
-void Flight::write(ostream &os)
+void Flight::write(std::ostream &os)
 {
   os << "{\n " << controls << " " << state << "\n}\n";
 }

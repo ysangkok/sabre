@@ -27,13 +27,13 @@
 #include <stdio.h>
 #include <values.h>
 #include <math.h>
-#include <iostream.h>
+#include <iostream>
 #include <string.h>
 #include "simerr.h"
 #include "simfile.h"
 #include "colormap.h"
 
-void ColorMap::read(istream &is)
+void ColorMap::read(std::istream &is)
 {
   char c;
   READ_TOKI('(',is,c)
@@ -42,7 +42,7 @@ void ColorMap::read(istream &is)
   READ_TOK(')',is,c)
 }
 
-void ColorMap::write(ostream &os)
+void ColorMap::write(std::ostream &os)
 {
   os << "( " << id_color << ' ' << base_color << ' ' << n << " )";
 }

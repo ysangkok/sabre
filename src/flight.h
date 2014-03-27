@@ -52,14 +52,14 @@ public:
   void calcRotations(float);
   void applyForces(float);
   void applyRotations(float);
-  void read(istream &);
-  void write(ostream &);
-  friend istream & operator >>(istream & is, Flight &f)
+  void read(std::istream &);
+  void write(std::ostream &);
+  friend std::istream & operator >>(std::istream & is, Flight &f)
     {
       f.read(is);
       return(is);
     }
-  friend ostream & operator <<(ostream & os, Flight &f)
+  friend std::ostream & operator <<(std::ostream & os, Flight &f)
     {
       f.write(os);
       return(os);

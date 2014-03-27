@@ -27,7 +27,7 @@
 #include <stdio.h>
 #include <values.h>
 #include <math.h>
-#include <iostream.h>
+#include <iostream>
 #include "simerr.h"
 #include "vga_13.h"
 #include "pen.h"
@@ -185,7 +185,7 @@ void C_Oriented_Poly::set_poly_icolor(Vector &light)
     }
 }
 
-void C_Oriented_Poly::write(ostream &os)
+void C_Oriented_Poly::write(std::ostream &os)
 {
   int tflag = 0;
   char cc = '0';
@@ -218,13 +218,13 @@ void C_Oriented_Poly::write(ostream &os)
   os << ']';
 }
 
-ostream & operator <<(ostream &os, C_Oriented_Poly &cp)
+std::ostream & operator <<(std::ostream &os, C_Oriented_Poly &cp)
 {
   cp.write(os);
   return os;
 }
 
-ostream &operator <<(ostream &os, C_Oriented_Shape &cs)
+std::ostream &operator <<(std::ostream &os, C_Oriented_Shape &cs)
 {
   os << '{' << '\n';
   os << cs.npolys << '\n';
@@ -277,7 +277,7 @@ C_Oriented_Shape::~C_Oriented_Shape()
     delete [] o_polys;
 }
 
-istream &operator >>(istream &is, C_Oriented_Shape &cs)
+std::istream &operator >>(std::istream &is, C_Oriented_Shape &cs)
 {
   for (int i=0;i<cs.npolys;i++)
     is >> cs.o_polys[i];

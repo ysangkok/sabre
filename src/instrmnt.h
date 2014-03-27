@@ -36,7 +36,7 @@ public:
   int x,y;
   virtual void underpaint(Flight &) = 0;
   virtual void display(Flight &) = 0;
-  virtual void read_from(istream &) = 0;
+  virtual void read_from(std::istream &) = 0;
   virtual void init() = 0;
 };
 
@@ -46,7 +46,7 @@ public:
   int width,color;
   float scale;
   float range;
-  void read_from(istream &is)
+  void read_from(std::istream &is)
   {
     is >> x >> y >> width >> range;
     is >> scale >> color;
@@ -168,7 +168,7 @@ public:
   ~Instrument_Panel()
   { if (indicators) delete indicators; }
   void add_indicator(Indicator *);
-  friend istream &operator >>(istream &is, Instrument_Panel &);
+  friend std::istream &operator >>(std::istream &is, Instrument_Panel &);
   void underpaint(Flight &);
   void display(Flight &);
   void init();
