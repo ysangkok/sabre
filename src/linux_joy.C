@@ -41,8 +41,8 @@
 #include <unistd.h>
 #include <sys/ioctl.h>
 #include <errno.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include "linux_joy.h"
 
 
@@ -108,7 +108,7 @@ LinuxJoystick::LinuxJoystick(int which, int doCalibrate)
 
 int LinuxJoystick::read_def_file(char *path)
 {
-  ifstream is(build_libpath(path));
+  std::ifstream is(build_libpath(path));
   int i;
 
   if (is)
@@ -416,7 +416,7 @@ void LinuxJoystick::calibrate()
 
 void LinuxJoystick::write_def_file(char *path)
 {
-  ofstream os(path);
+  std::ofstream os(path);
   if (os)
     {
       os << cor_x << " " << cor_y << '\n';
