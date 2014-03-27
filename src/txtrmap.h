@@ -30,6 +30,8 @@
 #include "colormap.h"
 #endif
 
+#include <stdint.h>
+
 #ifdef USES_DDRAW
 #include <ddraw.h>
 #include <d3d.h>
