@@ -4,6 +4,10 @@ dnl This is part of Dan Hammer's SABRE Fighter Plane Simulator
 dnl portions donated by Antti Barck
 dnl
 dnl Here are the top level configuration parameters
+dnl
+dnl Modified by Milan Zamazal <pdm@debian.org> on 1999-12-05 to allow
+dnl compilation on non-SVGAlib architectures.
+dnl 2000-02-12: Milan Zamazal <pdm@debian.org> -- other non-SVGAlib fixes.
 
 AC_INIT(Makefile.in)
 
@@ -14,13 +18,18 @@ AC_SUBST(AUTOMAKE)
 AC_SUBST(AUTOCONF)
 
 dnl initialize version and package information to keep automake happy
-. VERSION
+. ./VERSION
 VERSION=$THE_VERSION
 PACKAGE=$PACKAGE_NAME
 REV_DATE=$THE_REV_DATE
 AC_SUBST(VERSION)
 AC_SUBST(PACKAGE)
 AC_SUBST(REV_DATE)
+dnl svgalib option
+AC_ARG_WITH(svgalib,
+[  --with-svgalib          create the SVGAlib version too],
+[],
+[with_svgalib=yes])
 dnl echo version number to sources
 AC_DEFINE_UNQUOTED(VERSION,"$VERSION")
 AC_DEFINE_UNQUOTED(REV_DATE,"$REV_DATE")
@@ -67,28 +76,17 @@ dnl meanwhile we produce lots of unnecessary flags...
 
 AC_CHECK_LIB(ncurses, main,,
  AC_MSG_ERROR(Cannot find Ncurses (-ncurses). please check out your system setup.))
+if test "x$with_svgalib" = "xyes"; then
 AC_CHECK_LIB(vga, main, ,
    AC_MSG_ERROR(Cannot find SVGAlib (-lvga). please check out your system setup.))
 AC_CHECK_LIB(vgagl, main, ,
    AC_MSG_ERROR(Cannot find SVGAlib (-lvgagl). please check out your system setup.))
+else
+echo "building without SVGAlib"
+fi
 AC_CHECK_LIB(m, main, ,
    AC_MSG_ERROR(Cannot find mathlib (-lm). please check out your system setup.))
 
+AM_CONDITIONAL(SVGALIB, test x$with_svgalib = xyes)
 dnl produce these file after configure
 AC_OUTPUT(Makefile lib/Makefile lib/tzp/Makefile lib/fonts/Makefile libzip/Makefile gdev/Makefile src/Makefile dialogsrc/Makefile doc/Makefile scenarios/Makefile sdlsrc/Makefile joystick/Makefile)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
