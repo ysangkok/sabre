@@ -1,0 +1,33 @@
+flites file
+# of flites
+(2)
+{
+  "GOODGUY"
+  (1)
+  "ALPHA"
+  (1)
+  {
+    navigate
+    wedge
+    ( 15000.0 -6900 8000.0 450 8000 0.0 )
+    ( 0 0 0 )
+    ( 0.0 0.0 0.0 )
+    "waypoint_1"
+  }
+}
+{
+  "BADGUYS"
+  (2)
+  "FOXTROT"
+  "VEGGIE"
+  (1)
+  {
+    intercept
+    wedge
+    ( 15000.0 -6900 8000.0 450 8000 0.0 )
+    ( 0 0 0 )
+    ( 0.0 0.0 0.0 )
+    "GOODGUY"
+  }
+}
+

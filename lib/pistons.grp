@@ -1,0 +1,40 @@
+flites file
+# of flites
+(2)
+{
+  "mustangs"
+  (5)
+  "ALPHA"
+  "CHUCK"
+  "BOXER"
+  "DEAN"
+  "IZZY"
+  (1)
+  {
+    cap
+    wedge
+    ( 30000.0 20000.0 8000.0 420 8000 0.0 )
+    ( 0 0 0 )
+    ( 0.0 0.0 0.0 )
+    "yaks"
+  }	
+}
+{
+  "yaks"
+  (5)
+  "STINGER"
+  "APACHE"
+  "ARCHER"
+  "MAYHEM"
+  "ZYGOT"
+  (1)
+  {
+    intercept
+    wedge
+    ( 300000.0 200000.0 8000.0 420 8000 0.0 )
+    ( 0 0 0 )
+    ( 0.0 0.0 0.0 )
+    "mustangs"
+  }	
+}
+

@@ -1,0 +1,104 @@
+***********************************************************************
+* SABRE Fighter Plane Simulator                                       *
+* Documentation file: intro.txt                                       *
+* August, 1997                                                        *
+***********************************************************************
+
+                             INTRODUCTION
+
+SABRE Fighter Plane Simulator is an on-going game project for
+Linux, under the GNU Public License. It is being worked on as
+a labor of love by flight-simulation enthusiasts. Being in an early
+stage, there is a tremendous amount of interesting work to be done 
+by those who would find it rewarding. Please refer to the README
+and the TODO file for additional information regarding contributions.
+
+This documentation is by no means complete nor totally accurate. 
+Probably of most use is "keys.txt", which describes the various
+key functions. That particular document will be kept updated as much
+as possible. 
+
+MISSIONS/SCENARIOS
+The ./scenarios directory contains several mission and demo scripts.
+They are most easily accessed by using the RunSabre front-end
+script, but can also be run from the command line from the top of
+the distribution directory by 
+# ./scenarios/<scenario you would like to try>
+ 
+Here is a not necessarily complete list of the current set of
+missions with a brief description. It's worth running the more
+populated missions in "demo" mode by appending a "-demo" in
+the above command line, or better by simply choosing the "demos"
+menu in the RunSabre script. The "demo" mode operates in a hands-off
+manner, switching view-point from plane to plane to give you a
+"God's-Eye" view of the battle.
+
+There also are additional document files which will give a more
+detailed explanation and instructions relating to a particular 
+mission/scenario.
+
+   fly       
+   Your basic fly-around-and-shoot-at-stuff-on-the-ground introductory
+   mission. Crashing is turned off, though, so kamikaze attacks are
+   ruled out.
+
+   takeoff
+   Starts you off sitting on the runway, cleared for takeoff. Hit "*" to
+   make throttle 100%. Hit "w" to release wheel-brakes. When your airpseed
+   gets to 160 (upper left readout), pull up and God help you.
+
+   shoot1
+   Puts you right behind a rather clueless MiG-15. Just squeeze the trigger
+   you can't miss!
+
+   shoot2
+   Like above, except this time the MiG will break left or right.
+
+   shoot3
+   Like above, except the MiG will "jink" 
+   
+   dogfight
+   Its you versus a hot MiG-15 pilot who wants to help you die
+   for your country. Random setup, and this time the MiG ain't gonna
+   be dancing!
+
+   furball
+   6 Sabres and 3 Mustangs versus 6 MiG-15s and 3 Yak-9s.  
+   The scenario starts out with everyone scattered randomly about
+   the sky. It ends with everyone scattered randomly on the ground. 
+
+   melee
+   5 Sabres head straight into 5 MiG-15s. 
+
+   yakattak
+   An F-51 Mustang duels with a Yak-9. 
+
+   migjump
+   You and your wing-comrade, Commander Jing, jump 3 F-51 Mustangs 
+   in your MiG-15s. Use 'zoom and boom' tactics to defeat the less
+   powerful American planes.
+
+   thunder
+   Three F-84 Thunderjets encounter a flight of MiG-15s. You'll need 
+   to use your better training and skill to overcome the performance
+   advantage the MiGs possess over the Thunderjet. 
+
+   pistons
+   The last hurrah for piston engine powered fighters. F-51 Mustangs
+   face off against Yak-9s.
+
+   gru
+   The beginnings of a ground-attack aspect to the game. Strafe ground
+   targets in your F-84 ThunderJet with guns, rockets and bombs 
+   (head towards the dark-grey circular area below you).
+   The '^' key cycles through your weapons. 
+
+Enjoy, and Check Six!
+
+
+
+
+
+
+
+

@@ -1,0 +1,44 @@
+OPERATING SYSTEM
+
+ SABRE is running currently under Unix systems; 
+ the Linux version 2.0+ to be more precise. 
+ 
+ SABRE gets compiled best with GCC 2.7.2.1+
+ 
+LIBRARIES
+
+ SABRE uses vga for graphics output and currently 
+ is tied to SVGAlib. The version 1.2.10 will do fine.
+
+ The frontend needs dialog program which is provided in
+ separate dialog directory. Dialog is ncurses based and will
+ work with ncurses 1.9.4
+
+ The (simulator) sources are all c++ so libg++ is needed
+ in order to build sabre binary; libg++.so.2.7.2.1 will suffice
+ for that.
+ 
+ Other libraries that may effect are:
+ 
+ libstdc++.so.27 => /usr/libstdc++.so.27.2.1
+ libm.so.5 => /lib/libm.so.5.0.7
+ libc.so.5 => /lib/libc.so.5.4.17
+ 
+ Earlier versions may cause SABRE malfunctions.
+ 
+HARDWARE
+
+ I guess any system that excepts vga based adapter supported by
+ SVGAlib will do.
+ 
+ SABRE has been tested in following systems:
+ 
+ Intel Pentium 150,166Mhz
+ Alpha 21066   166Mhz
+
+MAINTAINER TOOLS
+
+ In order to make distributions or other maintaing on sabre tree one
+ needs perl, automake (1.2) and autoconf (2.12). 
+ (please contact the author, Dan Hammer <dan@cobite.com> before making
+  distributions that goes publicly available)

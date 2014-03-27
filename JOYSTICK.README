@@ -1,0 +1,68 @@
+Sabre Fighter Plane Simulator
+Version 0.2.4.b
+JOYSTICK.README
+November, 1999
+
+I am no longer including the joystick-0.8.0 package, as 
+most installations now include a joystick package. A joystick
+calibration utility is included, joystick/sabrecaljoy.
+You can access it via RunSabre by selecting Calibrate joystick 0,
+or 1, or standalone by "sabrejoycal [ 0 1 ]", where 0 is for
+joystick 0 (yoke), and 1 is for joystick 1 (rudder, throttle).
+
+sabrejoycal produces the files joy0.def and joy1.def, which 
+should reside in the lib directory to be in effect. These files
+define the correction, minimum, maximum and other values for
+joystick control. 
+
+ 
+Mouse / Joystick configurations
+-------------------------------
+With joystick 0 active, your mouse becomes both your rudder
+and your throttle. Pushing forwards and backwards on your
+mouse opens and closes your throttle, while sideways movement
+of the mouse effects the rudder. In this configuration,
+the mouse button engages/disengages the speed-brakes.
+
+With joystick 0 and joystick 1 active, the throttle/rudder wheel
+on your joystick is the rudder, while the mouse is the throttle
+and the mouse-buttons the speed-brake controls.
+
+Joystick button functions
+------------------------
+* Note -- these button functions are based on the CH-Flightstick
+* model, they may be different for other brands. See Customizing
+* below
+
+Naturally, the trigger button's function is to send various forms
+of destructive material at high velocities towards those whom you
+wish ill. The other buttons functions are:
+
+Button 2: Cockpit display on/off
+Button 3: Arm / Disarm weapon
+Button 4: Invoke Track View
+
+If you have a coolie-hat (and it sends the same bits as a
+CH-Flightstick):
+
+coolie-hat up:    front view
+coolie-hat left:  left view
+coolie-hat right: right view
+coolie-hat down:  back view
+
+Customizing Joystick Configuration
+----------------------------------
+If the above configurations are not satisfactory, you
+might want to edit src/siminput.C. The routines
+FlightInput::update(),
+FlightInput::do_joystick_button(),
+and others should be fairly self-explanatory. If not,
+please feel free to inquire:
+     dan@cobite.com
+and I'll do my best to help you get a configuration
+you're happy with.
+
+Good hunting!
+
+
+

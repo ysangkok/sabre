@@ -1,0 +1,129 @@
+SABRE Fighter Plane Simulator
+
+"gru" scenarios
+
+# Main Key Review: (see keys.txt for a listing of all the keys)
+'Q': Quit SABRE (use when boss appoaches)
+'N' or 'n' : select next weapon
+' ': (spacebar OR mouse button) Fire weapons
+<ENTER> : select next target (aircraft)
+'7': Target track view
+'8': Opponent track view
+'1': Forward view
+'4': Back view
+'C': Turn cockpit off/on  Useful for getting a better view 
+'{': Turn exterior off/on. Gives an even better view.
+
+Briefing:
+
+The "gru" scenarios introduce air-to-ground ordinance into SABRE. 
+Armed with HVAR high-velocity rockets, M43 500lb bombs, and
+M64 1000lb bombs, you will attack ground units who, not 
+surprisingly, will retaliate with deadly 60mm anti-aircraft fire.
+Also, a few MiGs may drop by to say hello.
+
+Air-to-ground ordinance is also available in the "fly" mission,
+and you may want to develop your bombing and strafing by attacking
+the red pyramids at "Target Range Omega", without fear of 
+retaliation. In the "gru" missions, the red pyramids will be
+replaced by the ground units.
+
+To select your air-to-ground ordinance, use the 'N' key. The
+type of ordinance selected will appear in the lower left of
+your hud ... "HVAR" for rockets, "M43" for 500lb bombs, and
+"M64" for 1000lb bombs.
+ 
+All of the missions have you pointed towards a dark circular
+area, "Target Range Omega", where you will find the ground units
+(but not quite before they notice you!). The ground units consist
+of a column of trucks and AAA vehicles. The AAA vehicles, for now,
+use the same shape data as the trucks, so they, well, they look
+like trucks. But they dont quack like a truck, nor walk like a
+truck, so believe me, they aint trucks! 
+
+If you get turned around and confused, your
+"waypoint indicators", horizontal and vertical green lines,
+can help you get back on track.
+In gru2 and gru3, you are also being tracked by MiGs. To select
+them for targeting, press the <ENTER> key, however, the waypoint
+indicators will no longer guide you to the ground targets.
+In gru2, you should have plenty of time to make a few passes
+before having to deal with the MiG, in gru3, well, you'll see ...
+
+
+Aiming
+------
+Aiming your air-to-ground ordinance is purely a matter of
+feel. The sight is fixed on the center of your hud for both
+rockets and bombs, no computed "cueing" is given. Bombs are
+particularly difficult to aim accurately. You'll have to drop
+a few at a consistent dive angle and speed to get a sense of
+where you want the target to be on release. I wish I could
+give you some better advice, but, hey, I haven't figured out
+how to drop the darn things on target yet either!
+
+Rockets are a little easier to aim, plus they look kind of
+neat. You also get to see where they hit, which brings up
+another issue ...
+
+Bomb Damage Assesment
+---------------------
+The other thing about the bombs is desiring to see if,
+after dodging through MiGs and flak at great risk, you
+managed to hit anything. However, doing so often involves
+floundering around and making yourself a sitting duck for
+AAA fire, or stalling, or just plowing into the ground.
+
+This issue will be resolved in the next update by providing
+a "weapon viewpoint" so you can, ala Dr. StrangeLove,
+ride your bomb right into the ground! Meanwhile, try a steep
+climb after release and using the back view ('4' key) to eyeball
+the results.
+
+
+Hints
+-----
+The ground units are moving in columns perpendicular to you.
+To get the most out of your ordinance, you want to swing around
+and approach them head on.
+
+Stay high and fast. Release your weapons no lower than 4000 feet
+AGL and quickly pull away. If you get low and slow over those
+60s, you are one dead pilot.
+
+In "gru", you will be flying an F-84 Thunderjet, which did most
+of the ground attack work in the later stages of the Korean War.
+Be careful not to stall this birdy ... I've added a spin factor
+to it's flight model which makes stalling particularly dangerous.
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+

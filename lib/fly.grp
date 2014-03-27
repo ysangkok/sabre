@@ -1,0 +1,28 @@
+flites file
+# of flites
+(1)
+{
+  "ALPHA"
+  (3)
+  "bigman"
+  "sports"
+  "zztops"
+  (2)
+  {
+    navigate
+    wedge
+    ( 300000.0 200000.0 15000.0 450 15000 0.0 )
+    ( 0 0 0 )
+    ( 0.0 0.0 0.0 )
+    "waypoint_1"
+  }
+  {
+    navigate
+    wedge
+    ( -300000.0 -200000.0 15000.0 450 15000 0.0 )
+    ( 0 0 0 )
+    ( 0.0 0.0 0.0 )
+    "waypoint_2"
+  }	
+}
+

@@ -1,0 +1,11 @@
+Sabre-0.2.4 SDL Version
+
+To make this SDL-version of Sabre, obtain the SDL library
+(see SDL_PORT_README), and run make in this directory. There should be
+an "SDL" directory in the default compiler search path, for example,
+/usr/include/SDL, in addition to the SDL lib files.
+
+The scripts flySDL and RunSabreSDL will run this really cool version of
+Sabre!
+
+

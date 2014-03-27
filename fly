@@ -1,0 +1,4 @@
+#! /bin/bash
+# Just fly!
+./src/sabre -flt fly.flt  $1 $2 $3 $4 $5
+

@@ -1,0 +1,35 @@
+flites file
+# of flites
+(2)
+{
+  "MIGS"
+  (2)
+  "MASA"
+  "JING"
+  (1)
+  {
+    cap
+    wedge
+    ( 30000.0 20000.0 8000.0 420 8000 0.0 )
+    ( 0 0 0 )
+    ( 0.0 0.0 0.0 )
+    "waypoint_1"
+  }	
+}
+{
+  "MUSTANGS"
+  (3)
+  "BOXER"
+  "HAMMER"
+  "GROMMET"
+  (1)
+  {
+    cap
+    wedge
+    ( 300000.0 200000.0 8000.0 420 8000 0.0 )
+    ( 0 0 0 )
+    ( 0.0 0.0 0.0 )
+    "waypoint_1"
+  }	
+}
+

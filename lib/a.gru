@@ -1,0 +1,65 @@
+Ground units specs file
+spec layout:
+  ground_unit_type
+  model
+  shape_file
+  update_time
+  acquire_range in miles
+  max_speed in kts
+  avg_speed in kts
+  max_damage
+  view_point
+
+# of specs in file
+(1)
+# total # of ground units
+(4)
+# Begin specs / ground_units
+# AAA Unit
+{
+	# of ground units for this spec
+	(4)
+	# the spec
+	{
+		1
+   		AAA37MM
+   		truck.shp
+   		0.1
+   		5.0
+  		   35.0
+   		0.0
+ 		300
+  		<0 16 0>
+		60MM
+	}
+	# the ground units
+	{
+		0
+		1
+	 	18
+		< 4.71 1.5707963 1> <15500 -6000 0> 300 0.0 0.00212 300 1000
+	}
+
+	{
+		0
+		1
+	 	18
+		< 4.2 1.5707963 1> <14400 -6900 0> 300 0.0 0.00212 300 1000
+	}
+
+	{
+		1
+		1
+	 	18
+		< 1.71 1.5707963 1> <17900 -2000 0> 300 0.0 0.00212 300 1000
+	}
+
+	{
+		1
+		1
+	 	18
+		< 2.0 1.5707963 1> <17000 -2900 0> 300 0.0 0.00212 300 1000
+	}
+
+}
+

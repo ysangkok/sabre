@@ -1,0 +1,112 @@
+***********************************************************************
+* SABRE Fighter Plane Simulator                                       *
+* Documentation file: pilots.txt                                      *
+* August, 1997                                                        *
+***********************************************************************
+
+                     ABOUT THE PILOT LOGIC
+
+TO FAKE OR NOT TO FAKE ...
+One of my goals in making SABRE was to have the "computer pilots"
+fly the plane through the same controls as the player (in a manner of
+speaking, of course). If a pilot wished to turn, he would have to move
+the stick right or left to start a bank, kick rudder to compensate for
+any adverse yaw, and pull back on the stick to tighten the turn. I
+wanted there to be no difference in the flight model for when the
+plane was being controlled by the pilot and by the player. This way,
+the pilots could not do anything with the plane that you or I couldn't
+do, which seems only fair. 
+
+The alternative was to "fake" control of the plane by the pilot through 
+overriding the flight model and specifying appropriate rotations
+and translations as needed. As a combat flight-sim enthusiast, I felt
+deeply such faking was a great moral evil and could not bring myself to
+commit such a horrendous crime. At least not at first ...
+
+When it came time to have the pilots align themselves for a shot, i.e,
+get the pipper on that little green box, I found myself having to cheat
+just a little by applying extra damping to the rotations (pitch,roll,yaw).
+Like all such sins, it seemed harmless at first, but then soon I was unable
+to stop. Having stepped onto this slippery slope, I slid further and 
+further until, finally, I found myself writing code which simply took the
+plane and pointed it, regardless of what momentums where actually occuring,
+along the correct vector! 
+
+After a great deal of soul-searching, meditation and prayer, I came to a
+realization: What I was afraid was that without the cheating, 
+the pilots would be too easy to shoot down, and people playing the game
+would laugh at them, and at me. But I realized that laughter is a good
+thing. We all need to laugh. And if my game could make people laugh, 
+well then, so much the better. 
+
+So I made the cheats optional. If you would like the pilots to cheat 
+(default, at least in this distribution, is that they won't) because you 
+find them too easy and you're tired of laughing, then copy the file 
+'lib/sabre.pil.cheat' to 'lib/sabre.pil' . To undo, copy the file 
+'lib/sabre.pil.honest' to 'lib/sabre.pil'. With the 'honest' parameter file, 
+you'll notice the pilots struggling, as you and I do, to keep the pipper on
+the target, and quite often failing. With the 'cheat' file, you will notice
+that they 'lock on' once they are within a minimum distance. 
+
+THEY SEE ALL AND KNOW ALL
+So much for controlling the plane. In my admittedly bizarre view of things,
+in the Situation Awareness (SA) area, I felt the the poor little 'puterized
+pilots deserved every bit of help they could get. While restricted to
+"realistic" plane performance, the virtual little fellows see everything and
+know everything. They know where you are, your speed, your velocity
+vector, your angle-of-attack, your turn rate and radius, and how you like to
+roll your socks. To me, this only seems fair. After all, they consist of a 
+mere 2000 or so lines of C++ code, whereas you and I have big sguiggly brains 
+a million times more complex! Furthermore, I have not written code to see if
+their line-of-sight is blocked by other objects. So hiding behind a mountain
+or a cloud won't help you. No sir, as long as you are within their minimum
+engagement distance, they have your address!  
+
+BUT THEY'RE AWFULLY DUMB! 
+It's one thing to have perfect SA, it's another thing to know what to do with
+it. Even though they have a lot of information, the pilots don't have much
+in the way of BFM and strategy. They can takeoff, more or less find their way 
+to a waypoint, and shoot at you. They can not land the plane (but I can't very
+well either) ... I'm working on that (having THEM land, I've given 
+up on myself).
+
+HOW THEY FIGHT 
+If you are behind them, they randomly choose between a break-turn, an 
+Immelman, or a split-s maneuver, and execute it. If you are in front of them, 
+whether coming head on or not, they try to get aligned for a shot. 
+There's no collision detection right now, so they will happily barrel straight
+into you. All they care about is getting their pipper on you 
+and shooting. That's basically it!
+
+HOW TO FIGHT 'EM
+Well, that's really the subject of the game. Here's an idea which might come 
+in handy, however: Their ground-crash avoidance logic is, shall we say,
+suboptimal at this time. Therefore, should you find yourself with one of them
+stuck at your 6:00, get down on the deck! Find a nice fat mountain and head
+straight for it, staying as close to ground level as you can. I can almost
+guarantee your pursuer will "auger in"!
+
+Using the 'A' key and viewing the "_demo" scenarios will give you a good feel
+for how the pilots behave. Note the movement of the control position 
+indicators ... that's the pilots 'virtually moving' the controls. If you're so
+inclined, perhaps you can improve on their performance by playing around with
+the param files and the C++ code.
+
+Enjoy!
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+

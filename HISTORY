@@ -1,0 +1,175 @@
+Version 0.1.2 April, 1997
+-------------------------	
+Initial release
+
+
+Version 0.2.0 August, 1997
+--------------------------
+The most notable difference is ... the ground varies in
+height! There are hills, and valleys, and roads, and even
+farm-fields (or so they can be imagined as). 
+
+Better-looking smoke trails from destroyed planes.
+
+Texture-mapped planes now look a tad more acceptable.
+
+New plane - the Yak-9.
+
+
+Version 0.2.1 September, 1997
+-----------------------------
+
+Properly done configuration and make files. A nicely done
+front-end script contributed by Antti Barck, RunSabre.
+
+You should find SABRE to run a good 15% faster. I discovered some
+misjudgements in terms of evaluating objects for inclusion in
+the drawing que (oh, to be honest, they were more like dumb
+mistakes), and once corrected,  for myself and others there was
+a definite improvement in frame-rate. (You can see the frame-rate
+in the front cockpit view via the '|' key).
+
+New plane - The F-84 ThunderJet!
+
+Cleaned up some of the pilot's lingo. Embarassingly, they were
+saying things like "Kill on MiG-15 @ Angels 12567", when the term
+"Angels" refers to feet in thousands, so they should have said
+(and will say now) " ... Angels 12".
+
+
+Version 0.2.2 December, 1997
+----------------------------
+
+NEW SVGALIB VIDEO MODES -- AND WINDOWS
+You now have several svgalib video modes to
+choose from - ranging from the classic but admittedly
+pixely G320x200x256 up to the incredibly sharp and 
+(and incredibly slow in Full Screen) G1024x768x256. 
+In addition to choosing the mode, which determines the
+screen resolution, you can also select varying sized 
+"windows" so you can balance image-size vs speed.
+For example, you can choose svgamode G600X400X256 with a
+320x200 window, or G800X600X256 with a 512x300 window,
+etc.
+
+Modes and windows are selectable via the RunSabre script,
+or through the -mode <0|1|2|3> -window <width> <height>
+parameters. 
+
+Note: the cockpit graphic will appear only in a 320x200 window.
+
+HIT LOGIC
+Good news and bad news. The good news is ... hits are now accurately
+determined. The bad news is ... I can't get any anymore!
+
+GROUND UNITS
+Ground-units with a mean disposition ... try out the "gru" mission,
+heading for the grey circular area below you. They can't shoot very
+well, but they sure try!  
+
+TEXTURE MAPPING
+A little bit of fussing with the texture-mapping routines eliminated
+a lot of the "cracks" that were appearing. Unfortunately, the textures
+still seem to "wobble" a bit too much. Nice clouds!
+
+VGA_GETKEY()
+keyboard input improved with use of vga_getkey()
+
+JUST WHEN YOU THOUGHT IT WAS SAFE TO
+FLY AGAIN ...
+The computer pilots have had a major attitude change. They refuse to
+be hampered by the so-called "laws of physics", which, as all you
+deconstructionists know, is a mere artifact of our particular social
+order. The computer pilots are now free of the bonds of momentum
+and inertia, and having reached this higher plateau of reality,
+can send bullets your way pretty much whenever they want to. 
+
+JUST WHEN YOU THOUGHT IT WAS SAFE TO 
+BROWSE THE WEB AGAIN ...
+http://sabre.cobite.com
+For the latest version and/or patches for SABRE
+
+
+Version 0.2.3  April, 1998
+---------------------------------
+AIR-TO-GROUND
+I've been focusing on the ground-attack
+portion of the game with this release.
+In several missions, you can now select
+rockets and bombs via the 'n' key,
+and attack not-completely-helpless ground
+targets.  
+
+The "gru<n>" (gru,gru2,gru3) missions involve
+varying levels of ground action, with perhaps
+some MiGs running interference or seeking pay-back.
+All the missions will start you off pointed in the right
+direction, with ground targets being present in or
+around the dark circular patch of ground in front
+of you ("Target Range Omega").  
+
+In these missions, you will encounter
+anti-aircraft fire. If you notice puffy little
+orange and white clouds appearing outside your
+window, it might be time to jink a wee bit before you
+are blown to kingdom-come!
+
+Further information can be gotten from doc/gru.txt
+about these new missions.
+
+WHEN YOU GET HIT
+When your plane has taken its maximum damage, you will
+find yourself outside in the "flyby" view, watching your
+plane spinning and burning away from you. You can climb
+back in and ride her down if you feel like by using
+the normal view keys, but if I were you, I'd just stay
+suspended in the air. 
+
+
+Version 0.2.4 January, 1999
+------------------------------------------------
+ X-WINDOWS SDL VERSION
+Thanks to David Vandewalle, who has provided
+a version which can be compiled with the SDL
+API so that Sabre can be run in an X-Window!
+
+Check out the sdlsrc directory for a Makefile
+and READMEs!
+
+
+NEW KEYS
+Sorry ... some changes in the key usage had to
+be made. Consult docs/keys.txt, or, even better,
+take a gander at sbrkeys.C, which you can alter
+and recompile as you wish! For those with Real
+Men's fingers, you can now fly via the keyboard:
+'i' -- nose up
+'m' -- nose down
+'j' -- bank left
+'l' -- bank right
+'k' -- center yoke
+
+NEW ARTIFICIAL DUMBS
+Those wascally computer pilots have entirely new brains,
+consisting of much prettier code, although it doesn't 
+seem they fly much prettier as a result. Be careful going
+head-to-head with these guys! 
+
+NEW VIEWS
+Virtual cockpit
+Wow! A virtual cockpit, just like a REAL flight sim!
+Key '0' for the virtual cockpit ... 's' rotates left,
+'S' rotates right, 'd' rotates down, 'D' rotates up,
+and ')' snaps you to the front.
+
+Padlock view
+Wow! A padlock view, just like a REAL flight sim!
+Select a target, and key '&' to enter the padlock view. 
+Not very easy to control the plane in this view, for sure!
+
+
+NOT NEW, BUT WORTH MENTIONING
+If Sabre runs a tad slow for you, due to my over-worked
+and under-optimized graphic routines, you can boost the 
+frame rate by turning off clouds and texture mapped
+terrain via the "%" and "^" keys.

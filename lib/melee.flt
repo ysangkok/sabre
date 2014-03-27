@@ -1,0 +1,22 @@
+* Flight Manager root resource file
+* Number of flight specs files, followed
+* by path to each spec
+3
+mig15.spc
+p51.spc
+sabre.spc
+* Number of shape files, followed by
+* path to each
+3
+mig15.shp
+p51.shp
+sabre.shp
+* Path to pilot & gun spec file
+sabre.pil
+sabre.wpn
+* Path to waypoint file
+sabre.wps
+* Path to nodes file
+melee.nds
+*
+melee.grp

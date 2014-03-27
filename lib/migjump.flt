@@ -1,0 +1,21 @@
+* Flight Manager root resource file
+* Number of flight specs files, followed
+* by path to each spec
+2
+mig15.spc
+p51.spc
+* Number of shape files, followed by
+* path to each
+2
+mig15.shp
+p51.shp
+* Path to pilot & gun spec file
+sabre.pil
+sabre.wpn
+* Path to waypoint file
+sabre.wps
+* Path to nodes file
+migjump.nds
+* New AI flite file
+migjump.grp
+*

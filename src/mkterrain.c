@@ -1,0 +1,501 @@
+/*
+    Sabre Flight Simulator 
+    Copyright (C) 1997	Dan Hammer
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 1, or (at your option)
+    any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+*/
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <string.h>
+#include <math.h>
+
+#define MAXLEN 70
+#define NO_ERR 0
+#define OUTFILE_ERR 1
+#define INFILE_ERR 2
+#define BUFFERGET_ERR 3
+
+long textr_width;
+long textr_height;
+int nrows;
+int ncols;
+int ntextr = -1;
+int textr_trans = -1;
+char *pcx_file = NULL;
+char *out_file = NULL;
+float max_colval;
+float min_colval;
+float maxc = 63.0 * 4.0;
+float base_zval = 0.0;
+float max_zval = 4000.0;
+float floor_val = 0.0;
+int norm_flag = 1;
+int color_counts[256];
+int ncolors;
+
+typedef struct terrain_points_struct
+{
+  float q1;
+  float q3;
+  float q5;
+  float q7;
+  float p1;
+  float p2;
+  float p3;
+  float p4;
+} terrain_points;
+
+terrain_points tpoints[33][33];
+
+typedef struct rgb_struct
+{
+  unsigned char r;
+  unsigned char g;
+  unsigned char b;
+} rgb ;
+rgb rgbs[256];
+int found_palette;
+
+typedef struct PCX_HEADER {
+  char manufacturer;
+  char version;
+  char encoding;
+  char bits_per_pixel;
+  short  xmin,ymin;
+  short  xmax,ymax;
+  short  hres;
+  short  vres;
+  char palette16[48];
+  char reserved;
+  char color_planes;
+  short  bytes_per_line;
+  short  palette_type;
+  char filler[58];
+} pcx_header;
+
+struct IMG {
+  unsigned char  *buffer;
+  unsigned int xsize;
+  unsigned int ysize;
+} image;
+
+void get_color_range(void);
+void error_exit(int err, char *format, ...);
+void calc_terrain(long i, long j);
+void normalize();
+void set_floor();
+void write_terrain(FILE *f, long i, long j, int x, int y, int n, int);
+float calcZ(unsigned char color);
+void make_terrains(char *);
+void loadpcx(char *);
+
+void main(int argc, char *argv[])
+{
+  int tmp;
+  fprintf(stderr,"mkterrain  06/24/97\n");
+  if (argc < 5)
+    {
+      fprintf(stderr,"mterrain <pcx_file> <terrain_file>"
+	     " <image_width> <image_height> [max_zva]\n");
+      return;
+    }
+  pcx_file = argv[1];
+  out_file = argv[2];
+  textr_width = atoi(argv[3]);
+  textr_height = atoi(argv[4]);
+
+  if (argc == 6)
+    max_zval = atof(argv[5]);
+  if (argc == 7)
+    floor_val = atof(argv[6]);
+  fprintf(stderr," Input File: %s\n"
+	 "Output File: %s\n"
+	 "      width: %d\n"
+	 "     height: %d\n"
+         "   max_zval: %5.3f\n"
+	 "  floor_val: %5.3f\n",
+	 pcx_file,out_file,textr_width,textr_height,max_zval,floor_val);
+  loadpcx(pcx_file);
+  nrows = image.ysize / textr_width;
+  ncols = image.xsize / textr_height;
+  ntextr = nrows * ncols;
+  if (ntextr > 32 * 32)
+    {
+      error_exit(1,"%d exceeds %d maximum subdivisions\n",
+		 ntextr, 32 * 32);
+    }
+  fprintf(stderr,"Image xsize: %d\n"
+         "Image ysize: %d\n"
+         "  ntextures: %d\n",
+	 image.xsize,
+	 image.ysize,
+	 ntextr);
+  count_colors();
+  get_color_range();
+  fprintf(stderr,"max_colval = %3.0f, min_colval = %3.0f\n",
+	 max_colval,min_colval);
+  make_terrains(out_file);
+}
+
+
+float calcZ(unsigned char color)
+{
+  float result;
+  float col,r1,r2;
+  int i;
+  i = (int) color;
+  col = (float) rgbs[i].b;
+  r1 = (col - min_colval) / (max_colval - min_colval);
+  result = r1 * max_zval; 
+  return (result);
+}
+
+/*******************************************************
+ * After much pain and agony, please remember that     *
+ * positive i moves UP, positive j moves RIGHT (like   *
+ * x,y on the world grid.                              *
+ *                                                     *
+ * But since the bitmap's coordinants are left-handed  *
+ * (y increasing as we move down) we must 'flip' the   *
+ * pixels                                              *
+ *******************************************************/
+void calc_terrain(long i, long j)
+{
+  unsigned char  *bptr;
+  float q1,q3,q5,q7;
+
+  /* get to row nrows - i in the bitmap */
+  bptr = image.buffer + (j * textr_width) + ((nrows - 1 - i) * ((long)image.xsize) * textr_height);
+  /* now get to the bottom  of this portion */
+  bptr += ((long)image.xsize) * (textr_height - 1);
+  
+  
+  if ((q1 = tpoints[i][j].q1) < 0.0)
+    {
+      q1 = calcZ(*(bptr - ((textr_height-1) * image.xsize)));
+      tpoints[i][j].q1 = q1;
+      tpoints[i+1][j].q7 = q1;
+      if (j > 0)
+	tpoints[i+1][j-1].q5 = q1;
+      if (j > 0)
+	tpoints[i][j-1].q3 = q1;
+    }
+
+  if ((q3 = tpoints[i][j].q3) < 0.0)
+    {
+      q3 = calcZ(*(bptr + textr_width - 1 - ((textr_height-1) * image.xsize)));      
+      tpoints[i][j].q3 = q3;
+      
+      tpoints[i+1][j].q5 = q3;
+      tpoints[i+1][j+1].q7 = q3;
+      tpoints[i][j+1].q1 = q3;
+    }
+
+  if ((q5 = tpoints[i][j].q5) < 0.0)
+    {
+      q5 = calcZ(*(bptr + textr_width - 1));
+      tpoints[i][j].q5 = q5;
+      
+      tpoints[i][j+1].q7 = q5;
+      if (i > 0)
+	{
+	  tpoints[i-1][j].q3 = q5;
+	  tpoints[i-1][j+1].q1 = q5;
+	}
+    }
+
+  if ((q7 = tpoints[i][j].q7) < 0.0)
+    {
+      q7 = calcZ(*bptr);
+      tpoints[i][j].q7 = q7;
+      if (i > 0 )
+	{
+	  tpoints[i-1][j].q1 = q7;
+	  if (j > 0)
+	    tpoints[i-1][j-1].q3 = q7;
+	}
+      if (j > 0)
+	tpoints[i][j-1].q5 = q7;
+    }
+
+  tpoints[i][j].p4 = calcZ(*(bptr + ((textr_width-1) / 4) - (textr_height / 4 * image.xsize)));
+  tpoints[i][j].p3 = calcZ(*(bptr + ((textr_width-1) - (textr_width / 4))
+	       - (textr_height / 4 * image.xsize) ));
+  tpoints[i][j].p2 = calcZ(*(bptr + ((textr_width-1) - (textr_width / 4))
+	       - (((textr_height-1) - (textr_height / 4)) * image.xsize) ));
+  tpoints[i][j].p1 = calcZ(*(bptr + (textr_width / 4)
+	       - (((textr_height-1) - (textr_height / 4)) * image.xsize) ));
+  
+}
+
+void write_terrain(FILE *f,long i,long j,int x,int y,int n, int quad)
+{
+  fprintf(f,"row %d col %d\n",
+	  i,j);
+  fprintf(f,"[ < %d %d 0> ",x,y);
+  fprintf(f,"%d %d 1 1 ",quad,n);
+  fprintf(f,"%5.2f %5.2f %5.2f %5.2f  %5.2f %5.2f %5.2f %5.2f ]\n",
+	    tpoints[i][j].q1,tpoints[i][j].q3,tpoints[i][j].q5,
+	    tpoints[i][j].q7,tpoints[i][j].p1,tpoints[i][j].p2,
+	    tpoints[i][j].p3,tpoints[i][j].p4);
+}
+
+#define FN0(x) { \
+  (x) -= floor_val; \
+		      if ((x) < 0.0) \
+				       (x) = 0.0; \
+						    }
+void set_floor()
+{
+  long i,j;
+  for (i=0;i<nrows;i++)
+    for (j=0;j<ncols;j++)
+      {
+	FN0(tpoints[i][j].q1)
+	FN0(tpoints[i][j].q3)
+	FN0(tpoints[i][j].q5)
+	FN0(tpoints[i][j].q7)
+	FN0(tpoints[i][j].p1)
+	FN0(tpoints[i][j].p2)
+	FN0(tpoints[i][j].p3)
+	FN0(tpoints[i][j].p4)
+      }
+}
+
+#define FN1(x) { \
+  if ((x) < minval) \
+		      minval = x; \
+				    if ((x) > maxval) \
+							maxval = x; \
+								      }
+     
+#define FN2(x) { \
+  (x) -= minval; \
+		   }
+void normalize()
+{
+  float minval;
+  float maxval;
+  long i,j;
+
+  fprintf(stderr,"Normalizing\n");
+  minval = max_zval * 10.0;
+  maxval = -1.0;
+
+  for (i=0;i<nrows;i++)
+    for (j=0;j<ncols;j++)
+      {
+	FN1(tpoints[i][j].q1)
+	FN1(tpoints[i][j].q3)
+	FN1(tpoints[i][j].q5)
+	FN1(tpoints[i][j].q7)
+	FN1(tpoints[i][j].p1)
+	FN1(tpoints[i][j].p2)
+	FN1(tpoints[i][j].p3)
+	FN1(tpoints[i][j].p4)
+      }
+  
+  fprintf(stderr,"max z: %5.2f, min z: %5.2f\n",
+	  maxval,minval);
+
+  for (i=0;i<nrows;i++)
+    for (j=0;j<ncols;j++)
+      {
+	FN2(tpoints[i][j].q1)
+	FN2(tpoints[i][j].q3)
+	FN2(tpoints[i][j].q5)
+	FN2(tpoints[i][j].q7)
+	FN2(tpoints[i][j].p1)
+	FN2(tpoints[i][j].p2)
+	FN2(tpoints[i][j].p3)
+	FN2(tpoints[i][j].p4)
+      }
+}
+
+void make_terrains(char *path)
+{
+  FILE *f;
+  long i,j;
+  char id_str[9];
+  int n = 0;
+  int x,y;
+  int q;
+
+  for (i=0;i<nrows+1;i++)
+    for (j=0;j<ncols+1;j++)
+      {
+	tpoints[i][j].q1 =
+	  tpoints[i][j].q3 = 
+	  tpoints[i][j].q5 =
+	  tpoints[i][j].q7 = 
+	  tpoints[i][j].p1 =
+	  tpoints[i][j].p2 =
+	  tpoints[i][j].p3 = 
+	  tpoints[i][j].p4 =
+	  -1.0;
+      }
+
+  
+  for (i=0;i<nrows;i++)
+    for (j=0;j<ncols;j++)
+      calc_terrain(i,j);
+
+  normalize();
+  if (floor_val != 0.0)
+    set_floor();
+
+  if (*path == '-')
+    f = stdout;
+  else
+    {
+      if ((f = fopen(path,"w")) == NULL)
+	error_exit(1,"Couldn't open %s",path);
+    }
+
+  fprintf(f,"%d\n",ntextr);
+  y = -nrows / 2.0;
+  for (i=0;i<nrows,n<ntextr;i++)
+    {
+      x = -ncols / 2.0;
+      for (j=0;j<ncols;j++)
+	{
+	  if (x > 0 && y > 0)
+	    q = 0;
+	  else if (x < 0 && y >0)
+	    q = 1;
+	  else if (x < 0 && y < 0)
+	    q = 2;
+	  else
+	    q = 3;
+	  write_terrain(f,i,j,x,y,n,q);
+	  n++;
+	  x++;
+	}
+      y++;
+    }
+  fclose(f);
+}
+
+void loadpcx(char * filename)
+{
+  FILE *infile;
+  char  * ImagePtr;
+  unsigned int x, i=0;
+  unsigned int Points;
+  int c;
+  pcx_header pcxhead;
+
+  found_palette = 0;
+  if ((infile=fopen(filename,"rb"))==NULL)
+    error_exit(1,"Couldn't Open %s",filename);
+  fseek(infile,0L,SEEK_SET);
+  fread(&pcxhead,sizeof(pcx_header),1,infile);
+  image.xsize = (pcxhead.xmax-pcxhead.xmin) + 1;
+  image.ysize = (pcxhead.ymax-pcxhead.ymin) + 1;
+  Points = image.xsize * image.ysize;
+  image.buffer = (char  *) malloc(Points);
+  if(image.buffer==NULL)
+    error_exit(1,"Failed to allocate %d bytes",Points);
+  ImagePtr=image.buffer;
+  for (i=0;i<Points;++i)
+    {
+      c=fgetc(infile) & 0xff;
+      if((c & 0xc0) == 0xc0)
+	{
+	  x=c & 0x3f;
+	  c=fgetc(infile);
+	  while(x--)
+	    {
+	      *(ImagePtr++)=c;
+	      i++;
+	    }
+	  i--;
+	}
+      else
+	{
+	  *(ImagePtr++)=c;
+	}
+    }
+  c = fgetc(infile);
+  if (((int)c) == 12)
+    {
+      fprintf(stderr,"Found extended palette\n");
+      found_palette = 1;
+      for (i=0;i<256;i++)
+	fread(&rgbs[i],3,1,infile);
+    }
+  else
+    error_exit(1,"Expected an extended palette\n");
+  fclose(infile);
+}
+
+void error_exit(int err, char *format, ...)
+{
+  va_list ap;
+  va_start(ap,format);
+  vfprintf(stderr,format,ap);
+  va_end(ap);
+  fprintf(stderr,"\n");
+  if (err > 0)
+    {
+      fprintf(stderr,"Exiting ...\n");
+      exit(err);
+    }
+}
+
+int count_colors()
+{
+  int i;
+  int points;
+  unsigned char  *bfptr;
+
+  fprintf(stderr,"counting colors ... \n");
+  for (i=0;i<256;i++)
+    color_counts[i] = 0;
+  ncolors = 0;
+
+  points = image.xsize * image.ysize;
+  bfptr = image.buffer;
+  while (points--)
+    {
+      int n = (int) *bfptr++;
+      if (color_counts[n] == 0)
+	ncolors++;
+      color_counts[n]++;
+    }
+  fprintf(stderr,"%d colors present\n",ncolors);
+  return ncolors;
+}
+
+void get_color_range()
+{
+  float col;
+  int i;
+  max_colval = -1.0;
+  min_colval = 63.0 * 4.0;
+  
+  for (i=0;i<256;i++)
+    {
+      if (color_counts[i] > 0)
+	{
+	  col = (float) rgbs[i].b;
+	  if (col > max_colval)
+	    max_colval = col;
+	  if (col < min_colval)
+	    min_colval = col;
+	}
+    }
+}

@@ -1,0 +1,137 @@
+***********************************************************************
+* SABRE Fighter Plane Simulator                                       *
+* Documentation file: keys.txt                                        *
+* August, 1997                                                        *
+***********************************************************************
+
+	Key Reference
+
+12/14/97
+04/11/98
+01/01/99
+
+This documents the key functions available. The final word, however,
+is always the C++ code ... see ./src/siminput.C.
+ 
+I. A very useful key
+   "Q" or "q" or "ESC".. Ends the game, returns you to your console
+                         For now, consider this the "eject" key. 
+                         Use when boss approaches.
+II. Flight control keys
+    "*" ................. 100% throttle, needed for taking off
+    "/" .................   0% throttle
+    "+" or "="........... increase throttle
+    "-" or "_"........... decrease throttle
+    "W" or "w"........... engage/disengage wheel brakes  
+    "G" or "g"........... engage/disengage landing gear
+    "B" or "b"........... engage/disengage speed brakes
+    "A" or "a"........... engage/disengage autopilot
+    "F" or "f"........... flaps down/up
+    ".".................. raise flaps +5 degrees
+    ",".................. lower flags -5 degrees
+    ";" or ":"........... trim up
+    "\" or """........... trim down  
+    "[".................. left rudder  
+    "]".................. right rudder
+    "{" or "}"........... center rudder
+* If keyboard selected for yoke:
+    "I" or "i"........... nose up
+    "M" or "m"........... nose down
+    "L" or "l"........... bank right
+    "J" or "j"........... bank left
+    "K" or "k"........... center yoke
+
+III. View keys
+    Cockpit views:
+    "1".................. front
+    "!".................. front up
+    "2".................. left
+    "@".................. left up
+    "3".................. right
+    "#".................. right up
+    "4".................. rear
+    "$".................. rear up
+    "z".................. front-left
+    "Z".................. front-left up
+    "\".................. front-right
+    "|".................. front-right up
+    "0".................. Virtual Cockpit
+                          Can be modified by:
+            "s".......... rotate right
+            "S".......... rotate left
+            "d".......... rotate down
+            "D".......... rotate up
+            ")".......... snap to front
+    "&".................. Padlock View. Follows selected
+                          target. Can be kind of disorienting, 
+                          to tell you the truth.
+    Outside views:
+    "5".................. satellite view
+    "6".................. outside view. Places you outside, looking at
+                          your plane. Kind of an out-of-body experience.
+	                  Can be modified by:
+            "U".......... Increase distance
+            "u".......... Decrease distance
+            "s".......... rotate right
+            "S".......... rotate left
+            "d".......... rotate down
+            "D".......... rotate up
+
+    Target Tracking views:
+    "7".................. Track view. Places you outside your
+                          plane, oriented so that your opponent is in
+                          the center of the screen. Very useful for seeing
+                          your relationship to your adversary. 
+    "8".................. Opponent track view. Like above, except the
+                          positions are reversed so you are looking at
+                          yourself from your opponent's view point.
+     The <ENTER> key works with the above two views by selecting the
+     next aircraft for viewing. In multi-plane situtations, use the
+     <ENTER> key combined with the '8' or '7' key to select a target.
+     Both friendly and hostile aircraft can be selected via the
+     <ENTER> key.
+     
+    "9".................. Flyby view. Produces a very dramatic view.
+
+IV. Cockpit and hud keys
+    "C" or "c"........... show/hide cockpit bitmap and instruments
+    "H" or "h"........... show/hide hud
+    "Y" or "y"........... show/hide aircraft frame 
+    "@".................. show/hide centerpoint, yoke & rudder indicators
+    "V" or "v"........... show/hide velocity vector indicator
+    ">".................. show/hide pitiful frame_rate 
+
+V.  Weapons
+    "X" or "x"........... arm/disarm selected weapon
+    "N" or "n"........... select next weapon.
+    <ENTER>.............. select next target. Works with the Track Views
+                          described above.
+    <SPACEBAR>........... fire weapon. 
+
+VI. Miscellaneous
+    "%".................. show/hide clouds
+    "^".................. show/hide texture-mapped terrain
+                          The above two keys are useful for increasing
+			  the frame-rate of the game, particularly at
+                          higher screen resolutions.
+    "P" or "p"........... Pause/unpause game.
+
+   <TAB> or "~".......... Moves your virtual body to the next available
+                          aircraft, where you can assume control.
+
+			  A very useful key. Is your opponent about to 
+                          wax your fanny? No problem! First, engage your
+                          autopilot ('A'). Then, TAB or "~" puts you in
+                          your opponent's plane. Disengage the autopilot
+                          ('A'), and point straight into the ground. Now, 
+                          return to your own plane ('(')
+                          and watch your opponent go down to his doom! Chuck
+                          Yeager, eat your heart out!
+   '('                    Brings you back to your own plane
+                          
+    "?".................. Apple II display mode on/off. 
+                          To heck with texture-mapped graphics, real
+                          men fight with wire-frames.
+
+    "e".................. Screen snapshot. Saves the current frame buffer
+                          to "sbrnnnn.ppm" (PBM/PGM/PPM ascii format). 

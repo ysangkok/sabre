@@ -1,0 +1,109 @@
+5
+[
+  0
+  {
+		 100 0 0
+		 0 1 1
+		 0 1 1
+		 100 0.5 0.1
+		 0
+		  550 <1.5707963 1.5707963 1> <500.6 2500 15000> 300 0.0 0.00212 200 300
+  }
+  0
+  3
+  0
+  0
+  MASA
+]
+[
+  0
+  {
+
+		 100 0 0
+		 0 1 1
+		 1 1 1
+		 100 0.5 0.1
+		 6
+		  550 <1.5707963 1.5707963 1> <500.6 24 15000> 300 0.0 0.00212 200 300
+  }
+  0
+  3
+  0
+  0
+  JING
+]
+
+[
+  1
+  {
+		 100 0 0
+		 0 1 1
+		 1 1 1
+		 100 0.5 0.1
+		 6
+			350 <4.98 1.5707963 1> <-300.6 0 6000> 300 0.0 0.00212 160 300
+  }
+  1
+  1
+  1
+  1
+  BOXER
+]
+
+[
+  1
+  {
+
+		 100 0 0
+		 0 1 1
+		 1 1 1
+		 100 0.5 0.1
+		 0
+			350 <4.98 1.5707963 1> <-800.0 3 6100> 300 0.0 0.00212 160 300
+  }
+  1
+  1
+  1
+  1
+  HAMMER
+]
+
+[
+  1
+  {
+
+		 100 0 0
+		 0 1 1
+		 1 1 1
+		 100 0.5 0.1
+		 6
+			350 <4.98 1.5707963 1> <-100.0 3 6050> 300 0.0 0.00212 160 300
+  }
+  1
+  1
+  1
+  1
+  GROMMET
+]
+
+5 (0 3) (1 4) (3 0) (2 1) (4 1)
+
+Flight node =
+ [
+ Flight_Specs index
+ { flight params }
+ ZManager index
+ WeaponList index
+ Pilot Params index
+ Waypoint index
+ ]
+
+typedef enum flight_view { front, left, right, back, satellite,
+									  outside_1, outside_2, outside_3, outside_4 };
+friend istream & operator >>(istream &is, Flight_Controls &fc);
+{
+	  is >> fc.throttle >> fc.landing_gear >> fc.wheel_brakes;
+	  is >> fc.cockpit >> fc.hud_on >> fc.vextern;
+	  is >> fc.autopilot >> >> fc.gunsight >> fc.radar ;
+	  is >> fc.vdist >> fc.vtheta >> fc.vphi;
+	  is >> fc.view

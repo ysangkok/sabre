@@ -1,0 +1,93 @@
+First off ... 
+This port of Sabre to SDL is the sole responsibility of David Vandewalle. 
+Home : <vandewal@skyblue.com> or 
+Work : <david.e.vandewalle@lmco.com>
+
+Bugging the other authors about things that go wrong with this port would be
+a BadThing(tm).  (In other words, DON'T FLAME DAN HAMMER IF THIS DIES ON YOU!)
+
+All troubles with this should be sent to ME.  I an open for suggestions,
+bugs, etc.  All flames go to /dev/null with no reply, so don't bother.
+
+---------------------------------------------------------------------------
+
+other things ...
+This was a quick dirty (1hr) hack.  It seems to work OK for me. It is NOT very
+well integrated with the svgalib version in that you cannot build either
+version from the same source tree right now.  This is gonna change when I
+get some more free time.
+
+You kinda need SDL to use this.  You can get SDL from
+http://www.devolution.com/~slouken/SDL/
+
+This port was done with the latest greatest CVS tree beta.
+
+My platform is Linux. (AMD K6-233 / RedHat 5.1 - I use egcs1.0.2)  On other SDL platforms, your 
+mileage may vary.
+
+
+----------------------------------------------------------------------------
+
+
+Notes about SDL ...
+SDL is setup to run Sabre in a X window.  SDL has a fullscreen mode that has
+faster blits, but you can't see the cursor!  As soon as I add some code to
+bind the cursor to the window, I will add a fullscreen option or something. 
+Fullscreen does require you to be root though ...
+
+The RunSabre scripts still work!!  This is how you set the X window size. 
+Sabre doens't really know it isn't still in vga mode, it just gets whatever
+mode you specify as an X window ...
+
+In 320x200 mode I average 17 frames per sec
+In 640x480 mode I average 6 frames per sec
+In 800x600 mode ... well we won't go there!
+
+Note that this is running on a 16 bit X display!  
+SDL has some palette mode options I still need to screw with.  I don't think
+the  blit speed is the deciding factor on the frame rate however ... 
+
+
+----------------------------------------------------------------------------
+
+
+changes from the svgalib Sabre ...
+very few. 
+
+I changed three files in the Sabre src directory.
+these are: input.C
+           kbdhit.C
+           vga_13.C
+
+I moved the fontdev.C and fontdev.h files from the gdev directory into the 
+main src directory (and changed the Makefile.am).  I changed fontdev.h SLIGHTLY 
+by commenting the include of gdev.h  This was done because gdev needs svgalib, 
+and the whole idea of this was to get rid of svgalib.  Moving this over made 
+everything fairly seamless ...
+
+
+----------------------------------------------------------------------------
+
+
+know bugs ...
+sometimes mouse clicks are missed/queued till the next click.  I gotta hack
+at this some more, current mouse click IO is kinda kludgy.
+
+This isn't really MY problem, but I found it while doing this ... the MetroX
+server that shipped with RedHat 5.0 and version 4.3.0 have a bug in DGA
+mode.  The newer versions of SDL can work around this somewhat now ...
+
+
+---------------------------------------------------------------------------
+
+
+future (when I find some time)...
+Sound!!  I NEED to here those wonderful .50's when I hose a target!!
+
+Rewrite the heavy routines in asm with MMX.  I profiled this thing, and
+found what I need to do, now I just gotta do it ... :-P 
+
+Add code for 16 bit color??
+
+Maybe an F-22 plane just for fun if I get really bored at work ...  Gotta have 
+my baby! (F-22 -vs- MIG-15, hmmmm ... MIG sucks down an AMRAAM ... :-)

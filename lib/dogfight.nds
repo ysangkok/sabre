@@ -1,0 +1,61 @@
+2
+
+2
+[
+  F-86
+  {
+	 100 0 0
+	 1 1 1
+	 0 1 1
+	 100 0.5 0.1
+	 0
+	475 <0.0 1.5707963 1> <5000 2500 20000> 300 0.0 0.00212 300 400
+  }
+  sabre.shp
+  F86_50CALX
+  0
+  0
+  ALPHA
+]
+
+[
+  MiG-15
+  {
+	 100 0 0
+	 1 1 1
+	 1 1 1
+	 100 0.5 0.1
+	 6
+	475 <3.0 1.5707963 1> <4500 -4000 20000> 300 0.0 0.00212 300 400
+  }
+  mig15.shp
+  MIG15_20MM
+  1
+  1
+  FOXTROT
+]
+
+2
+(1 0) (0 1) 
+
+Flight node =
+ [
+ Flight_Specs index
+ { flight params }
+ ZManager index
+ WeaponList index
+ Pilot Params index
+ Waypoint index
+ ]
+typedef enum flight_view { front, left, right, back, satellite,
+      		  outside_1, outside_2, outside_3, outside_4 };
+friend istream & operator >>(istream &is, Flight_Controls &fc);
+{
+	  is >> fc.throttle >> fc.landing_gear >> fc.wheel_brakes;
+	  is >> fc.cockpit >> fc.hud_on >> fc.vextern;
+	  is >> fc.autopilot >> >> fc.gunsight >> fc.radar ;
+	  is >> fc.vdist >> fc.vtheta >> fc.vphi;
+	  is >> fc.view
+
+
+

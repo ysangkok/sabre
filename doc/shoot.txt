@@ -1,0 +1,53 @@
+SABRE Fighter Plane Simulator
+
+"shoot" scenarios
+
+# Main Key Review: (see keys.txt for a listing of all the keys)
+'Q': Quit SABRE (use when boss appoaches)
+' ': (spacebar OR mouse button) Fire guns
+'7': Target track view
+'8': Opponent track view
+'1': Forward view
+'C': Turn cockpit off/on  Useful for getting a better view 
+'{': Turn exterior off/on. Gives an even better view.
+
+Briefing:
+
+This puts you in the cockpit of your F-86 SabreJet, sitting about
+700 feet off the tail of a rather clueless MiG-15. All you have to do
+is hold the plane steady and squeeze the trigger (mouse button or
+space bar) for a nice easy kill.  
+
+After the thrill wears off, you really want to use this scenario to
+get familiar with the various tools you have to make your air combat
+experience a healthy and satisfying one. 
+
+1. The Lead-Target Box
+
+Run "shoot" again, but don't be so trigger-happy this time. Take note of
+the green box that appears in relation to the MiG. This is your Lead Target
+Box. Combined with the Gun Pipper (the green circular symbol), it helps you to accurately
+aim your weapon to account for the target's distance and motion. Using it is very simple.
+When the Gun Pipper is at or near the center of the Lead Target Box, shoot!
+
+
+2. Target Track View   '7' key
+
+Run "shoot" again, but this time, turn left or right so the MiG dissapears
+from view, then hit the '7' key. Notice that the MiG appears in the
+center of the screen, with your plane also in view so that you can
+immediately see your relationship to him. Even if you are so far away that
+the MiG is a mere dot, or actually not visible, he will nonetheless be
+centered in the screen. To line up with him, turn your plane so that the
+tail is facing towards you. Now, use the '1' key to go back to the
+more normal front view, and he should be in sight.
+
+The Target Track View was designed to overcome the visual limitations of
+the computer screen. Although maneuvering while in the Target Track View may 
+be disorienting at first, it is worth your while to get familiar with this 
+view, as it is very useful in combat.
+
+
+
+
+

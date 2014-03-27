@@ -1,0 +1,104 @@
+TROUBLE SHOOTING
+  Here's some common problems that have been reported, with 
+  some solutions suggested:
+
+
+"NOT RUNNING IN GRAPHICS-CAPABLE VIRTUAL CONSOLE"
+-----------------------------------------------
+You are in some kind of GUI environment, probably X11/fvwm. 
+You need to be in console mode to run SABRE. To get to 
+console mode in fvwm, <CTL><ALT><F2> (or <F3> ... etc)
+will get you there. Login and come back to the SABRE
+installation directory.
+
+
+"SVGALIB: CANNOT GET I/O PERMISSIONS"
+-----------------------------------
+This means that you are not running SABRE as root, nor have you
+set the "uid" bit on the sabre binary. Svgalib needs to run as root
+in order to access the video hardware. Either become user root, or,
+as user root: 
+$ chmod a+s src/sabre
+will allow SABRE to work with non-root users.
+
+
+MOUSE DOESN'T WORK
+------------------
+  Make sure that your libvga is configured for your kind of mouse. Edit
+  the file /etc/vga/libvga.config and select the appropriate mouse
+  type by uncommenting the correct line:
+
+	# Mouse type:
+
+	# mouse Microsoft	# Microsoft
+	# mouse MouseSystems	# Mouse Systems
+	# mouse MMSeries	# Logitech MM Series
+	# mouse Logitech	# Logitech protocol (old, newer mice use Microsoft protocol)
+	# mouse Busmouse	# Bus mouse
+	# mouse PS2		# PS/2 mouse
+	# mouse MouseMan	# Logitech MouseMan
+	# mouse none		# None
+
+Microsoft and PS2 are the most common types.  
+
+
+ARROW KEYS DON'T WORK
+---------------------
+The arrow keys are not currently trapped for. Reason being they
+give off different codes depending on the particular termcap file you
+have. 
+
+Version 0.2.4 supports the following keys to control the yoke:
+'i' -- nose up
+'m' -- nose down
+'j' -- bank left
+'l' -- bank right
+'k' -- center yoke
+
+JOYSTICK DOESN'T WORK
+---------------------
+If you are not using the joystick.0.8.0 package, see
+JOYSTICK.README, as that is the package currently supported.
+
+
+ERROR BUILDING DIALOGSRC
+------------------------
+Older versions of "/usr/include/curses.h" give this compile error:
+
+In file included from checklist.c:23:
+dialog.h:122: parse error before `use_colors'
+dialog.h:122: warning: data definition has no type or storage class
+dialog.h:123: parse error before `use_shadow'
+dialog.h:123: warning: data definition has no type or storage class
+dialog.h:126: parse error before `attributes'
+dialog.h:126: warning: data definition has no type or storage class
+dialog.h:141: parse error before `chtype'
+dialog.h:148: parse error before `chtype'
+checklist.c: In function `dialog_checklist':
+checklist.c:101: `ACS_LTEE' undeclared (first use this function)
+checklist.c:101: (Each undeclared identifier is reported only once
+checklist.c:101: for each function it appears in.)
+checklist.c:103: `ACS_HLINE' undeclared (first use this function)
+checklist.c:105: `ACS_RTEE' undeclared (first use this function)
+checklist.c:158: `ACS_DARROW' undeclared (first use this function)
+checklist.c:179: `KEY_UP' undeclared (first use this function)
+checklist.c:179: `KEY_DOWN' undeclared (first use this function)
+checklist.c:181: `KEY_MAX' undeclared (first use this function)
+checklist.c:208: `ACS_UARROW' undeclared (first use this function)
+checklist.c:246: called object is not a function
+checklist.c:357: `KEY_LEFT' undeclared (first use this function)
+checklist.c:358: `KEY_RIGHT' undeclared (first use this function)
+
+Try getting a more recent version of the curses library. To check,
+/usr/include/curses.h should contain the following define:
+...
+#define NCURSES_VERSION "1.9.9e"
+...
+
+
+
+
+  
+
+
+       

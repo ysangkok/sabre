@@ -1,0 +1,63 @@
+For those who are interested, pretty much ANYTHING
+you think of will most likely be needed. Just check with
+me (dan@cobite.com) in case someone else happens to be doing
+the same thing. At any rate, the following list is neither
+exhaustive nor in any order of importance.
+
+********************************************
+* C++ coding kind-of-stuff                 *
+********************************************
+* SOUND
+  Goes without saying! 
+
+* PLAY-BACK
+  A big thing in the fsim world is being able to "play-back"
+  a mission so that your friends, children and grandchildren can
+  witness your brilliant maneuvering. SABRE could use such
+  a "play-back" feature.
+
+* NETWORKING
+  Player-v-player is sorely needed. 
+
+* MISSION SCRIPTING
+  A user-friendly way of generating missions/scenarios would
+  be handy!  
+
+* GENERAL ALL-AROUND HACKING
+   ... is encouraged. If you come up with something
+  cool, let me know!
+
+*******************************************
+* Graphics painting kind-of-stuff         *
+*******************************************
+* COCKPIT GRAPHICS
+  SABRE is in serious need of some nicely rendered cockpits. 
+  So far the planes represented are the F-86 SabreJet, F-84
+  ThunderJet, F-51 Mustang, MiG-15 and the Yak-9. Also on
+  the boards will be the B-29.
+
+  The cockpits need to use a gray palette of 29 shades, and
+  of course be no more than 300X200 pixels in dimension
+  (it wouldn't hurt to cut the height a little, to say, 160
+   pixels).  
+
+*******************************************
+* Flight modeling physics kind-of-stuff   *
+*******************************************
+* FLIGHT MODELING
+  As some have pointed out, the flight-modeling is probably
+  the area where the most improvement could be made. Not being
+  an aerodynamic-engineer, or for that manner, an anything-engineer,
+  I did the best I could. I asked my father the physicist to help, 
+  but his specialty is tiny lasers, so no luck there. 
+  So any pointers, comments, criticisms, or better still, 
+  algorythms and actual breathing code, from those who know better
+  would be gratefuly (and humbly) accepted. Check flight.C for
+  the Flight Model code.
+
+  
+
+      
+
+
+  

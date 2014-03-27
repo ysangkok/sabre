@@ -1,0 +1,202 @@
+***********************************************************************
+* SABRE Fighter Plane Simulator                                       *
+* Documentation file: takeoff.txt                                     *
+* August, 1997                                                        *
+***********************************************************************
+# Main Key Review: (see keys.txt for a listing of all the keys)
+'Q': Quit SABRE (use when boss appoaches)
+'*': Throttle 100%
+'+','-': Throttle up,down
+'w': Disengage/engage wheel brakes
+'C': Turn cockpit off/on  Useful for getting a better view 
+'{': Turn exterior off/on. Gives an even better view.
+'6': Exterior view, in which you can use
+     'm','y','z','o' to  rotate
+     and 'i' and 'u' to zoom in, out
+ 
+TODAY'S LESSON: TAKING OFF!
+Your first goal as a budding fighter pilot is to learn how to get your
+plane off of the ground. 
+
+Before we can actually take off, though, we have learn all about the
+instruments and controls of our simulated SabreJet, so ...
+
+LEARN YOUR COCKPIT/HUD
+Execute the 'takeoff' mission by typing 'takeoff'. You will find
+yourself sitting in your cockpit, looking down the runway. Now, don't 
+be intimidated by all the complicated switches and dials you see in the
+cockpit. Only a few of them actually work, and I'll explain each of them.
+
+First off, there are actually two displays being presented to you. They are
+the Cockpit Instrument Panel, and the HUD (Heads Up Display).
+
+COCKPIT INSTRUMENT PANEL
+************************************************************
+Key note: 'c' or 'C' hides/shows the Cockpit Instrument Panel
+*************************************************************
+The Cockpit Instrument Panel is really more for "show" than anything else.
+The 'active' indicators displayed are (from right to left):
+ Throttle handle
+    You'll see this little fellow move up and down as you
+    adjust the throttle
+ Landing Gear, Wheel Brakes and Speed Brakes indicators
+    These are red indicator lights which tell you whether or not
+    your Landing Gear, Wheel Brakes or Speed Brakes are engaged
+ Altitude Indicator (left top) 
+    This dial shows you your altitude. There are actually two needles,
+    the white is calibrated in feet, the red in thousands of feet.
+ Artificial Horizon (center top)
+    This is about the most useful of the cockpit displays. It shows you
+    how much you are banked with respect to the horizon. Note that the
+    blue represents the sky, the red the ground. 
+ Compass (center bottom)
+    Your navigational compass.
+ Air Speed Indicator
+
+
+So much for the cockpit instruments. Except for the Artificial Horizon,
+they are really quite useless as they are too small to be read with any
+accuracy. So, to make up for this shortcoming, you also have the HUD,
+for Heads Up Display. The HUD shows the same information in a digital,
+easily read format. The HUD is, of course, a fictional display that did
+not exist in the real SabreJets.  
+
+HEADS UP DISPLAY (HUD)
+****************************************
+Key note: 's' or 'S' hides/shows the HUD
+*****************************************
+The Hud is divided into five areas on your screen:
+
+Hud : Upper Left Corner
+  Line 1 - Air Speed 
+  This is your true air speed, in knots.  
+  Line 2 - Altitude above ground (AGM)
+  Line 3 - Altitude above sea-level.
+  The next two lines show your altitude in feet, the first being the more
+  immediately important one as it is relative to the height of the
+  ground, while the second is an absolute measurement above sea-level.
+  Line 3 - Load 
+  "Load" is a quantity determined by taking the lift force and dividing
+   it by the weight of the aircraft. It relates to "g's", the force felt
+   by the pilot during maneuvers.  
+   
+
+Hud : Upper Right Corner
+   Line 1 - Control Indicators
+    This line contains symbology which shows the positions of your 
+    controls. For on/off controls, the presence of the symbol indicates
+    an on position. From left to right, these are the symbols:
+     A - Autopilot engaged
+     G - Landing gear engaged
+     W - Wheel brakes engaged
+     B - Speed brakes engaged
+     F - Flaps raised (followed by the degree of flap)
+     The last item is the percentage of throttle you have applied.
+  Line 2 - Climb Rate
+     This shows you how fast your are climbing or descending, in feet
+     per minute. 
+  Line 3 - Compass heading
+     This shows your current compass heading, in degrees. Note that it
+     reads 270, for due west. If we pretend this is Nevada, you are pointed
+     at California. I happen to live in New Jersey, so I'm safe.
+
+Hud : Lower Left Corner
+     Damage Read Out
+     This indicates how much damage the enemy or yourself has done to the
+     airplane, as a percentage of the maximum damage the plane can sustain.
+     
+     Stall Warning Indicator
+     An important indicator in this area, is the STALL warning
+     which will appear when you are close to or in a stall. During takeoff,
+     the main danger is stall. A stall is a condition that occurs when
+     your aircraft's wings are no longer able to produce lift.
+     This happens when you bring your plane to too high an Angle of Attack
+     for your current speed. Stalls during takeoff and landing are the
+     most popular way to get killed flying an airplane, so pay attention to
+     this indicator! 
+
+      
+Hud : Lower Right Corner
+     During combat, you will look to this area for vital information about
+     your opponent's aircraft. For now, it will remain empty, and we won't
+     need it for this scenario.
+
+
+Hud : Center
+     In the center of the HUD you will find the nose position and yoke
+     position markers. The Nose Position Marker, which is a green cross,
+     shows you the position of the plane's nose, as a reference point.
+     It is always in the center of the screen. Related to that is a green
+     circle which shows your yoke position, the Yoke Position Marker.  
+     Move the mouse or joystick around and observe how the Yoke Position 
+     Marker moves to indicate whether you have pulled back, pushed forward,
+     dragged left or right.
+
+     
+ 
+PREPARING TO TAKEOFF
+     Being that this is a game, you really don't need to do any of the
+     preparation a real pilot would have to do to fly, i.e., check that you
+     have fuel, calibrate the compass, test the engine, etc., etc.
+     One thing I'd like to do, though, is the "walk around" so you can
+     learn about the outside view. Press the '6' key. You are now on the
+     outside, about to do your "walk around". Press "m" or "M" to start
+     walking around your plane, inspecting it for any defects. One big 
+     defect you might notice right away is that there isn't any landing gear!
+     Well, its 'cause I haven't modeled any yet. If you like doing 3-D 
+     modeling, you might consider contributing some landing gear to the
+     project (see README). At any rate, just pretend you see landing gear
+     for now. The program pretends it does also.
+
+     When you are satisfied that your plane is airworthy, return to the
+     cockpit by pressing '1'. 
+
+
+Part III: Takeoff!
+******************
+     Ok ... here's the big moment! Let's takeoff!
+    
+     First, use the '+' key to bring your throttle all the way up to
+     100%. You'll see the throttle handle moving up, and the throttle percent
+     read-out in the upper right corner increase. As you reach 60-70%,
+     you'll start to move. Bring it all the way up to 100%.
+
+     You are now moving, but only a wee bit, as you have your wheel brakes
+     engaged. Release them with the 'W' or 'w' key. Notice the Cockpit 
+     Instrument Panel and the HUD indicators change.
+
+     Now, you should really start to move. Watch your airspeed which is
+     in the upper left corner. When it reaches 160 kts, start to GENTLY
+     pull back on the stick, i.e., your mouse or joystick. Get the Yoke 
+     Position Indicator to about 5-6 pixels below the Nose Position 
+     Indicator. You will start to rise into the air ... you are airborne!
+     Keep a close watch on both your airspeed and altitude. When you are at
+     about 100 feet, bring up the landing gear ('G'). Continue to climb,
+     until you are at a comfortable altitude (5000-8000 feet is fine),
+     then level off. Congratulations! 
+     
+
+
+   
+     
+
+
+      
+
+     
+  
+   
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
