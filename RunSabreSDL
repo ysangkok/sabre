@@ -23,26 +23,24 @@
 # for high-res Sabre
 # 04/10/98 Version 0.2.3 patch
 # 01/01/99 Version 0.2.4
-banner="$(sdlsrc/sabre --print-banner)"
-DLG=./dialogsrc/dialog
-FOO=.tmp
+# 1999, 2002 Miscellanous changes by Milan Zamazal <pdm@debian.org>
+banner="$(/usr/games/sabresdl --print-banner)"
+DLG=/usr/bin/dialog
+FOO=$(mktemp -t sabre.XXXXXX) || exit 1
+LOG=$(mktemp -t sabre.XXXXXX) || exit 1
+LOADLOG=$(mktemp -t sabre.XXXXXX) || exit 1
 MODE="-mode 0"
 RZ_STEPS=
 SABRE="-mode $MODE" #default flight parameters
 DEMO=
-if [ -f "rs.sh" ]
-  then
-    . rs.sh ;
-else
-    YOKE="-ms"
-    RDDR="-kyr"
-    THRT="-kyt"
-    WINDOW="-window 320 200"
-fi
+YOKE="-ms"
+RDDR="-kyr"
+THRT="-kyt"
+WINDOW="-window 320 200"
 
 # fatal( context, error, source )
 # display errorbox
-function fatal ()
+fatal ()
 {
   errname="Unknown error"
   case $2 in
@@ -60,7 +58,7 @@ function fatal ()
 
 # view_file( file )
 # display file on textbox
-function view_file()
+view_file()
 {
  if [ -r $1 ]
   then 
@@ -81,10 +79,10 @@ function view_file()
 
 # load_scenario( file, type )
 # load mission or demo
-function load_scenario()
+load_scenario()
 {
- path=scenarios/$1
- echo "$1 $2 = $path $MODE $WINDOW" >> loadlog
+ path=/usr/share/games/sabre/$1
+ echo "$1 $2 = $path $MODE $WINDOW" >> $LOADLOG
  
  if [ -x $path ]
   then
@@ -94,8 +92,8 @@ function load_scenario()
    --infobox  "Scenario coming up: Please standby!" \
    3 44
    export SABRE
-   export SABRE_BIN=./sdlsrc/sabre
-   $path $DEMO $MODE $WINDOW $YOKE $RDDR $THRT > sabre.log
+   export SABRE_BIN=/usr/games/sabresdl
+   $path $DEMO $MODE $WINDOW $YOKE $RDDR $THRT > $LOG
     stty sane
    $DLG \
    --backtitle "$banner" \
@@ -103,7 +101,7 @@ function load_scenario()
    --yesno "Do you want to see the log?" 5 44
    if [ $? = 0 ]
     then
-     view_file sabre.log
+     view_file $LOG
    fi
   else
    if [ -e $1 ]
@@ -117,7 +115,7 @@ function load_scenario()
 
 # sabre_documentation()
 # browse documentation
-function sabre_documentation() {
+sabre_documentation() {
  looping=1
  until [ "$looping" = "0" ];
  do
@@ -125,7 +123,7 @@ function sabre_documentation() {
   --backtitle "$banner" \
   --title "Documentation" \
   --menu  "Miscellaneous Sabre papers" \
-  21 68 15 \
+  21 68 14 \
   "WHATSNEW"        "news on latest" \
   "intro"          "introduction to the game" \
   "keys"           "keys used" \
@@ -136,7 +134,6 @@ function sabre_documentation() {
   "CONTRIBUTORS"   "people behind this game" \
   "README"         "general background information" \
   "REQUIREMENTS"   "the gear needed" \
-  "INSTALL"        "building Sabre up" \
   "TODO"           "future plans and fixes" \
   "TROUBLE_SHOOTING" "some noted problems and fixes" \
   "JOYSTICK.README" "info on using a joystick" \
@@ -149,19 +146,19 @@ function sabre_documentation() {
    "keys" | \
    "takeoff" | \
    "gru" | \
-   "shoot") view_file doc/$choice.txt ;;
+   "shoot") view_file /usr/share/games/sabre/doc/$choice.txt ;;
+   "COPYING") view_file /usr/share/common-licenses/GPL ;;
    "HISTORY"      | \
    "README"       | \
    "CONTRIBUTORS" | \
-   "COPYING"      | \
    "INSTALL" | \
    "README" | \
    "REQUIREMENTS" | \
    "WHATSNEW" | \
    "JOYSTICK.README" | \
    "TROUBLE_SHOOTING" | \
-   "TODO" ) view_file $choice ;;
-   "User Interface" ) view_file dialogsrc/README ;;
+   "TODO" ) view_file /usr/share/games/sabre/doc/$choice ;;
+   "User Interface" ) view_file /usr/share/games/sabre/doc/README-dialog ;;
    "")  looping=0;;
   esac
  done 
@@ -169,7 +166,7 @@ function sabre_documentation() {
 
 # sabre_missions()
 # browse missions
-function sabre_missions() {
+sabre_missions() {
  DEMO=
  looping=1
  until [ "$looping" = "0" ];
@@ -224,7 +221,7 @@ function sabre_missions() {
 
 # sabre_demos() 
 # browse demos
-function sabre_demos() {
+sabre_demos() {
  DEMO=-demo
  until [ "foo" = "bar" ];
  do
@@ -261,7 +258,7 @@ function sabre_demos() {
 
 # sabre_vgamodes() 
 # Allow choosing of the vga mode
-function sabre_vgamodes() 
+sabre_vgamodes() 
 {
   $DLG \
   --backtitle "$banner" \
@@ -293,7 +290,7 @@ function sabre_vgamodes()
 # recommended. It's also best
 # to keep a 3:2 width:height 
 # proportion
-function sabre_vgawindow() {
+sabre_vgawindow() {
 # until [ "foo" = "bar" ];
 # do
   $DLG \
@@ -326,43 +323,29 @@ function sabre_vgawindow() {
 }
 
 
-function sabre_controls() {
+sabre_controls() {
  until [ "foo" = "bar" ];
  do
   $DLG \
   --backtitle "$banner" \
   --title "Control Setup" \
   --menu  "Select Control To Setup" \
-  14 56 5 \
+  10 56 3 \
   "Yoke"  "Yoke Control" \
   "Throttle"  "Throttle Control" \
   "Rudder"  "Rudder Control" \
-  "Calibrate 0" "Calibrate Joystick 0" \
-  "Calibrate 1" "Calibrate Joystick 1" \
   2> $FOO
   choice=$(cat $FOO)
   case "$choice" in
    "Yoke") sabre_yoke;;
    "Throttle") sabre_throttle;;
    "Rudder") sabre_rudder;;
-   "Calibrate 0") WHICHJOY=0;sabre_calibrate;;
-   "Calibrate 1") WHICHJOY=1;sabre_calibrate;;
    "")  return;;
   esac
   done
 }
 
-function sabre_calibrate
-{
-    cp ./lib/joy$WHICHJOY.def ./lib/joy$WHICHJOY,sav
-    cd joystick
-    rm joy$WHICHJOY.def
-    sabrejoycal $WHICHJOY
-    cp joy$WHICHJOY.def ../lib/.
-    cd ..
-}
-
-function sabre_yoke() {
+sabre_yoke() {
  #clear all flags
  ST_JOY0=off
  ST_MS=off
@@ -384,7 +367,7 @@ function sabre_yoke() {
   10 66 3 \
   "-j0"       "Joystick" "$ST_JOY0" \
   "-ms"       "Mouse" "$ST_MS" \
-  "-ks"       "Keyboard" "$ST_KY" \
+  "-kys"      "Keyboard" "$ST_KY" \
   2> $FOO
   if [ $? = 0 ]
    then
@@ -394,7 +377,7 @@ function sabre_yoke() {
 
 # sabre_setup() 
 # default flight parameters
-function sabre_rudder() {
+sabre_rudder() {
  #clear all flags
  ST_JOY2=off
  ST_MR=off
@@ -426,7 +409,7 @@ function sabre_rudder() {
 
 # sabre_setup() 
 # default flight parameters
-function sabre_throttle() {
+sabre_throttle() {
  #clear all flags
  ST_JOY1=off
  ST_MT=off
@@ -456,18 +439,6 @@ function sabre_throttle() {
   fi
 }
 
-# write out saved stuff
-function runsabre_save() 
-{
-    echo YOKE=\"$YOKE\" > rs.sh  ;
-    echo RDDR=\"$RDDR\" >> rs.sh ;
-    echo THRT=\"$THRT\" >> rs.sh ;
-    echo WINDOW=\"$WINDOW\" >> rs.sh;
-    chmod a+x rs.sh;
-    rm -f $FOO; 
-    exit;
-}
-
 # the main loop
 if [ ! -f $DLG ];
 then
@@ -487,10 +458,9 @@ do
  --backtitle "$banner" \
  --title "Main" \
  --menu  "Welcome to Sabre - enjoy your flight!" \
- 14 50 7 \
+ 12 50 6 \
  "missions"        "Various Flight Scenarios" \
  "demos"           "Some Flight Demos" \
- "svgamode"        "SVGALIB Video Mode Selection" \
  "window"          "Select Window Size" \
  "documentation"   "Miscellaneous Sabre papers" \
  "controls"        "Select Flight Controls" \
@@ -501,18 +471,9 @@ do
   "missions")      sabre_missions;;
   "demos")         sabre_demos;;
   "controls")      sabre_controls;;
-  "svgamode")      sabre_vgamodes;;
   "window")        sabre_vgawindow;;
   "documentation") sabre_documentation;;
-  "quit" | "")     runsabre_save;;
+  "quit" | "") rm -f $FOO $LOG $LOADLOG; exit;;
  esac
 done
 # the end
-
-
-
-
-
-
-
-
