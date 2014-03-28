@@ -17,8 +17,6 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-/* 1999-12-08: Small patch by Milan Zamazal <pdm@debian.org> to allow
-   compilation on Debian, see #ifdef DEBIAN. */
 
 #ifndef __pilot_h
 #define __pilot_h
@@ -35,7 +33,7 @@ class Pilot : public aiPilot
 {
 public:
 	Pilot( Flight *flt, Pilot_Params *,
-	 Weapon_Instance *, int nw, char *, Target *);
+	 Weapon_Instance *, int nw, const char *, Target *);
 	
 	void init(void);
 	Pilot *get_target_pilot(void)
@@ -128,7 +126,7 @@ public:
 	}
 	void set_handle(const char *hndl)
 	{
-		SetHandle(hndl);		
+		SetHandle(hndl);
 	}
 	void update_sbrflight()
 	{
@@ -141,12 +139,8 @@ public:
   static Pilot   *pilots[];
   static int     npilots;
   static int     maxpilots;
-#ifdef DEBIAN
   static int initPilot();
-#else
-  static initPilot();
-#endif
-  static Pilot *getPilot(char *hndle);
+  static Pilot *getPilot(const char *hndle);
   static float xpixel_adjust, ypixel_adjust;
 
 protected:
@@ -186,10 +180,10 @@ private:
 
 	static float    gunsGunsSoundTime;
 
-	int broadcast(char *mss, int priority, int freq = -1, char * = NULL);
-	int __cdecl brdcst(int priority, int freq, char *mss, ...);
+	int broadcast(const char *mss, int priority, int freq = -1, const char * = NULL);
+	int __cdecl brdcst(int priority, int freq, const char *mss, ...);
 	void sound_on(const char *soundId, int affiliation = -1); 
-	const char *buildSoundId(char *suffix, Flight *targetFlight);
+	const char *buildSoundId(const char *suffix, Flight *targetFlight);
 	int damage_check(void);
 };
 #endif

@@ -103,7 +103,7 @@ void loadpcx(char *);
 void write_palette(FILE *);
 float calc_rgb_distance(_rgb *rgb);
 
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
   char *plt_file;
   FILE *pf;
@@ -115,7 +115,7 @@ void main(int argc, char *argv[])
       fprintf(stderr,"mktextr3 <pcx_file> <map_file> <id>"
 	     " <image_width> <image_height>"
 	     " [renumber] [reverse_y] [trans_color] \n");
-      return;
+      return 1;
     }
   pcx_file = argv[1];
   out_file = argv[2];

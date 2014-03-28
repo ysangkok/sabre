@@ -25,7 +25,7 @@
  *************************************************/
 #include "smnvrst.h"
 
-char *sManeuver::maneuver2string[] =
+const char *sManeuver::maneuver2string[] =
 {
 	"FIRST",
 	"STRAIGHT_AND_LEVEL",
@@ -70,7 +70,7 @@ char *sManeuver::maneuver2string[] =
 	"LAST"
 };
 
-char *sManeuver::Maneuver2String(int mn)
+const char *sManeuver::Maneuver2String(int mn)
 {
 	if (mn < 0)
 		mn = 0;

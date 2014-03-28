@@ -1240,7 +1240,7 @@ void aiFlite::PreviousWaypoint()
   InitFormation(curWaypoint);
 }
 
-static char *oClocks[] = 
+static const char *oClocks[] = 
 {
   "12:00",
   "1:00",
@@ -1263,7 +1263,7 @@ void aiFlite::IssuePlayerAttackWarning(aiFlite *playerFlite, aiPilot *attackerPi
   sAttitude		playerAttitude;
   int				oClock;
   sREAL				convYaw;
-  char				*hiLo;
+  const char				*hiLo;
   char				distance[32];
   sREAL				altDiff;
   static char    warningStr[256];

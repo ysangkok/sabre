@@ -67,7 +67,7 @@ void PilotMessage::update()
 	}
 }
 
-int PilotMessage::set_message(char *mss, int priority, Pilot *fr)
+int PilotMessage::set_message(const char *mss, int priority, Pilot *fr)
 {
 	if (!flag || flag <= priority)
 	{

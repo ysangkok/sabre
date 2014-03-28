@@ -410,7 +410,7 @@ Flight_Manager::~Flight_Manager()
   aiPilot::FlushaiPilots();
 }
 
-int Flight_Manager::read_file(char *path)
+int Flight_Manager::read_file(const char *path)
 {
   int result = 0;
   std::ifstream infile;
@@ -559,7 +559,7 @@ void Flight_Manager::readNodes(std::istream &is)
     }
 }
 
-void Flight_Manager::readNodeFile(char *path)
+void Flight_Manager::readNodeFile(const char *path)
 {
   std::ifstream is;
 
@@ -720,7 +720,7 @@ void Flight_Manager::readFlites(std::istream &is)
     }
 }
 
-void Flight_Manager::readFliteFile(char *path)
+void Flight_Manager::readFliteFile(const char *path)
 {
   std::ifstream is;
 

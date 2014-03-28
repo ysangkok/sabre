@@ -378,7 +378,7 @@ void Instrument_Panel::init()
     indicators[i]->init();
 }
 
-void setup_instruments(char *path, Instrument_Panel &ip)
+void setup_instruments(const char *path, Instrument_Panel &ip)
 {
   ip.indicators_idx = 0;
   ip.add_indicator(&arthor);

@@ -634,7 +634,7 @@ public:
   int                  nlists;
   Weapons_Manager();
   ~Weapons_Manager();
-  void read_file(char *);
+  void read_file(const char *);
   friend std::istream & operator >>(std::istream &is, Weapons_Manager &wp);
   void read(std::istream &);
   Weapon_List *get_list(int n);

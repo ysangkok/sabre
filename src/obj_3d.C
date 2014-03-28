@@ -692,7 +692,7 @@ void C_DrawList2::add_draw_list(DrawList &dlist, Port_3D &port)
     groups[i].addDrawList(dlist,port);
 }
 
-void C_DrawList2::setTextrFlag(int flag, char *id, int id_len)
+void C_DrawList2::setTextrFlag(int flag, const char *id, int id_len)
 {
   for (int i=0;i<n_objects;i++)
     {
@@ -706,7 +706,7 @@ void C_DrawList2::setTextrFlag(int flag, char *id, int id_len)
     }
 }
 
-void C_DrawList2::setVisibleFlag(int flag, char *id, int id_len)
+void C_DrawList2::setVisibleFlag(int flag, const char *id, int id_len)
 {
   for (int i=0;i<n_objects;i++)
     {

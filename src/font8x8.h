@@ -58,7 +58,7 @@ public:
 			int dim = 0) = 0;
 
   void put_string(char *str, int x, int y, int color);
-  void font_sprintf(int x, int y, int color, int opt, char *format, ...);
+  void font_sprintf(int x, int y, int color, int opt, const char *format, ...);
 };
 
 class Font8x8 : public SimFont
@@ -91,7 +91,7 @@ public:
   fontdev *fdev;
   char *path;
   
-  ConsoleFont(char *);
+  ConsoleFont(const char *);
   virtual ~ConsoleFont();
   void put_char(unsigned char c, int x, int y, int color,
 		int dim = 0);

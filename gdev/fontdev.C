@@ -28,7 +28,7 @@
 #include <unistd.h>
 #include "fontdev.h"
 
-static char *_locate( char *fmt, ... )
+static char *_locate( const char *fmt, ... )
 {
    static char fn[4096]; // ?!
 
@@ -46,19 +46,19 @@ static char *_locate( char *fmt, ... )
 
 #define SYSFONTPATH "/usr/lib/kbd/consolefonts"
 
-static char *_fontpaths[] = {
+static const char *_fontpaths[] = {
    SYSFONTPATH,
    NULL
 };
 
-char **fontpaths=_fontpaths;
+const char **fontpaths=_fontpaths;
 
-static char *locate( char *fn )
+static char *locate( const char *fn )
 {
    char *_fn;     
    if( (_fn=_locate( fn )) == NULL ) {
       if( strchr( fn, '/' ) == NULL ) {
-	 char **v=fontpaths;
+	 const char **v=fontpaths;
 	 while( *v ) {
 	    if( (_fn=_locate( "%s/%s", *v, fn )) != NULL )
 	      break;
@@ -79,7 +79,7 @@ fontdev::~fontdev()
      delete fbp;
 }
 
-int fontdev::load( char *fn )
+int fontdev::load( const char *fn )
 {
    if( (fn=locate(fn) ) == NULL )
      return 1;
@@ -135,7 +135,7 @@ int fontdev::load( char *fn )
    return 0;
 }
 
-int fontdev::save( char *fn )
+int fontdev::save( const char *fn )
 {
    FILE *fp=fopen( fn, "wb" );
    if( !fp ) {

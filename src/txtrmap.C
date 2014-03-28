@@ -27,8 +27,6 @@
  *          compressed files to make compatible  *
  *          with 64bit machines                  *
  *************************************************/
-/* 2001-07-22: Modified by Milan Zamazal <pdm@debian.org> to make the file
-   compilable with gcc 3.  See `#ifdef DEBIAN' for more details. */
 #ifdef SABREWIN
 #include <windows.h>
 #endif
@@ -166,7 +164,7 @@ unsigned int  n;
 unsigned long tgtsize;
 unsigned long srcsize;
 char     *tgt;
-char     *fname;
+const char     *fname;
 std::ofstream os;
 
 	if (bytes != NULL)
@@ -176,7 +174,7 @@ std::ofstream os;
 		tgt = new char[tgtsize];
 		if ((n = memcompress(tgt,tgtsize,(char *)bytes,srcsize)) != 0)
 		{
-			fname = new char[strlen(id) + 10];
+			char *fname = new char[strlen(id) + 10];
 #ifdef SABREWIN
 			sprintf(fname,"tzp\\%s.tzp",id);
 #else
@@ -184,7 +182,6 @@ std::ofstream os;
 #endif
 			if (open_libos(os,fname))
 			{
-#ifdef DEBIAN
 				uint32_t tmp;
 				tmp = ltohl(map_w);
 				os.write((char *)&tmp,sizeof(tmp));
@@ -192,11 +189,6 @@ std::ofstream os;
 				os.write((char *)&tmp,sizeof(tmp));
 				tmp = ltohl(n);
 				os.write((char *)&tmp,sizeof(tmp));
-#else
-				os.write((unsigned char *)&map_w,sizeof(map_w));
-				os.write((unsigned char *)&map_h,sizeof(map_h));
-				os.write((unsigned char *)&n,sizeof(n));
-#endif
 				os.write(tgt,n);
 			}
 			delete [] fname;
@@ -213,7 +205,7 @@ uint32_t          n;
 char              *fname;
 FILE              *f;
 int               nread;
-char              *path;
+const char              *path;
 char              *open_params;
 
 	fname = new char[strlen(id) + 10];
@@ -850,7 +842,7 @@ std::istream &operator >>(std::istream &is, TextrMap_Manager &tm)
   return (is);
 }
 
-void TextrMap_Manager::read_file(char *path)
+void TextrMap_Manager::read_file(const char *path)
 {
   std::ifstream is;
   if (open_is(is,path))
@@ -871,7 +863,7 @@ std::ostream &operator <<(std::ostream &os, TextrMap_Manager &tm)
   return (os);
 }
 
-void TextrMap_Manager::write_file(char *path)
+void TextrMap_Manager::write_file(const char *path)
 {
   std::ofstream os;
   if (open_libos(os,path))
@@ -879,7 +871,7 @@ void TextrMap_Manager::write_file(char *path)
 }
 
 
-TextrMap *TextrMap_Manager::get_map_ptr(char *id)
+TextrMap *TextrMap_Manager::get_map_ptr(const char *id)
 {
 	TextrMap *result = NULL;
 	for (int i=0;i<n_maps;i++)

@@ -247,7 +247,7 @@ void test( void )
 // --
 
 
-char *myfontpaths[] = {
+const char *myfontpaths[] = {
    "fonts",
    "../fonts",
    "lib/fonts",

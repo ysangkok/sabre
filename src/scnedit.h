@@ -31,7 +31,7 @@
 class SceneEdit
 {
 public:
-  char             *world_file;
+  const char             *world_file;
   Earth_Watch2     earth;
   int              zz;
   Rect             cliprect;
@@ -42,7 +42,7 @@ public:
   C_3DInfoManager  info_manager;
   C_DrawList2      clist;
 
-  SceneEdit(char *world_file,	Mouse *mouse, int (*) (void) = NULL);
+  SceneEdit(const char *world_file,	Mouse *mouse, int (*) (void) = NULL);
   ~SceneEdit();
   void doEdit();
   void setup();

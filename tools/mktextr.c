@@ -78,7 +78,7 @@ char *format_byte(unsigned char );
 void make_maps(char *);
 void loadpcx(char *);
 
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
   printf("MKTEXTR  02/11/97\n");
   if (argc < 6)
@@ -86,7 +86,7 @@ void main(int argc, char *argv[])
       printf("MKTEXTR <pcx_file> <map_file>"
 	     " <image_width> <image_height> <n_images>"
 	     " [renumber] [trans_color]\n");
-      return;
+      return 1;
     }
   pcx_file = argv[1];
   out_file = argv[2];
@@ -229,7 +229,6 @@ void make_maps(char *path)
 	if (color_counts[i] > 0) 
 	  fprintf(f,"\t(%d %d %d %d)\n",
 		  i,rgbs[i].r / 4, rgbs[i].g / 4, rgbs[i].b /4 );
-	}
 
     }
   printf("\ndone\n");

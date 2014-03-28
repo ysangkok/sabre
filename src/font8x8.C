@@ -31,7 +31,7 @@
 #endif
 #include "font8x8.h"
 
-extern char *build_libpath(char *);
+extern const char *build_libpath(const char *);
 
 
 void SimFont::put_string(char *str, int x, int y, int color)
@@ -44,7 +44,7 @@ void SimFont::put_string(char *str, int x, int y, int color)
     }
 }
 
-void SimFont::font_sprintf(int x, int y, int color, int opt, char *format, ...)
+void SimFont::font_sprintf(int x, int y, int color, int opt, const char *format, ...)
 {
   char buff[120];
   va_list ap;
@@ -62,7 +62,7 @@ Font8x8::Font8x8(char *s)
   char buf[80];
   FILE *file;
   int a;
-  char *path;
+  const char *path;
 
   width = height = 8;
   put_width = put_height = 8;
@@ -125,13 +125,13 @@ void Font8x8::put_char(unsigned char c, int x, int y, int color,
 }
 
 #ifndef SABREWIN
-ConsoleFont::ConsoleFont(char *fname)
+ConsoleFont::ConsoleFont(const char *fname)
 #else
-ConsoleFont::ConsoleFont(char *)
+ConsoleFont::ConsoleFont(const char *)
 #endif
 {
 #ifndef SABREWIN
-  char *path;
+  const char *path;
   fdev = new fontdev;
   MYCHECK(fdev != NULL);
   path = build_libpath(fname);

@@ -807,7 +807,7 @@ Weapon_List *Weapons_Manager::get_list(int n)
   return result;
 }
 
-void Weapons_Manager::read_file(char *path)
+void Weapons_Manager::read_file(const char *path)
 {
   std::ifstream infile;
   if (open_is(infile,path))

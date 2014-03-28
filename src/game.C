@@ -49,17 +49,17 @@ float time_expired;
 static int firstDemo = 1;
 GameSession *GameSession::theGame = NULL;
 
-GameSession::GameSession(char *world_file,
-	      char *flight_file,
-	      char *ground_unit_file,
+GameSession::GameSession(const char *world_file,
+	      const char *flight_file,
+	      const char *ground_unit_file,
 	      Mouse *mouse, 
 	      Joystick *yoke_jstk, 
 	      Joystick *rudder_jstk, 
 	      Joystick *throttle_jstk, 
 	      int mouse_throttle, 
 	      int mouse_rudder,
-	      char *instr_path,
-	      char *hud_path,
+	      const char *instr_path,
+	      const char *hud_path,
 	      int demo_mode,
 	      int (*messageHook)(void))
   : 
@@ -669,9 +669,9 @@ void GameSession::doPaletteEffect()
 }
 
 #ifndef SABREWIN
-inline void PRINTLN(std::ostream &os, char *s, ...)
+inline void PRINTLN(std::ostream &os, const char *s, ...)
 #else
-void __cdecl PRINTLN(std::ostream &os, char *s, ...)
+void __cdecl PRINTLN(std::ostream &os, const char *s, ...)
 #endif
 {
   va_list ap;
@@ -778,7 +778,7 @@ void GameSession::printResult(Flight_Node &fn, std::ostream &os)
     }
 }
 
-void /*_cdecl*/ GameSession::show_message(int bot, char *str, ...)
+void /*_cdecl*/ GameSession::show_message(int bot, const char *str, ...)
 {
   char buf[512];
   va_list ap;
@@ -807,7 +807,7 @@ void /*_cdecl*/ GameSession::show_message(int bot, char *str, ...)
     }
 }
 
-void __cdecl aiPilot::TextMessageToPlayer(char *str, ...)
+void __cdecl aiPilot::TextMessageToPlayer(const char *str, ...)
 {
 char buf[512];
 va_list ap;

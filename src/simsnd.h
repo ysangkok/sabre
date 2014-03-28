@@ -61,7 +61,7 @@ extern int sound_on(const char *id, int mode, int vol = -1);
 extern int sound_off(const char *id);
 extern int sound_off(int idx);
 extern int sound_off_all(void);
-extern int sound_load_wav(char *path, const char *id);
+extern int sound_load_wav(const char *path, const char *id);
 extern int sound_vol(const char *id, int vol);
 extern int sound_freq(const char *id, int freq);
 extern int sound_pan(const char *id, int pan);

@@ -21,9 +21,9 @@
 #define __key_map_h
 typedef struct kmp_str
 {
-	char *str;
+	const char *str;
 	int k;
 } kmp_t;
 extern kmp_t kmp[];
-int kmp_str(char *, int &);
+int kmp_str(const char *, int &);
 #endif

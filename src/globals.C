@@ -20,8 +20,6 @@
 /******************************************************************
  * globals                                                        *
  ******************************************************************/
-/* 1999-12-08: Changed by Milan Zamazal <pdm@debian.org> to point to default
-   library location on Debian, see #ifdef DEBIAN. */
 #include "stdio.h"
 #include "string.h"
 #include "vmath.h"
@@ -37,11 +35,7 @@
 #ifdef SABREWIN
 #define DEFAULT_LIB ".\\lib"
 #else
-#ifdef DEBIAN
-#define DEFAULT_LIB "/usr/share/games/sabre/lib"
-#else
 #define DEFAULT_LIB "./lib"
-#endif
 #endif
 #endif
 
@@ -65,7 +59,7 @@ int p_dbg = 0;
 Pilot *mon_pilot = NULL;
 int mouse_throttle = 0;
 int mouse_rudder = 0;
-char *lib_path = DEFAULT_LIB;
+const char *lib_path = DEFAULT_LIB;
 int dump_screen = 0;
 
 // Allows altering time rate

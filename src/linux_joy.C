@@ -46,22 +46,22 @@
 #include "linux_joy.h"
 
 
-char *LinuxJoystick::joydef0 = "joy0.def";
-char *LinuxJoystick::joydef1 = "joy1.def";
-char *LinuxJoystick::joydev0 = "/dev/js0";
-char *LinuxJoystick::joydev1 = "/dev/js1";
+const char *LinuxJoystick::joydef0 = "joy0.def";
+const char *LinuxJoystick::joydef1 = "joy1.def";
+const char *LinuxJoystick::joydev0 = "/dev/js0";
+const char *LinuxJoystick::joydev1 = "/dev/js1";
 
 const float LinuxJoystick::DEAD_ZONE = 0.05;
 
 
 
 #ifdef JOYCAL
-inline char *build_libpath(char *s)
+inline const char *build_libpath(const char *s)
 {
   return (s);
 }
 
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
   int w;
   if (argc < 2)
@@ -91,7 +91,7 @@ main(int argc, char *argv[])
     }
 }
 #else
-extern char *build_libpath(char *);
+extern char *build_libpath(const char *);
 #endif
 
 LinuxJoystick::LinuxJoystick(int which, int doCalibrate)
@@ -106,7 +106,7 @@ LinuxJoystick::LinuxJoystick(int which, int doCalibrate)
   active = open();
 }
 
-int LinuxJoystick::read_def_file(char *path)
+int LinuxJoystick::read_def_file(const char *path)
 {
   std::ifstream is(build_libpath(path));
   int i;
@@ -143,7 +143,7 @@ int LinuxJoystick::open()
   long tmpl;
   struct JS_DATA_TYPE js_data;
   int status;
-  char *devpath = joy ? joydev1 : joydev0;
+  const char *devpath = joy ? joydev1 : joydev0;
   fd = ::open(devpath, O_RDONLY);
   if (fd < 0)
     {
@@ -288,7 +288,7 @@ void LinuxJoystick::calibrate()
   float deadZone;
   int i;
 
-  char *devpath = joy ? joydev1 : joydev0;
+  const char *devpath = joy ? joydev1 : joydev0;
   fd = ::open(devpath, O_RDONLY);
   if (fd < 0)
     {
@@ -414,7 +414,7 @@ void LinuxJoystick::calibrate()
   close();
 }
 
-void LinuxJoystick::write_def_file(char *path)
+void LinuxJoystick::write_def_file(const char *path)
 {
   std::ofstream os(path);
   if (os)

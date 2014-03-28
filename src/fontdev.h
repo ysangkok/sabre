@@ -22,7 +22,9 @@
 #ifndef __fontdev_h
 #define __fontdev_h
 
-//#include "gdev.h" // we will need this later on
+#ifdef HAVE_LIBVGA
+#include "gdev.h" // we will need this later on
+#endif
 
 class fontdev {
    void *fbp;
@@ -31,8 +33,8 @@ class fontdev {
  public:
    fontdev();
    ~fontdev();
-   int load( char *fn );
-   int save( char *fn );
+   int load( const char *fn );
+   int save( const char *fn );
    int getdimx( void ) { return dimx; }
    int getdimy( void ) { return dimy; }
    int getmindimx( void ) { return mindimx; }

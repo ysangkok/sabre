@@ -72,8 +72,8 @@ int               Unguided_Manager::inited = 0;
 float BlastMap::bm_sizex = 1.0;
 float BlastMap::bm_sizey = 1.0;
 float BlastMap::bm_dur = 1.0;
-char *BlastMap::bm_map = "fire";
-char *BlastMap::bm_initmap = "fire";
+const char *BlastMap::bm_map = "fire";
+const char *BlastMap::bm_initmap = "fire";
 float BlastMap::bm_initdur = 1.0;
 
 int   Smokey::sm_n_smokes = 6;
@@ -85,8 +85,8 @@ float Smokey::sm_max_time = 60.0;
 int   Smokey::sm_has_flame = 1;
 float Smokey::sm_flame_time_max = 15.0;
 int   Smokey::sm_nflames = 3;
-char  *Smokey::sm_smokemap_id = "smoke";
-char  *Smokey::sm_firemap_id = "fire";
+const char  *Smokey::sm_smokemap_id = "smoke";
+const char  *Smokey::sm_firemap_id = "fire";
 
 inline void RANDPOINT(R_3DPoint &p, float rval)
 {
@@ -963,8 +963,8 @@ int Unguided_Manager::new_smoke(R_3DPoint &p,
 		int has_flame,
 		float flame_time_max,
 		int n_flames,
-		char *smokemap_id,
-		char *firemap_id)
+		const char *smokemap_id,
+		const char *firemap_id)
 {
   Smokey::sm_n_smokes = n_smokes;
   Smokey::sm_init_size = init_size;
@@ -991,7 +991,7 @@ int Unguided_Manager::new_round(Launch_Params &lp)
 }
 
 int Unguided_Manager::new_blast(R_3DPoint &loc, float xdim, float ydim,
-				float dur, char *bmap, char *initmap,
+				float dur, const char *bmap, const char *initmap,
 				float initdur)
 {
   BlastMap::bm_sizex = xdim;

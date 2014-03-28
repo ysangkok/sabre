@@ -48,7 +48,7 @@ void gputc( fontdev *f, int x, int y, int c, int ascii )
    return;
 }
 
-void gputs( fontdev *f, int x, int y, int c, char *s )
+void gputs( fontdev *f, int x, int y, int c, const char *s )
 {
    unsigned char *dest=(unsigned char *)G->getvbuf( ),
                   *end=(unsigned char *)G->getvbuf(1);
@@ -74,7 +74,7 @@ void gputs( fontdev *f, int x, int y, int c, char *s )
    return;
 }
 
-void gprintf( fontdev *f, int x, int y, int c, char *fmt, ... )
+void gprintf( fontdev *f, int x, int y, int c, const char *fmt, ... )
 {
    char buf[4096]; // ?!
 

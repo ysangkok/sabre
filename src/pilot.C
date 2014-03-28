@@ -75,7 +75,7 @@ void Pilot::UpdateStatics(void)
 
 Pilot::Pilot(Flight *flt, Pilot_Params *params,
 				Weapon_Instance *weapons, int n_weaps,
-				char *hndl, Target *target_obj)
+				const char *hndl, Target *target_obj)
   : aiPilot(&sbrFlight),
     sbrFlight(flt)
 {
@@ -322,7 +322,7 @@ void Pilot::set_target(Pilot *pl)
 }
 
 
-int Pilot::broadcast(char *mss, int priority, int freq, char *who)
+int Pilot::broadcast(const char *mss, int priority, int freq, const char *who)
 {
 int result = 0;
 
@@ -341,7 +341,7 @@ int result = 0;
 	return result;
 }
 
-int __cdecl Pilot::brdcst(int priority, int freq, char *mss, ...)
+int __cdecl Pilot::brdcst(int priority, int freq, const char *mss, ...)
 {
 static char mssbuff[200];
 	va_list ap;
@@ -381,7 +381,7 @@ void Pilot::sound_on(const char *soundId, int affiliation)
 }
 
 
-const char *Pilot::buildSoundId(char *suffix, Flight *targetFlight)
+const char *Pilot::buildSoundId(const char *suffix, Flight *targetFlight)
 {
 	static char soundId[64];
 	sprintf(soundId,"%s%s",targetFlight->specs->model,suffix);
@@ -390,7 +390,7 @@ const char *Pilot::buildSoundId(char *suffix, Flight *targetFlight)
 
 
 
-Pilot *Pilot::getPilot(char *hndl)
+Pilot *Pilot::getPilot(const char *hndl)
 {
 	Pilot *result = NULL;
 	for (int i=0;i<npilots;i++)

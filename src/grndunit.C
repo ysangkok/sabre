@@ -312,7 +312,7 @@ std::istream &operator >>(std::istream &is, Ground_Unit_Manager &gum)
   return(is);
 }
 
-void Ground_Unit_Manager::read_file(char *path)
+void Ground_Unit_Manager::read_file(const char *path)
 {
   std::ifstream is;
   file_context = "Ground_Unit_Manager";
@@ -376,7 +376,7 @@ std::ostream &operator >>(std::ostream &os, Ground_Unit_Manager &gum)
   return(os);
 }
 
-void Ground_Unit_Manager::write_file(char *path)
+void Ground_Unit_Manager::write_file(const char *path)
 {
   std::ofstream os;
   if (open_libos(os,path))

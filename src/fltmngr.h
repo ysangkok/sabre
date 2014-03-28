@@ -133,7 +133,7 @@ public:
 	}
 
 	~Flight_Manager();
-	int read_file(char *);
+	int read_file(const char *);
 	friend std::istream &operator >>(std::istream &, Flight_Manager &);
 	void read(std::istream &);
 	void update(Unguided_Manager *um = NULL);
@@ -179,9 +179,9 @@ public:
 		else
 			return NULL;
 	}
-	void readNodeFile(char *);
+	void readNodeFile(const char *);
 	void readNodes(std::istream &is);
-	void readFliteFile(char *);
+	void readFliteFile(const char *);
 	void readFlites(std::istream &is);
 };
 

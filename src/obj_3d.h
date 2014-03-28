@@ -278,8 +278,8 @@ public:
   void translate(R_3DPoint &);
   void add_draw_list(DrawList &, Port_3D &port);
   void get_targets(Target_List &);
-  void setTextrFlag(int flag, char *id, int id_len);
-  void setVisibleFlag(int flag, char *id, int id_len);
+  void setTextrFlag(int flag, const char *id, int id_len);
+  void setVisibleFlag(int flag, const char *id, int id_len);
 };
 
 #endif

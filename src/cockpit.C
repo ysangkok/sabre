@@ -75,7 +75,7 @@ Cockpit::Cockpit(unsigned char *byts,
   setup_instruments(ipath,*ipanel);
 }
 
-Cockpit::Cockpit(char *tmap_id, char *ipath)
+Cockpit::Cockpit(const char *tmap_id, const char *ipath)
 {
   TextrMap *tmap = map_man->get_map_ptr(tmap_id);
   if (tmap == NULL)

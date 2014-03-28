@@ -45,7 +45,7 @@ extern int p_dbg;
 extern Pilot *mon_pilot;
 extern int mouse_throttle;
 extern int mouse_rudder;
-extern char *lib_path;
+extern const char *lib_path;
 extern REAL_TYPE shadow_level;
 extern int dump_screen;
 

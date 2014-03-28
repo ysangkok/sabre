@@ -198,7 +198,7 @@ const sFormationData &sFormationData::GetFormationData(int formation)
 	return (formationData[formation]);
 }
 
-const sFormationData &sFormationData::GetFormationData(char *formation_name)
+const sFormationData &sFormationData::GetFormationData(const char *formation_name)
 {
 int formation = 0;
 
@@ -233,7 +233,7 @@ const sFormationData &fmd = GetFormationData(formation);
       result = fmd.wingmanOffsets[wingpos];
 }
 
-void sFormationData::GetWingmanVector(char *formation_name,
+void sFormationData::GetWingmanVector(const char *formation_name,
 													int wingpos,
 													sVector &result)
 {

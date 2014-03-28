@@ -33,8 +33,8 @@
 
 // standard vga mode
 int screen_dimx=320, screen_dimy=200;
-char *fontfn;
-char *editfontpaths[]={
+const char *fontfn;
+const char *editfontpaths[]={
    "/usr/lib/kbd/consolefonts",
    "lib/fonts",
    "../lib/fonts",
@@ -236,7 +236,7 @@ static void showall( void )
    G->update();
 }
 
-void edit( char *fn )
+void edit( const char *fn )
 {
    if( SYSFONT->load("simple-5x6") )
      return;

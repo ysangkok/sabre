@@ -315,13 +315,13 @@ public:
 	static aiPilot *cashedPilot;	/* to avoid too many array lookups */
 	static void AddaiPilot(aiPilot *pilot);
 	static aiPilot *GetaiPilot(unsigned long idx);
-	static aiPilot *GetaiPilot(char *handle);
+	static aiPilot *GetaiPilot(const char *handle);
 	static int GetPilotCount();
 	static void aiPilotUpdateCallback(int, int, sFlightModel *, void *);
 	static void FlushaiPilots();
 	static void RemoveaiPilot(aiPilot *pil);
 	static aiPilot *GetPilotByIndex(int i);
-	static void __cdecl TextMessageToPlayer(char *, ...);
+	static void __cdecl TextMessageToPlayer(const char *, ...);
 	static void BodyVector2WorldVector(int idx, const sVector &body, sVector &world);
 	static void WorldVector2BodyVector(int idx, const sVector &world, sVector &body);
 	static void BodyPoint2WorldPoint(int idx, const sPoint &body, sPoint &world);

@@ -73,20 +73,20 @@ public:
 
   friend std::istream & operator >>(std::istream &, Z_Node_Manager &);
   void read(std::istream &is);
-  int read_file(char *);
+  int read_file(const char *);
   void create();
   friend std::ostream & operator <<(std::ostream &, Z_Node_Manager &);
   void write(std::ostream &os);
-  int write_file(char *);
+  int write_file(const char *);
   void add(C_ShapeInfo &new_shape, shape_params &new_params);
   void write_params(std::ostream &os, int);
   void deleteShape(int which);
   void buildShapes();
-  void setId(char *);
+  void setId(const char *);
 
   static Z_Node_Manager **g_zmanagers;
   static int nzmanagers;
-  static Z_Node_Manager *getZNode(char *);
+  static Z_Node_Manager *getZNode(const char *);
 };
 
 

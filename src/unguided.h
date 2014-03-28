@@ -131,8 +131,8 @@ public:
   static float bm_sizex;
   static float bm_sizey;
   static float bm_dur;
-  static char *bm_map;
-  static char *bm_initmap;
+  static const char *bm_map;
+  static const char *bm_initmap;
   static float bm_initdur;
 };
 
@@ -157,9 +157,9 @@ public:
   Bitmap_View *views[MAX_VSMOKES];
   int         next_view;
   int         nview;
-  char        *smokemap_id;
+  const char        *smokemap_id;
   TextrMap    *smokemap;
-  char        *firemap_id;
+  const char        *firemap_id;
   TextrMap    *firemap;
   float       init_size;
   float       d_size,d_len;
@@ -184,8 +184,8 @@ public:
   static int   sm_has_flame;
   static float sm_flame_time_max;
   static int   sm_nflames;
-  static char  *sm_smokemap_id;
-  static char  *sm_firemap_id;
+  static const char  *sm_smokemap_id;
+  static const char  *sm_firemap_id;
   
 
   Smokey();
@@ -314,8 +314,8 @@ public:
   BlastMap *blasts[MAX_BLASTS];
   int nblasts;
 
-  int new_blast(R_3DPoint &, float, float, float, char * = "fire",
-		char * = "smoke", float = 1.0);
+  int new_blast(R_3DPoint &, float, float, float, const char * = "fire",
+		const char * = "smoke", float = 1.0);
 
   int endProjectilePath(Projectile *p);
 
@@ -334,8 +334,8 @@ public:
 		int has_flame,
 		float flame_time_max,
 		int n_flames,
-		char *smokmap_id,
-		char *firemap_id);
+		const char *smokmap_id,
+		const char *firemap_id);
 
   Smoke_Trail *smoke_trails[MAX_STRAILS];
   int new_smoke_trail(Flight &);

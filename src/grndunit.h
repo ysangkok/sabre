@@ -181,11 +181,11 @@ public:
 
   void read(std::istream &);
   friend std::istream &operator >>(std::istream &, Ground_Unit_Manager &);
-  void read_file(char *);
+  void read_file(const char *);
 
   void write(std::ostream &);
   friend std::ostream &operator <<(std::ostream &, Ground_Unit_Manager &);
-  void write_file(char *);
+  void write_file(const char *);
   void addTargetList(Target_List &);
   Ground_Unit_Specs *getSpecs(char *);
 };

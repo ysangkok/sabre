@@ -69,7 +69,7 @@ extern float raw_time;
 #define RUDDER_CENTER_CHAR (unsigned char) 139
 #define RUDDER_CHAR (unsigned char) 140
 
-void Hud::read_file(char *path)
+void Hud::read_file(const char *path)
 {
 	std::ifstream is;
 	if (open_is(is,path))
@@ -148,7 +148,7 @@ Pilot &pilot = *my_node.pilot;
 	}
 	else
 	{
-		char *cc;
+		const char *cc;
 		const char *pp;
 		if (my_flight.controls.autopilot)
 		{

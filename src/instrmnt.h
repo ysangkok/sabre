@@ -174,7 +174,7 @@ public:
   void init();
 };
 
-void setup_instruments(char *, Instrument_Panel &);
+void setup_instruments(const char *, Instrument_Panel &);
 extern Instrument_Panel instrument_panel;
 
 #endif

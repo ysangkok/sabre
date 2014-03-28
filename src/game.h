@@ -30,9 +30,9 @@
 class GameSession
 {
 public:
-	char                *world_file;
-	char                *flight_file;
-	char                *ground_unit_file;
+	const char                *world_file;
+	const char                *flight_file;
+	const char                *ground_unit_file;
 	Flight_Manager      fm;
 	Unguided_Manager    um;
 	Ground_Unit_Manager gm;
@@ -48,19 +48,19 @@ public:
 	int                 pflag;
 	int                 zz;
 	int                 demo_mode;
-	char                *instr_path;
+	const char                *instr_path;
 	int                 (*messageHook)(void);
-	GameSession(char *world_file,
-			char *flight_file,
-			char *ground_unit_file,
+	GameSession(const char *world_file,
+			const char *flight_file,
+			const char *ground_unit_file,
 			Mouse *yoke_mouse, 
 			Joystick *yoke_jstk, 
 			Joystick *rudder_jstk,
 			Joystick *throttle_jstk, 
 			int mouse_throttle, 
 			int mouse_rudder,
-			char *instr_path,
-			char *hud_path,
+			const char *instr_path,
+			const char *hud_path,
 			int = 0,
 			int (*) (void) = NULL);
 	~GameSession();
@@ -75,7 +75,7 @@ public:
 	void doPaletteEffect();
 	void printResults(std::ostream &);
 	void printResult(Flight_Node &, std::ostream &);
-	void __cdecl show_message(int bot, char *str, ... );
+	void __cdecl show_message(int bot, const char *str, ... );
 	Flight_Controls *getFlightControls()
 	{
 		Flight &flt = fm.get_view_flight();

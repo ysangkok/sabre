@@ -26,6 +26,7 @@
  * Device input (mouse & joystick)               *
  * 12/98 David Vandewalle : SDL Port             *
  *************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -56,7 +57,7 @@ int Mouse::ResetDriver( void ) const
 {
 #ifdef HAVE_LIBSDL
 // init mouse events for SDL ...
-return 1;
+return true;
 #else
 #ifndef SABREWIN
   if (mouse_manual_flag)
@@ -74,7 +75,7 @@ return 1;
   else
     vga_setmousesupport(1);
 #endif
-  return 1;
+  return (1);
 #endif
 }
 
@@ -99,9 +100,9 @@ void Mouse::Update( void )
 {
 #ifdef HAVE_LIBSDL
      float scx,scy;
-     unsigned short SDL_x,SDL_y;
+     int SDL_x,SDL_y;
      SDL_PollEvent(NULL);
-     buttons = SDL_GetMouseState(&SDL_x, &SDL_y);    
+     buttons = SDL_GetMouseState(&SDL_x, &SDL_y);
      screenx = SDL_x;
      screeny = SDL_y;
      scx = (float) screenx;

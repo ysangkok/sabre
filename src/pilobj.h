@@ -64,7 +64,7 @@ public:
   int flag;
   float time_limit;
   float elapsed_time;
-  char *mssg;
+  const char *mssg;
   Pilot *frm;
   PilotMessage()
   {
@@ -75,7 +75,7 @@ public:
     frm = NULL;
   }
   void update();
-  int set_message(char *mss, int priority, Pilot *fr);
+  int set_message(const char *mss, int priority, Pilot *fr);
 };
 
 #endif

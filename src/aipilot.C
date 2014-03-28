@@ -2569,7 +2569,7 @@ aiPilot *aiPilot::GetaiPilot(unsigned long idx)
   Retrieve a pilot from the global array
   by handle
  */
-aiPilot *aiPilot::GetaiPilot(char *handle)
+aiPilot *aiPilot::GetaiPilot(const char *handle)
 {
 	aiPilot *result =NULL;
 	for (int i=0;i<GetPilotCount();i++)

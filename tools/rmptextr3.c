@@ -104,7 +104,7 @@ void loadpal(char *);
 int  maprgb(rgb_info *rinfo, rgb_info *map, int n);
 float calc_rgb_distance(_rgb *rgb0, _rgb *rgb1);
 
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
   int tmp;
   fprintf(stderr,"rmptextr  07/19/97\n");
@@ -112,7 +112,7 @@ void main(int argc, char *argv[])
     {
       fprintf(stderr,"rmptextr <pcx_file> <output_file> <palette_file> <id>"
 	     " <image_width> <image_height> <trans> <reverse_y>\n");
-      return;
+      return 1;
     }
   pcx_file    =  argv[1];
   out_file =     argv[2];

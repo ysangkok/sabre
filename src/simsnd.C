@@ -155,7 +155,7 @@ void sound_destroy(void)
 #endif
 }
 
-int sound_load_wav(char *path, const char *id)
+int sound_load_wav(const char *path, const char *id)
 {
 #ifdef USES_DSOUND
   int result = dsnd_load_wav(path,id);

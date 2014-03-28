@@ -37,10 +37,10 @@ public:
 
   static const float DEAD_ZONE;
 
-  static char *joydef0;
-  static char *joydef1;
-  static char *joydev0;
-  static char *joydev1;
+  static const char *joydef0;
+  static const char *joydef1;
+  static const char *joydev0;
+  static const char *joydev1;
 
   int max_x,min_x;
   int max_y,min_y;
@@ -79,8 +79,8 @@ public:
   int open();
   void close();
   int update();
-  int read_def_file(char *);
-  void write_def_file(char *);
+  int read_def_file(const char *);
+  void write_def_file(const char *);
 
   float getx()
     {

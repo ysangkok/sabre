@@ -44,7 +44,7 @@ enum	{
 
 struct FormationDat
 {
-	char * name;
+	const char * name;
 	sREAL woffsets[sfFORMATION_MAX][3];
 	sREAL goffsets[sfMAXGROUPS][3];
 };
@@ -63,11 +63,11 @@ public:
 	static struct FormationDat formationDat[sfNFORMATION_TYPES];
 	static void Init(void);
 	static const sFormationData &GetFormationData(int formation);
-	static const sFormationData &GetFormationData(char *formation_name);
+	static const sFormationData &GetFormationData(const char *formation_name);
 	static void GetWingmanVector(int formation,
 								int wingpos,
 								sVector &result);
-	static void GetWingmanVector(char *formation_name,
+	static void GetWingmanVector(const char *formation_name,
 								int wingpos,
 								sVector &result);
 };

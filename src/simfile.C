@@ -38,12 +38,12 @@
 #include "simsnd.h"
 #include "simfile.h"
 
-extern char *lib_path;
-char *current_path = "";
-char *file_context = "";
+extern const char *lib_path;
+const char *current_path = "";
+const char *file_context = "";
 FILE *simlog = stdout;
 
-char *build_libpath(char *filename)
+const char *build_libpath(const char *filename)
 {
   static char tmppath[200];
   int l = strlen(filename);
@@ -61,7 +61,7 @@ char *build_libpath(char *filename)
   return(tmppath);
 }
 
-void read_texture_file(char *path)
+void read_texture_file(const char *path)
 {
   std::ifstream is;
 #ifdef SABREWIN
@@ -81,7 +81,7 @@ void read_texture_file(char *path)
     }
 }
 
-void read_palette_file(char *path)
+void read_palette_file(const char *path)
 {
   color_spec cs;
   std::ifstream is;
@@ -94,7 +94,7 @@ void read_palette_file(char *path)
     }
 }
 
-void read_sound_file(char *path)
+void read_sound_file(const char *path)
 {
   std::ifstream is;
   int		nsounds;
@@ -154,9 +154,9 @@ int get_line(std::istream &is, char *buff, int size)
   return 0;
 }
 
-int open_is(std::ifstream &is, char *path)
+int open_is(std::ifstream &is, const char *path)
 {
-  char *lpath = build_libpath(path);
+  const char *lpath = build_libpath(path);
   current_path = lpath;
   sim_printf("Opening \"%s\" for reading\n",
 	     lpath);
@@ -167,7 +167,7 @@ int open_is(std::ifstream &is, char *path)
 }
 
 
-int open_os(std::ofstream &os, char *path)
+int open_os(std::ofstream &os, const char *path)
 {
   os.open(path);
   if (!os.good())
@@ -175,9 +175,9 @@ int open_os(std::ofstream &os, char *path)
   return (os.good());
 }
 
-int open_libos(std::ofstream &os, char *path)
+int open_libos(std::ofstream &os, const char *path)
 {
-  char *lpath = build_libpath(path);
+  const char *lpath = build_libpath(path);
   os.open(lpath);
   if (!os.good())
     error_jump("Unable to Open %s For Writing\n",lpath);

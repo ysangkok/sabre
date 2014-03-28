@@ -45,7 +45,7 @@
 
 extern void buffer2ppm();
 
-SceneEdit::SceneEdit(char *world_file,Mouse *,int (*messageHook)(void))
+SceneEdit::SceneEdit(const char *world_file,Mouse *,int (*messageHook)(void))
   : clist(&info_manager)
 {
   this->world_file = world_file;

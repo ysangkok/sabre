@@ -89,8 +89,8 @@ enum {
 
 	enum { LEFT, RIGHT };
 
-	static char *maneuver2string[];
-	static char *Maneuver2String(int);
+	static const char *maneuver2string[];
+	static const char *Maneuver2String(int);
 };
 
 #define IMNVR_DIRBIT   0x01
@@ -174,7 +174,7 @@ public:
 	{
 		return (((int)(flags & IMNVR_LOOPBIT)) != 0);
 	}
-	char *GetManeuverString()
+	const char *GetManeuverString()
 	{
 		return (sManeuver::Maneuver2String(maneuver));
 	}

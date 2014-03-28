@@ -102,7 +102,7 @@ float calcZ(unsigned char color);
 void make_terrains(char *);
 void loadpcx(char *);
 
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
   int tmp;
   fprintf(stderr,"mkterrain  06/24/97\n");
@@ -110,7 +110,7 @@ void main(int argc, char *argv[])
     {
       fprintf(stderr,"mterrain <pcx_file> <terrain_file>"
 	     " <image_width> <image_height> [max_zva]\n");
-      return;
+      return 1;
     }
   pcx_file = argv[1];
   out_file = argv[2];

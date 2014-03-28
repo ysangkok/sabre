@@ -28,7 +28,7 @@ public:
 enum { INT_INPUT, STR_INPUT, DICT_STR, DICT_STR_NF };
 typedef struct dict_str
 {
-  char *str;
+  const char *str;
   int  val;
 } dict;
 static int readint(std::istream &is, char tok0 = 0, char tok1 = 0);

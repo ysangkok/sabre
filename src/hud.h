@@ -49,7 +49,7 @@ public:
   // where to show target tracking info
   int trg_x,trg_y;
   SimFont *the_font;
-  Hud(SimFont *fnt, char *path = NULL)
+  Hud(SimFont *fnt, const char *path = NULL)
     : 
     hud_color(4),
     hud_x(5),
@@ -70,7 +70,7 @@ public:
   void do_hud(Flight_Node &);
   void do_hud_stuff(int, int, Flight &);
   friend std::istream & operator >>(std::istream &, Hud &);
-  void read_file(char *path);
+  void read_file(const char *path);
 
   void do_hud_formation_geometry(const sTargetGeometry &, Port_3D &);
   void do_hud_target_geometry(const sTargetGeometry &, Port_3D &);

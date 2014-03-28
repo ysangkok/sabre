@@ -20,7 +20,7 @@
 #ifndef __simerr_h
 #define __simerr_h
 
-void error_jump(char *, ... );
+void error_jump(const char *, ... );
 #undef MYCHECK
 #define MYCHECK(p) ((p) ? (void) 0 : (void) error_jump( \
 						  "check failed %s", #p) )

@@ -16,16 +16,21 @@
 // 
 //
 
-// Mon Dec 29 16:40:06 EET 1997 (proff@alf.melmac)
-// created file fontutils.h
+// Mon Dec 22 20:43:25 EET 1997 (proff@alf.melmac)
+// created file fontedit.h
 
-#ifndef __fontutils_h
-#define __fontutils_h
+#ifndef __fontedit_h
+#define __fontedit_h
 
-#include "fontdev.h"
+#include <stdio.h>
+#include <string.h>
+#include <getopt.h>
 
-void gputc( fontdev *f, int x, int y, int c, int ascii );
-void gputs( fontdev *f, int x, int y, int c, char *s );
-void gprintf( fontdev *f, int x, int y, int c, char *fmt, ... );
+#include "gdev-svgalib.h"
+#include "fontutils.h"
 
-#endif // __fontutils_h
+void usage( void );
+void parseargs( int argc, char **argv );
+void edit( const char *fn );
+
+#endif // __fontedit_h

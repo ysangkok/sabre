@@ -67,7 +67,7 @@ extern float world_scale;
 Z_Node_Manager **Z_Node_Manager::g_zmanagers = NULL;
 int Z_Node_Manager::nzmanagers = 0;
 
-Z_Node_Manager *Z_Node_Manager::getZNode(char *id)
+Z_Node_Manager *Z_Node_Manager::getZNode(const char *id)
 {
   Z_Node_Manager *result = NULL;
   if (g_zmanagers != NULL)
@@ -116,15 +116,15 @@ Z_Node_Manager::~Z_Node_Manager()
     delete id;
 }
 
-void Z_Node_Manager::setId(char *new_id)
+void Z_Node_Manager::setId(const char *new_id)
 {
   if (id != NULL)
     delete id;
   id = strdup(new_id);
 }
 
-static char *zzpath;
-int Z_Node_Manager::read_file(char *path)
+static const char *zzpath;
+int Z_Node_Manager::read_file(const char *path)
 {
   int result = 0;
   std::ifstream infile;
@@ -290,7 +290,7 @@ void Z_Node_Manager::create()
 
 }
 
-int Z_Node_Manager::write_file(char *path)
+int Z_Node_Manager::write_file(const char *path)
 {
   int result = 0;
   std::ofstream ofile;

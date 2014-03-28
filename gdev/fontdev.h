@@ -31,8 +31,8 @@ class fontdev {
  public:
    fontdev();
    ~fontdev();
-   int load( char *fn );
-   int save( char *fn );
+   int load( const char *fn );
+   int save( const char *fn );
    int getdimx( void ) { return dimx; }
    int getdimy( void ) { return dimy; }
    int getmindimx( void ) { return mindimx; }
@@ -45,6 +45,6 @@ class fontdev {
    void shift( int what, int where );
 };
 
-extern char **fontpaths;
+extern const char **fontpaths;
 
 #endif // __fontdev_h

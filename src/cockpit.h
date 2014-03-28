@@ -49,7 +49,7 @@ public:
 	  int tclr,
 	  char *ipath);
   
-  Cockpit(char *tmap_id, char *ipath);
+  Cockpit(const char *tmap_id, const char *ipath);
 
   ~Cockpit();
 

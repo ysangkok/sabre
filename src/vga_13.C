@@ -146,9 +146,17 @@ void init_vga_13(void)
 #ifdef HAVE_LIBSDL // viewing windows are kinda stupid under SDL. I cut em out.
                    // maybe hack through the rest of the code later, and hack
                    // em all out for speed.
-window_width  = dimx;
-window_height = dimy;
-                      
+  /* dh
+   * 
+   window_width  = dimx;
+   window_height = dimy;
+   */
+  if (window_width != 0)
+    dimx = window_width;
+  if (window_height != 0)
+    dimy = window_height;
+  printf("%d %d %d %d\n",
+	 window_width, window_height, dimx, dimy);
 #else
   if (window_width == 0)
     window_width = dimx;
@@ -565,14 +573,15 @@ void vga13_resume()
 
 }
 
-void vga13_begin_scene()
+void vga13_drawprep()
 {
 
+}
+
+void vga13_begin_scene()
+{
 }
 
 void vga13_end_scene()
 {
-
 }
-
-

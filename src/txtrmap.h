@@ -223,11 +223,11 @@ public:
 	int add_map(TextrMap &);
 
 	void read(std::istream &is);
-	void read_file(char *);
+	void read_file(const char *);
 	friend std::istream &operator >>(std::istream &is, TextrMap_Manager &);
 
 	void write(std::ostream &os);
-	void write_file(char *);
+	void write_file(const char *);
 	friend std::ostream &operator <<(std::ostream &os, TextrMap_Manager &);
 
 
@@ -247,7 +247,7 @@ public:
 			return (NULL);
 	}
 
-	TextrMap *get_map_ptr(char *id);
+	TextrMap *get_map_ptr(const char *id);
 
 	int getReserved()
 	{

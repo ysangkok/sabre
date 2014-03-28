@@ -25,9 +25,6 @@
  * Author : Dan Hammer                           *
  * Main file                                     *
  *************************************************/
-/* Small fix by Milan Zamazal <pdm@debian.org> in 1999 to disable big security
-   hole, see #ifdef DEBIAN.
-   1999-12-17: Without SVGAlib compilation fix. */
 #define USING_SOUNDCLIENT
 
 #include <stdio.h>
@@ -43,11 +40,7 @@
 #include <fstream>
 #include <setjmp.h>
 #include <stdarg.h>
-#ifdef DEBIAN
-#ifndef DEBIAN_NO_LIBVGA
-#include <vga.h>
-#endif
-#else
+#ifdef HAVE_LIBVGA
 #include <vga.h>
 #endif
 
@@ -71,16 +64,16 @@ int xx = 0, yy = 0;
 int mode = 0;
 extern int frame_switch;
 int mouse_x,mouse_y;
-char *world_file  = "a.wld";
-char *ed_world_file = "ed.wld";
-char *flight_file = "a.flt";
-char *ground_file = NULL;
+const char *world_file  = "a.wld";
+const char *ed_world_file = "ed.wld";
+const char *flight_file = "a.flt";
+const char *ground_file = NULL;
 /*
 char *ground_file = "a.gru";
 */
-char *hud_file    = "a.hud";
-char *cpk_file    = "a.cpk";
-char *sound_file =  "a.wvsf";
+const char *hud_file    = "a.hud";
+const char *cpk_file    = "a.cpk";
+const char *sound_file =  "a.wvsf";
 
 /*
  *  control flags
@@ -126,17 +119,15 @@ void mysigfpe(int fp);
 /*************************************************************
  * MAIN                                                      *
  *************************************************************/
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
-#ifdef DEBIAN
-#ifndef DEBIAN_NO_LIBVGA
+#ifdef HAVE_LIBVGA
   vga_disabledriverreport();
   if (vga_init())
     {
       printf("Cannot initialize VGA device.\n");
       return -1;
     }
-#endif
 #endif
   int i;
   int m;
@@ -373,7 +364,7 @@ void doSceneEdit()
   theEdit.doEdit();
 }
 
-void error_jump(char *format, ... )
+void error_jump(const char *format, ... )
 {
   restorecrtmode();
   if (format != NULL)
