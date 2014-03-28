@@ -39,8 +39,8 @@ extern int   MXSCREEN_HEIGHT;            /* height of video screen             *
 extern int   SCREEN_PITCH;               /* actual byte width of screen        */
 extern int   MAX_X;                      /* usually SCREEN_WIDTH - 1           */
 extern int   MAX_Y;                      /* usually SCREEN_HEIGHT - 1          */
-extern int   N_COLORS;                   /* 256 for now                        */
-extern int   PALETTE_SIZE;               /* 256 * 3                            */
+extern const int   N_COLORS;                   /* 256 for now                        */
+extern const int   PALETTE_SIZE;               /* 256 * 3                            */
 
 extern SimFont      *g_font;
 extern Rect         cliprect;

@@ -1,5 +1,5 @@
 #ifndef MSDOS
-static char rcsid[] = "$Id: inflate.c,v 1.1 1994/10/19 16:27:27 brian Exp $";
+//static char rcsid[] = "$Id: inflate.c,v 1.1 1994/10/19 16:27:27 brian Exp $";
 #endif
 
 /* inflate.c -- put in the public domain by Mark Adler

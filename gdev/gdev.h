@@ -51,7 +51,7 @@ class gdev {
  protected:
    int dimx, dimy, dimz;
    int vdimx, vdimy, vx, vy;
-   void *vbuf, *vbufend;
+   unsigned char *vbuf, *vbufend;
    enum { 
       fulldevice	=0x00000001,
       graphics_on	=0x00000002

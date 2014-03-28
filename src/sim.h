@@ -30,10 +30,6 @@ extern float player_hit_scaler;
 
 #include "rtkey.h"
 
-#pragma warning ( 4 : 4136 )
-#pragma warning ( 4 : 4244 )
-#pragma warning ( 4 : 4305 )
-
 #ifndef SABREWIN
 #define __cdecl 
 #endif

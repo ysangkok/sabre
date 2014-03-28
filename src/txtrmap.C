@@ -164,7 +164,7 @@ unsigned int  n;
 unsigned long tgtsize;
 unsigned long srcsize;
 char     *tgt;
-const char     *fname;
+char     *fname;
 std::ofstream os;
 
 	if (bytes != NULL)
@@ -174,7 +174,7 @@ std::ofstream os;
 		tgt = new char[tgtsize];
 		if ((n = memcompress(tgt,tgtsize,(char *)bytes,srcsize)) != 0)
 		{
-			char *fname = new char[strlen(id) + 10];
+			fname = new char[strlen(id) + 10];
 #ifdef SABREWIN
 			sprintf(fname,"tzp\\%s.tzp",id);
 #else
@@ -206,7 +206,7 @@ char              *fname;
 FILE              *f;
 int               nread;
 const char              *path;
-char              *open_params;
+const char              *open_params;
 
 	fname = new char[strlen(id) + 10];
 #ifdef SABREWIN

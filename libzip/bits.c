@@ -63,6 +63,7 @@
  *          Compress the source buffer src into the target buffer tgt.
  */
 
+#include <string.h>
 #include "zip.h"
 
 /* FUNCTION PROTOTYPES (created by emacs, do not edit) */
@@ -70,11 +71,11 @@ local void bits_init (FILE *zipfile);
 void bits_send_bits(int value, int length);
 unsigned bits_reverse(unsigned int code, int len);
 void bits_windup(void);
-void bits_copy_block(char *buf, unsigned int len, int header);
+void bits_copy_block(uch *buf, unsigned int len, int header);
 int bits_seekable(void);
-ulg memcompress(char *tgt, ulg tgtsize, char *src, ulg srcsize);
+ulg memcompress(uch *tgt, ulg tgtsize, uch *src, ulg srcsize);
 local void flush_outbuf(unsigned int w, unsigned int bytes);
-local int mem_read(char *b, unsigned int bsize);
+local int mem_read(uch *b, unsigned int bsize);
 /* END FUNCTION PROTOTYPES (created by emacs, do not edit) */
 
 extern ulg deflate_window_size; /* size of sliding window */
@@ -106,10 +107,10 @@ local int bi_valid;
  * are always zero.
  */
 
-char file_outbuf[1024];
+uch file_outbuf[1024];
 /* Output buffer for compression to file */
 
-local char *in_buf, *out_buf;
+local uch *in_buf, *out_buf;
 /* Current input and output buffers. in_buf is used only for in-memory
  * compression.
  */
@@ -122,7 +123,7 @@ local unsigned in_offset, out_offset;
 local unsigned in_size, out_size;
 /* Size of current input and output buffers */
 
-int (*bits_read_buf) OF((char *buf, unsigned size));
+int (*bits_read_buf) OF((uch *buf, unsigned size));
 /* Current input function. Set to mem_read for in-memory compression */
 
 #ifdef DEBUG
@@ -235,7 +236,7 @@ void bits_windup(void)
  * Copy a stored block to the zip file, storing first the length and its
  * one's complement if requested.
  */
-void bits_copy_block(char *buf, unsigned int len, int header)
+void bits_copy_block(uch *buf, unsigned int len, int header)
 {
     bits_windup();              /* align on byte boundary */
 
@@ -287,7 +288,7 @@ int bits_seekable(void)
  * the first six bytes (method and crc).
  */
 
-ulg memcompress(char *tgt, ulg tgtsize, char *src, ulg srcsize)
+ulg memcompress(uch *tgt, ulg tgtsize, uch *src, ulg srcsize)
                            /* target and source buffers */
                            /* target and source sizes */
 {
@@ -298,7 +299,7 @@ ulg memcompress(char *tgt, ulg tgtsize, char *src, ulg srcsize)
 
     if (tgtsize <= 6L) error("target buffer too small");
 
-    crc = updcrc((char *)NULL, 0);
+    crc = updcrc(NULL, 0);
     crc = updcrc(src, (extent) srcsize);
 
     bits_read_buf = mem_read;
@@ -360,7 +361,7 @@ local void flush_outbuf(unsigned int w, unsigned int bytes)
  * difference on 16 bit machines. mem_read() may be called several
  * times for an in-memory compression.
  */
-local int mem_read(char *b, unsigned int bsize)
+local int mem_read(uch *b, unsigned int bsize)
 {
     if (in_offset < in_size) {
         ulg block_size = in_size - in_offset;

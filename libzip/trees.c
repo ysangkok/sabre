@@ -559,7 +559,7 @@ local void gen_bitlen(tree_desc *desc)
         while (n != 0) {
             m = heap[--h];
             if (m > max_code) continue;
-            if (tree[m].Len != (unsigned) bits) {
+            if (tree[m].Len != bits) {
                 Trace((stderr,"code %d bits %d->%d\n", m, tree[m].Len, bits));
                 opt_len += ((long)bits-(long)tree[m].Len)*(long)tree[m].Freq;
                 tree[m].Len = bits;
@@ -863,7 +863,7 @@ local void send_all_trees(int lcodes, int dcodes, int blcodes)
  * trees or store, and output the encoded block to the zip file. This function
  * returns the total compressed length for the file so far.
  */
-ulg ct_flush_block(char *buf, ulg stored_len, int eof)
+ulg ct_flush_block(uch *buf, ulg stored_len, int eof)
      /* input block, or NULL if too old */
      /* length of input block */
      /* true if this is the last block for a file */
@@ -915,16 +915,16 @@ ulg ct_flush_block(char *buf, ulg stored_len, int eof)
         /* Since LIT_BUFSIZE <= 2*WSIZE, the input data must be there: */
         if (buf == NULL) error ("block vanished");
 
-        bits_copy_block(buf, (unsigned)stored_len, 0); /* without header */
+        bits_copy_block(buf, stored_len, 0); /* without header */
         compressed_len = stored_len << 3;
         *file_method = STORE;
     } else
 #endif /* PGP */
 
 #ifdef FORCE_METHOD
-    if (Compression_level == 2 && buf != (char*)NULL) { /* force stored block */
+    if (Compression_level == 2 && buf != NULL) { /* force stored block */
 #else
-    if (stored_len+4 <= opt_lenb && buf != (char*)NULL) {
+    if (stored_len+4 <= opt_lenb && buf != NULL) {
                        /* 4: two words for the lengths */
 #endif
         /* The test buf != NULL is only necessary if LIT_BUFSIZE > WSIZE.
@@ -937,7 +937,7 @@ ulg ct_flush_block(char *buf, ulg stored_len, int eof)
         compressed_len = (compressed_len + 3 + 7) & ~7L;
         compressed_len += (stored_len + 4) << 3;
 
-        bits_copy_block(buf, (unsigned)stored_len, 1); /* with header */
+        bits_copy_block(buf, stored_len, 1); /* with header */
 
 #ifdef FORCE_METHOD
     } else if (Compression_level == 3) { /* force static trees */

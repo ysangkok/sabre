@@ -31,7 +31,7 @@
 #include "target.h"
 #include "zview.h"
 
-typedef enum ground_unit_types { base, AAA, armor };
+enum ground_unit_types { base, AAA, armor };
 
 class Ground_Unit_Specs 
 {

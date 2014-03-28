@@ -1025,7 +1025,7 @@ int aiFlite::IncViewPilot()
   return (viewPilot);
 }
 
-void aiFlite::SetManeuver(int maneuver, long flags, sREAL d0,
+void aiFlite::SetManeuver(int maneuver, unsigned long flags, sREAL d0,
 			  sREAL d1, sREAL d2)
 {
   for (int i=0;i<GetCount();i++)

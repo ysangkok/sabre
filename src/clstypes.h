@@ -20,7 +20,7 @@
 #ifndef __clstypes_h
 #define __clstypes_h
 
-typedef enum class_types { C_3DObject_Base_t, C_3DObject_t, Flight_ZViewer_t,
+enum class_types { C_3DObject_Base_t, C_3DObject_t, Flight_ZViewer_t,
 			   Projectile_View_t, Bitmap_View_t, Debris_View_t,
 			   Z_Viewer_t, Airstrip_t, C_3DPoly_t,
                            Ground_Unit_t} ;

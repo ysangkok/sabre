@@ -191,7 +191,7 @@ void C_ShapeInfo::read(std::istream &is)
   MYCHECK(polyinfos != NULL);
   bcube.flg = 0;
   poly_cnt = 0;
-  for (int i=0;i<npolys;i++,is)
+  for (int i=0;i<npolys;i++)
     {
       is >> polyinfos[i];
       bcube.set(polyinfos[i].bcube);

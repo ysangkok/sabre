@@ -1,0 +1,5 @@
+.sconsign.dblite
+src/*.o
+gdev/*.o
+tools/*.o
+*.swp

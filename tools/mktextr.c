@@ -238,7 +238,7 @@ void make_maps(char *path)
 void loadpcx(char * filename)
 {
   FILE *infile;
-  char  * ImagePtr;
+  unsigned char  * ImagePtr;
   unsigned int x, i=0;
   unsigned int Points;
   int c;
@@ -258,7 +258,7 @@ void loadpcx(char * filename)
   image.xsize = (pcxhead.xmax-pcxhead.xmin) + 1;
   image.ysize = (pcxhead.ymax-pcxhead.ymin) + 1;
   Points = image.xsize * image.ysize;
-  image.buffer = (char  *) malloc(Points);
+  image.buffer = malloc(Points);
   if(image.buffer==NULL)
     error_exit(1,"Failed to allocate %d bytes",Points);
   ImagePtr=image.buffer;

@@ -103,7 +103,7 @@ public:
     }
 
   void SetFormationWaypoint(sWaypoint *wp, int leadPilot = 0);
-  void SetManeuver(int maneuver, long flags, sREAL d0, sREAL d1,
+  void SetManeuver(int maneuver, unsigned long flags, sREAL d0, sREAL d1,
 		   sREAL d2);
    
   void EngageFlite(aiFlite *);

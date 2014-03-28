@@ -67,6 +67,7 @@
  *          attributes.
  */
 
+#include <string.h>
 #include "zip.h"
 
 /* ===========================================================================
@@ -92,7 +93,7 @@
    /* For portability to 16 bit machines, do not use values above 15. */
 #endif
 
-#define HASH_SIZE (unsigned)(1<<HASH_BITS)
+#define HASH_SIZE (1<<HASH_BITS)
 #define HASH_MASK (HASH_SIZE-1)
 #define WMASK     (WSIZE-1)
 /* HASH_SIZE and WSIZE must be powers of two */
@@ -337,7 +338,7 @@ void lm_init (int pack_level, ush *flags)
      * prev[] will be initialized on the fly.
      */
     head[HASH_SIZE-1] = NIL;
-    memset((char*)head, NIL, (unsigned)(HASH_SIZE-1)*sizeof(*head));
+    memset(head, NIL, (HASH_SIZE-1)*sizeof(*head));
 
     /* Set the default configuration parameters:
      */
@@ -364,9 +365,9 @@ void lm_init (int pack_level, ush *flags)
 #ifndef MAXSEG_64K
     if (sizeof(int) > 2) j <<= 1; /* Can read 64K in one step */
 #endif
-    lookahead = (*bits_read_buf)((char*)window, j);
+    lookahead = (*bits_read_buf)(window, j);
 
-    if (lookahead == 0 || lookahead == (unsigned)EOF) {
+    if (lookahead == 0 || lookahead == EOF) {
        eofile = 1, lookahead = 0;
        return;
     }
@@ -487,7 +488,7 @@ int longest_match(IPos cur_match)
         /* The funny "do {}" generates better code on most compilers */
 
         /* Here, scan <= window+deflate_strstart+257 */
-        Assert(scan <= window+(unsigned)(deflate_window_size-1), "wild scan");
+        Assert(scan <= window+deflate_window_size-1, "wild scan");
         if (*scan == *match) scan++;
 
         len = (MAX_MATCH - 1) - (int)(strend-scan);
@@ -550,8 +551,8 @@ local void check_match(start, match, length)
     int length;
 {
     /* check that the match is indeed a match */
-    if (memcmp((char*)window + match,
-                (char*)window + start, length) != EQUAL) {
+    if (memcmp(window + match,
+                window + start, length) != EQUAL) {
         fprintf(stderr,
             " start %d, match %d, length %d\n",
             start, match, length);
@@ -578,13 +579,13 @@ local void check_match(start, match, length)
 local void fill_window(void)
 {
     register unsigned n, m;
-    unsigned more = (unsigned)(deflate_window_size - (ulg)lookahead - (ulg)deflate_strstart);
+    unsigned more = (deflate_window_size - (ulg)lookahead - (ulg)deflate_strstart);
     /* Amount of free space at the end of the window. */
 
     /* If the window is almost full and there is insufficient lookahead,
      * move the upper half to the lower one to make room in the upper half.
      */
-    if (more == (unsigned)EOF) {
+    if (more == EOF) {
         /* Very unlikely, but possible on 16 bit machine if deflate_strstart == 0
          * and lookahead == 1 (input done one byte at time)
          */
@@ -599,7 +600,7 @@ local void fill_window(void)
         /* By the IN assertion, the window is not empty so we can't confuse
          * more == 0 with more == 64K on a 16 bit machine.
          */
-        memcpy((char*)window, (char*)window+WSIZE, (unsigned)WSIZE);
+        memcpy(window, window+WSIZE, WSIZE);
         match_start -= WSIZE;
         deflate_strstart    -= WSIZE; /* we now have deflate_strstart >= MAX_DIST: */
 
@@ -621,8 +622,8 @@ local void fill_window(void)
     }
     /* At this point, more >= 2 */
     if (!eofile) {
-        n = (*bits_read_buf)((char*)window+deflate_strstart+lookahead, more);
-        if (n == 0 || n == (unsigned)EOF) {
+        n = (*bits_read_buf)(window+deflate_strstart+lookahead, more);
+        if (n == 0 || n == EOF) {
             eofile = 1;
         } else {
             lookahead += n;
@@ -635,8 +636,8 @@ local void fill_window(void)
  * IN assertion: deflate_strstart is set to the end of the current match.
  */
 #define FLUSH_BLOCK(eof) \
-  ct_flush_block(deflate_block_start >= 0L ? (char*)&window[(unsigned)deflate_block_start] : \
-                (char*)NULL, (long)deflate_strstart - deflate_block_start, (eof))
+  ct_flush_block(deflate_block_start >= 0L ? &window[deflate_block_start] : \
+                NULL, (long)deflate_strstart - deflate_block_start, (eof))
 
 /* ===========================================================================
  * Processes a new input file and return its compressed length. This

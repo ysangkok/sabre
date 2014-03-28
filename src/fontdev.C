@@ -46,19 +46,19 @@ static char *_locate( const char *fmt, ... )
 
 #define SYSFONTPATH "/usr/lib/kbd/consolefonts"
 
-static char *_fontpaths[] = {
+static const char *_fontpaths[] = {
    SYSFONTPATH,
    NULL
 };
 
-char **fontpaths=_fontpaths;
+const char **fontpaths=_fontpaths;
 
-static char *locate( const char *fn )
+static const char *locate( const char *fn )
 {
-   char *_fn;     
+   const char *_fn;     
    if( (_fn=_locate( fn )) == NULL ) {
       if( strchr( fn, '/' ) == NULL ) {
-	 char **v=fontpaths;
+	 const char **v=fontpaths;
 	 while( *v ) {
 	    if( (_fn=_locate( "%s/%s", *v, fn )) != NULL )
 	      break;

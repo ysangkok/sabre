@@ -101,10 +101,11 @@ void write_terrain(FILE *f, long i, long j, int x, int y, int n, int);
 float calcZ(unsigned char color);
 void make_terrains(char *);
 void loadpcx(char *);
+int count_colors();
 
 int main(int argc, char *argv[])
 {
-  int tmp;
+  //int tmp;
   fprintf(stderr,"mkterrain  06/24/97\n");
   if (argc < 5)
     {
@@ -123,8 +124,8 @@ int main(int argc, char *argv[])
     floor_val = atof(argv[6]);
   fprintf(stderr," Input File: %s\n"
 	 "Output File: %s\n"
-	 "      width: %d\n"
-	 "     height: %d\n"
+	 "      width: %ld\n"
+	 "     height: %ld\n"
          "   max_zval: %5.3f\n"
 	 "  floor_val: %5.3f\n",
 	 pcx_file,out_file,textr_width,textr_height,max_zval,floor_val);
@@ -154,7 +155,8 @@ int main(int argc, char *argv[])
 float calcZ(unsigned char color)
 {
   float result;
-  float col,r1,r2;
+  float col,r1;
+  //float r2;
   int i;
   i = (int) color;
   col = (float) rgbs[i].b;
@@ -243,7 +245,7 @@ void calc_terrain(long i, long j)
 
 void write_terrain(FILE *f,long i,long j,int x,int y,int n, int quad)
 {
-  fprintf(f,"row %d col %d\n",
+  fprintf(f,"row %ld col %ld\n",
 	  i,j);
   fprintf(f,"[ < %d %d 0> ",x,y);
   fprintf(f,"%d %d 1 1 ",quad,n);
@@ -329,7 +331,7 @@ void make_terrains(char *path)
 {
   FILE *f;
   long i,j;
-  char id_str[9];
+  //char id_str[9];
   int n = 0;
   int x,y;
   int q;
@@ -367,7 +369,7 @@ void make_terrains(char *path)
 
   fprintf(f,"%d\n",ntextr);
   y = -nrows / 2.0;
-  for (i=0;i<nrows,n<ntextr;i++)
+  for (i=0; i<nrows; i++)
     {
       x = -ncols / 2.0;
       for (j=0;j<ncols;j++)
@@ -392,7 +394,7 @@ void make_terrains(char *path)
 void loadpcx(char * filename)
 {
   FILE *infile;
-  char  * ImagePtr;
+  unsigned char  * ImagePtr;
   unsigned int x, i=0;
   unsigned int Points;
   int c;
@@ -412,7 +414,7 @@ void loadpcx(char * filename)
   image.xsize = (pcxhead.xmax-pcxhead.xmin) + 1;
   image.ysize = (pcxhead.ymax-pcxhead.ymin) + 1;
   Points = image.xsize * image.ysize;
-  image.buffer = (char  *) malloc(Points);
+  image.buffer = (unsigned char  *) malloc(Points);
   if(image.buffer==NULL)
     error_exit(1,"Failed to allocate %d bytes",Points);
   ImagePtr=image.buffer;

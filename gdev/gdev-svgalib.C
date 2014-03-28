@@ -161,8 +161,8 @@ int gdev_svgalib::setview( int x0, int y0, int x1, int y1 )
    else {
       gflags&=~fulldevice;
    }
-   vbuf=new char[vdimx*vdimy];
-   unsigned char *p=(unsigned char *)vbuf;
+   vbuf=new unsigned char[vdimx*vdimy];
+   unsigned char *p=vbuf;
    vbufend=p+(vdimx*vdimy);
    return 0;
 }
@@ -245,7 +245,7 @@ int gdev_svgalib::rect( int x, int y,  int w, int h, int c, int fill )
    if( fill ) {
       int i;
       for( i=0; i<h; i++, y++ ) {
-	 unsigned char *ofs=(unsigned char *)vbuf+y*vdimx+x;
+	 unsigned char *ofs=vbuf+y*vdimx+x;
 	 memset(ofs,c,w);
       }
    }
@@ -262,7 +262,7 @@ int gdev_svgalib::rect( int x, int y,  int w, int h, int c, int fill )
 
 inline int gdev_svgalib::pixel( int x, int y, int c )
 {
-   unsigned char *ofs=(unsigned char *)vbuf+x+y*vdimx;
+   unsigned char *ofs=vbuf+x+y*vdimx;
    if( c != -1 )
      *ofs=c;
    return *ofs;

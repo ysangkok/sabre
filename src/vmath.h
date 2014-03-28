@@ -28,10 +28,6 @@
 #define REAL_TYPE float
 #endif
 
-#pragma warning ( 4 : 4136 )
-#pragma warning ( 4 : 4244 )
-#pragma warning ( 4 : 4305 )
-
 #define R2D_TYPE int
 // #define FLOAT_Z
 #define Z_PREC   24

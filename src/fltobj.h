@@ -61,7 +61,7 @@ extern float world_scale;
 #define TRIM_MAX        30
 
 /* enums for view */
-typedef enum flight_view {
+enum flight_view {
 				fv_front, fv_left, fv_right, fv_rear, fv_satellite,
 			   fv_external, fv_track, fv_target_track, fv_flyby,
 				fv_front_up, fv_front_down, fv_left_up, fv_left_down, fv_right_up,

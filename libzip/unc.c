@@ -21,7 +21,7 @@
 #include "crc.h"
 
 #ifndef MSDOS
-static char rcsid[] = "$Id: unc.c,v 1.1 1994/10/19 16:27:27 brian Exp $";
+//static char rcsid[] = "$Id: unc.c,v 1.1 1994/10/19 16:27:27 brian Exp $";
 #endif
 
 int qflag = 0;

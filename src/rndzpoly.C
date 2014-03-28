@@ -282,7 +282,7 @@ void r_frame_convpoly(R_2DPoint *points, int n)
 void r_fill_convpoly(R_2DPoint *points, int n, int colr)
 {
   int j,stps;
-  register unsigned char *b_ptr;
+  unsigned char *b_ptr;
   unsigned char *buffer_ptr;
 
   unsigned char *b_ptr2;

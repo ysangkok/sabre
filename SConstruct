@@ -4,8 +4,8 @@ do_vga = True
 do_sdl = False
 do_ncurses = False
 orgenv = Environment(
-	CC="clang", CFLAGS="-ansi -pedantic -std=c11", CXX="clang++", CXXFLAGS="-ansi -pedantic -std=c++11 -stdlib=libc++", LINKFLAGS="-stdlib=libc++",
-	#LINK="gcc", LIBS=["m"], 
+	CC="clang", CFLAGS="-Wall -Werror -ansi -pedantic -std=c11", CXX="clang++", CXXFLAGS="-Wall -Werror -ansi -pedantic -std=c++11 -stdlib=libc++", LINKFLAGS="-stdlib=libc++", LIBS=["m"], 
+	LINK="clang++", 
 	#CXXFLAGS="-nodefaultlibs -fno-exceptions -w", 
 	CPPDEFINES = {"VERSION":"\\\"0.2.4b\\\"","REV_DATE":"\\\"11/21/99\\\"","JSTICK_INSTALLED":"1"},
 	CPPPATH=(["gdev"] if do_vga else []) + ["src"]
@@ -23,7 +23,7 @@ if do_sdl: env.ParseConfig('pkg-config --libs --cflags sdl')
 
 if do_vga: env.Append(LIBS = ["vga", "vgagl"])
 
-libgdev = Library([env.Object("gdev/gdev.C"), env.Object("gdev/gdev-svgalib.C"), env.Object("gdev/fontdev.C")])
+libgdev = Library([env.Object("gdev/gdev.C"), env.Object("gdev/gdev-svgalib.C"), env.Object("src/fontdev.C")])
 
 objects = env.Object(Glob("src/*.C")) + env.Object(Glob("src/*.c")) + env.Object(Glob("libzip/*.c"))
 if do_vga: objects += libgdev

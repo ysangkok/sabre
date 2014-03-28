@@ -2541,7 +2541,7 @@ aiPilot *aiPilot::GetaiPilot(unsigned long idx)
 	else
 	{
 		int i = (int) idx;
-		if (idx >= 0 && i < GetPilotCount())
+		if (i < GetPilotCount())
 		{
 			aiPilot *pil = (aiPilot *) aiPilots[i];
 			if (pil != NULL && pil->GetIdx() == idx)

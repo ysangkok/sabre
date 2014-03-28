@@ -27,7 +27,7 @@
 /*
 ** Vector Definitions
 */
-struct DVector;
+class DVector;
 class DVector
 {
 public:

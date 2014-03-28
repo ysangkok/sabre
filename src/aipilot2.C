@@ -853,7 +853,7 @@ void aiPilot::DoClimbingTurn(sManeuverState &mv)
 	else
 	  SETPITCHPID(levelAttitude.pitch);
 	SETYAWPID(levelAttitude.yaw);
-	if (fabs(flightModel->GetPitch() > Pi_4))
+	if (flightModel->GetPitch() > Pi_4)
 	  {
 	    PushManeuver(sManeuver::STRAIGHT_AND_LEVEL);
 	    mv.state = 1;

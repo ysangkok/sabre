@@ -69,8 +69,8 @@ int           MXSCREEN_HEIGHT = 200;
 int           MAX_X           = 319;
 int           MAX_Y           = 199;
 int           VGAMODE         = G320x200x256;
-int           PALETTE_SIZE    = 768;
-int           N_COLORS        = 256;
+const int           PALETTE_SIZE    = 768;
+const int           N_COLORS        = 256;
 
 int           window_width      = 0;
 int           window_height      = 0;
@@ -342,14 +342,14 @@ void putpixel(int x, int y, int color)
 
 void h_line(int x, int y, int len, int color)
 {
-  register unsigned char *bf = buffer_ptr + (y * SCREEN_PITCH) + x;
+  unsigned char *bf = buffer_ptr + (y * SCREEN_PITCH) + x;
   while (len--)
     *bf++ = color;
 }
 
-void v_line(int x, int y, register int len, int color)
+void v_line(int x, int y, int len, int color)
 {
-  register unsigned char *bf = buffer_ptr + (y * SCREEN_PITCH) + x;
+  unsigned char *bf = buffer_ptr + (y * SCREEN_PITCH) + x;
   while(len--)
     {
       *bf = color;

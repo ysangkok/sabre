@@ -31,7 +31,7 @@
 #include "zview.h"
 #include "flight.h"
 
-typedef enum flight_shapes { fuselage, tail, left_wing, right_wing ,
+enum flight_shapes { fuselage, tail, left_wing, right_wing ,
 			     left_hstab, right_hstab, cpit, lgear1,
                              lgear2, lgear3 };
 
@@ -72,8 +72,8 @@ public:
       v_value = lr.v_value;
       phi = lr.phi;
       phi_value = lr.phi_value;
-      roll = roll;
-      roll_value = roll_value;
+      roll = lr.roll;
+      roll_value = lr.roll_value;
       return *this;
     }
 

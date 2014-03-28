@@ -19,7 +19,7 @@
 #include "zip.h"
 
 #ifndef MSDOS
-static char rcsid[] = "$Id: crc.c,v 1.1 1994/10/19 16:27:27 brian Exp $";
+//static char rcsid[] = "$Id: crc.c,v 1.1 1994/10/19 16:27:27 brian Exp $";
 #endif
 
 /* FUNCTION PROTOTYPES (created by emacs, do not edit) */

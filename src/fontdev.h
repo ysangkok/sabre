@@ -27,7 +27,7 @@
 #endif
 
 class fontdev {
-   void *fbp;
+   unsigned char *fbp;
    int dimx, dimy;
    int mindimx, mindimy;
  public:
@@ -47,6 +47,6 @@ class fontdev {
    void shift( int what, int where );
 };
 
-extern char **fontpaths;
+extern const char **fontpaths;
 
 #endif // __fontdev_h

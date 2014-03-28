@@ -45,7 +45,7 @@
 #endif
 
 
-typedef enum switch_types { sw_init, sw_top, sw_right, sw_front };
+enum switch_types { sw_init, sw_top, sw_right, sw_front };
 extern Vector world_light_source;
 
 class Z_Viewer;

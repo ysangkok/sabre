@@ -55,7 +55,7 @@
 /*
  *  Map enumerated sounds to id
  */
-char *enumSounds[4] = 
+const char *enumSounds[4] = 
 {
   "JET_ENGINE",
   "GUN",
@@ -63,7 +63,7 @@ char *enumSounds[4] =
   "CANNON"
 };
 
-static char *soundErr2String(int err);
+static const char *soundErr2String(int err);
 
 static R_3DPoint soundViewPoint;
 static int soundLock = 0;
@@ -476,7 +476,7 @@ int sound_error_check(int err)
   return err;
 }
 
-char *soundErr2String(int err)
+const char *soundErr2String(int err)
 {
   switch (err)
     {

@@ -106,7 +106,7 @@ float calc_rgb_distance(_rgb *rgb0, _rgb *rgb1);
 
 int main(int argc, char *argv[])
 {
-  int tmp;
+  //int tmp;
   fprintf(stderr,"rmptextr  07/19/97\n");
   if (argc < 9)
     {
@@ -125,8 +125,8 @@ int main(int argc, char *argv[])
   fprintf(stderr," Input File: %s\n"
 	 "Output File: %s\n"
          "Palett File: %s\n"
-	 "      width: %d\n"
-	 "     height: %d\n"
+	 "      width: %ld\n"
+	 "     height: %ld\n"
 	 "      trans: %d\n"
 	 "  reverse_y: %d\n",
 	 pcx_file,out_file,palette_file,textr_width,textr_height,textr_trans,reverse_y);
@@ -160,6 +160,7 @@ int count_colors()
   for (i=0;i<256;i++)
     if (rgb_infos[i].count > 0)
       ncolors++;
+  return ncolors;
 }
 
 float calc_rgb_distance(_rgb *rgb0, _rgb *rgb1)
@@ -179,7 +180,7 @@ float calc_rgb_distance(_rgb *rgb0, _rgb *rgb1)
 int  maprgb(rgb_info *rinfo, rgb_info *map, int n)
 {
   int i;
-  int tmp_rd,tmp_gd,tmp_bd;
+  //int tmp_rd,tmp_gd,tmp_bd;
   int result;
   float mindist;
   float mc;
@@ -238,7 +239,7 @@ void write_tmap_rv(FILE *f, char *id_str, long i, long j)
 
   fprintf(f,"{\n");
   fprintf(f,"%s\n",id_str);
-  fprintf(f,"%d %d %d\n",textr_width,textr_height,textr_trans);
+  fprintf(f,"%ld %ld %d\n",textr_width,textr_height,textr_trans);
   bfptr = image.buffer + (j * textr_width) + (i * ((long)image.xsize) * textr_height); 
   for (ii=0;ii<textr_height;ii++)
     {
@@ -265,7 +266,7 @@ void write_tmap(FILE *f, char *id_str, long i, long j)
 
   fprintf(f,"{\n");
   fprintf(f,"%s\n",id_str);
-  fprintf(f,"%d %d %d\n",textr_width,textr_height,textr_trans);
+  fprintf(f,"%ld %ld %d\n",textr_width,textr_height,textr_trans);
   bfptr = image.buffer + (j * textr_width) + ((i+1) * ((long)image.xsize) * textr_height); 
   bfptr -= image.xsize;
   for (ii=0;ii<textr_height;ii++)
@@ -313,11 +314,11 @@ void make_maps(char *path)
      */
   if (reverse_y)
     {
-      for (i=0;i<nrows,n < ntextr;i++)
+      for (i=0; i<nrows; i++)
 	{
 	  for (j=0;j<ncols;j++)
 	    {
-	      sprintf(id_str,"%s%02d%02d",
+	      sprintf(id_str,"%s%02ld%02ld",
 		      id,i,j);
 	      fprintf(stderr,"texture: %s\n",id_str);
 	      write_tmap_rv(f,id_str,i,j);
@@ -329,11 +330,11 @@ void make_maps(char *path)
     }
   else
     {
-      for (i=nrows-1;i>=0,n < ntextr;i--)
+      for (i=nrows-1; i>=0; i--)
 	{
 	  for (j=0;j<ncols;j++)
 	    {
-	      sprintf(id_str,"%s%02d%02d",
+	      sprintf(id_str,"%s%02ld%02ld",
 		      id,i,j);
 	      fprintf(stderr,"texture: %s\n",id_str);
 	      write_tmap(f,id_str,i,j);
@@ -348,7 +349,7 @@ void make_maps(char *path)
 void loadpcx(char * filename)
 {
   FILE *infile;
-  char  * ImagePtr;
+  unsigned char  * ImagePtr;
   unsigned int x, i=0;
   unsigned int Points;
   int c;
@@ -375,7 +376,7 @@ void loadpcx(char * filename)
 	  image.xsize,
 	  image.ysize);
   Points = image.xsize * image.ysize;
-  image.buffer = (char  *) malloc(Points);
+  image.buffer = malloc(Points);
   if(image.buffer==NULL)
     error_exit(1,"Failed to allocate %d bytes",Points);
   ImagePtr=image.buffer;
@@ -426,7 +427,7 @@ void loadpal(char *path)
 
   while(fgets(buff,sizeof(buff),f))
     {
-      if (cptr = strchr(buff,'('))
+      if ((cptr = strchr(buff,'(')))
 	{
 	  idx = atoi(strtok(cptr,"( "));
 	  r   = atoi(strtok(NULL," "));

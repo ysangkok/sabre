@@ -54,6 +54,7 @@ public:
       max_range = 1000.0;
       wep_type = -1;
     }
+  virtual ~Weapon_Specs() = default;
 
   friend std::istream &operator >>(std::istream &is, Weapon_Specs &ws)
     {

@@ -49,6 +49,8 @@
 
 const int mouse_manual_flag = 0;
 
+const char MOUSE_PATH[] = "/dev/mouse";
+
 /*
  * This resets the mouse driver.  The value returned is "true"
  * if the mouse driver is present and the mouse could be reset.
@@ -62,7 +64,7 @@ return true;
 #ifndef SABREWIN
   if (mouse_manual_flag)
     {
-      if (mouse_init("/dev/mouse",MOUSE_MICROSOFT,
+      if (mouse_init(const_cast<char*>(MOUSE_PATH),MOUSE_MICROSOFT,
 		     MOUSE_DEFAULTSAMPLERATE) > 0)
 	{
 	  mouse_setxrange(0,SCREEN_WIDTH-1);

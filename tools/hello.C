@@ -114,12 +114,12 @@ void usage( void )
 // --
 
 static float ffactor[64];
-static char mypal[768]; 
+static unsigned char mypal[768]; 
 static void fade( int out=1 )
 {
    int i, j, beg, end, step;
    //(works only for 8bpp vicinity)
-   char fadepal[768];
+   unsigned char fadepal[768];
 
    if( out ) {
       // fade away..
@@ -134,7 +134,7 @@ static void fade( int out=1 )
    }
 
    for( j=beg; j!=end; j+=step ) { 
-      char *p=fadepal, *mp=mypal;
+      unsigned char *p=fadepal, *mp=mypal;
       for( i=0; i<768; i++, p++, mp++ ) {
 	 *p=(char)(j*ffactor[*mp]);
       }

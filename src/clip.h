@@ -133,7 +133,7 @@ int inbounds(const R_3DPoint &p1, const R_3DPoint &p2, const bounding_cube &b_cu
 
 
 
-typedef enum bounding_plane { px_min, px_max, py_min,
+enum bounding_plane { px_min, px_max, py_min,
 			      py_max, pz_min, pz_max };
 
 int poly_clip_3D(R_3DPoint *in_poly, int in_count,

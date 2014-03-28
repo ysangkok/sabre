@@ -743,8 +743,8 @@ void tr_fill_convpoly_nc(TR_2DPoint *points, int n, TextrMap *tmap,
 			 int fillcolor)
 {
   int j,stps;
-  register int u,v;
-  register unsigned char *b_ptr;
+  int u,v;
+  unsigned char *b_ptr;
 
   R2D_TYPE *z_ptr;
   R2D_TYPE *z_ptr2;

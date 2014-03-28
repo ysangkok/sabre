@@ -61,8 +61,8 @@ inline void SET_EDGE_BOUNDS(int x, int y)
 {
   if (((y) >= 0 ) && ((y) <=  (SCREEN_HEIGHT - 1)))
     {
-      register int x_u = (x);
-      register int y_u = (y);
+      int x_u = (x);
+      int y_u = (y);
       if ((x_u) < 0)
 	(x_u) = 0; 
       else if ((x_u)> (SCREEN_WIDTH - 1))
@@ -107,7 +107,7 @@ void init_edge_bounds()
 void BuildEdgeArray(int *l_points, int l_npoints)
 {
 	int i, yOld;
-	register int *p;
+	int *p;
 
 	bad_poly = 0;
 	min_Y = HIGH_VALUE;
@@ -174,7 +174,7 @@ void BuildEdgeArray(int *l_points, int l_npoints)
 void frame_convpoly(int *l_points, int l_npoints, int colr)
 {
 	int i;
-	register int *p;
+	int *p;
 
 	if (colr == -1)
 	  colr = frame_color;
@@ -190,8 +190,8 @@ void frame_convpoly(int *l_points, int l_npoints, int colr)
 void fill_convpoly(int *points, int nPoints, int colr)
 {
 	int j;
-	register unsigned char  *b_ptr;
-//	register int *rm_ptr, *lm_ptr;
+	unsigned char  *b_ptr;
+//	int *rm_ptr, *lm_ptr;
 	unsigned char *buffer_ptr;
 
 	if (frame_switch)
