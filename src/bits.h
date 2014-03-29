@@ -85,4 +85,6 @@ void mask_compress_pixels(unsigned char *source, int source_width,
 			  int *mask_ledge, int *mask_redge,
 			  int trans_color = -1);
 
+int rset_ptr(int & cur_x, int & w, Rect *bounds);
+
 #endif

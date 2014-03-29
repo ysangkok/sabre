@@ -81,7 +81,7 @@ public:
 	virtual void Update(double timeFrame);
 	virtual void Destroy();
 
-	void UpdateCallback(int sw, int iter);
+	void UpdateCallback(int sw);
     /*
      *  Tasks
      */
@@ -135,9 +135,9 @@ public:
 	{
 		return (fliteId);
 	}
-	void SetFliteId(unsigned long fliteId)
+	void SetFliteId(unsigned long fltId)
 	{
-		this->fliteId = fliteId;
+		this->fliteId = fltId;
 	}
 	int GetRemoteControl()
 	{
@@ -317,7 +317,7 @@ public:
 	static aiPilot *GetaiPilot(unsigned long idx);
 	static aiPilot *GetaiPilot(const char *handle);
 	static int GetPilotCount();
-	static void aiPilotUpdateCallback(int, int, sFlightModel *, void *);
+	static void aiPilotUpdateCallback(int, void *);
 	static void FlushaiPilots();
 	static void RemoveaiPilot(aiPilot *pil);
 	static aiPilot *GetPilotByIndex(int i);
@@ -600,7 +600,7 @@ protected:
    void SetNoseOn(sREAL, sREAL, sREAL = Pi_2);
    void SetNoseOn(int flag, const sPoint &, sREAL pitch, sREAL yaw);
 
-   void SetNoseOnX(sREAL, sREAL, sREAL = 0.5, sREAL = 0.0, sREAL = Pi_2);
+   void SetNoseOnX(sREAL, sREAL, sREAL = 0.5, sREAL = 0.0, sREAL = (sREAL) Pi_2);
    sREAL Point2Roll(const sPoint &rollPosition);
    sREAL CalcClosureSpeed(const sTargetGeometry &, int flg = 0);
    /* communication */

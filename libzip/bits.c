@@ -68,17 +68,18 @@
 
 /* FUNCTION PROTOTYPES (created by emacs, do not edit) */
 local void bits_init (FILE *zipfile);
-void bits_send_bits(int value, int length);
+void bits_send_bits(int value, unsigned int length);
 unsigned bits_reverse(unsigned int code, int len);
 void bits_windup(void);
 void bits_copy_block(uch *buf, unsigned int len, int header);
 int bits_seekable(void);
 ulg memcompress(uch *tgt, ulg tgtsize, uch *src, ulg srcsize);
 local void flush_outbuf(unsigned int w, unsigned int bytes);
-local int mem_read(uch *b, unsigned int bsize);
+local unsigned int mem_read(uch *b, unsigned int bsize);
 /* END FUNCTION PROTOTYPES (created by emacs, do not edit) */
 
 extern ulg deflate_window_size; /* size of sliding window */
+extern uch file_outbuf[];
 
 /* ===========================================================================
  * Globals (Yuck!)
@@ -102,7 +103,7 @@ local unsigned short bi_buf;
  * more than 16 bits on some systems.)
  */
 
-local int bi_valid;
+local unsigned int bi_valid;
 /* Number of valid bits in bi_buf.  All bits above the last valid bit
  * are always zero.
  */
@@ -123,7 +124,7 @@ local unsigned in_offset, out_offset;
 local unsigned in_size, out_size;
 /* Size of current input and output buffers */
 
-int (*bits_read_buf) OF((uch *buf, unsigned size));
+unsigned int (*bits_read_buf) OF((uch *buf, unsigned size));
 /* Current input function. Set to mem_read for in-memory compression */
 
 #ifdef DEBUG
@@ -133,8 +134,8 @@ ulg bits_sent;   /* bit length of the compressed data */
 /* Output a 16 bit value to the bit stream, lower (oldest) byte first */
 #define PUTSHORT(w) \
 { if (out_offset < out_size-1) { \
-    out_buf[out_offset++] = (char) ((w) & 0xff); \
-    out_buf[out_offset++] = (char) ((ush)(w) >> 8); \
+    out_buf[out_offset++] = (uch) ((w) & 0xff); \
+    out_buf[out_offset++] = ((ush)(w) >> 8); \
   } else { \
     flush_outbuf((w),2); \
   } \
@@ -142,7 +143,7 @@ ulg bits_sent;   /* bit length of the compressed data */
 
 #define PUTBYTE(b) \
 { if (out_offset < out_size) { \
-    out_buf[out_offset++] = (char) (b); \
+    out_buf[out_offset++] = (uch) (b); \
   } else { \
     flush_outbuf((b),1); \
   } \
@@ -175,7 +176,7 @@ local void bits_init (FILE *zipfile)
  * Send a value on a given number of bits.
  * IN assertion: length <= 16 and value fits in length bits.
  */
-void bits_send_bits(int value, int length)
+void bits_send_bits(int value, unsigned int length)
 {
 #ifdef DEBUG
     Tracevv((stderr," l %2d v %4x ", length, value));
@@ -319,12 +320,12 @@ ulg memcompress(uch *tgt, ulg tgtsize, uch *src, ulg srcsize)
     deflate_window_size = 0L; /* was updated by lm_init() */
 
     /* For portability, force little-endian order on all machines: */
-    tgt[0] = (char)(method & 0xff);
-    tgt[1] = (char)((method >> 8) & 0xff);
-    tgt[2] = (char)(crc & 0xff);
-    tgt[3] = (char)((crc >> 8) & 0xff);
-    tgt[4] = (char)((crc >> 16) & 0xff);
-    tgt[5] = (char)((crc >> 24) & 0xff);
+    tgt[0] = (uch)(method & 0xff);
+    tgt[1] = (uch)((method >> 8) & 0xff);
+    tgt[2] = (uch)(crc & 0xff);
+    tgt[3] = (uch)((crc >> 8) & 0xff);
+    tgt[4] = (uch)((crc >> 16) & 0xff);
+    tgt[5] = (uch)((crc >> 24) & 0xff);
 
     return (ulg)out_offset;
 }
@@ -348,7 +349,7 @@ local void flush_outbuf(unsigned int w, unsigned int bytes)
     if (bytes == 2) {
         PUTSHORT(w);
     } else if (bytes == 1) {
-        out_buf[out_offset++] = (char) (w & 0xff);
+        out_buf[out_offset++] = (uch) (w & 0xff);
     }
 }
 
@@ -361,14 +362,14 @@ local void flush_outbuf(unsigned int w, unsigned int bytes)
  * difference on 16 bit machines. mem_read() may be called several
  * times for an in-memory compression.
  */
-local int mem_read(uch *b, unsigned int bsize)
+local unsigned int mem_read(uch *b, unsigned int bsize)
 {
     if (in_offset < in_size) {
         ulg block_size = in_size - in_offset;
         if (block_size > (ulg)bsize) block_size = (ulg)bsize;
         memcpy(b, in_buf + in_offset, (unsigned)block_size);
         in_offset += (unsigned)block_size;
-        return (int)block_size;
+        return block_size;
     } else {
         return 0; /* end of input */
     }

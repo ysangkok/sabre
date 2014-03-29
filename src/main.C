@@ -58,39 +58,39 @@
  * globals                                                      *
  ****************************************************************/
 
-jmp_buf jump_buff;
-char mssg[64];
-int xx = 0, yy = 0;
-int mode = 0;
+static jmp_buf jump_buff;
+//static char mssg[64];
+static int xx = 0, yy = 0;
+//static int mode = 0;
 extern int frame_switch;
-int mouse_x,mouse_y;
-const char *world_file  = "a.wld";
-const char *ed_world_file = "ed.wld";
-const char *flight_file = "a.flt";
-const char *ground_file = NULL;
+//static int mouse_x,mouse_y;
+static const char *world_file  = "a.wld";
+//static const char *ed_world_file = "ed.wld";
+static const char *flight_file = "a.flt";
+static const char *ground_file = NULL;
 /*
 char *ground_file = "a.gru";
 */
-const char *hud_file    = "a.hud";
-const char *cpk_file    = "a.cpk";
-const char *sound_file =  "a.wvsf";
+static const char *hud_file    = "a.hud";
+static const char *cpk_file    = "a.cpk";
+static const char *sound_file =  "a.wvsf";
 
 /*
  *  control flags
  */
-int js0 = 0;   // use joystick0 as yoke
-int js1 = 0;   // use joystick1 as throttle
-int js2 = 0;   // use joystick1 as rudder
-int kys  = 0;  // use keyboard as yoke
-int mt  = 0;   // use mouse as throttle
-int mr = 0;    // use mouse as rudder
+static int js0 = 0;   // use joystick0 as yoke
+static int js1 = 0;   // use joystick1 as throttle
+static int js2 = 0;   // use joystick1 as rudder
+static int kys  = 0;  // use keyboard as yoke
+static int mt  = 0;   // use mouse as throttle
+static int mr = 0;    // use mouse as rudder
 
-int demo = 0;
-int edit_scene = 0;
-int want_sound = 0;
+static int demo = 0;
+static int edit_scene = 0;
+static int want_sound = 0;
 int mouse_avail = 1;
 
-void (*oldsigfpe)(int);
+static void (*oldsigfpe)(int);
 
 #ifdef SNDSERV
 SoundClient *sndcli_ptr = NULL;
@@ -364,7 +364,7 @@ void doSceneEdit()
   theEdit.doEdit();
 }
 
-void error_jump(const char *format, ... )
+__attribute__((noreturn)) void error_jump(const char *format, ... )
 {
   restorecrtmode();
   if (format != NULL)
@@ -382,9 +382,9 @@ void error_jump(const char *format, ... )
 /*************************************************************
  * SIGSEGV handler                                           *
  ************************************************************/
-void (*oldsigsegv)(int);
+static void (*oldsigsegv)(int);
 
-void mysigsegv(int seg)
+__attribute__((noreturn)) void mysigsegv(int seg)
 {
   printf("sabre: got sigsegv!\n");
   printf("routine_key: %d\n",
@@ -398,7 +398,7 @@ void mysigsegv(int seg)
 /*************************************************************
  * SIGFPE handler                                            *
  *************************************************************/
-void mysigfpe(int fp)
+__attribute__((noreturn)) void mysigfpe(int fp)
 {
   printf("Sabre Fighter Plane Simulator %s %s\n",VERSION,__DATE__);
   printf("Received floating point error\n");

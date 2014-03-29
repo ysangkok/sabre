@@ -92,7 +92,7 @@ public:
       specs = spcs;
     }
 
-  Ground_Unit(const Ground_Unit &gu)
+  Ground_Unit(const Ground_Unit &gu) : Z_Viewer(gu)
     {
       copy(gu);
     }

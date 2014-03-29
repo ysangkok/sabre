@@ -30,6 +30,8 @@
 
 sObjectArray sPilotCaps::sPilotCapsArray(sMAXPILOTCAPS,1);
 
+sPilotCaps::~sPilotCaps() = default;
+
 void sPilotCaps::AddsPilotCaps(sPilotCaps &pilotCaps)
 {
 	sPilotCapsArray.Add(&pilotCaps);

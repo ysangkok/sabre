@@ -33,19 +33,19 @@
 #include "aigunner.h"
 
 #define TARGET_GEOMETRY		target.geometry
-#define TARGET_INFO			target.info
+//#define TARGET_INFO			target.info
 #define TARGET_IDX			target.idx
-#define TARGET_FLAGS			target.flags
-#define TARGET_ACTIVE		target.active
+//#define TARGET_FLAGS			target.flags
+//#define TARGET_ACTIVE		target.active
 #define TARGET_RANGE			TARGET_GEOMETRY.range
 #define TARGET_DRANGE		TARGET_GEOMETRY.dRange
 #define TARGET_ATTITUDE		TARGET_GEOMETRY.relAttitude
-#define TARGET_YAW			TARGET_GEOMETRY.relAttitude.yaw
-#define TARGET_PITCH			TARGET_GEOMETRY.relAttitude.pitch
-#define TARGET_ASPECT		TARGET_GEOMETRY.aspect
+//#define TARGET_YAW			TARGET_GEOMETRY.relAttitude.yaw
+//#define TARGET_PITCH			TARGET_GEOMETRY.relAttitude.pitch
+//#define TARGET_ASPECT		TARGET_GEOMETRY.aspect
 #define TARGET_VELOCITY		TARGET_GEOMETRY.worldVelocity
 #define TARGET_POSITION		TARGET_GEOMETRY.worldPosition
-#define TARGET_ALTITUDE		TARGET_GEOMETRY.worldPosition.z
+//#define TARGET_ALTITUDE		TARGET_GEOMETRY.worldPosition.z
 #define TARGET_HEADING		TARGET_GEOMETRY.worldHeading
 #define LEAD_POINT			TARGET_GEOMETRY.gunLeadPoint
 #define LEAD_ATTITUDE		TARGET_GEOMETRY.gunLeadAttitude
@@ -76,28 +76,28 @@ aiGunner::aiGunner()
 	isDead = isEjected = 0;
 	affiliation = 0;
 	hasTarget = 0;
-	bulletRadius = 2.6;
+	bulletRadius = (sREAL) 2.6;
 	gunPitchRate = aiGUN_PITCH_RATE;
 	gunYawRate = aiGUN_YAW_RATE;
 }
 
-aiGunner::aiGunner(sFlightModel *flightModel, int index,
-					  unsigned long ownerIdx, int affiliation, sREAL bulletRadius,
-                 sREAL gunPitchRate, sREAL gunYawRate,
-                 sAttitude *jiggleAtt)
+aiGunner::aiGunner(sFlightModel *flightMdl, int idx,
+					  unsigned long ownIdx, int affiliatio, sREAL bulletRadiu,
+                 sREAL gunPitchRat, sREAL gunYawRat,
+                 sAttitude *jigAtt)
 {
-	this->flightModel = flightModel;
-	this->index = index;
-	this->ownerIdx = ownerIdx;
-	this->affiliation = affiliation;
-	this->bulletRadius = bulletRadius;
+	this->flightModel = flightMdl;
+	this->index = idx;
+	this->ownerIdx = ownIdx;
+	this->affiliation = affiliatio;
+	this->bulletRadius = bulletRadiu;
 	isDead = isEjected = 0;
 	hasTarget = 0;
 	timeFrame = 0.0;
-	this->gunPitchRate = gunPitchRate;
-	this->gunYawRate = gunYawRate;
-	if (jiggleAtt != NULL)    
-		this->jiggleAtt = *jiggleAtt;
+	this->gunPitchRate = gunPitchRat;
+	this->gunYawRate = gunYawRat;
+	if (jigAtt != NULL)    
+		this->jiggleAtt = *jigAtt;
 }
 
 /*
@@ -117,9 +117,9 @@ void aiGunner::Destroy()
 
 }
 
-void aiGunner::Update(double timeFrame)
+void aiGunner::Update(double timeFrm)
 {
-	this->timeFrame = timeFrame;
+	this->timeFrame = (sREAL) timeFrm;
 	if (!IsActive())
 		return;
 	weaponLimits.Update(timeFrame);
@@ -144,7 +144,7 @@ void aiGunner::AdjustGun()
 		d = sGetCircularDistance(GUN_PITCH,LEAD_PITCH);
 		pitchStep = gunPitchRate * timeFrame;
 		if (pitchStep > fabs(d))
-			pitchStep = fabs(d);
+			pitchStep = (sREAL) fabs(d);
 		if (d < 0)
 			pitchStep = -pitchStep;
 		GUN_PITCH = sIncrementAngle(GUN_PITCH,pitchStep);
@@ -154,7 +154,7 @@ void aiGunner::AdjustGun()
 		d = sGetCircularDistance(GUN_YAW,LEAD_YAW);
 		yawStep = gunYawRate * timeFrame;
 		if (yawStep > fabs(d))
-			yawStep = fabs(d);
+			yawStep = (sREAL) fabs(d);
 		if (d < 0)
 			yawStep = -yawStep;
 		GUN_YAW = sIncrementAngle(GUN_YAW,yawStep);

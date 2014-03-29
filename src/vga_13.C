@@ -38,7 +38,7 @@
 #ifdef HAVE_LIBSDL
 #include <SDL/SDL.h>
 int FilterEvents(const SDL_Event *event);
-SDL_Surface *screen; 
+static SDL_Surface *screen; 
 #else
 #include "gdev-svgalib.h"
 #endif
@@ -72,15 +72,16 @@ int           VGAMODE         = G320x200x256;
 const int           PALETTE_SIZE    = 768;
 const int           N_COLORS        = 256;
 
+extern int window_height, window_width;
 int           window_width      = 0;
 int           window_height      = 0;
 
-int           wx0,wy0,wx1,wy1;
+//static int           wx0,wy0,wx1,wy1;
 SimFont       *g_font = NULL;
 Rect          cliprect(0,0,319,199);
 
-#define GDEV_SCREEN_DIM 1
-#define GDEV_WINDOW_DIM 0
+//#define GDEV_SCREEN_DIM 1
+//#define GDEV_WINDOW_DIM 0
 
 void init_vga_13(void)
 {
@@ -274,7 +275,7 @@ void restorecrtmode()
 float calc_aspect_ratio(float width, float height)
 {
   float ideal_vert;
-  ideal_vert = width * 2.8 / 4.0;
+  ideal_vert = width * 2.8f / 4.0f;
   return (height / ideal_vert);
 }
 
@@ -299,8 +300,8 @@ SDL_Rect ScreenClearRect;         // no optimize, not a freq call. (I think)
 
 ScreenClearRect.x = 0;
 ScreenClearRect.y = 0;
-ScreenClearRect.w = MAX_X;
-ScreenClearRect.h = row+1;        // overrun bug here??  check it out for sure.
+ScreenClearRect.w = (Uint16) MAX_X;
+ScreenClearRect.h = Uint16(row+1);        // overrun bug here??  check it out for sure.
 // possible BUG !!
 
 SDL_FillRect(screen, &ScreenClearRect, (Uint32) color);   
@@ -318,10 +319,10 @@ void fill_rect(Rect &r, int color)
     {
       Rect r0 = r;
       cliprect2rect(cliprect,r0);
-      FillRect.x = r0.left();
-      FillRect.y = r0.top();
-      FillRect.w = RWIDTH(r0);
-      FillRect.h = RHEIGHT(r0);
+      FillRect.x = (Sint16) r0.left();
+      FillRect.y = (Sint16) r0.top();
+      FillRect.w = (Sint16) RWIDTH(r0);
+      FillRect.h = (Sint16) RHEIGHT(r0);
       SDL_FillRect(screen, &FillRect, (Uint32) color);   
     }   
 #else
@@ -344,7 +345,7 @@ void h_line(int x, int y, int len, int color)
 {
   unsigned char *bf = buffer_ptr + (y * SCREEN_PITCH) + x;
   while (len--)
-    *bf++ = color;
+    *bf++ = (unsigned char) color;
 }
 
 void v_line(int x, int y, int len, int color)
@@ -352,7 +353,7 @@ void v_line(int x, int y, int len, int color)
   unsigned char *bf = buffer_ptr + (y * SCREEN_PITCH) + x;
   while(len--)
     {
-      *bf = color;
+      *bf = (unsigned char) color;
       bf += SCREEN_PITCH;
     }
 }
@@ -405,9 +406,9 @@ ColorStruct.b = (unsigned char)
            (float)1/GAMMA_CORRECTION
            ) * 255);
 */
-ColorStruct.r = (unsigned char)red << 2;
-ColorStruct.g = (unsigned char)green << 2;
-ColorStruct.b = (unsigned char)blue << 2;
+ColorStruct.r = Uint8(red << 2);
+ColorStruct.g = Uint8(green << 2);
+ColorStruct.b = Uint8(blue << 2);
 
 SDL_SetColors(screen,&ColorStruct,color,1);
 #else
@@ -489,11 +490,11 @@ void fade_palette_out(int startcolor, int endcolor, p_callback *pb)
 	   */
 	  j = i * 3;
 	  if (rgb[j] > max)
-	    rgb[j] = max;
+	    rgb[j] = char(max);
 	  if (rgb[j+1] > max)
-	    rgb[j+1] = max;
+	    rgb[j+1] = char(max);
 	  if (rgb[j+2] > max)
-	    rgb[j+2] = max;
+	    rgb[j+2] = char(max);
 	}
       set_palette(startcolor,endcolor,rgb);
     }
@@ -573,6 +574,7 @@ void vga13_resume()
 
 }
 
+void vga13_drawprep();
 void vga13_drawprep()
 {
 

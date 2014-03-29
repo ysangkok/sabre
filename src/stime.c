@@ -27,22 +27,26 @@
 static double sTimeFrame = 0.0;
 static double sElapsedTime = 0.0;
 
+double sGetTimeFrame(void);
 double sGetTimeFrame(void)
 {
 	return (sTimeFrame);
 }
 
+double sGetElapsedTime(void);
 double sGetElapsedTime(void)
 {
 	return (sElapsedTime);
 }
 
+void sSetTimeFrame(double timeFrame);
 void sSetTimeFrame(double timeFrame)
 {
 	sTimeFrame = timeFrame;
 	sElapsedTime += timeFrame;
 }
 
+void sResetElapsedTime(void);
 void sResetElapsedTime(void)
 {
 	sTimeFrame = 0.0;

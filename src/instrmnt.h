@@ -38,6 +38,7 @@ public:
   virtual void display(Flight &) = 0;
   virtual void read_from(std::istream &) = 0;
   virtual void init() = 0;
+  virtual ~Indicator();
 };
 
 class Scaled_Indicator : public Indicator
@@ -53,8 +54,7 @@ public:
     x += cockpit_x;
     y += cockpit_y;
   }
-  virtual void init()
-  {}
+  virtual void init();
 };
 
 class ArtHor : public Scaled_Indicator
@@ -73,8 +73,7 @@ class Aileron_I : public Scaled_Indicator
 public:
   int cx;
   void display(Flight &);
-  void underpaint(Flight &)
-  {}
+  void underpaint(Flight &);
   void init();
 };
 
@@ -83,8 +82,7 @@ class Elevator_I : public Scaled_Indicator
 public:
   int cy;
   void display(Flight &);
-  void underpaint(Flight &)
-  {}
+  void underpaint(Flight &);
   void init();
 };
 
@@ -93,8 +91,7 @@ class Rudder_I : public Scaled_Indicator
 public:
   int cx;
   void display(Flight &);
-  void underpaint(Flight &)
-  {}
+  void underpaint(Flight &);
   void init();
 };
 
@@ -102,10 +99,8 @@ class LED : public Scaled_Indicator
 {
 public:
   void on();
-  void display(Flight &)
-  {}
-  void underpaint(Flight &)
-  {}
+  void display(Flight &);
+  void underpaint(Flight &);
 };
 
 class Landing_Gear_LED : public LED
@@ -129,10 +124,8 @@ class Dial_Indicator : public Scaled_Indicator
 {
 public:
   int cx,cy;
-  void display(Flight &)
-  {}
-  void underpaint(Flight &)
-  {}
+  void display(Flight &);
+  void underpaint(Flight &);
   void show_dial(float value);
   void init();
 };
@@ -165,8 +158,7 @@ public:
   int max_indicators;
   int indicators_idx;
   Instrument_Panel(int max_i);
-  ~Instrument_Panel()
-  { if (indicators) delete indicators; }
+  ~Instrument_Panel();
   void add_indicator(Indicator *);
   friend std::istream &operator >>(std::istream &is, Instrument_Panel &);
   void underpaint(Flight &);

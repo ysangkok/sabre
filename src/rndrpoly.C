@@ -50,19 +50,29 @@
 
 #define LOW_VALUE R2D_TYPE(-INT_MAX)
 #define HIGH_VALUE R2D_TYPE(INT_MAX)
-#define YMAX SCREEN_HEIGHT
-#define XMAX SCREEN_WIDTH  - 1
+//#define YMAX SCREEN_HEIGHT
+//#define XMAX SCREEN_WIDTH  - 1
 
+extern int xmax, ymax;
 int xmax,ymax;
 
+extern TR_2DPoint *tr_l_edge, *tr_r_edge;
 TR_2DPoint *tr_l_edge = NULL; // [YMAX];
 TR_2DPoint *tr_r_edge= NULL; //[YMAX];
 
+extern R2D_TYPE min_y,max_y;
+extern R2D_TYPE min_x,max_x;
+extern R2D_TYPE min_z,max_z;
 R2D_TYPE min_y,max_y;
 R2D_TYPE min_x,max_x;
 R2D_TYPE min_z,max_z;
+
+extern R2D_TYPE bnds_l, bnds_r;
+extern R2D_TYPE bnds_t, bnds_b;
 R2D_TYPE bnds_l, bnds_r;
 R2D_TYPE bnds_t, bnds_b;
+
+extern REAL_TYPE dz;
 REAL_TYPE dz;
 
 R2D_TYPE *zbuff = NULL;
@@ -72,8 +82,10 @@ R2D_TYPE zbias = R2D_TYPE(1L);
 int zbff_flag = 0;
 REAL_TYPE zbuff_min = 1.0;
 
+extern int rz_which_line;
 int rz_which_line = 0;
 
+extern int rz_steps;
 int rz_steps = 0;
 
 // #define TPREC 16
@@ -298,6 +310,7 @@ inline void tr_set_edge(R2D_TYPE x, R2D_TYPE y, R2D_TYPE z, R2D_TYPE u, R2D_TYPE
 
 void rendzline(const R_2DPoint &, const R_2DPoint &, int);
 
+void tr_build_edge_array(TR_2DPoint *points, int n);
 void tr_build_edge_array(TR_2DPoint *points, int n)
 {
   int i;
@@ -371,6 +384,7 @@ void tr_build_edge_array(TR_2DPoint *points, int n)
 extern int frame_switch;
 extern void frame_convpoly(int *, int, int);
 
+void tr_frame_convpoly(TR_2DPoint *points, int n);
 void tr_frame_convpoly(TR_2DPoint *points, int n)
 {
   if (n >= RENDMAX)

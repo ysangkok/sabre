@@ -48,9 +48,9 @@ public:
 	{
 		return functioning;
 	}
-	void set_functioning(int functioning)
+	void set_functioning(int funcing)
 	{
-		this->functioning = functioning;
+		functioning = funcing;
 		if (!functioning)
 			SetDeath(1);
 	}

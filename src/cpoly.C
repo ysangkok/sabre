@@ -43,10 +43,14 @@ extern Vector world_light_source;
 extern REAL_TYPE world_scale;
 extern int frame_switch;
 
-char fcontext_buff[32];
+static char fcontext_buff[32];
+
+extern int shape_cnt;
+extern int poly_cnt;
 int shape_cnt;
 int poly_cnt;
-int point_cnt;
+
+static int point_cnt;
 
 int C_Poly::txtrflag = 1;
 
@@ -224,7 +228,7 @@ void C_ShapeInfo::copy(const C_ShapeInfo &cs)
   delete_flag = 1;
 }
 
-void C_ShapeInfo::add(const C_PolyInfo &pi)
+void C_ShapeInfo::add(const C_PolyInfo &p)
 {
   C_PolyInfo *tmp;
  
@@ -235,8 +239,8 @@ void C_ShapeInfo::add(const C_PolyInfo &pi)
     delete [] polyinfos;
   polyinfos = tmp;
   npolys++;
-  polyinfos[npolys-1] = pi;
-  bcube.set(pi.bcube);
+  polyinfos[npolys-1] = p;
+  bcube.set(p.bcube);
   delete_flag = 1;
 }
 
@@ -363,28 +367,28 @@ void shape_params::add(const poly_params &pm)
   p_params[n_params - 1] = pm;
 }
 
-void C_3DObjectInfo::readFile(char *path)
+void C_3DObjectInfo::readFile(char *pat)
 {
   std::ifstream is;
   if (this->path)
     delete this->path;
-  this->path = strdup(path);
-  if (open_is(is,path))
+  this->path = strdup(pat);
+  if (open_is(is,pat))
     read(is);
 }
 
-void C_3DObjectInfo::writeFile(char *path)
+void C_3DObjectInfo::writeFile(char *pat)
 {
   std::ofstream os;
-  MYCHECK(path != NULL);
+  MYCHECK(pat != NULL);
   if (this->path == NULL)
-    this->path = strdup(path);
-  else if (strcmp(this->path,path))
+    this->path = strdup(pat);
+  else if (strcmp(this->path,pat))
     {
       delete this->path;
-      this->path = strdup(path);
+      this->path = strdup(pat);
     }
-  if (open_os(os,path))
+  if (open_os(os,pat))
     write(os);
 }
 
@@ -444,9 +448,9 @@ C_Poly::C_Poly()
   scale = 1.0;
 }
 
-int C_Poly::create(C_PolyInfo *pi)
+int C_Poly::create(C_PolyInfo *p)
 {
-  p_info = pi;
+  p_info = p;
   //	wpoints = new R_3DPoint[npoints];
   //	return (wpoints != NULL);
   wpoints = NULL;
@@ -623,10 +627,10 @@ void C_Poly::set_poly_icolor(Vector &light)
   float intensity;
   if (flags & I_SHADE)
     {
-      float val = light.Dot(surface_normal) + 1.0;
-      intensity = (val / 2.0);
-      if (intensity > 1.0)
-	intensity = 1.0;
+      float val = (float) light.Dot(surface_normal) + 1.0f;
+      intensity = (val / 2.0f);
+      if (intensity > 1.0f)
+	intensity = 1.0f;
       col = (base_color + color_range - 1) - 
 	(int) (intensity * ((float) color_range - 1) );
       if (col <= base_color + color_range &&

@@ -35,7 +35,7 @@
 class InputDevice
 {
 public:
-  virtual ~InputDevice() {}
+  virtual ~InputDevice();
   virtual int IsAvailable( void ) const = 0;
   virtual void Update( void ) = 0;
 };
@@ -49,8 +49,7 @@ public:
 public:
   InputDevice_2D()
     {}
-  virtual ~InputDevice_2D()
-    {}
+  virtual ~InputDevice_2D();
   virtual float GetX()
     { return x; }
   virtual float GetY()
@@ -88,10 +87,7 @@ public:
     : ljoy(js)
     {}
 
-  ~Joystick()
-    {
-      ljoy.close();
-    }
+  virtual ~Joystick();// { ljoy.close(); }
 
   int IsAvailable() const
     {

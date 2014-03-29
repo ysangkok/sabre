@@ -253,22 +253,6 @@ int gdev_svgalib::rect( int x, int y,  int w, int h, int c, int fill )
 }
 
 // --
-// -- method ( x, y, c ) 
-// --
-// -- returns the color palette index for viewport position (x,y)
-// -- if color palette index c is not -1 viewport position (x,y) is
-// -- set to c
-// --
-
-inline int gdev_svgalib::pixel( int x, int y, int c )
-{
-   unsigned char *ofs=vbuf+x+y*vdimx;
-   if( c != -1 )
-     *ofs=c;
-   return *ofs;
-}
-
-// --
 // -- method line( x0, y0, x1, y1, c, *fill )
 // --
 // -- returns the result of line draw from (x0,y0) to (x1,y1) in viewpoint
@@ -287,7 +271,7 @@ int gdev_svgalib::line( int x0, int y0, int x1, int y1, int c, void * /* fill */
 
     int pixcnt, stepping, step_up, step_dn, x_step, x_back, y_step, y_back;
 
-    int l=x0, t=y0, r=x1, b=y1;
+    //int l=x0, t=y0, r=x1, b=y1;
 
     if( dx >= dy ) {
 
@@ -314,15 +298,15 @@ int gdev_svgalib::line( int x0, int y0, int x1, int y1, int c, void * /* fill */
     }
 
     if( x1 < x0 ) {
-        l=x1;
-        r=x0;
+        //l=x1;
+        //r=x0;
         x_step = -x_step;
         x_back = -x_back;
     }
 
     if( y1 < y0 ) {
-        t=y1;
-        b=y0;
+        //t=y1;
+        //b=y0;
         y_step = -y_step;
         y_back = -y_back;
     }
@@ -506,9 +490,9 @@ int rgbdev8_svgalib::get( int c, char *red , char *green, char *blue )
 {
    int r, g, b;
    gl_getpalettecolor( c, &r, &g, &b );
-   *red=r;
-   *green=g;
-   *blue=b;
+   *red=(char) r;
+   *green=(char) g;
+   *blue=(char) b;
    return 0;
 }
 

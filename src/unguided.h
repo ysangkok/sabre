@@ -142,9 +142,9 @@ public:
   void init();
   virtual void de_activate();
   float size;
-  DustUp(float mtime = 0.55)
+  DustUp(float mtime = 0.55f)
     : TMoveable(mtime),
-    size(0.13)
+    size(0.13f)
     {}
 };
 
@@ -235,10 +235,10 @@ class Rocket_Trail : public Smoke_Trail
 public:
   FlightLight *fltlte;
   Rocket_Specs *rspcs;
-  Rocket_Trail(Rocket_Specs *rspcs)
+  Rocket_Trail(Rocket_Specs *rspc)
     :Smoke_Trail()
     {
-      this->rspcs = rspcs;
+      this->rspcs = rspc;
       fltlte = NULL;
     }
   virtual void activate(FlightLight *);

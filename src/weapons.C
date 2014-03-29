@@ -84,7 +84,7 @@ void Gun_Specs::read(std::istream &is)
   is >> tracer_freq;
   is >> max_rounds >> c;
   READ_TOK(')',is,c);
-  rounds_per_second = 1.0 / (rounds_per_second / 60);
+  rounds_per_second = C(1.0 / (rounds_per_second / 60));
 }
 
 void Gun_Specs::write(std::ostream &os)
@@ -125,7 +125,7 @@ void Cannon_Specs::read(std::istream &is)
 
   blast_radius *= world_scale;
   blast_map_size *= world_scale;
-  rounds_per_second = 1.0 / (rounds_per_second / 60);
+  rounds_per_second = C(1.0 / (rounds_per_second / 60));
 }
 
 void Cannon_Specs::write(std::ostream &os)
@@ -353,7 +353,7 @@ R_3DPoint Weapon::predict_path (Flight &hf, float flt_time)
   // Find vertical distance travelled
   // s = v0t + 1/2at2
   float sy = (v_vel * flt_time ) +
-    ( -g / 2.0) * (flt_time * flt_time);
+    ( -g / 2.0f) * (flt_time * flt_time);
   // scale it
   sy *= world_scale;
   // get vertical position
@@ -370,31 +370,31 @@ REAL_TYPE Weapon::calc_htime(Flight &hf, R_3DPoint &p)
   float init_speed = w_specs->flt_specs.init_speed;
   Vector v = Vector(p - host_flight->state.flight_port.look_from);
   v.Z = 0.0;
-  float d = sqrt(v.X * v.X + v.Y * v.Y);
+  float d = (float) sqrt(v.X * v.X + v.Y * v.Y);
   d /= world_scale;
   result = d / init_speed;
   R_KEY_END
     return result;
 }
 
-REAL_TYPE Weapon::calc_hvtime(Flight &host_flight, R_3DPoint &p)
+REAL_TYPE Weapon::calc_hvtime(Flight &host_flit, R_3DPoint &p)
 {
   REAL_TYPE hdist;
   REAL_TYPE htime;
-  Vector v = Vector(p - host_flight.state.flight_port.look_from);
-  hdist = sqrt(v.X * v.X + v.Y * v.Y) / world_scale;
+  Vector v = Vector(p - host_flit.state.flight_port.look_from);
+  hdist = C(sqrt(v.X * v.X + v.Y * v.Y) / world_scale);
 
   FlightLight flt(&w_specs->flt_specs);
-  flt.activate(host_flight.state.flight_port,
+  flt.activate(host_flit.state.flight_port,
 	       &w_specs->flt_specs,
 	       aim_position,
 	       aim_vector,
-	       &host_flight.state.velocity
+	       &host_flit.state.velocity
 	       );
 
   DVector hv = to_vector(flt.state.velocity);
 
-  htime = hdist / sqrt(hv.X * hv.X + hv.Y * hv.Y);
+  htime = C(hdist / sqrt(hv.X * hv.X + hv.Y * hv.Y));
   return (htime);
 }
 
@@ -816,7 +816,7 @@ void Weapons_Manager::read_file(const char *path)
 }
 
 #define NWPTYPES 6
-simfileX::dict wptypes[NWPTYPES] =
+static simfileX::dict wptypes[NWPTYPES] =
 {
   { "gun_type", gun_t },
   { "rocket_type", rocket_t },
@@ -1078,3 +1078,10 @@ void Weapon_Instance_List::draw(Port_3D *port)
   for (int i=0;i<n_weaps;i++)
     weapons[i].draw(port);
 }
+
+Weapon_Specs::~Weapon_Specs() = default;
+Rocket_Specs::~Rocket_Specs() = default;
+Cannon_Specs::~Cannon_Specs() = default;
+Missile_Specs::~Missile_Specs() = default;
+Gun_Specs::~Gun_Specs() = default;
+FuelTank_Specs::~FuelTank_Specs() = default;

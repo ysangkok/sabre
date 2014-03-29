@@ -64,11 +64,11 @@ int dump_screen = 0;
 
 // Allows altering time rate
 float time_factor;
-float world_scale = 0.045;
+float world_scale = 0.045f;
 // current elapsed time, 'cooked'
-float time_frame = 0.1;
+float time_frame = 0.1f;
 // current elapsed time, raw
-float raw_time = 0.1;
+float raw_time = 0.1f;
 // increases chances of a hit by expanding bounding rects of targets
 float hit_scaler = 1.0;
 // player's hit scaler
@@ -76,8 +76,8 @@ float player_hit_scaler = 1.0;
 // allows us to scale up mobile shapes
 float shape_scaler = 1.0;
 // maximum time
-float max_time = 0.1;
+float max_time = 0.1f;
 // shadow level
-REAL_TYPE shadow_level = 0.5;
+REAL_TYPE shadow_level = C(0.5);
 // display flags
 int display_flags = CLOUDS_ON | TERRAIN_ON;

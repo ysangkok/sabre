@@ -72,18 +72,18 @@ void aiBase::Init()
 
 
 // Update routine. 
-void aiBase::Update(double timeFrame)
+void aiBase::Update(double timeFrm)
 {
-	this->timeFrame = (sREAL) timeFrame;
+	timeFrame = (sREAL) timeFrm;
 	oneOverTimeFrame = 1 / (timeFrame + eps);
 	elapsedTime += timeFrame;
 }
 
-void aiBase::SetHandle(const char *handle)
+void aiBase::SetHandle(const char *hndl)
 {
-	if (handle)
+	if (hndl)
 	{
-		strncpy(this->handle,handle,sizeof(this->handle));
+		strncpy(this->handle,hndl,sizeof(this->handle));
 		this->handle[sizeof(this->handle)-1] = 0;
 	}
 }

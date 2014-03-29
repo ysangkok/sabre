@@ -22,7 +22,7 @@
 #include "key_map.h"
 #include "pc_keys.h"
 
-kmp_t low_kmp[] =
+static kmp_t low_kmp[] =
 {
 	{ "NULL", (int) NULL },
 	{ "BEL", BEL },
@@ -34,7 +34,7 @@ kmp_t low_kmp[] =
 	{ NULL, 0 }
 };
 
-kmp_t funct_kmp[] =
+static kmp_t funct_kmp[] =
 {
 	{ "S_TAB", S_TAB },
 	{ "F1", F1 },
@@ -71,6 +71,7 @@ kmp_t funct_kmp[] =
 	{ NULL, 0 }
 };
 
+int kmp_str(char *s, int &f);
 int kmp_str(char *s, int &f)
 {
 	int i = 0;

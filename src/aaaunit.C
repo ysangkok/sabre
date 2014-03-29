@@ -121,7 +121,7 @@ float t,hd;
 	{
 		Flight *flt = ((Flight_ZViewer *)target)->flt;
 		Vector v = Vector(target->position - ap);
-		hd = sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z);
+		hd = (REAL_TYPE) sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z);
 		hd /= world_scale;
 		t = hd / gspcs->flt_specs.init_speed;
 		// printf("hd: %5.2f, t: %3.2f\n",hd,t);

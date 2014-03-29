@@ -56,11 +56,11 @@
 
 extern float vtable [][3];
 extern int vsize;
-int debris_len = 6, debris_width = 6;
-float dustup_size;
-float dustup_time = 3.0;
-int local_flag = 0;
-long memlimit = 2000;
+static int debris_len = 6, debris_width = 6;
+static float dustup_size;
+static float dustup_time = 3.0;
+//static int local_flag = 0;
+//static long memlimit = 2000;
 
 #define GRAY_COLORS 100
 
@@ -592,7 +592,7 @@ void Smokey::update()
     {
       cur_size = init_size;
       cur_position = TMoveable::position;
-      RANDPOINT(cur_position,5.0 * world_scale);
+      RANDPOINT(cur_position, C(5.0 * world_scale));
       next_view = 0;
       nview = 1;
     }
@@ -799,13 +799,13 @@ Unguided_Manager::Unguided_Manager()
   specs.weight = 0.25;
   specs.init_speed = 50.0;
   specs.time_limit = 5.0;
-  specs.drag_factor = 0.0000004;
-  specs.mass = specs.weight / 32.0;
+  specs.drag_factor = C(0.0000004);
+  specs.mass = specs.weight / C(32.0);
 
   for (i=0;i<nrounds;i++)
     {
       rounds[i] = new Projectile(&specs);
-      rounds[i]->view_len = 6.0 * world_scale;
+      rounds[i]->view_len = C(6.0) * world_scale;
       MYCHECK(rounds[i] != NULL);
     }
 
@@ -817,11 +817,11 @@ Unguided_Manager::Unguided_Manager()
   flak_specs.init_speed = 500.0;
   flak_specs.time_limit = 10.0;
   flak_specs.drag_factor = 0.0;
-  flak_specs.mass = specs.weight / 32.0;
+  flak_specs.mass = specs.weight / C(32.0);
   for (i=0;i<nflak;i++)
     {
       flak[i] = new Projectile(&flak_specs);
-      flak[i]->view_len = 100.0 * world_scale;
+      flak[i]->view_len = C(100.0) * world_scale;
       flak[i]->view_color = 11;
       MYCHECK(flak[i] != NULL);
     }
@@ -836,7 +836,7 @@ Unguided_Manager::Unguided_Manager()
   ndustups = MAX_DUSTUPS;
   for (i=0;i<ndustups;i++)
     {
-      dustups[i] = new DustUp(2.2);
+      dustups[i] = new DustUp(C(2.2));
       MYCHECK(dustups[i] != NULL);
     }
   elapsed_time = 0.0;
@@ -902,7 +902,7 @@ int Unguided_Manager::endProjectilePath(Projectile *p)
 		wps->getBlastDur(),
 		wps->getSmokeMap(),
 		wps->getBlastMap(),
-		wps->getBlastDur() / 4.0);
+		wps->getBlastDur() / C(4.0));
 		sprintf(wep_blast_sound_id,"%sexpl",
 				  wps->wep_name);
 		vol = sound_calc_distant_vol(pp,3000.0);
@@ -911,7 +911,7 @@ int Unguided_Manager::endProjectilePath(Projectile *p)
 	}
 	else
 	{
-		dustup_size = 32.0 * world_scale;
+		dustup_size = C(32.0) * world_scale;
 		dustup_time = 1.0;
 		pp = p->position;
 		pp.z += 16.0 * world_scale;
@@ -1099,19 +1099,19 @@ void Unguided_Manager::boom(R_3DPoint &origin, int )
       Vector v(vtable[zz][0],vtable[zz][1],vtable[zz][2]);
       v.Z = 1.0;
       v.Normalize();
-      v *= 2000.0 * world_scale;
+      v *= C(2000.0) * world_scale;
       new_flak(origin,v);
     }
   
-  blast_size = 160.0 * world_scale;
-  new_blast(origin,blast_size,blast_size,1.0,"fire","fire",0.1);
+  blast_size = C(160.0) * world_scale;
+  new_blast(origin,blast_size,blast_size,1.0,"fire","fire",C(0.1));
   nn = RANDOM(3) + 7;
   new_smoke(origin,
 	    nn,
-	    blast_size * 2.0 / nn,
-	    blast_size * 2.0 / nn,
-	    blast_size / 2.0,
-	    (frand(32.0) + 10.0) * world_scale,
+	    blast_size * 2.0f / nn,
+	    blast_size * 2.0f / nn,
+	    blast_size / 2.0f,
+	    C((frand(32.0) + 10.0) * world_scale),
 	    160.0,
 	    1,
 	    20.0,
@@ -1137,7 +1137,7 @@ void Unguided_Manager::handle_hit(Target *hit, Projectile *p)
 		hit_point = p->l_position;
 		create_debris(hit_point,RANDOM(20) + 10, RANDOM(20) + 10,
 		RANDOM(2) + 1, NULL);
-		dustup_size = 12.0 * world_scale;
+		dustup_size = C(12.0 * world_scale);
 		dustup_time = (float) RANDOM(6) + 3;
 		new_dustup(hit_point);
 
@@ -1153,7 +1153,7 @@ void Unguided_Manager::handle_hit(Target *hit, Projectile *p)
 				new_flak(hit_point,v);
 			}
 
-			blast_size = ((float)hit->max_damage)  * 100.0;
+			blast_size = ((float)hit->max_damage)  * 100.0f;
 			if (blast_size > 200)
 				blast_size = 200;
 			blast_size *= world_scale;
@@ -1167,8 +1167,8 @@ void Unguided_Manager::handle_hit(Target *hit, Projectile *p)
 						nn,
 						blast_size / nn,
 						blast_size / nn,
-						blast_size / 2.0,
-						(frand(32.0) + 10.0) * world_scale,
+						blast_size / 2.0f,
+						C((frand(32.0) + 10.0) * world_scale),
 						160.0,
 						1,
 						20.0,
@@ -1185,7 +1185,7 @@ void Unguided_Manager::handle_hit(Target *hit, Projectile *p)
 	case FLIGHT_ZVIEW_T:
 		{
 			Flight_ZViewer *fvwr = (Flight_ZViewer *) hit;
-			dustup_size = 15.0 * world_scale;
+			dustup_size = 15.0f * world_scale;
 
 			hit_point = *(fvwr->get_hit_point());
 			Vector_Q *vq = fvwr->get_velocity();
@@ -1204,14 +1204,14 @@ void Unguided_Manager::handle_hit(Target *hit, Projectile *p)
 
 			if (fvwr->isHistory())
 			{
-				blast_size = 50.0 * world_scale;
-				new_blast(hit_point,blast_size,blast_size,3.0,"fire","fire",1.0);
-				Smokey::sm_max_time = 60.0;
-				Smokey::sm_init_size = 12.0 * world_scale;
-				Smokey::sm_d_size =   1.8 * world_scale;
-				Smokey::sm_d_len = 42.0 * world_scale;
+				blast_size = 50.0f * world_scale;
+				new_blast(hit_point,blast_size,blast_size,3.0f,"fire","fire",1.0f);
+				Smokey::sm_max_time = 60.0f;
+				Smokey::sm_init_size = 12.0f * world_scale;
+				Smokey::sm_d_size =   1.8f * world_scale;
+				Smokey::sm_d_len = 42.0f * world_scale;
 				new_smoke_trail(*(fvwr->flt));
-				int vol = sound_calc_distant_vol(hit_point,1000.0);
+				int vol = sound_calc_distant_vol(hit_point,1000.0f);
 				if (vol > 0)
 					sound_on(SNDGLOBAL_EXPLOSION_MEDIUM,NORM,vol);
 			}
@@ -1234,18 +1234,18 @@ void Unguided_Manager::create_debris(R_3DPoint &p, int , int ,
       int x = RANDOM(vsize);
       debris_specs.time_limit = RANDOM(10) + 3;
       debris_specs.weight = RANDOM(120) + 30;
-      debris_specs.mass = debris_specs.weight / 32.0;
+      debris_specs.mass = debris_specs.weight / 32.0f;
       debris_specs.init_speed = RANDOM(100) + 80;
-      debris_specs.drag_factor = RANDOM(10) * 0.00003;
-      debris_specs.init_pitch_rate = RANDOM(15) * 0.3 + 0.4;
-      debris_specs.init_yaw_rate = RANDOM(15) * 0.3 + 0.4;
-      debris_specs.init_roll_rate =  RANDOM(15) * 0.3 + 0.4;
+      debris_specs.drag_factor = RANDOM(10) * 0.00003f;
+      debris_specs.init_pitch_rate = RANDOM(15) * 0.3f + 0.4f;
+      debris_specs.init_yaw_rate = RANDOM(15) * 0.3f + 0.4f;
+      debris_specs.init_roll_rate =  RANDOM(15) * 0.3f + 0.4f;
       if (vq != NULL)
 	{
 	  v = Vector(vtable[x][0],vtable[x][1],
 			      vtable[x][2]);
 	  v.Normalize();
-	  v *= (((float)RANDOM(15)) + 1.0) * world_scale;
+	  v *= (((float)RANDOM(15)) + 1.0f) * world_scale;
 	  v = v + vq->direction.to_vector();
 	  debris_specs.init_speed = vq->magnitude;
 	  m_debris.activate(p,v);
@@ -1255,7 +1255,7 @@ void Unguided_Manager::create_debris(R_3DPoint &p, int , int ,
 	  v = Vector(vtable[x][0],vtable[x][1],
 				   vtable[x][2]);
 	  v.Normalize();
-	  v *= 100.0 * world_scale;
+	  v *= 100.0f * world_scale;
 	  m_debris.activate(p,v);
 	}
     }

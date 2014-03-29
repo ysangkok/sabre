@@ -40,9 +40,7 @@
 class sObject
 {
 public:
-
-  virtual ~sObject()
-    {}
+  virtual ~sObject();
 
   virtual int IsA() const
     {

@@ -129,15 +129,15 @@ Pilot &pilot = *my_node.pilot;
 		// combat info
 	}
 
-	d1 = ((float) my_flight.mods.battle_damage) / 
-		((float) my_flight.specs->max_damage) * 100.0;
+	d1 = C(((float) my_flight.mods.battle_damage) / 
+		((float) my_flight.specs->max_damage) * 100.0);
 	gns_x = 1;
 	gns_y = SCREEN_HEIGHT-8;
 
 	if (stats_on)
 	{
 		if (raw_time > 0.0)
-			d2 = 1.0 / raw_time;
+			d2 = C(1.0 / raw_time);
 		else
 			d2 = 0.0;
 		the_font->font_sprintf(gns_x,gns_y,hud_color,NORMAL,
@@ -228,7 +228,7 @@ void Hud::do_hud_stuff(int x, int y, Flight &my_flight)
 		hud_stuff[3] = 'B';
 	else
 		hud_stuff[3] = ' ';
-	if (my_flight.controls.flaps)
+	if ((bool) my_flight.controls.flaps)
 	{
 		hud_stuff[4] = 'F';
 		the_font->font_sprintf(x,y,hud_color,NORMAL,"%s %02.0f %03.0f%%",hud_stuff,

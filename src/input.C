@@ -51,6 +51,10 @@ const int mouse_manual_flag = 0;
 
 const char MOUSE_PATH[] = "/dev/mouse";
 
+InputDevice_2D::~InputDevice_2D() = default;
+InputDevice::~InputDevice() = default;
+Joystick::~Joystick() = default;
+
 /*
  * This resets the mouse driver.  The value returned is "true"
  * if the mouse driver is present and the mouse could be reset.
@@ -81,7 +85,7 @@ return true;
 #endif
 }
 
-void Mouse::set_position(int x, int y)
+void Mouse::set_position(__attribute__((unused)) int x, __attribute__((unused)) int y)
 {
 #ifdef HAVE_LIBSDL
 

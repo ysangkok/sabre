@@ -54,9 +54,9 @@ public:
 	{
 		return affiliation;
 	}
-	void SetAffiliation(int affiliation)
+	void SetAffiliation(int afltn)
 	{
-		this->affiliation = affiliation;
+		this->affiliation = afltn;
 	}
 	char *GetHandle()
 	{
@@ -67,25 +67,25 @@ public:
 	{
 		return (task);
 	}
-	void SetTask(int task)
+	void SetTask(int tsk)
 	{
-		this->task = task;
+		this->task = tsk;
 	}
 	unsigned long GetIdx()
 	{
 		return idx;
 	}
-	void SetIdx(unsigned long idx)
+	void SetIdx(unsigned long ix)
 	{
-		this->idx = idx;
+		this->idx = ix;
 	}
 	int GetIndex()
 	{
 		return index;
 	}
-	void SetIndex(int index)
+	void SetIndex(int ix)
 	{
-		this->index = index;
+		this->index = ix;
 	}
    int GetAttackerCount()
    {

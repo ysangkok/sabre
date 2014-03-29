@@ -67,6 +67,8 @@ LineTraveler::LineTraveler(Point a, Point b, int d)
 	 n = 0;
 }
 
+LineTraveler::~LineTraveler() = default;
+
 void LineTraveler::NewDelta(int nDelta)
 {
 	 delta = nDelta;

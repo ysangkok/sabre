@@ -34,7 +34,7 @@ void sFlightModel::DoVForcesCallback()
       (updateCallback != NULL ) &&
       ( callbackFlags & SFMCB_VFORCES_UPDATE) 
       )
-    (*updateCallback)(VFORCES_UPDATE,iter,this,callbackData);
+    (*updateCallback)(VFORCES_UPDATE,callbackData);
 }
 
 /************************************************
@@ -47,7 +47,7 @@ void sFlightModel::DoRForcesCallback()
       (updateCallback != NULL ) &&
       ( callbackFlags & SFMCB_RFORCES_UPDATE) 
       )
-    (*updateCallback)(RFORCES_UPDATE,iter,this,callbackData);
+    (*updateCallback)(RFORCES_UPDATE,callbackData);
 }
 
 /**********************************************
@@ -60,7 +60,7 @@ void sFlightModel::DoPositionCallback()
       (updateCallback != NULL ) &&
       ( callbackFlags & SFMCB_POSITION_UPDATE) 
       )
-    (*updateCallback)(POSITION_UPDATE,iter,this,callbackData);
+    (*updateCallback)(POSITION_UPDATE,callbackData);
 }
 
 /**********************************************
@@ -73,7 +73,7 @@ void sFlightModel::DoOrientationCallback()
       (updateCallback != NULL ) &&
       ( callbackFlags & SFMCB_ORIENTATION_UPDATE) 
       )
-    (*updateCallback)(ORIENTATION_UPDATE,iter,this,callbackData);
+    (*updateCallback)(ORIENTATION_UPDATE,callbackData);
 }
 
 /*********************************************
@@ -85,9 +85,7 @@ void sFlightModel::DoControlCallback()
       (updateCallback != NULL ) &&
       ( callbackFlags & SFMCB_CONTROL_UPDATE) 
       )
-    (*updateCallback)(CONTROL_UPDATE,iter,this,callbackData);
+    (*updateCallback)(CONTROL_UPDATE,callbackData);
 }
 
-
-
-
+sFlightModel::~sFlightModel() = default;

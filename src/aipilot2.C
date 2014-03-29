@@ -77,6 +77,7 @@ void aiPilot::DoLevelRoll(sManeuverState &mv)
       mv.data0 *= _degree;
       mv.state = 1;
 
+    [[clang::fallthrough]];
     case 1:
       SETROLLPID(mv.data0,mv.data1);
       SETPITCHPID(levelAttitude.pitch);
@@ -102,10 +103,11 @@ void aiPilot::DoPitchedRoll(sManeuverState &mv)
 	mv.data1 *= _degree;
 	mv.data2 *= _degree;
 	/* calc z for given degree above or below horizon */
-	mv.data3 = tan(mv.data2) * 1000.0;
+	mv.data3 = C(tan(mv.data2) * 1000.0);
 	mv.state = 1;
       }
 
+    [[clang::fallthrough]];
     case 1:
       {
 	sAttitude att;
@@ -206,7 +208,7 @@ void aiPilot::DoStandardTurn(sManeuverState &mv)
   switch (mv.state)
     {
     case 0:
-      mv.data0 = fabs(mv.data0) * _degree;
+      mv.data0 = C(fabs(mv.data0) * _degree);
       if (mv.GetManeuverDirection() == sManeuver::LEFT)
 	mv.data0 *= -1;
       if (flightModel->GetAirSpeedFPS() <= flightModel->GetStallSpeedFPS())
@@ -233,7 +235,7 @@ void aiPilot::DoStandardTurn(sManeuverState &mv)
       {
 	sREAL load_needed;
 	ControlsOff();
-	load_needed = 1.0 / cos(fabs(flightModel->GetRoll()));
+	load_needed = C(1.0 / cos(fabs(flightModel->GetRoll())));
 	SETCONTROL(gCtl,load_needed);
 	SETROLLPID(mv.data0);
 	SETYAWPID(levelAttitude.yaw);
@@ -327,6 +329,7 @@ void aiPilot::DoHardTurn(sManeuverState &mv)
       else
 	mv.state = 1;
 
+    [[clang::fallthrough]];
     case 1:
       {
 	ControlsOff();
@@ -358,17 +361,17 @@ void aiPilot::DoHardTurn(sManeuverState &mv)
 	d0 = flightModel->GetWeight() / (flightModel->GetLift() + eps);
 	if (d0 < 0.8 && d0 > 0.0)
 	  {
-	    d1 = acos(d0);
+	    d1 = sACOS(d0);
 	    if (flightModel->GetPitch() >= 0.0)
 	      d1 *= 1.1;
 	    if (d1 > Pi_2 - 0.05)
-	      d1 = Pi_2 - 0.05 ;
+	      d1 = C(Pi_2 - 0.05);
 	    if (mv.GetManeuverDirection() == sManeuver::LEFT)
 	      d1 = -d1;
 	  }
 	else
 	  {
-	    d1 = Pi_2 - 0.05 ;
+	    d1 = C(Pi_2 - 0.05);
 	    if (mv.GetManeuverDirection() == sManeuver::LEFT)
 	      d1 = -d1;
 	  }
@@ -419,8 +422,7 @@ void aiPilot::DoClimb(sManeuverState &mv)
       && mv.state != 3)
     {
       ClearManeuverStackTo(mv.stackLevel);
-      PushManeuver(sManeuver::EXTEND,0,flightModel->GetStallSpeedFPS() * 1.5,10.0,
-		   extAngle);
+      PushManeuver(sManeuver::EXTEND, 0, C(flightModel->GetStallSpeedFPS() * 1.5), 10.0, extAngle);
       mv.state = 3;
     }
 
@@ -430,7 +432,7 @@ void aiPilot::DoClimb(sManeuverState &mv)
     case 0:
       mv.state = 1;
       flightModel->SetPitchControlPer(0.0);
-      mv.data3 = _degree * 10.0;
+      mv.data3 = C(_degree * 10.0);
       mv.data4 = 0.0;
       break;
 
@@ -533,7 +535,7 @@ void aiPilot::DoImmelman(sManeuverState &mv)
     case 0:
       {
 	ControlsOff();
-	sREAL climbFPS = flightModel->GetMaxSpeedFPS() * 0.7;
+	sREAL climbFPS = C(flightModel->GetMaxSpeedFPS() * 0.7);
 	if (flightModel->GetAirSpeedFPS() < climbFPS )
 	  PushManeuver(sManeuver::EXTEND,0,climbFPS ,10,extAngle);
 	else
@@ -636,6 +638,7 @@ void aiPilot::DoSplitS(sManeuverState &mv)
       SETCONTROL(gCtl,mv.data0);
       mv.state = 3;
 
+    [[clang::fallthrough]];
     case 3:
       {
 	sREAL curRoll;
@@ -708,7 +711,7 @@ void aiPilot::DoPullUp(sManeuverState &mv)
 	sREAL distance = sGetCircularDistance(16.0 * _degree,flightModel->GetPitch());
 	SETPITCHPID(-distance);
 	/* cheat on speed so we don't look foolish! */
-	sREAL cheatSpeed = flightModel->GetStallSpeedFPS() * 2.0;
+	sREAL cheatSpeed = C(flightModel->GetStallSpeedFPS() * 2.0);
 	if (cheatSpeed > flightModel->GetMaxSpeedFPS())
 	  cheatSpeed = flightModel->GetMaxSpeedFPS();
 	if (flightModel->GetAirSpeedFPS() < cheatSpeed)
@@ -841,7 +844,7 @@ void aiPilot::DoClimbingTurn(sManeuverState &mv)
     case 2:
       {
 	/* set bank angle for 2g */
-	sREAL bankAngle = _degree * 45.0;
+	sREAL bankAngle = C(_degree * 45.0);
 	if (mv.GetManeuverDirection() == sManeuver::LEFT)
 	  bankAngle *= -1.0;
 	ControlsOff();
@@ -886,6 +889,7 @@ void aiPilot::DoSnapRoll(sManeuverState &mv)
       mv.data3 = flightModel->GetRoll();
       mv.state = 1;
 
+    [[clang::fallthrough]];
     case 1:
       ControlsOff();
       if (mv.data2 > 0)
@@ -940,6 +944,7 @@ void aiPilot::DoZoom(sManeuverState &mv)
       mv.data1 *= _degree;
       mv.state = 1;
 
+    [[clang::fallthrough]];
     case 1:
       {
 	flightModel->SetEngineControlPer(1.0);

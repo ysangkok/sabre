@@ -45,7 +45,7 @@ void aiPilot::DoIntercept(sManeuverState &mv)
 {
 	enum { BASE, TURN, EXTEND, AVOID_GROUND, CLIMB, NOSEON, DONE };
 
-	engageMaxSpeed = flightModel->GetMaxSpeedFPS() * 0.7;
+	engageMaxSpeed = flightModel->GetMaxSpeedFPS() * C(0.7);
 	EnableGroundCollision(1);
 	curTarget = &interceptTarget;
 
@@ -74,7 +74,7 @@ void aiPilot::DoIntercept(sManeuverState &mv)
 	case BASE:
 		if (flightModel->GetAirSpeedFPS() < engageMaxSpeed * 0.6)
 		{
-			PushManeuver(sManeuver::EXTEND,0,engageMaxSpeed * 1.1,20,8);          
+			PushManeuver(sManeuver::EXTEND,0,engageMaxSpeed * C(1.1),20,8);
 			mv.state = EXTEND;
 		}
 		else if (TARGET_FLAGS.rear)
@@ -220,7 +220,7 @@ void aiPilot::DoNavigate(sManeuverState &mv)
 				PushManeuver(sManeuver::CLIMB,0,NAV_ALTITUDE,10.0); 
 			else
 			{
-				sREAL descentAngle = atan(fabs(altDiff) / NAV_RANGE);
+				sREAL descentAngle = sATAN(fabs(altDiff) / NAV_RANGE);
 				if (descentAngle > Pi_4)
 					descentAngle = Pi_4;
 				PushManeuver(sManeuver::DESCEND,0,NAV_ALTITUDE,10.0,descentAngle / _degree);
@@ -239,8 +239,7 @@ void aiPilot::DoNavigate(sManeuverState &mv)
 	   sREAL rollNeeded;
 		sREAL limitRoll = Pi_4;
 		ControlsOff();
-		rollNeeded = atan(flightModel->GetAirSpeedFPS() *
-						 NAV_YAW / 32.2);
+		rollNeeded = sATAN(flightModel->GetAirSpeedFPS() * NAV_YAW / 32.2);
 		if (fabs(rollNeeded) > limitRoll)
 		{
 			if (rollNeeded < 0.0)
@@ -326,8 +325,7 @@ void aiPilot::DoFormation(sManeuverState &mv)
 				 fabs(FORMATION_YAW) > _degree * 30.0)
 				rollNeeded = Point2Roll(TARGET_GEOMETRY.formationPoint);
 			else
-				rollNeeded = atan(flightModel->GetAirSpeedFPS() *
-							FORMATION_YAW / 32.2);
+				rollNeeded = sATAN(flightModel->GetAirSpeedFPS() * FORMATION_YAW / 32.2);
 			SETROLLPID(rollNeeded);
 			SETPITCHPID(FORMATION_PITCH);
 			SETYAWPID(FORMATION_YAW);
@@ -372,7 +370,7 @@ void aiPilot::DoAirShow(sManeuverState &mv)
 	{
 	case 0:
 		mv.data4 = 0.0;
-		mv.data3 = sRandPer() * 5.0 + 5.0;
+		mv.data3 = sRandPer() * C(5.0) + C(5.0);
 		PushManeuver(sManeuver::STRAIGHT_AND_LEVEL,IMNVR_LOOPBIT);
 		mv.state = 1;
 		break;
@@ -412,11 +410,9 @@ void aiPilot::DoAirShow(sManeuverState &mv)
 				turn_bits = IMNVR_RIGHT;
 			else
 				turn_bits = IMNVR_LEFT;
-			PushManeuver(sManeuver::STANDARD_TURN,turn_bits,
-							sRandPer() * 30.0 + 15.0,
-							sRandPer() * 300.0);
+			PushManeuver(sManeuver::STANDARD_TURN,turn_bits, sRandPer() * C(30.0) + C(15.0), sRandPer() * C(300.0));
 			mv.data4 = 0.0;
-			mv.data3 = sRandPer() * 16.0 + 8.0;
+			mv.data3 = sRandPer() * C(16.0) + C(8.0);
 			mv.state = 5;
 		}
 			break;
@@ -425,7 +421,7 @@ void aiPilot::DoAirShow(sManeuverState &mv)
 		{
 			PushManeuver(sManeuver::INVERT);
 			mv.data4 = 0.0;
-			mv.data3 = sRandPer() * 16.0 + 16.0;
+			mv.data3 = sRandPer() * C(16.0) + C(16.0);
 			mv.state = 5;
 		}
 			break;
@@ -438,10 +434,10 @@ void aiPilot::DoAirShow(sManeuverState &mv)
 			else
 				turn_bits = IMNVR_LEFT;
 			PushManeuver(sManeuver::STANDARD_TURN,turn_bits,
-							sRandPer() * 30.0 + 15.0,
+							sRandPer() * C(30.0) + C(15.0),
 							aiPILOT_CIRCLE_BANK_DEG);
 			mv.data4 = 0.0;
-			mv.data3 = sRandPer() * 10.0 + 3.0;
+			mv.data3 = sRandPer() * C(10.0) + C(3.0);
 			mv.state = 5;
 		}
 			break;
@@ -455,7 +451,7 @@ void aiPilot::DoAirShow(sManeuverState &mv)
 				turn_bits = IMNVR_LEFT;
 			PushManeuver(sManeuver::AILERON_ROLL,turn_bits);
 			mv.data4 = 0.0;
-			mv.data3 = sRandPer() * 16.0 + 16.0;
+			mv.data3 = sRandPer() * C(16.0) + C(16.0);
 			mv.state = 5;		
 		}
 			break;
@@ -469,7 +465,7 @@ void aiPilot::DoAirShow(sManeuverState &mv)
 				turn_bits = IMNVR_LEFT;
 			PushManeuver(sManeuver::BREAK_TURN,turn_bits);
 			mv.data4 = 0.0;
-			mv.data3 = sRandPer() * 10.0 + 6.0;
+			mv.data3 = sRandPer() * C(10.0) + C(6.0);
 			mv.state = 5;
 		}
 			break;

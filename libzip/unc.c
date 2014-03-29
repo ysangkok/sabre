@@ -136,7 +136,7 @@ static long do_uncompress(void)
 
   method = 0;
   for(i=0;i<2;i++)
-    method = method | ((unsigned int)local_nextbyte() << (i*8));
+    method = (unsigned short) (method | ((unsigned int)local_nextbyte() << (i*8)));
 
   theircrc = 0;
   for(i=0;i<4;i++)
@@ -178,6 +178,7 @@ static long do_uncompress(void)
 
       mycrc = updcrc(slide,0);
       break;
+      default: abort();
     }
 
   if(theircrc != mycrc)
@@ -190,7 +191,7 @@ static long do_uncompress(void)
 
 int local_flush(int num_bytes)
 {
-  updcrc(slide, num_bytes);
+  updcrc(slide, (ulg) num_bytes);
 
   switch(io_type)
     {
@@ -201,14 +202,14 @@ int local_flush(int num_bytes)
 	  unc_error("uncompress, destination buffer too small");
 	}
 
-      memcpy(dstptr,(char *)slide,num_bytes);
+      memcpy(dstptr,(char *)slide, (unsigned) num_bytes);
       
       dstptr += num_bytes;
       dstcount += num_bytes;
       break;
 
     case IO_FILE_TO_FILE:
-      if(fwrite(slide, num_bytes, 1, file_out) != 1)
+      if(fwrite(slide, (size_t) num_bytes, 1, file_out) != 1)
 	{
 	  unc_error("write to disk failed");
 	}
@@ -233,7 +234,7 @@ int local_nextbyte(void)
   switch(io_type)
     {
     case IO_MEM_TO_MEM:
-      byte = (unsigned int)*srcptr++;
+      byte = (int)*srcptr++;
       break;
     case IO_FILE_TO_MEM:
     case IO_FILE_TO_FILE:
@@ -244,7 +245,7 @@ int local_nextbyte(void)
   return byte;
 }
 
-static void unc_error(char * message)
+__attribute__((noreturn)) static void unc_error(char * message)
 {
 #ifdef WIN31
   /* do something for windows */

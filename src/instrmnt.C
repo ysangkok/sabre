@@ -62,17 +62,17 @@
 
 extern int frame_switch;
 
-ArtHor arthor;
-Aileron_I aileron_i;
-Elevator_I elevator_i;
-Rudder_I rudder_i;
-Landing_Gear_LED landing_gear_led;
-Wheel_Brakes_LED wheel_brakes_led;
-Air_Brakes_LED air_brakes_led;
-Air_Speed_I air_speed_i;
-Altitude_I altitude_i;
-Compass compass;
-Throttle_I throttle_i;
+static ArtHor arthor;
+static Aileron_I aileron_i;
+static Elevator_I elevator_i;
+static Rudder_I rudder_i;
+static Landing_Gear_LED landing_gear_led;
+static Wheel_Brakes_LED wheel_brakes_led;
+static Air_Brakes_LED air_brakes_led;
+static Air_Speed_I air_speed_i;
+static Altitude_I altitude_i;
+static Compass compass;
+static Throttle_I throttle_i;
 
 Instrument_Panel instrument_panel(13);
 
@@ -119,14 +119,14 @@ void ArtHor::underpaint(Flight &flight)
     sc_y = y + height - 3;
   s[2].y = sc_y;
   s[3].y = sc_y;
-  if (port.roll)
+  if ((bool) port.roll)
     ang = _2PI - port.roll;
   else
     ang = 0;
   if (flight.state.negative_phi)
     ang = limit_angle(ang + _PI);
-  sin_ang = sin(ang);
-  cos_ang = cos(ang);
+  sin_ang = sSIN(ang);
+  cos_ang = sCOS(ang);
   for (int i=0;i<5;i++)
     {
       s1[i] = point_rotate(s[i],cx,cy,sin_ang,cos_ang);
@@ -240,10 +240,10 @@ void Dial_Indicator::show_dial(float value)
 {
   float angle,fx,fy;
   int d_x,d_y;
-  angle = (6.2831853 * value) / range;
+  angle = (6.2831853f * value) / range;
   angle -= 1.5707963;
-  fx = ((double)(width)) * cos(angle);
-  fy = ((double)(width)) * sin(angle);
+  fx = C((double)width * cos(angle));
+  fy = C((double)width * sin(angle));
   d_x = (int)fx;
   d_y = (int)fy;
   b_linedraw(x,y,x+d_x,y+d_y,color,NULL);
@@ -251,7 +251,7 @@ void Dial_Indicator::show_dial(float value)
 
 void Air_Speed_I::display(Flight &flt)
 {
-  show_dial((flt.state.z_vel * 3600.0 ) / 6000.0);
+  show_dial((flt.state.z_vel * 3600.0f ) / 6000.0f);
 }
 
 void Altitude_I::display(Flight &flt)
@@ -274,9 +274,9 @@ void Compass::display(Flight &flt)
 {
   float angle,fx,fy;
   int d_x,d_y;
-  angle = flt.state.heading - 1.5707963;
-  fx = ((double)width) * cos(angle);
-  fy = ((double)width) * sin(angle);
+  angle = flt.state.heading - 1.5707963f;
+  fx = C(((double)width) * cos(angle));
+  fy = C(((double)width) * sin(angle));
   d_x = (int)fx;
   d_y = (int)fy;
   b_linedraw(x,y,x+d_x,y+d_y,color,NULL);
@@ -399,3 +399,13 @@ void setup_instruments(const char *path, Instrument_Panel &ip)
   is.close();
   ip.init();
 }
+Indicator::~Indicator() = default;
+void Scaled_Indicator::init() {}
+void Elevator_I::underpaint(Flight&) {}
+void Dial_Indicator::underpaint(Flight&) {}
+void Dial_Indicator::display(Flight&) {}
+void Aileron_I::underpaint(Flight&) {}
+void LED::underpaint(Flight&) {}
+void LED::display(Flight&) {}
+void Rudder_I::underpaint(Flight&) {}
+Instrument_Panel::~Instrument_Panel() { if (indicators) delete indicators; }

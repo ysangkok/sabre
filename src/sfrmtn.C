@@ -35,9 +35,9 @@ struct FormationDat sFormationData::formationDat[sfNFORMATION_TYPES] =
 		"wedge",
 		{
          {  0,  0, 0   },
-			{ -2, -2, 0.2 },
-			{  2, -2, 0.2 },
-			{  4, -4, 0.4 },
+			{ -2, -2, 0.2f },
+			{  2, -2, 0.2f },
+			{  4, -4, 0.4f },
 		},
 		{
 			{ -6, -6, 0   },
@@ -51,9 +51,9 @@ struct FormationDat sFormationData::formationDat[sfNFORMATION_TYPES] =
 		"vic",
 		{
          {  0,  0, 0   },
-			{ -1, -1, 0.1 },
-			{  1, -1, 0.1 },
-			{  2, -2, 0.2 },
+			{ -1, -1, 0.1f },
+			{  1, -1, 0.1f },
+			{  2, -2, 0.2f },
 		},
 		{
 			{ -3, -3, 0   },
@@ -67,9 +67,9 @@ struct FormationDat sFormationData::formationDat[sfNFORMATION_TYPES] =
 		"echelon right",
 		{
             {  0,  0, 0   },
-			{  2, -2, 0.2 },
-			{  4, -4, 0.4 },
-			{  6, -6, 0.6 },
+			{  2, -2, 0.2f },
+			{  4, -4, 0.4f },
+			{  6, -6, 0.6f },
 		},
 		{
 			{-12, -6, 0   },
@@ -83,9 +83,9 @@ struct FormationDat sFormationData::formationDat[sfNFORMATION_TYPES] =
 		"echelon left",
 		{
 			{  0,  0, 0   },
-			{ -2, -2, 0.2 },
-			{ -4, -4, 0.4 },
-			{ -6, -6, 0.6 },
+			{ -2, -2, 0.2f },
+			{ -4, -4, 0.4f },
+			{ -6, -6, 0.6f },
 		},
 		{
 			{-12, -6, 0   },
@@ -99,9 +99,9 @@ struct FormationDat sFormationData::formationDat[sfNFORMATION_TYPES] =
 		"trail",
 		{
          {  0,  0, 0   },
-			{  0, -2, 0.2 },
-			{  0, -4, 0.4 },
-			{  0, -6, 0.6 },
+			{  0, -2, 0.2f },
+			{  0, -4, 0.4f },
+			{  0, -6, 0.6f },
 		},
 		{
 			{-12, -8, 0   },
@@ -115,9 +115,9 @@ struct FormationDat sFormationData::formationDat[sfNFORMATION_TYPES] =
 		"ladder",
 		{
          {  0,  0, 0   },
-			{  0, -1, 0.4 },
-			{  0, -2, 0.8 },
-			{  0, -3, 1.2 },
+			{  0, -1, 0.4f },
+			{  0, -2, 0.8f },
+			{  0, -3, 1.2f },
 		},
 		{
 			{ -4, -3, 0   },
@@ -147,16 +147,16 @@ struct FormationDat sFormationData::formationDat[sfNFORMATION_TYPES] =
 		"fighting wing",
 		{
          {  0,  0, 0   },
-			{ 20,-20, 0.2 },
-			{ 40,-40, 0.4 },
-			{ 60,-60, 0.6 },
+			{ 20,-20, 0.2f },
+			{ 40,-40, 0.4f },
+			{ 60,-60, 0.6f },
 		},
 		{
-			{ -2, -2, 0.2 },
-			{  2, -2, 0.2 },
-			{ -4, -4, 0.4 },
-			{  4, -4, 0.4 },
-			{ -6, -6, 0.6 }
+			{ -2, -2, 0.2f },
+			{  2, -2, 0.2f },
+			{ -4, -4, 0.4f },
+			{  4, -4, 0.4f },
+			{ -6, -6, 0.6f }
 		}
 	}
 };

@@ -63,6 +63,7 @@ public:
   virtual void calc_bounding_sphere();
 
   virtual ~C_3DObject_Base();
+  C_3DObject_Base(const C_3DObject_Base& copy_from_me);
 };
 
 class C_3DPoly : public C_3DObject_Base
@@ -193,12 +194,12 @@ public:
     }
 
   
-  C_3DObject2(C_3DInfoManager *im)
+  C_3DObject2(C_3DInfoManager *im2)
     :shapes(NULL),
      bcubes(NULL),
      ci(NULL)
   {
-    this->im = im;
+    this->im = im2;
     visible = 1;
     hurt = 0;
     scale = 1.0;
@@ -215,9 +216,9 @@ public:
 	delete [] bcubes;
     }
 
-  void setIm(C_3DInfoManager *im)
+  void setIm(C_3DInfoManager *im2)
     {
-      this->im = im;
+      this->im = im2;
     }
 
   virtual class_types class_type()
@@ -262,14 +263,14 @@ public:
   C_3DObject_Group      *groups;
   int n_shapes,n_objects,n_groups;
 
-  C_DrawList2(C_3DInfoManager *im)
+  C_DrawList2(C_3DInfoManager *im2)
     : objects(NULL),
       groups(NULL),
       n_shapes(0),
       n_objects(0),
       n_groups(0)
   { 
-    this->im = im;
+    this->im = im2;
   }
 
   ~C_DrawList2();

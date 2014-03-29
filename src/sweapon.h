@@ -2,7 +2,7 @@
     Sabre Fighter Plane Simulator 
     Copyright (c) 1997/1998 Dan Hammer
     Portions Donated By Antti Barck
-	
+    
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 1, or (at your option)
@@ -26,14 +26,14 @@
 #ifndef __sweapon_h
 #define __sweapon_h
 
-#define swDEFAULT_CONE_PITCH		   (_degree * 1.0)
-#define swDEFAULT_CONE_YAW          (_degree * 1.0)
-#define swDEFAULT_MAX_RANGE         1360.0
-#define swDEFAULT_INITIAL_VELOCITY  2502.0
-#define swDEFAULT_BURST_TIME        0.5
-#define swDEFAULT_BURST_PAUSE       0.4
-#define swDEFAULT_CONVERGANCE		 900.0
-#define swMAX_RANGE_FACTOR			 0.6
+#define swDEFAULT_CONE_PITCH        ((sREAL) (_degree * 1.0))
+#define swDEFAULT_CONE_YAW          ((sREAL) (_degree * 1.0))
+#define swDEFAULT_MAX_RANGE         ((sREAL) 1360.0)
+#define swDEFAULT_INITIAL_VELOCITY  ((sREAL) 2502.0)
+#define swDEFAULT_BURST_TIME        ((sREAL) 0.5)
+#define swDEFAULT_BURST_PAUSE       ((sREAL) 0.4)
+#define swDEFAULT_CONVERGANCE       ((sREAL) 900.0)
+#define swMAX_RANGE_FACTOR          ((sREAL) 0.6)
 
 #ifdef __cplusplus
 
@@ -44,51 +44,51 @@
 class sConeOfFire
 {
 public:
-	sAttitude	min;
-	sAttitude   max;
-	sConeOfFire()
-	{}
+    sAttitude    min;
+    sAttitude   max;
+    sConeOfFire()
+    {}
 };
 
 class sWeaponLimits
 {
 public:
 
-	sREAL			maxRange;
-	sREAL			minRange;
-	sAttitude	cone;
-	sVector		jiggle;
-	sREAL			initialVelocity;
-	sREAL			fireInterval;
-	sREAL			fireTimeAccumulator;
-	sConeOfFire	coneOfFire;
-	enum { BURST_INIT, BURST_BURST, BURST_PAUSE };
-	int			burstState;
-	sREAL			burstTime;
-	sREAL			burstPauseTime;
-	sREAL			burstTimeAccumulator;
-	sREAL			convergance;
+    sREAL            maxRange;
+    sREAL            minRange;
+    sAttitude    cone;
+    sVector        jiggle;
+    sREAL            initialVelocity;
+    sREAL            fireInterval;
+    sREAL            fireTimeAccumulator;
+    sConeOfFire    coneOfFire;
+    enum { BURST_INIT, BURST_BURST, BURST_PAUSE };
+    int            burstState;
+    sREAL            burstTime;
+    sREAL            burstPauseTime;
+    sREAL            burstTimeAccumulator;
+    sREAL            convergance;
 
-	sWeaponLimits()
-	{
-		maxRange = swDEFAULT_MAX_RANGE;
-		minRange = 20.0;
-		coneOfFire.min.yaw = -swDEFAULT_CONE_YAW / 2.0;
-		coneOfFire.min.pitch = -swDEFAULT_CONE_PITCH / 2.0;
-		coneOfFire.max.yaw = swDEFAULT_CONE_YAW / 2.0;
-		coneOfFire.max.pitch = swDEFAULT_CONE_PITCH / 2.0;
-		cone.pitch = swDEFAULT_CONE_PITCH;
-		cone.yaw = swDEFAULT_CONE_YAW;
-		jiggle.x = jiggle.y = jiggle.z = 0.0;
-		initialVelocity = swDEFAULT_INITIAL_VELOCITY;
-		fireInterval = 0.06;
-		fireTimeAccumulator = 0.0;
-		burstTimeAccumulator = 0.0;
-		burstState = BURST_INIT;
-		burstTime = swDEFAULT_BURST_TIME;
-		burstPauseTime = swDEFAULT_BURST_PAUSE;
-		convergance = swDEFAULT_CONVERGANCE;
-	}
+    sWeaponLimits()
+    {
+        maxRange = swDEFAULT_MAX_RANGE;
+        minRange = 20.0;
+        coneOfFire.min.yaw = -swDEFAULT_CONE_YAW / 2.0;
+        coneOfFire.min.pitch = -swDEFAULT_CONE_PITCH / 2.0;
+        coneOfFire.max.yaw = swDEFAULT_CONE_YAW / 2.0;
+        coneOfFire.max.pitch = swDEFAULT_CONE_PITCH / 2.0;
+        cone.pitch = swDEFAULT_CONE_PITCH;
+        cone.yaw = swDEFAULT_CONE_YAW;
+        jiggle.x = jiggle.y = jiggle.z = 0.0;
+        initialVelocity = swDEFAULT_INITIAL_VELOCITY;
+        fireInterval = (sREAL) 0.06;
+        fireTimeAccumulator = 0.0;
+        burstTimeAccumulator = 0.0;
+        burstState = BURST_INIT;
+        burstTime = swDEFAULT_BURST_TIME;
+        burstPauseTime = swDEFAULT_BURST_PAUSE;
+        convergance = swDEFAULT_CONVERGANCE;
+    }
 
     void Init()
     {

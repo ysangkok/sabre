@@ -31,6 +31,6 @@ std::istream &operator >>(std::istream &is, color_spec &cs)
   is >> cs.color >> cs.red >> cs.green >> cs.blue >> c;
   while (is && c!=')')
     is >> c;
-  set_rgb_value(cs.color,cs.red,cs.green,cs.blue);
+  set_rgb_value(cs.color, (char) cs.red, (char) cs.green, (char) cs.blue);
   return is;
 }

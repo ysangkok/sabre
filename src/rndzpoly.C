@@ -218,6 +218,7 @@ inline void r_set_edge(R2D_TYPE x, int y, R2D_TYPE z)
     }
 }
 
+void r_build_edge_array(R_2DPoint *points, int n);
 void r_build_edge_array(R_2DPoint *points, int n)
 {
   int i;
@@ -263,6 +264,7 @@ extern int frame_switch;
 extern int frame_color;
 extern void frame_convpoly(int *, int, int);
 
+void r_frame_convpoly(R_2DPoint *points, int n);
 void r_frame_convpoly(R_2DPoint *points, int n)
 {
   if (n >= RENDMAX)

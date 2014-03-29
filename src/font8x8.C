@@ -33,6 +33,7 @@
 
 extern const char *build_libpath(const char *);
 
+SimFont::~SimFont() = default;
 
 void SimFont::put_string(char *str, int x, int y, int color)
 {
@@ -131,11 +132,11 @@ ConsoleFont::ConsoleFont(const char *)
 #endif
 {
 #ifndef SABREWIN
-  const char *path;
+  const char *pat;
   fdev = new fontdev;
   MYCHECK(fdev != NULL);
-  path = build_libpath(fname);
-  fdev->load(path);
+  pat = build_libpath(fname);
+  fdev->load(pat);
   width = fdev->getdimx();
   height = fdev->getdimy();
   put_width = width;

@@ -116,9 +116,9 @@ public:
     {
       return (position);
     }
-  void SetId(const char *id)
+  void SetId(const char *i)
     {
-      SetHandle(id);
+      SetHandle(i);
     }
   const char *GetId()
     {
@@ -147,10 +147,10 @@ public:
   void KillAttackers();
   void KillEngageFlite(aiFlite *engageFlite);
 
-  void SetTargetMode(int mode)
+  void SetTargetMode(int mod)
     {
-      if (mode >= aiF_TARGETMODE_NOACTION && mode <= aiF_TARGETMODE_ENGAGE)
-	targetMode = mode;
+      if (mod >= aiF_TARGETMODE_NOACTION && mod <= aiF_TARGETMODE_ENGAGE)
+	targetMode = mod;
       else
 	targetMode = aiF_TARGETMODE_EVADE;
     }
@@ -159,9 +159,9 @@ public:
     {
       return (newTargetDelayTime);
     }
-  void SetNewTargetDelayTime(sREAL newTargetDelayTime)
+  void SetNewTargetDelayTime(sREAL newTargetDelayTim)
     {
-      this->newTargetDelayTime = newTargetDelayTime;
+      this->newTargetDelayTime = newTargetDelayTim;
     }
 
   void SetDamage(int, int shooterIndex)

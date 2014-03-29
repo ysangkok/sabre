@@ -35,7 +35,7 @@ struct gevent {
         device_analog_joystick	= 0x00030000, // analog joystick
         device_graphics_card   	= 0x10000000, // 4096 devices reserved for
                                               // graphics system
-      datamask		      	= 0x0000FFFF, // bits 15..0 for data
+      datamask		      	= 0x0000FFFF  // bits 15..0 for data
    };
    unsigned int type;
    void *data;
@@ -59,6 +59,7 @@ class gdev {
    unsigned int gflags;
  public:
    gdev();
+   virtual ~gdev() = default;
    virtual int open( int width=320, int height=200, int vicinity=8, int wwidth=-1, int wheight=-1 );
    virtual int setview( int x0, int y0, int x1, int y1 );
    virtual int close( void );
@@ -69,7 +70,6 @@ class gdev {
    void *getvbuf( int end=0 ) { return end?vbufend:vbuf; }
 
    virtual int clear( int c=0, int flags=1 );
-   virtual int pixel( int x, int y, int c=-1 );
    virtual int rect( int x, int y, int w, int h, int c, int fill=1 );
    virtual int line( int x0, int y0, int x1, int y1, int c, void *fill=0 );
    
@@ -78,6 +78,7 @@ class gdev {
 
 class rgbdev8 {
  public:
+   virtual ~rgbdev8() = default;
    virtual int get( int c, char *r, char *g, char *b ); 
    virtual int set( int c, char r, char g, char b ); 
    virtual int get( void *pal, int start=0, int end=255 ); 

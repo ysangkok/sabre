@@ -23,7 +23,7 @@
 #include "vga_13.h"
 #include "pen.h"
 
-pen _pen;
+static pen _pen;
 pen *curpen = &_pen;
 
 void line(int x1, int y1, int x2, int y2, int color)

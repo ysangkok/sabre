@@ -38,15 +38,15 @@ extern float time_frame;
 #define SPECS		  flight->specs
 #define FLIGHT_PORT STATE.flight_port
 #define LOOK_FROM   FLIGHT_PORT.look_from
-#define LOOK_AT     FLIGHT_PORT.look_at
-#define FLIGHT_ROLL FLIGHT_PORT.roll
+//#define LOOK_AT     FLIGHT_PORT.look_at
+//#define FLIGHT_ROLL FLIGHT_PORT.roll
 
-sbrFlightModel::sbrFlightModel(Flight *flight)
+sbrFlightModel::sbrFlightModel(Flight *flit)
 {
 sPoint  position;
 sAttitude attitude;
 
-	this->flight = flight;
+	this->flight = flit;
 	R_3DPoint2sPoint(LOOK_FROM,position);
 	Port2sAttitude(FLIGHT_PORT,attitude);
 	sSlewer::SetPositionAndAttitude(position,attitude);
@@ -60,7 +60,7 @@ sAttitude attitude;
 
 	flight->l_time = time_frame;
 	if (flight->l_time <= 0.0)
-		flight->l_time = 0.1;
+		flight->l_time = C(0.1);
 	flight->applyForces(flight->l_time);
 	flight->applyRotations(flight->l_time);
 	flight->calcState(flight->l_time);
@@ -247,7 +247,7 @@ void sbrFlightModel::GetWorldVelocity(sVector &worldVel)
 	Vector2sVector(worldV,worldVel);
 }
 
-void sbrFlightModel::SetVelocity(const sVector &vel)
+void sbrFlightModel::SetVelocity(__attribute__((unused)) const sVector &vel)
 {
 	/*
 	 * FIXME!!
@@ -313,7 +313,7 @@ void sbrFlightModel::IncYawControlPer(sREAL inc)
 
 sREAL sbrFlightModel::GetEngineControlPer()
 {
-	return CONTROLS.throttle * 0.01;
+	return CONTROLS.throttle * C(0.01);
 }
 
 void sbrFlightModel::SetEngineControlPer(sREAL per)
@@ -322,7 +322,7 @@ void sbrFlightModel::SetEngineControlPer(sREAL per)
 		per = 1.0;
 	if (per < 0.0)
 		per = 0.0;
-	CONTROLS.throttle = ((float)per) * 100.0;
+	CONTROLS.throttle = C(((float)per) * 100.0);
 }
 
 void sbrFlightModel::IncEngineControlPer(sREAL inc)
@@ -380,7 +380,7 @@ sREAL sbrFlightModel::GetWeight()
 	return (sREAL) STATE.weight;
 }
 
-void sbrFlightModel::SetWEP(int wep)
+void sbrFlightModel::SetWEP(__attribute__((unused)) int wep)
 {
 	/*
 	 * FIXME!!

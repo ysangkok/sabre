@@ -30,5 +30,5 @@ void default_sPID(_sPID *spid)
   spid->p = DEFAULT_P;
   spid->i = DEFAULT_I;
   spid->d = DEFAULT_D;
-  spid->base = DEFAULT_BASE * DEFAULT_BASE;
+  spid->base = (float) (DEFAULT_BASE * DEFAULT_BASE);
 }

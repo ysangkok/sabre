@@ -46,9 +46,9 @@
 #include "sim.h"
 
 extern Font8x8 *the_font;
-#define R_TOP 0
-#define R_RIGHT 1
-#define R_BACK 2
+//#define R_TOP 0
+//#define R_RIGHT 1
+//#define R_BACK 2
 const float shadow_limit = 1500.0;
 
 Flight_ZViewer::Flight_ZViewer(Z_Node_Manager *zv)
@@ -316,7 +316,7 @@ int Flight_ZViewer::landing_report(Landing_Report &lr)
 	return result;
 }
 
-void Flight_ZViewer::calc_damage(int hit_shape, int damage)
+void Flight_ZViewer::calc_damage(int hit_shp, int damage)
 {
   int choice;
   flt->mods.battle_damage += damage;
@@ -324,15 +324,15 @@ void Flight_ZViewer::calc_damage(int hit_shape, int damage)
 
   if (flt->mods.battle_damage >= max_damage)
     {
-      flt->mods.spin_out = frand(63.0) + 15.0;
+      flt->mods.spin_out = C(frand(63.0) + 15.0);
       if (RANDOM(2)) 
 	flt->mods.spin_out *= -1.0;
 
-      flt->mods.yaw_out = frand(5.0) + 2.0;
+      flt->mods.yaw_out = C(frand(5.0) + 2.0);
       if (RANDOM(2)) 
 	flt->mods.yaw_out *= -1.0;
 
-      flt->mods.pitch_out = frand(6.0) + 3.0;
+      flt->mods.pitch_out = C(frand(6.0) + 3.0);
       if (RANDOM(2)) 
 	flt->mods.pitch_out *= -1.0;
      
@@ -344,9 +344,9 @@ void Flight_ZViewer::calc_damage(int hit_shape, int damage)
     }
   else if (flt->mods.battle_damage >= max_damage / 4)
     {
-      flt->mods.engine_e = (max_damage - flt->mods.battle_damage) / 100.0;
+      flt->mods.engine_e = C((max_damage - flt->mods.battle_damage) / 100.0);
       float dmg = ((float)damage) / ((float)max_damage);
-      switch (hit_shape)
+      switch (hit_shp)
 	{
 	case fuselage:
 	case tail:
@@ -375,15 +375,15 @@ void Flight_ZViewer::calc_damage(int hit_shape, int damage)
 	case right_wing:
 	  if (flt->mods.spin_out == 0.0 && flt->mods.battle_damage >= max_damage * 0.75)
 	    {
-	      flt->mods.spin_out = frand(15.0) + 4.0;
-	      if (hit_shape == right_wing)
+	      flt->mods.spin_out = C(frand(15.0) + 4.0);
+	      if (hit_shp == right_wing)
 		flt->mods.spin_out = -flt->mods.spin_out;
 	    }
 	  if (RANDOM(2))
 	    {
 	      flt->mods.ailerons_e -= dmg;
 	      if (flt->mods.ailerons_e < 0.1)
-		flt->mods.ailerons_e = 0.1;
+		flt->mods.ailerons_e = C(0.1);
 	    }
 	  else
 	    {
@@ -397,8 +397,8 @@ void Flight_ZViewer::calc_damage(int hit_shape, int damage)
 R_3DPoint *Flight_ZViewer::get_hit_point()
 {
   C_ShapeInfo &si = z_manager->shape_info[hit_shape];
-  C_PolyInfo &pi = si.polyinfos[RANDOM(si.npolys)];
-  R_3DPoint &hp = pi.lpoints[RANDOM(pi.npoints)];
+  C_PolyInfo &p = si.polyinfos[RANDOM(si.npolys)];
+  R_3DPoint &hp = p.lpoints[RANDOM(p.npoints)];
   reference_port->port2world(hp,&hitpoint);
   return (&hitpoint);
 }

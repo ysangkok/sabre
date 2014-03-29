@@ -47,35 +47,35 @@ inline long coreleft()
 // convert knots to feet per second
 inline float kts2fps(float kts)
 {
-  return ((kts / 3600.0) * 6000.0);
+  return ((kts / 3600.0f) * 6000.0f);
 }
 // convert feet per second to knots
 inline float fps2kts(float fps)
 {
-  return ((fps * 3600.0) / 6000.0);
+  return ((fps * 3600.0f) / 6000.0f);
 }
 // convert miles per hour to feet per second
 inline float mph2fps(float mph)
 {
-  return ((mph / 3600.0) * 5280.0);
+  return ((mph / 3600.0f) * 5280.0f);
 }
 // convert feet per second to miles per hour
 inline float fps2mph(float fps)
 {
-  return ((fps * 3600.0) / 5280.0);
+  return ((fps * 3600.0f) / 5280.0f);
 }
 // convert miles to feet
 inline float m2f(float m)
 {
-  return (m * 5280.0);
+  return (m * 5280.0f);
 }
 // convert feet to miles
 inline float f2m(float f)
 {
-  return (f / 5280.0);
+  return (f / 5280.0f);
 }
 
-#define INT_PERC(x) (((float)x) / 100.0)
+#define INT_PERC(x) (((float)x) / 100.0f)
 
 inline float frand(float val)
 {

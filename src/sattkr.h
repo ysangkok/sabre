@@ -48,9 +48,9 @@ public:
 		threatValue = 0.0;
 	}
 
-	sAttacker(unsigned long idx)
+	sAttacker(unsigned long ix)
 	{
-		this->idx = idx;
+		this->idx = ix;
 		threatValue = 0.0;
 	}
        
@@ -81,9 +81,9 @@ public:
       return (idx);
     }
 
-    void SetThreatValue(sREAL threatValue)
+    void SetThreatValue(sREAL threatVal)
     {
-        this->threatValue = threatValue;
+        this->threatValue = threatVal;
     }
 
     sREAL GetThreatValue()

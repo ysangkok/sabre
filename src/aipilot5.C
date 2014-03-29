@@ -49,12 +49,10 @@ void aiPilot::DoLevelBomb(sManeuverState &)
   sAttitude att;
 
   GetSurfaceTargetGeometry(surfaceTarget);
-  timeOfFall = sqrt(flightModel->GetHeightAGL() / 16.0);
+  timeOfFall = sSQRT(flightModel->GetHeightAGL() / C(16.0));
   timeToTarget = SURFACE_TARGET_RANGE / flightModel->GetAirSpeedFPS();
-  SetNoseOn(SURFACE_TARGET_PITCH,SURFACE_TARGET_YAW,Pi_4 * 0.4);
-  SETCONTROLX(speedCtl,
-	      sMPH2FPS(navInfo.waypoint.speed),
-	      0.01);
+  SetNoseOn(SURFACE_TARGET_PITCH,SURFACE_TARGET_YAW, Pi_4 * C(0.4));
+  SETCONTROLX(speedCtl, sMPH2FPS(navInfo.waypoint.speed), C(0.01));
   GetAttitude(surfaceTarget.worldPoint,v,att);
   if ((fabs(att.yaw) < (Pi - Pi_2)) && timeOfFall >= timeToTarget)
     {

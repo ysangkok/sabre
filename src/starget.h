@@ -130,6 +130,7 @@ public:
     {
       Reset();
     }
+  virtual ~sTargetFlags();
 };
 
 class sTargetInfo : public sObject
@@ -141,6 +142,7 @@ public:
   sREAL	weaponsEffect;
   sREAL	maxSpeed;
   sTargetInfo();
+  virtual ~sTargetInfo();
 };
 
 class sTarget : public sObject
@@ -164,6 +166,7 @@ public:
   static void GetTargetInfo(unsigned long targetIdx, sPoint &position, 
 			    sVector &velocity, sVector &heading);
   static int GetTargetActive(unsigned long targetIdx);
+  virtual ~sTarget();
 };
 
 /*
@@ -188,7 +191,8 @@ public:
     {
       isStatic = 0;
       range = dRange = vertDistance = dVertDistance = 0.0;
-    }  
+    }
+  virtual ~sSurfaceTarget();
 };
 
 #endif /* __cplusplus */

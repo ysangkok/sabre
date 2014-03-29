@@ -47,6 +47,8 @@ public:
 	sRunway()
 	{}
 
+	virtual ~sRunway();
+
 	sRunway(const srunway_info &);
 
 	int GetRunwayNumber()

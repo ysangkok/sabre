@@ -35,6 +35,7 @@ public:
 	 int n;
 	 Point here,there;
 	 LineTraveler(Point a, Point b, int d);
+	 virtual ~LineTraveler();
 	 virtual void NextStep();
 	 virtual Boolean Done();
 	 void NewDelta(int nDelta);

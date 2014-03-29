@@ -138,16 +138,16 @@ ulg  deflate OF((void));
 
         /* in trees.c */
 void ct_init     OF((ush *attr, int *method));
-int  ct_tally    OF((int dist, int lc));
+int  ct_tally    OF((int dist, unsigned int lc));
 ulg  ct_flush_block OF((uch far *buf, ulg stored_len, int eof));
 
         /* in bits.c */
-void     bits_send_bits  OF((int value, int length));
+void     bits_send_bits  OF((int value, unsigned int length));
 unsigned bits_reverse OF((unsigned value, int length));
 void     bits_windup  OF((void));
 void     bits_copy_block OF((uch far *buf, unsigned len, int header));
 int      bits_seekable   OF((void));
-extern   int (*bits_read_buf) OF((uch *buf, unsigned size));
+extern   unsigned int (*bits_read_buf) OF((uch *buf, unsigned size));
 ulg     memcompress OF((uch *tgt, ulg tgtsize, uch *src, ulg srcsize));
 
 /* end of zip.h */

@@ -190,6 +190,7 @@ public:
 	{
 		return dTaskModifier[2];
 	}
+	virtual ~sWaypoint();
 };
 
 /*
@@ -209,6 +210,7 @@ public:
 	{
 		range = dRange = 0.0;
 	}
+	virtual ~sNavInfo();
 };
 
 #endif /* __cplusplus */

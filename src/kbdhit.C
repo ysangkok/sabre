@@ -47,7 +47,7 @@ int kbdin = 0;
 
 #ifdef HAVE_LIBSDL
 // Q&D hack, sorry
-static const int sdl_to_standard[256] =
+static const unsigned char sdl_to_standard[256] =
 {   0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15,
    16,'i','m','l','j', 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
    32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
@@ -78,8 +78,8 @@ KBHit::KBHit()
 
   newios.c_lflag &= ~(ICANON | ECHO);
   newios.c_iflag &= ~(ISTRIP | IGNCR | ICRNL | INLCR | IXOFF | IXON);
-  newios.c_cc[VMIN] = 0;	/* Making these 0 seems to have the */
-  newios.c_cc[VTIME] = 0;	/* desired effect. */
+  newios.c_cc[VMIN] = 0;    /* Making these 0 seems to have the */
+  newios.c_cc[VTIME] = 0;    /* desired effect. */
 
   tcsetattr(0,TCSANOW,&newios);
   FD_ZERO(&rfds);
@@ -112,38 +112,38 @@ int KBHit::getch()
 #endif
       {
 #ifdef HAVE_LIBSDL
-	c=event.key.keysym.sym;
-	c = sdl_to_standard[c];
+        c = (unsigned char) event.key.keysym.sym;
+        c = sdl_to_standard[c];
 #else
-	c = vga_getkey();
+        c = vga_getkey();
 #endif      
-	if (c==ESC)
-	  {
+        if (c==ESC)
+          {
 #ifdef HAVE_LIBSDL
-	    c=event.key.keysym.sym;
+            c = (unsigned char) event.key.keysym.sym;
 #else
-	    c = vga_getkey();
+            c = vga_getkey();
 #endif     
-	    if (c=='[')
+            if (c=='[')
 #ifdef HAVE_LIBSDL 
-	      c=event.key.keysym.sym;
+              c = (unsigned char) event.key.keysym.sym;
 #else
-	    c = vga_getkey();
+              c = vga_getkey();
 #endif
-	    else
-	      {
-		putchar(c);
-		c = ESC;
-	      }
-	  }
-	tcflush(0,TCIFLUSH);
-	kbdin = (int) c;
-	return ((int)c);
+            else
+              {
+              putchar(c);
+              c = ESC;
+              }
+          }
+        tcflush(0,TCIFLUSH);
+        kbdin = (int) c;
+        return ((int)c);
       }
     else
       {
-	kbdin = 0;
-	return (0);
+        kbdin = 0;
+        return (0);
       }
 }
 

@@ -51,7 +51,7 @@ const char *LinuxJoystick::joydef1 = "joy1.def";
 const char *LinuxJoystick::joydev0 = "/dev/js0";
 const char *LinuxJoystick::joydev1 = "/dev/js1";
 
-const float LinuxJoystick::DEAD_ZONE = 0.05;
+const float LinuxJoystick::DEAD_ZONE = 0.05f;
 
 
 
@@ -126,13 +126,13 @@ int LinuxJoystick::read_def_file(const char *path)
       max_y = 146;
       min_x = 3;
       min_y = 3;
-      for (int i=0;i<NUM_AXIS;i++) 
+      for (int j=0;j<NUM_AXIS;j++) 
 	{
-	  lin[i] = 0;
-	  dead_zone[i] = DEAD_ZONE;
-	  scale[i] = 1.0/(1.0-dead_zone[i]);
-	  symetrical[i] = 1;
-	  reverse[i] = 1.0;
+	  lin[j] = 0;
+	  dead_zone[j] = DEAD_ZONE;
+	  scale[j] = 1.0f/(1.0f-dead_zone[j]);
+	  symetrical[j] = 1;
+	  reverse[j] = 1.0;
 	}
     }
   return 1;
@@ -178,8 +178,8 @@ int LinuxJoystick::update()
       buttons = js_data.buttons;
       raw_x = js_data.x;
       raw_y = js_data.y;
-      cooked_x = -1.0 + (((float)raw_x) / ((float) (min_x + max_x - min_x)) * 2.0 );
-      cooked_y = -1.0 + (((float)raw_y) / ((float)(min_y + max_y - min_y)) * 2.0 );
+      cooked_x = -1.0f + (((float)raw_x) / ((float) (min_x + max_x - min_x)) * 2.0f );
+      cooked_y = -1.0f + (((float)raw_y) / ((float)(min_y + max_y - min_y)) * 2.0f );
       if (cooked_x < -1.0)
 	cooked_x = -1.0;
       if (cooked_x > 1.0)
@@ -236,13 +236,13 @@ inline float LinuxJoystick::shapeAsym(unsigned int idx, float value)
   if (idx >= NUM_AXIS)
     return 0.0;
 
-  float temp = (value + 1.0)/2.0;
+  float temp = (value + 1.0f)/2.0f;
   if (value >= dead_zone[idx]) {
     temp = (temp - dead_zone[idx])*scale[idx];
     if (lin[idx])
-      return temp*2.0 - 1.0;
+      return temp * 2.0f - 1.0f;
     else
-      return temp*temp*2.0 -1.0;
+      return temp * temp * 2.0f -1.0f;
   } 
   else 
     return -1.0;
@@ -252,7 +252,7 @@ void LinuxJoystick::setReverse(unsigned int idx,  int rev)
 {
   if (idx>=NUM_AXIS)
 	return;
-  reverse[idx] = rev?-1.0:1.0;
+  reverse[idx] = rev ? -1.0f : 1.0f;
 }
 
 void LinuxJoystick::close()
@@ -267,7 +267,7 @@ void LinuxJoystick::setDeadZone(unsigned int idx,float zone)
     return;
   if ((zone > 0.0) &&(zone > 0.5)) { // Let it work at least a minimum !!!
     dead_zone[idx] = zone;
-    scale[idx] = 1.0/(1.0-zone);
+    scale[idx] = 1.0f / (1.0f - zone);
   }
 }
 
@@ -390,7 +390,7 @@ void LinuxJoystick::calibrate()
   printf("\nSetting maximum values to %d,%d\n\n",max_x,max_y);
   printf("\nSetting minimum values to %d,%d\n\n",min_x,min_y);
   printf("Do you wish to set the dead zones (y/n) ");
-  c = getchar();
+  c = (char) getchar();
   printf("\n");
   if (c=='Y'||c=='y')
     {
@@ -405,7 +405,7 @@ void LinuxJoystick::calibrate()
 	  {
 	    if (deadZone >= 0.0 && deadZone <= 1.0)
 	      dead_zone[i] = deadZone;
-	    scale[i] = 1.0/(1.0-deadZone);
+	    scale[i] = 1.0f / (1.0f - deadZone);
 	  }
 	}
     }

@@ -45,39 +45,39 @@ public:
       on = 0;
       setPoint = 0.0;
       flag = 0;
-      controlStep = 0.1;
+      controlStep = (sREAL) 0.1;
     }
 
   friend void SETCONTROL(sControlState &cs,
-			 sREAL setPoint)
+			 sREAL setPoin)
     {
-      cs.setPoint = setPoint;
+      cs.setPoint = setPoin;
       cs.controlStep = 1.0;
       cs.on = 1;
       cs.flag = 0;
     }
 
   friend void SETPIDCONTROL(sControlState &cs,
-			    sREAL setPoint,
-			    sREAL dVel = 0.0,
-			    sREAL controlStep = 1.0
+			    sREAL setPoin,
+			    sREAL dVl = 0.0,
+			    sREAL controlStp = 1.0
                             )
     {
-      cs.setPoint = setPoint;
-      cs.dVel = dVel;
-      cs.controlStep = controlStep;
+      cs.setPoint = setPoin;
+      cs.dVel = dVl;
+      cs.controlStep = controlStp;
       cs.on = 1;
       cs.flag = 0;
     }
 
   friend void SETCONTROLX(sControlState &cs,
-			  sREAL setPoint,
-			  sREAL controlStep = 0.01,
+			  sREAL setPoin,
+			  sREAL controlStp = (sREAL) 0.01,
 			  sREAL = 0.0
 			  )
     {
-      cs.setPoint  = setPoint;
-      cs.controlStep = controlStep;
+      cs.setPoint  = setPoin;
+      cs.controlStep = controlStp;
       cs.on = 1;
       cs.flag = 0;
       cs.dVel = 0.0;

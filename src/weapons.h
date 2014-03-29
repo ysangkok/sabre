@@ -54,7 +54,8 @@ public:
       max_range = 1000.0;
       wep_type = -1;
     }
-  virtual ~Weapon_Specs() = default;
+
+  virtual ~Weapon_Specs();
 
   friend std::istream &operator >>(std::istream &is, Weapon_Specs &ws)
     {
@@ -117,6 +118,9 @@ public:
       wep_type = gun_t;
       rounds_per_second = 0.0;
     }
+
+  virtual ~Gun_Specs();
+
   void read(std::istream &is);
   void write(std::ostream &os);
   friend std::istream &operator >>(std::istream &is, Gun_Specs &ws)
@@ -150,6 +154,8 @@ public:
       strcpy(blast_map,"fire");
       strcpy(smoke_map,"smoke");
     }
+
+  virtual ~Cannon_Specs();
 
   virtual float getDamageRadius()
     {
@@ -273,6 +279,9 @@ public:
       strcpy(flume_flame_map,"fire");
       strcpy(flume_smoke_map,"smoke");
     }
+
+  virtual ~Rocket_Specs();
+
   void read(std::istream &is);
   void write(std::ostream &os);
   friend std::istream &operator >>(std::istream &is, Rocket_Specs &rs)
@@ -295,6 +304,7 @@ public:
     {
       wep_type = missile_t;
     }
+  virtual ~Missile_Specs();
 };
 
 class FuelTank_Specs : public Bomb_Specs
@@ -305,6 +315,7 @@ public:
     {
       wep_type = fueltank_t;
     }
+  virtual ~FuelTank_Specs();
 };
 
 #define LP_PORT   0x01

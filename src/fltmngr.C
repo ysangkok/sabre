@@ -55,8 +55,8 @@ extern int gpause;
 extern int do_random;
 extern int no_crash;
 
-#define F2FIX(a) (a)
-#define FIX2F(a) (a)
+//#define F2FIX(a) (a)
+//#define FIX2F(a) (a)
 
 void Flight_Node::read(std::istream &is)
 {
@@ -91,8 +91,7 @@ void Flight_Node::read(std::istream &is)
   if (do_random)
     {
       Port_3D *prt = & flight->state.flight_port;
-      Vector v(frand(10000.0*world_scale),frand(10000.0*world_scale),
-	       frand(3000.0*world_scale));
+      Vector v(C(frand(C(10000.0) * world_scale)), C(frand(C(10000.0) * world_scale)), C(frand(C(3000.0) * world_scale)));
       prt->delta_look_from(v);
       prt->set_theta(frand(_2PI));
       flight->state.velocity.direction = prt->view_normal;
@@ -817,9 +816,9 @@ void Flight_Manager::add_draw_list(DrawList &dlist, Port_3D &port)
 inline float get_diff(float port_angle, float goal_angle)
 {
   float result;
-  result = fabs(port_angle - goal_angle);
+  result = C(fabs(port_angle - goal_angle));
   if (result > _PI)
-    result = fmod(_2PI,result);
+    result = C(fmod(_2PI, result));
   if (port_angle > goal_angle)
     result = -result;
   return result;
@@ -829,7 +828,7 @@ void Flight_Manager::set_flight_view(Port_3D &vport)
 {
   R_3DPoint lf,la,r1,r2,tpoint;
   Vector v,v1;
-  REAL_TYPE ang = half_pi * 0.333;
+  REAL_TYPE ang = half_pi * C(0.333);
   REAL_TYPE ang1 = one_fourth_pi;
 
   if (view_node != v_4_node)
@@ -960,7 +959,7 @@ void Flight_Manager::set_flight_view(Port_3D &vport)
     case fv_external:
     l1:
     vport.set_roll(0);
-    vport.set_phi(1.57);
+    vport.set_phi(C(1.57));
     vport.set_theta(0);
     vport > flt.controls.vphi;
     vport < flt.controls.vtheta;
@@ -975,12 +974,12 @@ void Flight_Manager::set_flight_view(Port_3D &vport)
     case fv_padlock:
       {
 	Pilot *tpilot;
-	R_3DPoint lf;
+	R_3DPoint lf2;
 	tpilot = flight_nodes[view_node]->pilot->get_target_pilot();
 	if (tpilot == NULL)
 	  goto l1;
-	lf = tpilot->get_position();
-	vport.rotate_to_point(lf);
+	lf2 = tpilot->get_position();
+	vport.rotate_to_point(lf2);
       }
       break;
 
@@ -1006,7 +1005,7 @@ void Flight_Manager::set_flight_view(Port_3D &vport)
 	if (pilot->get_target_flight() &&
 	    pilot->get_target_pilot())
 	  {
-	    REAL_TYPE vx = 12.0 * world_scale;
+	    REAL_TYPE vx = C(12.0) * world_scale;
 	    R_3DPoint p1 = vp->look_from + R_3DPoint(vx,vx,vx);
 	    tpoint = pilot->get_target_pilot()->get_position();
 	    v = to_nvector(tpoint,p1);
@@ -1042,7 +1041,7 @@ void Flight_Manager::set_flight_view(Port_3D &vport)
       if (!v_4_flag)
 	{
 	  vport.set_roll(0);
-	  vport.set_phi(1.57);
+	  vport.set_phi(C(1.57));
 	  vport.set_theta(0);
 	  vport > flt.controls.vphi;
 	  vport < flt.controls.vtheta;

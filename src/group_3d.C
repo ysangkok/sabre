@@ -87,7 +87,7 @@ void VVSHOW(R_3DPoint &p0, R_3DPoint &p1, R_3DPoint &p2,
 inline int TOPORT(REAL_TYPE x, REAL_TYPE y, REAL_TYPE z, 
 		  Port_3D &port, R_3DPoint *p,
 		  REAL_TYPE minz);
-int vvvshow = 0;
+static int vvvshow = 0;
 /*
 Try to determine if a bounding_cube is visible by 
 seeing if any of the faces formed from it's vertices

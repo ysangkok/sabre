@@ -562,8 +562,8 @@ void FlightInput::yoke_mouse(Flight &flt)
   m_x = mouse->GetX();
   m_x = -m_x;
   m_y = mouse->GetY();
-  e = (m_y * 30.0);
-  a = (m_x * 30.0);
+  e = C(m_y * 30.0);
+  a = C(m_x * 30.0);
   flt.controls.ailerons = a;
   if (e + flt.controls.trim > 30)
     e = 30 - flt.controls.trim;
@@ -582,7 +582,7 @@ void FlightInput::throttle_mouse(Flight &flt)
   m_y = -mouse->GetY();
   if (m_y < 0.0)
     m_y = 0.0;
-  flt.controls.throttle =  (m_y * 100.0);
+  flt.controls.throttle =  C(m_y * 100.0);
   if (mouse->GetButtons())
     flt.controls.speed_brakes = !flt.controls.speed_brakes;
 }
@@ -593,7 +593,7 @@ void FlightInput::rudder_mouse(Flight &flt)
   float m_x;
   // -1 <= m_x <= 1
   m_x = mouse->GetX();
-  flt.controls.rudder = (m_x * 30.0);
+  flt.controls.rudder = C(m_x * 30.0);
 }
 
 /* use joystick to control rudder */
@@ -601,7 +601,7 @@ void FlightInput::rudder_joy(Flight &flt)
 {
   float m_r;
   m_r = r_joy->GetR();
-  flt.controls.rudder = (m_r * 30.0);
+  flt.controls.rudder = C(m_r * 30.0);
 }
 
 /* use joystick to control throttle */
@@ -617,7 +617,7 @@ void FlightInput::throttle_joy(Flight &flt)
       else
 	m_z = 1.0;
     }
-  flt.controls.throttle = m_z * 50.0 + 50.0;
+  flt.controls.throttle = C(m_z * 50.0 + 50.0);
 }
 
 /* use joystick to control yoke */

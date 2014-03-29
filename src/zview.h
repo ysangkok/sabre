@@ -120,7 +120,6 @@ public:
       shapes = NULL;
     }
   Z_Viewer(Z_Node_Manager *zm);
-  ~Z_Viewer();
 
   void init(Z_Node_Manager *);
   void setManager(Z_Node_Manager *zm);
@@ -128,7 +127,7 @@ public:
   virtual class_types class_type()
   { return Z_Viewer_t; }
   void draw(Port_3D &);
-  void translate(R_3DPoint &){   };
+  void translate(R_3DPoint &){   }
   REAL_TYPE draw_prep(Port_3D &);
   void build_bounding_cube();
   void calc_screen_bounds(Port_3D &, R_3DPoint *);

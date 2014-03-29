@@ -53,10 +53,10 @@ C_Oriented_Poly::C_Oriented_Poly()
 
 }
 
-int C_Oriented_Poly::create(C_PolyInfo *pi)
+int C_Oriented_Poly::create(C_PolyInfo *p)
 {
   //	return (C_Poly::create(pi));
-  p_info = pi;
+  p_info = p;
   color = 0;
   wpoints = NULL;
   return (1);
@@ -398,10 +398,10 @@ void C_Oriented_Shape::draw(Port_3D &port, R_3DPoint &)
     }
 }
 
-void C_Oriented_Shape::create_points(Port_3D &ref_port)
+void C_Oriented_Shape::create_points(Port_3D &ref_por)
 {
   for (int i=0;i<npolys;i++)
-    o_polys[i].create_points(ref_port);
+    o_polys[i].create_points(ref_por);
 }
 
 void C_Oriented_Shape::delete_points()

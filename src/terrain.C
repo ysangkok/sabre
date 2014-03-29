@@ -40,13 +40,15 @@
 #include "group_3d.h"
 #include "grndlevl.h"
 
+typedef REAL_TYPE C;
+
 extern Vector world_light_source;
 
 int Terrain_Shape::txtr_flag = 1;
 int Terrain_Shape::color = 154;
 int Terrain_Shape::color_range = 100;
 
-int *ttxtflg = & Terrain_Shape::txtr_flag;
+static int * const ttxtflg = & Terrain_Shape::txtr_flag;
 
 #define NTPOLYS 2
 
@@ -112,13 +114,13 @@ void TPoly::setPoints(const R_3DPoint &p0, const R_3DPoint &p1, const R_3DPoint 
 
   R_3DPoint p;
 
-  p.x = p0.x + ((p1.x - p0.x) / 2.0);
-  p.y = p0.y + ((p1.y - p0.y) / 2.0);
-  p.z = p0.z + ((p1.z - p0.z) / 2.0);
+  p.x = C(p0.x + ((p1.x - p0.x) / 2.0));
+  p.y = C(p0.y + ((p1.y - p0.y) / 2.0));
+  p.z = C(p0.z + ((p1.z - p0.z) / 2.0));
 
-  cp.x = p.x + ((p2.x - p.x) / 2.0);
-  cp.y = p.y + ((p2.y - p.y) / 2.0);
-  cp.z = p.z + ((p2.z - p.z) / 2.0);
+  cp.x = C(p.x + ((p2.x - p.x) / 2.0));
+  cp.y = C(p.y + ((p2.y - p.y) / 2.0));
+  cp.z = C(p.z + ((p2.z - p.z) / 2.0));
 
 }
 
@@ -163,8 +165,8 @@ REAL_TYPE tw;
 REAL_TYPE th;
 
 
-  tw = tmap->map_w - 1.0;
-  th = tmap->map_h - 1.0;
+  tw = C(tmap->map_w - 1.0);
+  th = C(tmap->map_h - 1.0);
   min_x = cube.min_x;
   min_y = cube.min_y;
   xspan = cube.max_x - cube.min_x;
@@ -173,8 +175,8 @@ REAL_TYPE th;
   for (int i=0;i<3;i++)
     {
       R_3DPoint &p = points[i];
-      dx = fabs((p.x - min_x) / xspan);
-      dy = fabs((p.y - min_y) / yspan);
+      dx = C(fabs((p.x - min_x) / xspan));
+      dy = C(fabs((p.y - min_y) / yspan));
       tpoints[i].u = tw * dx;
       tpoints[i].v = th * dy;
     }
@@ -336,36 +338,36 @@ void Terrain_Shape::setup(R_3DPoint & a_location,
   bounding_sphere = 0.0;
   createPolys();
   calc_bounding_sphere();
-  location.z = bcube.min_z + ((bcube.max_z - bcube.min_z) / 2.0);
+  location.z = C(bcube.min_z + ((bcube.max_z - bcube.min_z) / 2.0));
   fitTextures();
   //  dab_min *= dab_min;
 }
 
 inline REAL_TYPE MID(REAL_TYPE min, REAL_TYPE max)
 {
-  return (min + ((max - min) / 2.0));
+  return C(min + ((max - min) / 2.0));
 }
 
 void Terrain_Shape::createPolys()
 {
   R_3DPoint qbase[8];
   R_3DPoint pbase[4];
-  REAL_TYPE w2 = width / 2.0;
-  REAL_TYPE l2 = length / 2.0;
+  REAL_TYPE w2 = C(width / 2.0);
+  REAL_TYPE l2 = C(length / 2.0);
 
   qbase[q1] = R_3DPoint(location.x-w2,location.y+l2,z_levels[0]);
   qbase[q3] = R_3DPoint(location.x+w2,location.y+l2,z_levels[1]);
-  qbase[q2] = R_3DPoint(qbase[q1].x + ((qbase[q3].x - qbase[q1].x) / 2.0),
+  qbase[q2] = R_3DPoint(C(qbase[q1].x + ((qbase[q3].x - qbase[q1].x) / 2.0)),
 			location.y+l2,
 			MID(z_levels[0],z_levels[1]));
 
   qbase[q5] = R_3DPoint(location.x+w2,location.y-l2,z_levels[2]);
   qbase[q4] = R_3DPoint(location.x+w2,
-			qbase[q5].y + ((qbase[q3].y - qbase[q5].y) / 2.0),
+			C(qbase[q5].y + ((qbase[q3].y - qbase[q5].y) / 2.0)),
 			MID(z_levels[1],z_levels[2]));
 
-  qbase[q7] = R_3DPoint(location.x-w2,location.y-l2,z_levels[3]);
-  qbase[q6] = R_3DPoint(qbase[q7].x + ((qbase[q5].x - qbase[q7].x) / 2.0),
+  qbase[q7] = R_3DPoint(C(location.x-w2),location.y-l2,z_levels[3]);
+  qbase[q6] = R_3DPoint(C(qbase[q7].x + ((qbase[q5].x - qbase[q7].x) / 2.0)),
 			location.y-l2,
 			MID(z_levels[2],z_levels[3]));
   qbase[q8] = R_3DPoint(location.x-w2,
@@ -373,20 +375,20 @@ void Terrain_Shape::createPolys()
 			MID(z_levels[3],z_levels[0]));
 
 
-  pbase[p1] = R_3DPoint(location.x-(w2 / 2.0),
-			location.y+(l2 / 2.0),
+  pbase[p1] = R_3DPoint(C(location.x-(w2 / 2.0)),
+			C(location.y+(l2 / 2.0)),
 			z_levels[4]);
 
-  pbase[p2] = R_3DPoint(location.x+(w2 / 2.0),
-			location.y+(l2 / 2.0),
+  pbase[p2] = R_3DPoint(C(location.x+(w2 / 2.0)),
+			C(location.y+(l2 / 2.0)),
 			z_levels[5]);
 
-  pbase[p3] = R_3DPoint(location.x+(w2 / 2.0),
-			location.y-(l2 / 2.0),
+  pbase[p3] = R_3DPoint(C(location.x+(w2 / 2.0)),
+			C(location.y-(l2 / 2.0)),
 			z_levels[6]);
 
-  pbase[p4] = R_3DPoint(location.x-(w2 / 2.0),
-			location.y-(l2 / 2.0),
+  pbase[p4] = R_3DPoint(C(location.x-(w2 / 2.0)),
+			C(location.y-(l2 / 2.0)),
 			z_levels[7]);
   bcube.reset();
 

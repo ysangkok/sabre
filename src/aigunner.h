@@ -27,8 +27,8 @@
 #ifndef __aigunner_h
 #define __aigunner_h
 
-#define aiGUN_PITCH_RATE      (_degree * 20.0)
-#define aiGUN_YAW_RATE        (_degree * 20.0)
+#define aiGUN_PITCH_RATE      ((sREAL)(_degree * 20.0))
+#define aiGUN_YAW_RATE        ((sREAL)(_degree * 20.0))
 
 #ifdef __cplusplus
 #include "fstream"
@@ -102,25 +102,25 @@ public:
 	{
 		return (affiliation);
 	}
-	void SetAffiliation(int affiliation)
+	void SetAffiliation(int affiliatio)
 	{
-		this->affiliation = affiliation;
+		this->affiliation = affiliatio;
 	}
 	int GetIndex()
 	{
 		return (index);
 	}
-	void SetIndex(int index)
+	void SetIndex(int idx)
 	{
-		this->index = index;
+		this->index = idx;
 	}
 	unsigned long GetOwnerIdx()
 	{
 		return (ownerIdx);
 	}
-	void SetOwnerIdx(unsigned long ownerIdx)
+	void SetOwnerIdx(unsigned long ownIdx)
 	{
-		this->ownerIdx = ownerIdx;
+		this->ownerIdx = ownIdx;
 	}
 	int IsDead()
 	{
@@ -142,25 +142,25 @@ public:
 	{
 		return (!(IsDead() || IsEjected()));
 	}
-	void SetBulletRadius(long bulletRadius)
+	void SetBulletRadius(long bulletRadiu)
 	{
-		this->bulletRadius = bulletRadius;
+		this->bulletRadius = bulletRadiu;
 	}
 	long GetBulletRadius()
 	{
 		return ((long)bulletRadius);
 	}
-	void SetFlightModel(sFlightModel *flightModel)
+	void SetFlightModel(sFlightModel *flightMdl)
 	{
-		this->flightModel = flightModel;
+		this->flightModel = flightMdl;
 	}
-	void SetOffset(const sVector &offset)
+	void SetOffset(const sVector &ofst)
 	{
-		this->offset = offset;
+		this->offset = ofst;
 	}
-	void SetWorldPosition(const sPoint &worldPosition)
+	void SetWorldPosition(const sPoint &worldPos)
 	{
-		this->worldPosition = worldPosition;
+		this->worldPosition = worldPos;
 	}
 	virtual void DoHUD() = 0;
 	sREAL GetTargetThreatValue()

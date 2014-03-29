@@ -29,6 +29,7 @@
 #include "sairfld.h"
 
 
+void add_irunway(sairfield_info *airfield_info, srunway_info *runwayinf);
 void add_irunway(sairfield_info *airfield_info, srunway_info *runwayinf)
 {
 	if (airfield_info->nrunways < sAIRFIELD_MAX_RUNWAYS)
@@ -50,6 +51,7 @@ void clear_airfield_info(sairfield_info *airfield_info)
 	airfield_info->x = airfield_info->y = airfield_info->z = 0.0;
 }
 
+sAirfield::~sAirfield() = default;
 
 sAirfield::sAirfield(const sairfield_info &airf_info)
 							:runways(sAIRFIELD_MAX_RUNWAYS,1)
@@ -57,7 +59,7 @@ sAirfield::sAirfield(const sairfield_info &airf_info)
 	strncpy(id,airf_info.id,32);
 	id[31] = 0;
 
-	position = sPoint(airf_info.x,airf_info.y,airf_info.z);
+	position = sPoint(float(airf_info.x),float(airf_info.y),float(airf_info.z));
 	int nRunways = airf_info.nrunways;
 	if (nRunways > sAIRFIELD_MAX_RUNWAYS)
 		nRunways = sAIRFIELD_MAX_RUNWAYS;

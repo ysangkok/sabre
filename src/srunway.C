@@ -33,15 +33,17 @@ sRunway::sRunway(const srunway_info &rwi)
 sPoint position;
 sAttitude attitude;
 
-	position = sPoint(rwi.x,rwi.y,rwi.z);
-	attitude.yaw = rwi.heading;
+	position = sPoint(C(rwi.x), C(rwi.y), C(rwi.z));
+	attitude.yaw = C(rwi.heading);
 	finalApproachHeading = attitude.yaw;
 	takeoffHeading = sIncrementAngle(attitude.yaw,Pi);
 	attitude.roll = attitude.pitch = 0.0;
-	length = rwi.length;
-	width = rwi.width;
+	length = C(rwi.length);
+	width = C(rwi.width);
 	sSlewer::SetPositionAndAttitude(position,attitude);
 }
+
+sRunway::~sRunway() = default;
 
 void sRunway::GetLandingTurnPoint(sPoint &turnPoint, sREAL approachDistance, sREAL turnRadius,
 									int clockWise)

@@ -47,8 +47,8 @@
 #include "fltmngr.h"
 #include "siminput.h"
 
-REAL_TYPE delta_angle = 0.05;
-REAL_TYPE delta = 10.0;
+static REAL_TYPE delta_angle = C(0.05);
+static REAL_TYPE delta = C(10.0);
 extern REAL_TYPE world_scale;
 extern int frame_switch;
 extern void blit_buff();

@@ -212,7 +212,7 @@ int accept = 0, done = 0;
 }
 
 enum sides { left, top, right, bottom };
-Rect *bounds;
+static Rect *bounds;
 
 static int clip_polys[3][MAX_CLIP];
 static int clip_counts[3];

@@ -31,8 +31,8 @@
 #include "simerr.h"
 #include "bits.h"
 
-#define LOW_VALUE -MAXINT
-#define HIGH_VALUE MAXINT
+//#define LOW_VALUE -MAXINT
+//#define HIGH_VALUE MAXINT
 
 void trans_blit(int x1, int y1, int x2, int y2, 
 		unsigned char *src, unsigned char *)

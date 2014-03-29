@@ -72,5 +72,5 @@ Point point_rotate(Point p, Point c, REAL_TYPE sin_ang, REAL_TYPE cos_ang)
 
 Point point_rotate(Point p, Point c, REAL_TYPE ang)
 {
-  return point_rotate(p,c,sin(ang),cos(ang));
+  return point_rotate(p,c,REAL_TYPE(sin(ang)),REAL_TYPE(cos(ang)));
 }

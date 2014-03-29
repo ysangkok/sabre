@@ -41,10 +41,10 @@ public:
 
   color_spec(int colr)
     {
-      char r,g,b;
+      char re,gr,bl;
       color = colr;
-      get_rgb_value(color,&r,&g,&b);
-      red = r; green = g; blue = b;
+      get_rgb_value(color,&re,&gr,&bl);
+      red = re; green = gr; blue = bl;
     }
 
   friend std::istream &operator >>(std::istream &is, color_spec &cs);

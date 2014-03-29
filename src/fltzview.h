@@ -119,9 +119,9 @@ public:
   void set_flight(Flight *ft);
   Flight *get_flight()
     { return flt; }
-  void setWeaponInstanceList(Weapon_Instance_List *wil)
+  void setWeaponInstanceList(Weapon_Instance_List *wi)
     {
-      this->wil = wil;
+      this->wil = wi;
     }
   Weapon_Instance_List *getWeaponInstanceList()
     {

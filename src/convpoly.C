@@ -43,9 +43,7 @@ static void BuildEdgeArray(int *l_points, int l_npoints);
 #define LOW_VALUE -MAXINT
 #define HIGH_VALUE MAXINT
 
-#define CHECK_BAD_POLY(x,y) if ( ( (y) > 300 ) || ( (y) < -300 ) ||\
-											( (x) > 400 ) || ( (x) < -400 ) \
-										 ) { bad_poly = 1; return; }
+//#define CHECK_BAD_POLY(x,y) if ( ( (y) > 300 ) || ( (y) < -300 ) || ( (x) > 400 ) || ( (x) < -400 ) ) { bad_poly = 1; return; }
 // #define CHECK_POLY
 
 static int *l_edge;
@@ -53,9 +51,11 @@ static int *r_edge;
 static int min_Y,max_Y;
 static int min_X,max_X;
 static int bad_poly;
-Rect bnds(0, 0, 319, 199);
+static Rect bnds(0, 0, 319, 199);
+extern int frame_switch;
 int frame_switch = 0;
-int frame_color = 10;
+extern const int frame_color;
+const int frame_color = 10;
 
 inline void SET_EDGE_BOUNDS(int x, int y)
 {
@@ -134,10 +134,10 @@ void BuildEdgeArray(int *l_points, int l_npoints)
 		{
 			int x1 = *p;
 			int dir = *(p + 1) < *(p + 3) ? 1 : -1;
-			int i = *(p + 1) + dir;
-			for (;i != *(p+3);i += dir)
+			int i2 = *(p + 1) + dir;
+			for (;i2 != *(p+3);i2 += dir)
 			{
-				SET_EDGE_BOUNDS(x1,i);
+				SET_EDGE_BOUNDS(x1,i2);
 			}
 			p += 2;
 			continue;
@@ -194,8 +194,7 @@ void fill_convpoly(int *points, int nPoints, int colr)
 //	int *rm_ptr, *lm_ptr;
 	unsigned char *buffer_ptr;
 
-	if (frame_switch)
-	{
+	if (frame_switch) {
 		frame_convpoly(points,nPoints,colr);
 		return;
 	}

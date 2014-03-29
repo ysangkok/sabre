@@ -30,6 +30,8 @@
 
 sObjectArray sPlaneCaps::sPlaneCapsArray(sMAXPLANECAPS,1);
 
+sPlaneCaps::~sPlaneCaps() = default;
+
 void sPlaneCaps::AddsPlaneCaps(sPlaneCaps &PlaneCaps)
 {
 	sPlaneCapsArray.Add(&PlaneCaps);

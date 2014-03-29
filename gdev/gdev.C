@@ -116,19 +116,6 @@ int gdev::rect( int /* x*/, int /* y*/,  int /* w*/, int /* h*/, int /* c*/, int
 }
 
 // --
-// -- method ( x, y, c ) 
-// --
-// -- returns the color palette index for viewport position (x,y)
-// -- if color palette index c is not -1 viewport position (x,y) is
-// -- set to c
-// --
-
-inline int gdev::pixel( int /* x*/, int /* y*/, int /* c*/ )
-{
-   return -1;
-}
-
-// --
 // -- method line( x0, y0, x1, y1, c, *fill )
 // --
 // -- returns the result of line draw from (x0,y0) to (x1,y1) in viewpoint

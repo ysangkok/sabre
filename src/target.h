@@ -77,6 +77,8 @@ public:
       i_hits = o_hits = shots = 0;
     }
 
+  virtual ~Target();
+
   virtual int getType()
     {
       return (TARGET_BASE_T);

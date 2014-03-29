@@ -76,7 +76,7 @@ void MTimer::reset()
 #endif  
 }
 
-#if TEST_MYTIMER
+#ifdef TEST_MYTIMER
 int main()
 {
   MTimer timer;

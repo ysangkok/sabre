@@ -60,13 +60,11 @@ inline REAL_TYPE limit_angle(REAL_TYPE angle)
 {
   if (fabs(angle) >= _2PI)
     {
-      REAL_TYPE m = fmod(angle,_2PI);
+      REAL_TYPE m = (REAL_TYPE) fmod(angle,_2PI);
       if (angle < 0)
 	m = -m;
       angle = m;
     }
-  if (angle == _2PI)
-    angle = 0;
   if (angle < 0)
     angle = _2PI + angle;
   return angle;
@@ -211,7 +209,7 @@ inline void Port_3D::calc_rho()
   dX = look_from.x - look_at.x;
   dY = look_from.y - look_at.y;
   dZ = look_from.z - look_at.z;
-  slook_from.rho = sqrt((dX*dX) + (dY*dY) + (dZ*dZ));
+  slook_from.rho = (REAL_TYPE) sqrt((dX*dX) + (dY*dY) + (dZ*dZ));
 }
 
 // Derive rectangular coordinants from spherical
@@ -340,7 +338,7 @@ inline void Port_3D::port2screen(const R_3DPoint &tr, R_2DPoint *rp)
   over_flow = 0;
   REAL_TYPE z_inv;
   if (tr.z >= 1.0)
-    z_inv = 1.0 / tr.z;
+    z_inv = (REAL_TYPE) (1.0 / tr.z);
   else
     z_inv = 1.0;
   rp->x = R2D_TYPE((fovx * tr.x * z_inv) + cx );
@@ -353,7 +351,7 @@ inline void Port_3D::port2screen(const TR_3DPoint &tr, TR_2DPoint *rp, int persp
   over_flow = 0;
   REAL_TYPE z_inv;
   if (tr.r.z >= 1.0)
-    z_inv = 1.0 / tr.r.z;
+    z_inv = (REAL_TYPE) (1.0 / tr.r.z);
   else
     z_inv = 1.0;
   rp->x = R2D_TYPE((fovx * tr.r.x * z_inv) + cx );
@@ -373,10 +371,10 @@ inline void Port_3D::port2screen(const TR_3DPoint &tr, TR_2DPoint *rp, int persp
 
 inline void Port_3D::calc_angles()
 {
-  sin_theta = sin(slook_from.theta);
-  sin_phi = sin(slook_from.phi);
-  cos_theta = cos(slook_from.theta);
-  cos_phi = cos(slook_from.phi);
+  sin_theta = (REAL_TYPE) sin(slook_from.theta);
+  sin_phi = (REAL_TYPE) sin(slook_from.phi);
+  cos_theta = (REAL_TYPE) cos(slook_from.theta);
+  cos_phi = (REAL_TYPE) cos(slook_from.phi);
 }
 
 inline const Vector &Port_3D::calc_view_normal()
@@ -403,19 +401,19 @@ inline void Port_3D::delta_look_from(const Vector &dv)
 
 inline void Port_3D::set_theta(REAL_TYPE th)
 {
-  slook_from.theta = th; sin_theta = sin(th); cos_theta = cos(th);
+  slook_from.theta = th; sin_theta = (REAL_TYPE) sin(th); cos_theta = (REAL_TYPE) cos(th);
   calc_look_at();
 }
 
 inline void Port_3D::set_phi(REAL_TYPE ph)
 {
-  slook_from.phi = ph; sin_phi = sin(ph); cos_phi = cos(ph);
+  slook_from.phi = ph; sin_phi = (REAL_TYPE) sin(ph); cos_phi = (REAL_TYPE) cos(ph);
   calc_look_at();
 }
 
 inline void Port_3D::set_roll(REAL_TYPE rll)
 {
-  roll = limit_angle(rll); sin_roll = sin(rll); cos_roll=cos(rll);
+  roll = limit_angle(rll); sin_roll = (REAL_TYPE) sin(rll); cos_roll=(REAL_TYPE) cos(rll);
 }
 
 inline void Port_3D::set_rho(REAL_TYPE rh)
@@ -427,8 +425,8 @@ inline void Port_3D::operator <(REAL_TYPE delta_theta)
 {
   // 0 <= theta <= 2pi
   slook_from.theta = limit_angle(slook_from.theta + delta_theta);
-  sin_theta = sin(slook_from.theta);
-  cos_theta = cos(slook_from.theta);
+  sin_theta = (REAL_TYPE) sin(slook_from.theta);
+  cos_theta = (REAL_TYPE) cos(slook_from.theta);
   calc_look_at();
 }
 
@@ -436,24 +434,24 @@ inline void Port_3D::operator <<(REAL_TYPE delta_theta)
 {
   // 0 <= theta <= 2pi
   slook_from.theta = limit_angle(slook_from.theta + delta_theta);
-  sin_theta = sin(slook_from.theta);
-  cos_theta = cos(slook_from.theta);
+  sin_theta = (REAL_TYPE) sin(slook_from.theta);
+  cos_theta = (REAL_TYPE) cos(slook_from.theta);
   calc_look_from();
 }
 
 inline void Port_3D::operator >(REAL_TYPE delta_phi)
 {
   slook_from.phi = limit_angle(slook_from.phi + delta_phi);
-  sin_phi = sin(slook_from.phi);
-  cos_phi = cos(slook_from.phi);
+  sin_phi = (REAL_TYPE) sin(slook_from.phi);
+  cos_phi = (REAL_TYPE) cos(slook_from.phi);
   calc_look_at();
 }
 
 inline void Port_3D::operator >>(REAL_TYPE delta_phi)
 {
   slook_from.phi = limit_angle(slook_from.phi + delta_phi);
-  sin_phi = sin(slook_from.phi);
-  cos_phi = cos(slook_from.phi);
+  sin_phi = (REAL_TYPE) sin(slook_from.phi);
+  cos_phi = (REAL_TYPE) cos(slook_from.phi);
   calc_look_from();
 }
 
@@ -467,8 +465,8 @@ inline void Port_3D::operator ^(REAL_TYPE delta_rho)
 inline void Port_3D::operator /(REAL_TYPE delta_roll)
 {
   roll = limit_angle(roll + delta_roll);
-  sin_roll = sin(roll);
-  cos_roll = cos(roll);
+  sin_roll = (REAL_TYPE) sin(roll);
+  cos_roll = (REAL_TYPE) cos(roll);
 }
 
 inline void Port_3D::set_look_from(const R_3DPoint &lf)

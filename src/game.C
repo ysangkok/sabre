@@ -45,54 +45,54 @@
 #include "sfrmtn.h"
 
 extern void buffer2ppm();
-float time_expired;
+static float time_expired;
 static int firstDemo = 1;
 GameSession *GameSession::theGame = NULL;
 
-GameSession::GameSession(const char *world_file,
-	      const char *flight_file,
-	      const char *ground_unit_file,
-	      Mouse *mouse, 
-	      Joystick *yoke_jstk, 
-	      Joystick *rudder_jstk, 
-	      Joystick *throttle_jstk, 
-	      int mouse_throttle, 
-	      int mouse_rudder,
-	      const char *instr_path,
-	      const char *hud_path,
-	      int demo_mode,
-	      int (*messageHook)(void))
-  : 
-    clist(&info_manager),
-    hud(g_font,hud_path),
-    cpk(NULL),
-    fi(mouse,yoke_jstk,rudder_jstk,throttle_jstk,
-       mouse_throttle,mouse_rudder)
+GameSession::GameSession(const char *wrld_file,
+		const char *flight_fil,
+		const char *ground_unit_fil,
+		Mouse *muse,
+		Joystick *yoke_jstk,
+		Joystick *rudder_jstk,
+		Joystick *throttle_jstk,
+		int muse_throttle,
+		int muse_rudder,
+		const char *instr_pat,
+		const char *hud_pat,
+		int demo_mod,
+		int (*msgHook)(void))
+	: 
+		clist(&info_manager),
+		hud(g_font,hud_pat),
+		cpk(NULL),
+		fi(muse,yoke_jstk,rudder_jstk,throttle_jstk,
+				muse_throttle,muse_rudder)
 {
-  this->demo_mode = demo_mode;
-  pe = NULL;
-  this->world_file = world_file;
-  this->flight_file = flight_file;
-  this->ground_unit_file = ground_unit_file;
-  this->instr_path = instr_path;
-  this->messageHook = messageHook;
-  the_earth = &earth;
-  time_expired = 0.0;
-  Pilot::initPilot();
-  theGame = this;
-  Unguided_Manager::the_umanager = &um;
+	this->demo_mode = demo_mod;
+	pe = NULL;
+	this->world_file = wrld_file;
+	this->flight_file = flight_fil;
+	this->ground_unit_file = ground_unit_fil;
+	this->instr_path = instr_pat;
+	this->messageHook = msgHook;
+	the_earth = &earth;
+	time_expired = 0.0;
+	Pilot::initPilot();
+	theGame = this;
+	Unguided_Manager::the_umanager = &um;
 }
 
 GameSession::~GameSession()
 {
-  if (pe != NULL)
-    delete pe;
-  if (cpk != NULL)
-    delete cpk;
-  if (theGame == this)
-	  theGame = NULL;
-  if (Unguided_Manager::the_umanager == &um)
-	  Unguided_Manager::the_umanager = NULL;
+	if (pe != NULL)
+		delete pe;
+	if (cpk != NULL)
+		delete cpk;
+	if (theGame == this)
+		theGame = NULL;
+	if (Unguided_Manager::the_umanager == &um)
+		Unguided_Manager::the_umanager = NULL;
 }
 
 
@@ -119,11 +119,11 @@ void GameSession::doGame()
 
 void GameSession::readWorldFile()
 {
-std::ifstream is;
-char c;
-Port_3D port;
-float pixl_ratio;
-char buff[100];
+	std::ifstream is;
+	char c;
+	Port_3D port;
+	float pixl_ratio;
+	char buff[100];
 
 	if (open_is(is,world_file))
 	{
@@ -137,21 +137,21 @@ char buff[100];
 		get_line(is,buff,sizeof(buff));
 #ifndef SABREWIN
 		sim_printf("reading texture file %s\n",
-		buff);
+				buff);
 		read_texture_file(buff);
 #endif
 		READ_TOKI('{',is,c)
-		is >> world_scale >> time_factor >> hit_scaler >> 
-		max_time >> shadow_level;
+			is >> world_scale >> time_factor >> hit_scaler >> 
+			max_time >> shadow_level;
 		is >> Port_3D::fovx >> Port_3D::fovy;
 		READ_TOK('}',is,c)
-		sim_printf("ws: %3.5f tf: %3.7f hs: %3.5f mt: %3.5f  sl: %3.5f\n",
-		world_scale, time_factor, hit_scaler,max_time,shadow_level);
+			sim_printf("ws: %3.5f tf: %3.7f hs: %3.5f mt: %3.5f  sl: %3.5f\n",
+					world_scale, time_factor, hit_scaler,max_time,shadow_level);
 		shadow_level *= world_scale;
 		is >> world_light_source;
 		world_light_source *= world_scale;
 		is >> port;
-		pixl_ratio = SCREEN_WIDTH / 320.0;
+		pixl_ratio = C(SCREEN_WIDTH / 320.0);
 		Port_3D::fovx *= pixl_ratio;
 		Port_3D::fovy *= pixl_ratio;
 		sim_printf("Reading terrain info\n");
@@ -246,14 +246,14 @@ void GameSession::play()
 
 inline int GETSTATE(Pilot *pil, char *state, int n)
 {
-  return(!memcmp(pil->get_dbg(),state,n));
+	return(!memcmp(pil->get_dbg(),state,n));
 }
 
 inline int INTERESTING(Flight_Node &nde)
 {
-int result = 0;
+	int result = 0;
 
-const sManeuverState &mvs = nde.pilot->GetManeuverStackTop();
+	const sManeuverState &mvs = nde.pilot->GetManeuverStackTop();
 	if (!nde.pilot->IsActive())
 	{
 		if (!nde.flight->state.crashed)
@@ -261,7 +261,7 @@ const sManeuverState &mvs = nde.pilot->GetManeuverStackTop();
 		else
 			result = 0;
 	}
-   else if (nde.flight->state.crashed)
+	else if (nde.flight->state.crashed)
 		result = 0;
 	else if (nde.flight->controls.bang_bang)
 		result = 6;
@@ -291,7 +291,7 @@ const sManeuverState &mvs = nde.pilot->GetManeuverStackTop();
 		else
 			result = 0;
 	}
-  return result;
+	return result;
 }
 
 #ifndef SABREWIN
@@ -300,22 +300,22 @@ inline int DECIDEVIEW(int , int )
 int DECIDEVIEW(int, int)
 #endif
 {
-  int dec = RANDOM(3);
-  switch (dec)
-    {
-    case 0:
-      return(fv_track);
+	int dec = RANDOM(3);
+	switch (dec)
+	{
+		case 0:
+			return(fv_track);
 
-    case 1:
-      return(fv_flyby);
+		case 1:
+			return(fv_flyby);
 
-    case 2:
-      return(fv_front);
+		case 2:
+			return(fv_front);
 
-    default:
-      return(fv_track);
+		default:
+			return(fv_track);
 
-    }
+	}
 
 }
 
@@ -339,7 +339,7 @@ void GameSession::demo()
 	}
 
 	view_time = 0;
-	maxv_time = ((float) RANDOM(6)) + 3.0;
+	maxv_time = C(((float) RANDOM(6)) + 3.0);
 	sResetElapsedTime();
 	get_time();
 	fm.start();
@@ -389,7 +389,7 @@ void GameSession::demo()
 			if (view_time >= maxv_time && !flg && ix == 0)
 			{
 				view_time = 0.0;
-				maxv_time = ((float) RANDOM(6)) + 3.0;
+				maxv_time = C(((float) RANDOM(6)) + 3.0);
 				int found_flight = 0;
 				for (int i=0;i<fm.n_flights;i++)
 				{
@@ -437,7 +437,7 @@ void GameSession::get_time()
 {
 	time_frame = timer.get_time();
 	if (time_frame < 0.01)
-		time_frame = 0.01;
+		time_frame = C(0.01);
 	raw_time = time_frame;
 	if (time_frame > max_time)
 		time_frame = max_time;
@@ -471,7 +471,7 @@ Port_3D vport;
 DrawList dlist;
 DrawList dlist2;
 Pilot    *pilot;
-int pflag;
+int pflg;
 Flight &fc = fm.get_view_flight();
 Flight_ZViewer &vwr = fm.get_view_viewer();
 
@@ -489,13 +489,13 @@ Flight_ZViewer &vwr = fm.get_view_viewer();
 	if (pport == NULL)
 	{
 		pport = &vport;
-		pflag = 0;
+		pflg = 0;
 		/* If this plane has crashed, force outside view */
 		if (fc.state.crashed)
 		{
 			fc.controls.view = fv_external;
 			fc.controls.vdist = 400;
-			fc.controls.vphi = 0.1;
+			fc.controls.vphi = C(0.1);
 		}
 		else if (!demo_mode)
 		{
@@ -505,7 +505,7 @@ Flight_ZViewer &vwr = fm.get_view_viewer();
 		fm.set_flight_view(vport);
 	}
 	else
-		pflag = 1;
+		pflg = 1;
 
 #ifndef USES_DDRAW
 	earth.drawBackDrop(*pport);
@@ -525,7 +525,7 @@ Flight_ZViewer &vwr = fm.get_view_viewer();
 
 	// Try drawing the airplane shape so that it
 	// surrounds the pilot
-	if (!pflag && IS_COCKPIT_VIEW(fc.controls.view)	&& fc.controls.vextern)
+	if (!pflg && IS_COCKPIT_VIEW(fc.controls.view)	&& fc.controls.vextern)
 	{
 		/*
 		* The problem is that with the z-buffer, we have to clip at z < 1.0.
@@ -547,7 +547,7 @@ Flight_ZViewer &vwr = fm.get_view_viewer();
 		vwr.draw_shadow = 0;
 		// Scale up the plane to world_scale = 1
 		// by inversing the current world_scale
-		scl = 1.0 / world_scale;
+		scl = C(1.0 / world_scale);
 		set_co_scaler(scl);
 		// Get the original view point in port coords
 		spc = vwr.flt->specs->view_point;
@@ -597,7 +597,7 @@ Flight_ZViewer &vwr = fm.get_view_viewer();
 	}
 #endif
 
-	if (pflag)
+	if (pflg)
 		show_port_vars(*pport,*pport,g_font);
 	else
 	{
@@ -651,7 +651,7 @@ void GameSession::doPaletteEffect()
       Flight_ZViewer &zv = fm.get_view_viewer();
       if (zv.hitme)
 	{
-	  pe->do_effect(red_effect,0.1);
+	  pe->do_effect(red_effect,C(0.1));
 	  //	  zv.hitme = 0;
 	}
       else

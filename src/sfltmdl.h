@@ -60,7 +60,7 @@ protected:
      model to be overridden to adjust, tweak or completely invalidate
      the calculations.
      */
-  void (* updateCallback)(int sw, int iter, sFlightModel *fm, void *);
+  void (* updateCallback)(int sw, void *);
   /* flags indicating which updates the above function applies to */
   unsigned int callbackFlags;
   /* additional data the callbackee wishes to have passed */
@@ -92,16 +92,14 @@ public:
       callbackData = NULL;
     }
 
-  virtual ~sFlightModel()
-    {}
+  virtual ~sFlightModel();
 
-
-  void SetUpdateCallback(unsigned int callbackFlags, void (* updateCallback)(int, int, sFlightModel *, void *),
-									void *callbackData)
+  void SetUpdateCallback(unsigned int callbackFlag, void (* updateCallbac)(int, void *),
+									void *callbackDat)
     {
-      this->callbackFlags = callbackFlags;
-      this->updateCallback = updateCallback;
-      this->callbackData = callbackData;
+      this->callbackFlags = callbackFlag;
+      this->updateCallback = updateCallbac;
+      this->callbackData = callbackDat;
     }
 
 	/* Pure virtual functions */

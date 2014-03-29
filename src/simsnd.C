@@ -55,7 +55,7 @@
 /*
  *  Map enumerated sounds to id
  */
-const char *enumSounds[4] = 
+static const char *enumSounds[4] = 
 {
   "JET_ENGINE",
   "GUN",
@@ -104,7 +104,7 @@ SoundClient *soundClient = NULL;
 /***************************************************************************
  * generic sound interface 
  ***************************************************************************/
-int sound_init(long param)
+int sound_init(__attribute__((unused)) long param)
 {
   int result = SOUND_NOT_LOADED;
 #ifdef USES_DSOUND
@@ -155,7 +155,7 @@ void sound_destroy(void)
 #endif
 }
 
-int sound_load_wav(const char *path, const char *id)
+int sound_load_wav(__attribute__((unused)) const char *path, __attribute__((unused)) const char *id)
 {
 #ifdef USES_DSOUND
   int result = dsnd_load_wav(path,id);
@@ -187,7 +187,7 @@ int sound_load_wav(const char *path, const char *id)
 #endif
 }
 
-int sound_on(const char *id, int mode, int vol)
+int sound_on(__attribute__((unused)) const char *id, __attribute__((unused)) int mode, __attribute__((unused)) int vol)
 {
   if (soundLock)
     return SOUND_OK;
@@ -237,7 +237,7 @@ int sound_on(int idx, int mode, int vol)
     return SOUND_NOT_FOUND;
 }
 
-int sound_off(const char *id)
+int sound_off(__attribute__((unused)) const char *id)
 {
 #ifdef USES_DSOUND
   return sound_error_check(dsnd_stop_sound(id));
@@ -298,7 +298,7 @@ int sound_off_all(void)
 #endif
 }
 
-int sound_vol(const char *id, int vol)
+int sound_vol(__attribute__((unused)) const char *id, __attribute__((unused)) int vol)
 {
 #ifdef USES_DSOUND
   return sound_error_check(dsnd_set_vol(id,vol));
@@ -324,7 +324,7 @@ int sound_vol(const char *id, int vol)
 #endif
 }
 
-int sound_freq(const char *id, int freq)
+int sound_freq(__attribute__((unused)) const char *id, __attribute__((unused)) int freq)
 {
 #ifdef USES_DSOUND
   return sound_error_check(dsnd_set_freq(id,freq));
@@ -350,7 +350,7 @@ int sound_freq(const char *id, int freq)
 #endif
 }
 
-int sound_pan(const char *id, int pan)
+int sound_pan(__attribute__((unused)) const char *id, __attribute__((unused)) int pan)
 {
 #ifdef USES_DSOUND
   return sound_error_check(dsnd_set_pan(id,pan));
@@ -359,7 +359,7 @@ int sound_pan(const char *id, int pan)
 #endif
 }
 
-int sound_free(const char *id)
+int sound_free(__attribute__((unused)) const char *id)
 {
 #ifdef USES_DSOUND
   return sound_error_check(dsnd_delete_sound(id));
@@ -377,7 +377,7 @@ int sound_free_all(void)
 #endif
 }
 
-unsigned int sound_status(const char *id)
+unsigned int sound_status(__attribute__((unused)) const char *id)
 {
 #ifdef USES_DSOUND
   unsigned int result = 0;
@@ -482,83 +482,63 @@ const char *soundErr2String(int err)
     {
     case SOUND_OK:
       return "SOUND_OK";
-      break;
 
     case SOUND_FULL:
       return "SOUND_FULL";
-      break;
 
     case SOUND_ERROR_INIT:
       return "SOUND_ERROR_INIT";
-      break;
 
     case SOUND_ERROR_CREATE:
       return "SOUND_ERROR_CREATE";
-      break;
 
     case SOUND_ERROR_LOCK:
       return "SOUND_ERROR_LOCK";
-      break;
 
     case SOUND_ERROR_UNLOCK:
       return "SOUND_ERROR_UNLOCK";
-      break;
 
     case SOUND_NOT_FOUND:
       return "SOUND_NOT_FOUND";
-      break;
 
     case SOUND_NOT_LOADED:
       return "SOUND_NOT_LOADED";
-      break;
 
     case SOUND_ERROR_SETPOS:
       return "SOUND_ERROR_SETPOS";
-      break;
 
     case SOUND_ERROR_PLAY:
       return "SOUND_ERROR_PLAY";
-      break;
 
     case SOUND_ERROR_VOL:
       return "SOUND_ERROR_VOL";
-      break;
 
     case SOUND_ERROR_FREQ:
       return "SOUND_ERROR_FREQ";
-      break;
 
     case SOUND_ERROR_PAN:
       return "SOUND_ERROR_PAN";
-      break;
 
     case WAV_PATH_NOT_FOUND:
       return "WAV_PATH_NOT_FOUND";
-      break;
 
     case WAV_NO_SECTION:
       return "WAV_NO_SECTION";
-      break;
 
     case WAV_NO_FORMAT:
       return "WAV_NO_FORMAT";
-      break;
 
     case WAV_NO_DATA:
       return "WAV_NO_DATA";
-      break;
 
     case WAV_BAD_FORMAT:
       return "WAV_BAD_FORMAT";
-      break;
 
     case WAV_CANT_ASCEND:
       return "WAV_CANT_ASCEND";
-      break;
 
     case WAV_NO_DATA_CHUNK:
       return "WAV_NO_DATA_CHUNK";
-      break;
     }
   return ("unknown");
 }

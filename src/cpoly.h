@@ -90,7 +90,7 @@ inline REAL_TYPE Intensity( const Vector &light_source,
 const Vector &norm)
 {
   REAL_TYPE val = light_source.Dot(norm  ) + 1;
-  return (val / 2.0);
+  return (REAL_TYPE) ((double) val / 2.0);
 }
 
 class poly_params

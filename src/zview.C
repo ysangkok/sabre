@@ -62,6 +62,8 @@
 #include "rndrpoly.h"
 #include "colorspc.h"
 
+typedef REAL_TYPE C;
+
 extern float world_scale;
 
 Z_Node_Manager **Z_Node_Manager::g_zmanagers = NULL;
@@ -314,7 +316,7 @@ void Z_Node_Manager::write(std::ostream &os)
     {
       C_ShapeInfo tmp;
       tmp = reference_info[i];
-      tmp *= (1.0 / (scaler * world_scale));
+      tmp *= C(1.0 / (scaler * world_scale));
       os << tmp;
     }
   os << n_shapes << '\n';
@@ -323,7 +325,7 @@ void Z_Node_Manager::write(std::ostream &os)
       C_ShapeInfo tmp;
       os << "{\n";
       tmp = shape_info[i];
-      tmp *= (1.0 / (scaler * world_scale));
+      tmp *= C(1.0 / (scaler * world_scale));
       os << tmp;
       os << s_params[i].flags << '\n';
       for (int j=0;j<shape_info[i].npolys;j++)
@@ -529,15 +531,15 @@ void Z_Viewer::setManager(Z_Node_Manager *zm)
   init(zm);
 }
 
+/*
 Z_Viewer::~Z_Viewer()
 {
-  /*
-    if (shapes != NULL)
-    delete [] shapes;
-    if (reference_shape != NULL)
-    delete [] reference_shape;
-    */
+    //if (shapes != NULL)
+    //delete [] shapes;
+    //if (reference_shape != NULL)
+    //delete [] reference_shape;
 }
+*/
 
 void Z_Viewer::build_bounding_cube()
 {
@@ -557,7 +559,7 @@ void Z_Viewer::build_bounding_cube()
   x = abs_max(bcube.min_x,bcube.max_x);
   y = abs_max(bcube.min_y,bcube.max_y);
   z = abs_max(bcube.min_z,bcube.max_z);
-  bounding_sphere = sqrt((x*x) + (y*y) + (z*z));
+  bounding_sphere = C(sqrt((x*x) + (y*y) + (z*z)));
 }
 
 void Z_Viewer::calc_screen_bounds(Port_3D &port, R_3DPoint *)

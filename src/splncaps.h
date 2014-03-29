@@ -142,6 +142,7 @@ public:
 
 	sPlaneCaps()
 	{}
+	virtual ~sPlaneCaps();
 
 	sPlaneCaps(const splane_caps &);
 

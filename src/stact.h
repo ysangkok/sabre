@@ -27,29 +27,29 @@
 #ifndef __stact_h
 #define __stact_h
 
-#define SPT_RQ_CONE             Pi_4
-#define SPT_FQ_CONE             Pi_4
-#define SPT_ASPECT_HEADON_CONE  Pi_4  
-#define SPT_ASPECT_REAR_CONE    Pi_4      
-#define SPT_ANGLEOFF_CONE       (_degree * 5.0)
+#define SPT_RQ_CONE             C(Pi_4)
+#define SPT_FQ_CONE             C(Pi_4)
+#define SPT_ASPECT_HEADON_CONE  C(Pi_4)
+#define SPT_ASPECT_REAR_CONE    C(Pi_4)
+#define SPT_ANGLEOFF_CONE       C((_degree * 5.0))
 
-#define SPT_RTHREAT_DISTANCE    1800
-#define SPT_RTHREAT_CONE        Pi_4
-#define SPT_CANCEL_RTHREAT      0.8
+#define SPT_RTHREAT_DISTANCE    C(1800)
+#define SPT_RTHREAT_CONE        C(Pi_4)
+#define SPT_CANCEL_RTHREAT      C(0.8)
 
-#define SPT_PURSUIT_DISTANCE        6200
-#define SPT_PURSUIT_CONE            (_degree * 60.0)
-#define SPT_CANCEL_PURSUIT          0.8
-#define SPT_WEAPON_THREAT_DISTANCE  2000 
-#define SPT_TURN_THRESHOLD          (_degree * 4.0)
-#define SPT_ALT_THRESHOLD           600
-#define SPT_RANGE_THRESHOLD         10
-#define SPT_HARDTURNALT_THRESHOLD   -180
-#define SPT_HARDTURNSPEED_THRESHOLD -100
-#define SPT_ENGAGE_DISTANCE         24000.0
-#define SPT_PLAYER_THREAT_DISTANCE  3000.0
-#define SPT_PLAYER_THREAT_ASPECT    (_degree * 12.0)
-#define SPT_ATTACKER_CHECK_INTERVAL 12.0
+#define SPT_PURSUIT_DISTANCE        C(6200)
+#define SPT_PURSUIT_CONE            C((_degree * 60.0))
+#define SPT_CANCEL_PURSUIT          C(0.8)
+#define SPT_WEAPON_THREAT_DISTANCE  C(2000) 
+#define SPT_TURN_THRESHOLD          C((_degree * 4.0))
+#define SPT_ALT_THRESHOLD           C(600)
+#define SPT_RANGE_THRESHOLD         C(10)
+#define SPT_HARDTURNALT_THRESHOLD   C(-180)
+#define SPT_HARDTURNSPEED_THRESHOLD C(-100)
+#define SPT_ENGAGE_DISTANCE         C(24000.0)
+#define SPT_PLAYER_THREAT_DISTANCE  C(3000.0)
+#define SPT_PLAYER_THREAT_ASPECT    C((_degree * 12.0))
+#define SPT_ATTACKER_CHECK_INTERVAL C(12.0)
 
 #ifdef __cplusplus
 

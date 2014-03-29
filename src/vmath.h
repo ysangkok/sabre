@@ -45,7 +45,7 @@ inline REAL_TYPE abs_max(REAL_TYPE a, REAL_TYPE b)
 {
   double ax = fabs((double)a);
   double bx = fabs((double)b);
-  return (ax > bx ? ax : bx);
+  return (REAL_TYPE) (ax > bx ? ax : bx);
 }
 
 inline REAL_TYPE arc_cos(REAL_TYPE a)
@@ -155,7 +155,7 @@ public:
     {
       REAL_TYPE f = (X*X) + (Y*Y) + (Z*Z);
       if (f > 0)
-	return sqrt(f);
+	return (REAL_TYPE) sqrt(f);
       else
 	return 0;
     }
@@ -164,9 +164,6 @@ public:
     {
       return ( ( (X * X) + (Y * Y) + (Z * Z) ) );
     }
-
-  Vector & operator =(const Vector &v)
-  {  X = v.X; Y = v.Y; Z = v.Z; return *this; }
 
   inline Vector & operator =(const R_3DPoint &);
 
@@ -373,7 +370,7 @@ inline REAL_TYPE distance_squared(const R_3DPoint &r1, const R_3DPoint &r2)
 
 inline REAL_TYPE distance(const R_3DPoint &r1, const R_3DPoint &r2)
 {
-  return sqrt(distance_squared(r1,r2));
+  return (REAL_TYPE) sqrt(distance_squared(r1,r2));
 }
 
 inline Vector to_nvector(const R_3DPoint &from, const R_3DPoint &to, REAL_TYPE m = 1)

@@ -27,7 +27,7 @@
 int simfileX::readint(std::istream &is, char tok0, char tok1)
 {
   int result;
-  char c;
+  char c = 0;
 
   if (tok0)
     {

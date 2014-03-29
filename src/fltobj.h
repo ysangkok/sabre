@@ -276,11 +276,11 @@ public:
     hud_on = 1;
     vect_on = 0;
     vdist = 100;
-    vtheta = 0.6;
-    vphi = 0.2;
+    vtheta = (REAL_TYPE) 0.6;
+    vphi = (REAL_TYPE) 0.2;
 	 virtTheta = 0.0;
 	 virtPhi = 0.0;
-	 virtStep = 0.1;
+	 virtStep = (REAL_TYPE) 0.1;
     show_controls = 1;
 	 show_ai_info = 0;
 	 auto_coord = 0;
@@ -328,6 +328,7 @@ public:
     return *this;
   }
   friend DVector to_vector(Vector_Q &vq);
+  friend DVector operator +(Vector_Q &vq, DVector &v);
   friend Vector_Q operator +(Vector_Q &, Vector_Q &);
   friend DVector operator +(DVector &, Vector_Q &);
 

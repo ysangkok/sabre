@@ -43,11 +43,7 @@ public:
       mapped_color = 0;
     }
 
-  ColorMap(int id_color, int base_color, int n)
-    {
-      this->id_color = id_color;
-      this->base_color = base_color;
-      this->n = n;
+  ColorMap(int id_c, int base_c, int num) : id_color(id_c), base_color(base_c), n(num) {
       mapped_color = base_color;
     }
   

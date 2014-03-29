@@ -45,7 +45,7 @@ typedef struct sbrInitKey_struct
   int sabreVirtKey;
 } sbrInitKey;
 
-sbrInitKey sbrInitKeyTab[] =
+static sbrInitKey sbrInitKeyTab[] =
 {
   { 'Q',  'q', ESC,  FI_EXIT_FLIGHT },		
   { 'I',  'i',  0,   FI_YOKE_UP },

@@ -31,6 +31,7 @@
 #include <math.h>
 
 #define sREAL float
+#define C(x) ((sREAL) (x))
 
 #ifdef WIN32
 #pragma warning ( 4 : 4244 )
@@ -39,28 +40,30 @@
 
 // define some convenient radian
 // measures
-#define Pi           3.1415927
-#define Pi_2         1.5707963
-#define Pi_4         0.7853981
-#define _2Pi         6.2831853
-#define _32Pi        4.712389  
-#define _degree      0.0174532
-#define _half_degree 8.7266E-3
-#define eps          1E-5
+#define Pi           C(3.1415927)
+#define Pi_2         C(1.5707963)
+#define Pi_4         C(0.7853981)
+#define _2Pi         C(6.2831853)
+#define _32Pi        C(4.712389 )
+#define _degree      C(0.0174532)
+#define _half_degree C(8.7266E-3)
+#define eps          C(1E-5)
 
 // define macros for some common
 // transendental functions in case
 // we need to optimize via table
 // lookup or other means
-#define sCOS(x)  (sREAL)(cos((x)))
-#define sSIN(x)  (sREAL)(sin((x)))
-#define sTAN(x)  (sREAL)(tan((x)))
-#define sSQRT(x) (sREAL)(sqrt((x)))
+#define sATAN(x)  C(atan((x)))
+#define sACOS(x)  C(acos((x)))
+#define sCOS(x)  C(cos((x)))
+#define sSIN(x)  C(sin((x)))
+#define sTAN(x)  C(tan((x)))
+#define sSQRT(x) C(sqrt((x)))
 // conversion macros
-#define sMPH2FPS(x) ((x) * 1.46666)
-#define sFPS2MPH(x) ((x) * 0.68185)
-#define sFPS2KTS(x) ((x) * 0.6)
-#define sKTS2FPS(x) ((x) * 1.66666)
+#define sMPH2FPS(x) C((x) * 1.46666)
+#define sFPS2MPH(x) C((x) * 0.68185)
+#define sFPS2KTS(x) C((x) * 0.6)
+#define sKTS2FPS(x) C((x) * 1.66666)
 
 // for dealing with C programs, 
 // define some structs
@@ -93,26 +96,11 @@ public:
       x = y = z = 0.0;
     }
 
-  sVector(sREAL x, sREAL y, sREAL z)
+  sVector(sREAL i, sREAL j, sREAL k)
     {
-      this->x = x;
-      this->y = y;
-      this->z = z;
-    }
-
-  sVector(const sVector &v)
-    {
-      x = v.x;
-      y = v.y;
-      z = v.z;
-    }
-
-  sVector &operator =(const sVector &v)
-    {
-      x = v.x;
-      y = v.y;
-      z = v.z;
-      return (*this);
+      this->x = i;
+      this->y = j;
+      this->z = k;
     }
 
   sVector &operator +=(const sVector &v)
@@ -121,6 +109,16 @@ public:
       y += v.y;
       z += v.z;
       return (*this);
+    }
+
+  friend const sVector operator -(const sVector &v0, const sVector &v1)
+    {
+      return (sVector(v0.x-v1.x,v0.y-v1.y,v0.z-v1.z));
+    }
+
+  friend const sVector operator +(const sVector &v0, const sVector &v1)
+    {
+      return (sVector(v0.x+v1.x,v0.y+v1.y,v0.z+v1.z));
     }
 
   sVector &operator *=( sREAL scaler )
@@ -166,16 +164,6 @@ public:
 	}
     }
 
-  friend const sVector operator +(const sVector &v0, const sVector &v1)
-    {
-      return (sVector(v0.x+v1.x,v0.y+v1.y,v0.z+v1.z));
-    }
-
-  friend const sVector operator -(const sVector &v0, const sVector &v1)
-    {
-      return (sVector(v0.x-v1.x,v0.y-v1.y,v0.z-v1.z));
-    }
-
   friend sREAL dot(const sVector &v0, const sVector &v1)
     { 
       return (v0.x * v1.x + v0.y * v1.y + v0.z * v1.z); 
@@ -213,32 +201,6 @@ public:
       z = v.z;
       return (*this);
     }
-
-  sPoint(const sPoint &p0)
-    {
-      x = p0.x;
-      y = p0.y;
-      z = p0.z;
-    }
-
-  sPoint &operator =(const sPoint &p0)
-    {
-      x = p0.x;
-      y = p0.y;
-      z = p0.z;
-      return (*this);
-    }
-
-  friend const sVector operator +(const sPoint &p0, const sPoint &p1)
-    {
-      return (sVector(p0.x+p1.x,p0.y+p1.y,p0.z+p1.z));
-    }
-
-  friend const sVector operator -(const sPoint &p0, const sPoint &p1)
-    {
-      return (sVector(p0.x-p1.x,p0.y-p1.y,p0.z-p1.z));
-    }
-
 };
 
 // An attitude class 
@@ -254,11 +216,11 @@ public:
       pitch = roll = yaw = 0.0;
     }
 
-  sAttitude(sREAL pitch, sREAL roll, sREAL yaw)
+  sAttitude(sREAL pitc, sREAL rol, sREAL ya)
     {
-      this->pitch = pitch;
-      this->roll = roll;
-      this->yaw = yaw;
+      this->pitch = pitc;
+      this->roll = rol;
+      this->yaw = ya;
     }
 
   sAttitude(const sAttitude &sa)
@@ -332,7 +294,7 @@ inline sREAL ConvertAngle(sREAL angle)
   if (angle >= 0.0)
     return (angle);
   else
-    return (_2Pi + angle);
+    return (sREAL) (_2Pi + angle);
 }
 
 /*

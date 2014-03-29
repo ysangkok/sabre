@@ -49,6 +49,8 @@ public:
       option = NORMAL;
     }
 
+  virtual ~SimFont();
+
   void set_option(int opt)
     {
       option = opt;
@@ -83,13 +85,14 @@ public:
     put_width = put_height = 6;
   }
 
+  virtual ~Font6x6();
 };
 
 class ConsoleFont : public SimFont
 {
 public:
   fontdev *fdev;
-  char *path;
+  const char *path;
   
   ConsoleFont(const char *);
   virtual ~ConsoleFont();

@@ -88,6 +88,8 @@ public:
   REAL_TYPE getGroundLevel(R_3DPoint &p);
 };
 
+C_3DPoly **resizePolyPtr(C_3DPoly **polys, int old_size, int amt);
+
 extern Earth_Watch2 *the_earth;
 extern REAL_TYPE getGroundLevel(R_3DPoint &p);
 #endif

@@ -209,7 +209,7 @@ static float time_fr  = 0.0;
 void FlightLight::apply_forces(float t)
 {
   R_KEY_BEGIN(99)
-    Vector_Q thrust,drag,lift,g;
+    Vector_Q thrust,drag,lift,gee;
   Vector_Q sum_forces,acc;
   Vector_Q tmp1,tmp2;
   Vector delta;
@@ -217,15 +217,15 @@ void FlightLight::apply_forces(float t)
   int no_z = 0;
   float vel_sq = state.velocity.magnitude * state.velocity.magnitude;
   if (vel_sq < 1.0)
-    vel_sq = 1.0 + (1.0 - vel_sq);
+    vel_sq = C(1.0) + (C(1.0) - vel_sq);
   thrust.magnitude = specs->thrust;
   thrust.direction = DVector(0,0,1);
   drag.magnitude = vel_sq * specs->drag_factor;
   drag.direction = DVector(0,0,-1);
   lift.magnitude = vel_sq * specs->lift_factor;
   lift.direction = DVector(0,1,0);
-  g.magnitude = specs->weight;
-  g.direction = DVector(0,0,-1);
+  gee.magnitude = specs->weight;
+  gee.direction = DVector(0,0,-1);
 
 
   // Add up all 'port coordinant' forces
@@ -245,7 +245,7 @@ void FlightLight::apply_forces(float t)
 
   // Convert to world coordinants & add in gravity
   sum_forces.direction = to_world(sum_forces.direction);
-  sum_forces = sum_forces + g;
+  sum_forces = sum_forces + gee;
   // If on ground, apply normal force
   if (state.on_ground)
     {

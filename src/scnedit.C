@@ -45,11 +45,11 @@
 
 extern void buffer2ppm();
 
-SceneEdit::SceneEdit(const char *world_file,Mouse *,int (*messageHook)(void))
+SceneEdit::SceneEdit(const char *wrld_file,Mouse *,int (*msgHook)(void))
   : clist(&info_manager)
 {
-  this->world_file = world_file;
-  this->messageHook = messageHook;
+  this->world_file = wrld_file;
+  this->messageHook = msgHook;
   cliprect.topLeft = Point(0,0);
   cliprect.botRight = Point(SCREEN_WIDTH-1,SCREEN_HEIGHT-1);
   the_earth = &earth;
@@ -99,7 +99,7 @@ char buff[100];
 		is >> world_light_source;
 		world_light_source *= world_scale;
 		is >> port;
-		pixl_ratio = SCREEN_WIDTH / 320.0;
+		pixl_ratio = C(SCREEN_WIDTH / 320.0);
 		Port_3D::fovx *= pixl_ratio;
 		Port_3D::fovy *= pixl_ratio;
 		sim_printf("Reading terrain info\n");
@@ -144,7 +144,7 @@ void SceneEdit::edit()
 	clear_scr(0);
 }
 
-void SceneEdit::drawScene(Port_3D &port)
+void SceneEdit::drawScene(Port_3D &prt)
 {
 DrawList dlist;
   
@@ -161,17 +161,17 @@ DrawList dlist;
 
 #ifdef USES_DDRAW
 	earth.terrain_on = display_flags & TERRAIN_ON;
-//	earth.draw_horizon(port);
-	earth.render_ground(port);
+//	earth.draw_horizon(prt);
+	earth.render_ground(prt);
 #else
-	earth.draw_horizon(port);
+	earth.draw_horizon(prt);
 	clist.setVisibleFlag(display_flags & CLOUDS_ON,"SCLOUD",6);
-	clist.add_draw_list(dlist,port);
-	dlist.draw(port);
+	clist.add_draw_list(dlist,prt);
+	dlist.draw(prt);
 	earth.terrain_on = display_flags & TERRAIN_ON;
-	earth.render_ground(port);
+	earth.render_ground(prt);
 #endif
-	show_port_vars(port,port,g_font);
+	show_port_vars(prt,prt,g_font);
 	blit_buff();
 
 	vga13_end_scene();

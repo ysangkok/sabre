@@ -38,7 +38,7 @@
 #define aiF_DEFAULT_VE_RADIUS 22000.0
 #define aiF_STRIKE_APPROACH_DISTANCE 24000.0
 
-#define INIT_FORMATION_LEN 250
+//#define INIT_FORMATION_LEN 250
 
 extern "C" void __cdecl sim_printf(char *, ...);
 
@@ -64,19 +64,19 @@ aiFlite::aiFlite()
   playerCommandMode = 0;
 }
 
-aiFlite::aiFlite(int max, int owns, const char *id)
-  :pilots(max,owns),
+aiFlite::aiFlite(int mx, int owns, const char *i)
+  :pilots(mx,owns),
    waypoints(1,1),
-   freePilots(max,0)
+   freePilots(mx,0)
 {
-  this->max = max;
+  this->max = mx;
   n = 0;
   viewPilot = 0;
   isPlayerFlite = 0;
   playerPilotWingPos = -1;
   idx = (unsigned long)-1;
   affiliation = -1;
-  SetId(id);
+  SetId(i);
   activeCount = 1;
   leaderIndex = 0;
   mode = aiF_NAVIGATE;
@@ -146,10 +146,10 @@ void aiFlite::Init()
 	      sRunway *runway = airfield->GetRunway(runwayNo);
 	      if (runway)
 		{
-		  sPoint		position;
+		  sPoint		positio;
 		  sAttitude	attitude;
-		  runway->GetTakeoffPositionAndAttitude(position,attitude);
-		  leader->SetPositionAndAttitude(position,attitude);
+		  runway->GetTakeoffPositionAndAttitude(positio,attitude);
+		  leader->SetPositionAndAttitude(positio,attitude);
 		}
 	    }
 	}
@@ -805,7 +805,7 @@ void aiFlite::DoCapWaypoint()
   int count = 0;
   int choice;
   aiFlite *engageCandidates[aiMAX_FLITES];
-  sREAL  engageRanges[aiMAX_FLITES];
+  //sREAL  engageRanges[aiMAX_FLITES];
 
 
   /****************************************************
@@ -833,7 +833,7 @@ void aiFlite::DoCapWaypoint()
 	  if (d <= visualEngagementRadius)
 	    {
 	      engageCandidates[count] = flite;
-	      engageRanges[count] = d;
+	      //engageRanges[count] = d;
 	      count++;
 	    }
 	}
@@ -1037,7 +1037,7 @@ void aiFlite::SetManeuver(int maneuver, unsigned long flags, sREAL d0,
   mode = aiF_MANEUVER;
 }
 
-void aiFlite::SetFormationWaypoint(sWaypoint *wp, int leaderIndex)
+void aiFlite::SetFormationWaypoint(sWaypoint *wp, int leaderIdx)
 {
   unsigned long targetIdx;
   SetWaypoints(wp,1);
@@ -1045,10 +1045,10 @@ void aiFlite::SetFormationWaypoint(sWaypoint *wp, int leaderIndex)
     leaderIndex = 0;
   if (leaderIndex > GetCount() - 1)
     leaderIndex = GetCount() - 1;
-  this->leaderIndex = leaderIndex;
-  aiPilot *leader = GetPilot(leaderIndex);
-  targetIdx = leader->GetIdx();
-  leader->SetNavigatePoint(GetWaypoint(0));
+  this->leaderIndex = leaderIdx;
+  aiPilot *ldr = GetPilot(leaderIndex);
+  targetIdx = ldr->GetIdx();
+  ldr->SetNavigatePoint(GetWaypoint(0));
   int wingPos = 1;
   for (int i=0;i<GetCount();i++)
     {
@@ -1130,7 +1130,7 @@ void aiFlite::EngageFlite(aiFlite *flite)
 void aiFlite::EngageNearestFlite()
 {
   unsigned long	idx = 0;	
-  sREAL	minDistance = visualEngagementRadius + 100.0;
+  sREAL	minDistance = visualEngagementRadius + (sREAL) 100.0;
   int foundOne = 0;
 
   for (int i=0;i<GetFliteCount();i++)
@@ -1255,7 +1255,7 @@ static const char *oClocks[] =
   "10:00",
   "11:00"
 };
-void aiFlite::IssuePlayerAttackWarning(aiFlite *playerFlite, aiPilot *attackerPilot,
+void aiFlite::IssuePlayerAttackWarning(aiFlite *plyrFlit, aiPilot *attackerPilot,
 				       aiPilot *playerPilot)
 {
   sTargetGeometry geometry;
@@ -1274,7 +1274,7 @@ void aiFlite::IssuePlayerAttackWarning(aiFlite *playerFlite, aiPilot *attackerPi
   if (attackerPilot->IsPlayer())
     return;
 	
-  aiPilot *wingmanPilot = playerFlite->GetPlayerWingman();
+  aiPilot *wingmanPilot = plyrFlit->GetPlayerWingman();
   if (wingmanPilot)
     {
       playerPilot->GetQuickTargetGeometry(attackerPilot->GetIdx(),geometry);

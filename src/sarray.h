@@ -54,17 +54,14 @@ public:
     return (sOBJECT_ARRAY_T);
   }
 
-  sObjectArray(int size, int owns = 1)
+  sObjectArray(int siz, int own = 1)
   {
     n = 0;
     objs = NULL;
-    Create(size,owns);
+    Create(siz,own);
   }
 
-  ~sObjectArray()
-  {
-    Destroy();
-  }
+  ~sObjectArray();
 
   sObject * operator[](int idx) const;
 
@@ -86,9 +83,9 @@ public:
     return (owns);
   }
 
-  void SetOwnership(int owns)
+  void SetOwnership(int own)
   {
-	this->owns = owns;
+	this->owns = own;
   }
 
   int Remove(int idx);

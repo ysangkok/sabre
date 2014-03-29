@@ -45,12 +45,12 @@ public:
   {
     skill_level = 10;
     affiliation = 0;
-    update_time = 0.1;
-	 v_acquire_range = 3.0 * 5280.0;
-	 hitScaler = 1.3;
-	 shootRadius = _degree * 2.0;
-	 posG = 8.0;
-	 negG = -3.0;
+    update_time = 0.1f;
+	 v_acquire_range = 3.0f * 5280.0f;
+	 hitScaler = 1.3f;
+	 shootRadius = (float) _degree * 2.0f;
+	 posG = 8.0f;
+	 negG = -3.0f;
 	 log = 0;
   }
   friend std::istream &operator>>(std::istream &, Pilot_Params &);

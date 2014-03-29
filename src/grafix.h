@@ -41,7 +41,6 @@ public:
   friend inline Point operator -(const Point a, const Point b);
   friend inline Boolean operator ==(const Point a, const Point b);
   friend inline Boolean operator !=(const Point a, const Point b);
-  inline Point & operator =(const Point &p);
   inline Point & operator +=(const Point &p);
 };
 
@@ -61,15 +60,6 @@ inline int limit(int x, int l)
     }
   else
     return x;
-}
-
-
-
-inline Point & Point::operator =(const Point &p)
-{
-  x = p.x;
-  y = p.y;
-  return *this;
 }
 
 inline Point & Point::operator +=(const Point &p)
@@ -104,7 +94,7 @@ class Rect
 public:
   Point topLeft;
   Point botRight;
-  Rect() { };
+  Rect() { }
   Rect(const Rect &r)
     { topLeft = r.topLeft; botRight = r.botRight; }
   Rect(Point tL, Point bR) : topLeft(tL), botRight(bR) { }

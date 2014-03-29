@@ -26,16 +26,21 @@
  *************************************************/
 #include "sarray.h"
 
-void sObjectArray::Create(int size, int owns)
+void sObjectArray::Create(int siz, int own)
 {
   if (objs)
     Destroy();
-  this->size = size;
-  this->owns = owns;
+  this->size = siz;
+  this->owns = own;
   objs = new sObject *[size];
   for (int i=0;i<size;i++)
     objs[i] = NULL;
   n = 0;
+}
+
+sObjectArray::~sObjectArray()
+{
+  Destroy();
 }
 
 void sObjectArray::Destroy()

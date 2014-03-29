@@ -31,8 +31,8 @@
 #include <math.h>
 #include <limits.h>
 #include <values.h>
-#define fmin(a,b) (a) < (b) ? (a) : (b)
-#define fmax(a,b) (a) > (b) ? (a) : (b)
+//#define fmin(a,b) (a) < (b) ? (a) : (b)
+//#define fmax(a,b) (a) > (b) ? (a) : (b)
 #include "vmath.h"
 #include "grafix.h"
 #include "vga_13.h"
@@ -65,7 +65,7 @@ Earth_Watch::Earth_Watch(int)
    groups(NULL),
    polys(NULL)
 {
-  unit_size = 1.3;
+  unit_size = (REAL_TYPE) 1.3;
   x_width = y_width = 5;
   terrain_on = 1;
 }
@@ -213,7 +213,7 @@ void Earth_Watch::drawBackDrop(Port_3D &port)
  * Do a Genesis sort of thing -- divide up the world     *
  * into a basic earth/sky duality.                       *
  *********************************************************/
-const REAL_TYPE phi_fudge = 0.03;
+const REAL_TYPE phi_fudge = (REAL_TYPE) 0.03;
 
 void Earth_Watch::draw_horizon(Port_3D &port, int)
 {
@@ -408,12 +408,13 @@ void Earth_Watch::draw_horizon_grade(Port_3D &port)
  **********************************************************/
 void Earth_Watch::calc_texture_bounds()
 {
-  REAL_TYPE t_w,t_h;
+  REAL_TYPE t_w = 0.0, t_h = 0.0;
   int i;
   if (map_man != NULL)
     {
       TextrMap &tmap = map_man->get_map(local_color_1);
-      if (&tmap != &nullmap)
+      bool before = &tmap != &nullmap;
+      if (before)
 	{
 	  t_w = tmap.map_w;
 	  t_h = tmap.map_h;
@@ -430,11 +431,11 @@ void Earth_Watch::calc_texture_bounds()
 	      tpoints2[3].v = tmap2.map_h;
 	    }
 	}
-      if (&tmap != &nullmap)
-	{
+      if (before) {
+	  if (before != (&tmap != &nullmap)) abort();
 	  for (i=0;i<npolys;i++)
 	    calc_texture_bounds(g_polyinfos[i],t_w,t_h);
-	}
+      }
     }
 }
 
@@ -464,8 +465,8 @@ void Earth_Watch::calc_texture_bounds(C_PolyInfo &ply, REAL_TYPE tw,
   for (int i=0;i<ply.npoints;i++)
     {
       R_3DPoint &p = ply.lpoints[i];
-      dx = fabs((p.x - min_x) / xspan);
-      dy = fabs((p.y - min_y) / yspan);
+      dx = (REAL_TYPE) fabs((p.x - min_x) / xspan);
+      dy = (REAL_TYPE) fabs((p.y - min_y) / yspan);
       
       ply.tpoints[i].u = tw * dx;
       ply.tpoints[i].v = th * dy;
@@ -570,7 +571,7 @@ void Earth_Watch2::read(std::istream &is)
   READ_TOKI('}',is,c)
 }
 
-int gggresult = 0;
+//static int gggresult = 0;
 
 REAL_TYPE Earth_Watch2::getGroundLevel(R_3DPoint &tp)
 {

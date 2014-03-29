@@ -29,6 +29,8 @@
 #include <math.h>
 #include "starget.h"
 
+sSurfaceTarget::~sSurfaceTarget() = default;
+
 sTargetGeometry::sTargetGeometry()
 {
   angleOff = aspect = 
@@ -51,6 +53,10 @@ sTargetInfo::sTargetInfo()
   weaponsRange = 2000.0;
   weaponsEffect = 4.0;
 }
+
+sTargetFlags::~sTargetFlags() = default;
+sTarget::~sTarget() = default;
+sTargetInfo::~sTargetInfo() = default;
 
 /*********************************************
  * Target flags
@@ -94,6 +100,7 @@ void sTargetFlags::Add(const sTargetFlags &fl)
  * Set on/off flags based on
  * differential
  */
+void SetFunct(int&, int&, int);
 void SetFunct(int &x, int &y, int t = 3)
 {
   int dd = 0;
@@ -131,12 +138,12 @@ void sTargetFlags::Set(int max)
   SetFunct(lowAOT,highAOT);
 }
 
-void sTarget::GetTargetInfo(unsigned long targetIdx, sPoint &position, 
-			    sVector &velocity, sVector &heading)
+void sTarget::GetTargetInfo(__attribute__((unused)) unsigned long targetIdx, __attribute__((unused)) sPoint &position, 
+			    __attribute__((unused)) sVector &velocity, __attribute__((unused)) sVector &heading)
 {
 }
 
-int sTarget::GetTargetActive(unsigned long targetIdx)
+int sTarget::GetTargetActive(__attribute__((unused)) unsigned long targetIdx)
 {
   return 0;
 }

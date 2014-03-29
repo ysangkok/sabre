@@ -50,8 +50,8 @@ inline int O_CheckPlaneEquation(const Vector &point,
 inline float O_Intensity( const Vector &light_source,
 			  const Vector &normal)
 {
-  float val = light_source.Dot(normal) + 1.0;
-  return (val / 2.0);
+  float val = (float) light_source.Dot(normal) + 1.0f;
+  return (val / 2.0f);
 }
 
 class C_Oriented_Poly : public C_Poly

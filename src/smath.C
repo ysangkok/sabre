@@ -46,7 +46,7 @@ void sVector2sAttitude(const sVector &vect, sAttitude &att)
   sREAL d;
   att.yaw = (sREAL) atan2(-vect.x,vect.y+eps);
   d = sSQRT((vect.x*vect.x)+(vect.y*vect.y));
-  att.pitch = atan2(vect.z,d+eps);
+  att.pitch = C(atan2(vect.z,d+eps));
 }
 
 sREAL sRandPer()
@@ -191,7 +191,7 @@ void sGetRPH(const sVector &roll, const sVector &pitch, sAttitude  &att)
 
   if (pitch.y != 0.0 || pitch.x != 0.0 )
     {
-      h=atan2(pitch.y,pitch.x) - Pi * 0.5;
+      h = C(atan2(pitch.y,pitch.x) - Pi * 0.5);
       sMatrix3Z(_2Pi-h,mat);
       //      MakeMatrixDoubleZ((2*PI-h),Mat);
       sMatrix3Rotate(mat,pitch,pitch1);
@@ -204,12 +204,12 @@ void sGetRPH(const sVector &roll, const sVector &pitch, sAttitude  &att)
   else
     h = 0;
 
-  p = atan2(pitch.z, pitch.y);
+  p = C(atan2(pitch.z, pitch.y));
   sMatrix3X(_2Pi-p,mat);
   //   MakeMatrixDoubleX((2*PI-p),Mat);
   sMatrix3Rotate(mat,roll1,roll2);
   // RotateDoubleVector(&Roll,Mat);
-  r = atan2(roll2.z,roll2.x);
+  r = C(atan2(roll2.z,roll2.x));
 
   att.pitch = p;
   att.roll = r;
@@ -241,6 +241,7 @@ sREAL sIncrementAngle(sREAL angle, sREAL inc)
 /*
  *  Get angle between (shortest distance)
  */
+sREAL GetMedianAngle(sREAL angle0, sREAL angle1);
 sREAL GetMedianAngle(sREAL angle0, sREAL angle1)
 {
   sREAL result;

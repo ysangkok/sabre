@@ -161,6 +161,7 @@ public:
 
   sPilotCaps()
     {}
+  virtual ~sPilotCaps();
 
   sPilotCaps(const spilot_caps &);
 

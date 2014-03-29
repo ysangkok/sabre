@@ -129,15 +129,15 @@ public:
 	}
 
 	friend void SETMANEUVER(sManeuverState &ms,
-								   int maneuver,
-								   int stackLevel,
+								   int maneuve,
+								   int stackLeve,
 								   unsigned long flgs = 0,
 								   sREAL d0 = 0.0,
 								   sREAL d1 = 0.0,
 								   sREAL d2 = 0.0)
 	{
-		ms.maneuver = maneuver;
-		ms.stackLevel = stackLevel;
+		ms.maneuver = maneuve;
+		ms.stackLevel = stackLeve;
 		ms.flags = flgs;
 		ms.data0 = d0;
 		ms.data1 = d1;
@@ -147,25 +147,25 @@ public:
 	}
 
 	friend void SETMANEUVERX(sManeuverState &ms,
-								   int maneuver,
-								   int stackLevel,
+								   int maneuve,
+								   int stackLvl,
 								   unsigned long flgs = 0,
-								   sREAL d0 = 0.0,
-								   sREAL d1 = 0.0,
-								   sREAL d2 = 0.0,
-                           sREAL d3 = 0.0,
-                           sREAL d4 = 0.0,
-                           sREAL d5 = 0.0)
+								   sREAL e0 = 0.0,
+								   sREAL e1 = 0.0,
+								   sREAL e2 = 0.0,
+                           sREAL e3 = 0.0,
+                           sREAL e4 = 0.0,
+                           sREAL e5 = 0.0)
 	{
-		ms.maneuver = maneuver;
-		ms.stackLevel = stackLevel;
+		ms.maneuver = maneuve;
+		ms.stackLevel = stackLvl;
 		ms.flags = flgs;
-		ms.data0 = d0;
-		ms.data1 = d1;
-		ms.data2 = d2;
-		ms.data3 = d3;
-		ms.data4 = d4;
-		ms.data5 = d5;
+		ms.data0 = e0;
+		ms.data1 = e1;
+		ms.data2 = e2;
+		ms.data3 = e3;
+		ms.data4 = e4;
+		ms.data5 = e5;
 		ms.done = 0;
 	}
 

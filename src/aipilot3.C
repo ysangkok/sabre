@@ -156,8 +156,7 @@ void aiPilot::DoEngage(sManeuverState &mv)
       GetWeaponLimits(weaponLimits);
       if (flightModel->GetAirSpeedFPS() <= flightModel->GetStallSpeedFPS() * 1.2)
 	{
-	  PushManeuver(sManeuver::EXTEND,0,flightModel->GetStallSpeedFPS() * 1.2,
-		       10,extendAngle);
+	  PushManeuver(sManeuver::EXTEND, 0, C(flightModel->GetStallSpeedFPS() * 1.2), 10,extendAngle);
 	  mv.state = INITX;
 	}
       else
@@ -339,15 +338,15 @@ void aiPilot::DoEngage(sManeuverState &mv)
 	  ControlsOff();
 	  if (mv.data0 == sManeuver::LEFT)
 	    {
-	      SETROLLPID(-_degree*60.0);
-	      SETCONTROL(yawRateCtl,-Pi);
+	      SETROLLPID(-_degree * C(60.0));
+	      SETCONTROL(yawRateCtl, -Pi);
 	    }
 	  else
 	    {
-	      SETROLLPID(_degree*60.0);
-	      SETCONTROL(yawRateCtl,Pi);
+	      SETROLLPID(_degree * C(60.0));
+	      SETCONTROL(yawRateCtl, Pi);
 	    }
-	  SETCONTROL(gCtl,posGLimit * 0.7);
+	  SETCONTROL(gCtl,posGLimit * C(0.7));
 	}
       break;
     }
@@ -397,7 +396,7 @@ void aiPilot::DoRQEvade(sManeuverState &mv)
     case 0:
       {
 	mv.data3 = 0.0;
-	mv.data4 = (3.00) + sRandPer() * 3.0;
+	mv.data4 = C(3.00) + sRandPer() * C(3.0);
 	
 	int choice = sRand(0,2);
 	switch (choice)
@@ -437,15 +436,15 @@ void aiPilot::DoRQEngage(sManeuverState &mv)
     case 0:
       if (flightModel->GetAirSpeedFPS() < flightModel->GetCornerSpeedFPS() * 0.5)
 	{
-	  PushManeuver(sManeuver::EXTEND,0,flightModel->GetCornerSpeedFPS() * 0.8,10,extAngle);
+	  PushManeuver(sManeuver::EXTEND, 0, C(flightModel->GetCornerSpeedFPS() * 0.8), 10, extAngle);
 	  mv.state = 4;
 	}
 
+    [[clang::fallthrough]];
     case 1:
       if (flightModel->GetAirSpeedFPS() <= flightModel->GetStallSpeedFPS() * 1.1)
 	{
-	  PushManeuver(sManeuver::EXTEND,0,flightModel->GetStallSpeedFPS() * 1.2,
-		       10,extAngle);
+	  PushManeuver(sManeuver::EXTEND, 0, C(flightModel->GetStallSpeedFPS() * 1.2), 10, extAngle);
 	  mv.state = 3;
 	}
       else 
@@ -466,6 +465,7 @@ void aiPilot::DoRQEngage(sManeuverState &mv)
 		  mv.state = 3;
 		  break;
 		}
+	    [[clang::fallthrough]];
 	    case 2:
 	      {
 		int turn_bits;
@@ -633,13 +633,13 @@ inline sREAL GET_ROLL_ANGLE(sREAL x, sREAL z)
   z += eps;
 
   if (x > 0 && z > 0)
-    result = (atan(x/z));
+    result = (sATAN(x/z));
   else if (x > 0 && z < 0)
-    result = (Pi + atan(x/z));
+    result = C(Pi + atan(x/z));
   else if (x < 0 && z > 0)
-    result = (atan(x/z));
+    result = (sATAN(x/z));
   else
-    result = (-Pi + atan(x/z));
+    result = C(-Pi + atan(x/z));
 
   return result;
 }
@@ -654,8 +654,7 @@ void aiPilot::DoGunAttack(sManeuverState &)
   if ((fabs(GUN_LEAD_PITCH) < _degree * 3.0 && 
        fabs(GUN_LEAD_YAW) < _degree *3.0 ) &&
       (TARGET_FLAGS.lowAOT || TARGET_FLAGS.highAOT))
-    rollNeeded = atan(flightModel->GetAirSpeedFPS() *
-		      GUN_LEAD_YAW / 32.2);
+    rollNeeded = sATAN(flightModel->GetAirSpeedFPS() * GUN_LEAD_YAW / 32.2);
   else
     {
       vel = TARGET_VELOCITY;
@@ -710,12 +709,12 @@ void aiPilot::DoJink(sManeuverState &mv)
 
 	if (flightModel->GetHeightAGL() > grndColAGL)
 	  {
-	    mv.data0 = sgn*45.0 + sgn*sRandPer()*50.0;
+	    mv.data0 = sgn * C(45.0) + sgn*sRandPer() * C(50.0);
 	    PushManeuver(sManeuver::SNAP_ROLL,0,mv.data0,mv.data1);
 	  }
 	else
 	  {
-	    mv.data0 = sgn*30.0 + sgn*sRandPer()*30.0;
+	    mv.data0 = sgn * C(30.0) + sgn * sRandPer() * C(30.0);
 	    PushManeuver(sManeuver::LEVEL_ROLL,0,mv.data0,mv.data1);
 	  }				
 	mv.data0 *= _degree;
@@ -730,7 +729,7 @@ void aiPilot::DoJink(sManeuverState &mv)
       if (mnvrStackPtr == mv.stackLevel)
 	{
 	  mv.data2 = 0.0;
-	  mv.data3 = 2.5 + sRandPer() * 1.5;
+	  mv.data3 = C(2.5) + sRandPer() * C(1.5);
 	  mv.state = 3;
 	}
       break;

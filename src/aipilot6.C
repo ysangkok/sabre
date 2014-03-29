@@ -80,7 +80,7 @@ void aiPilot::DoTakeOff(sManeuverState &mv)
       SETYAWPID(0.0);
       if (mv.data3 >= 0.1)
 	{
-	  flightModel->IncEngineControlPer(0.01);
+	  flightModel->IncEngineControlPer(C(0.01));
 	  mv.data3 = 0.0;
 	}
       if (flightModel->GetEngineControlPer() >= 1.0)

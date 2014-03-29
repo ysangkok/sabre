@@ -48,7 +48,7 @@ extern uch slide[WSIZE];
 extern int qflag;
 
 #define NEXTBYTE local_nextbyte()
-#define FLUSH(n) local_flush(n)
+#define FLUSH(n) ((unsigned) local_flush((int) n))
 
 #ifdef __cplusplus
 extern "C"

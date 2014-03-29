@@ -163,11 +163,13 @@ static  uch    * near window = NULL;
 static  Pos    * near prev   = NULL;
 static  Pos    * near head;
 #endif
+extern ulg deflate_window_size;
 ulg deflate_window_size;
 /* window size, 2*WSIZE except for MMAP or BIG_MEM, where it is the
  * input file length plus MIN_LOOKAHEAD.
  */
 
+extern long deflate_block_start;
 long deflate_block_start;
 /* window position at the beginning of the current output block. Gets
  * negative when the window is moved backwards.
@@ -190,12 +192,13 @@ static unsigned int near prev_length;
  * are discarded. This is used in the lazy match evaluation.
  */
 
-      unsigned near deflate_strstart;      /* start of string to insert */
+extern unsigned near deflate_strstart;
+unsigned near deflate_strstart;      /* start of string to insert */
 local unsigned near match_start;   /* start of matching string */
 local int           eofile;        /* flag set at end of input file */
 local unsigned      lookahead;     /* number of valid bytes ahead in window */
 
-unsigned near max_chain_length;
+static unsigned near max_chain_length;
 /* To speed up deflation, hash chains are never searched beyond this length.
  * A higher limit improves compression ratio but degrades the speed.
  */
@@ -253,9 +256,6 @@ local config configuration_table[10] = {
  * meaning.
  */
 
-#define EQUAL 0
-/* result of memcmp for equal strings */
-
 /* ===========================================================================
  *  Prototypes for local functions.
  */
@@ -291,7 +291,7 @@ local  void check_match OF((IPos start, IPos match, int length));
 #define INSERT_STRING(s, match_head) \
    (UPDATE_HASH(ins_h, window[(s) + MIN_MATCH-1]), \
     prev[(s) & WMASK] = match_head = head[ins_h], \
-    head[ins_h] = (s))
+    head[ins_h] = (Pos) (s))
 
 /* ===========================================================================
  * Initialize the "longest match" routines for a new file
@@ -367,7 +367,7 @@ void lm_init (int pack_level, ush *flags)
 #endif
     lookahead = (*bits_read_buf)(window, j);
 
-    if (lookahead == 0 || lookahead == EOF) {
+    if (lookahead == 0 || lookahead == (unsigned) EOF) {
        eofile = 1, lookahead = 0;
        return;
     }
@@ -423,7 +423,7 @@ int longest_match(IPos cur_match)
     register uch *scan = window + deflate_strstart;     /* current string */
     register uch *match;                        /* matched string */
     register int len;                           /* length of current match */
-    int best_len = prev_length;                 /* best match length so far */
+    int best_len = (int) prev_length;                 /* best match length so far */
     IPos limit = deflate_strstart > (IPos)MAX_DIST ? deflate_strstart - (IPos)MAX_DIST : NIL;
     /* Stop when cur_match becomes <= limit. To simplify the code,
      * we prevent matches with the string of window index 0.
@@ -585,7 +585,7 @@ local void fill_window(void)
     /* If the window is almost full and there is insufficient lookahead,
      * move the upper half to the lower one to make room in the upper half.
      */
-    if (more == EOF) {
+    if (more == (unsigned) EOF) {
         /* Very unlikely, but possible on 16 bit machine if deflate_strstart == 0
          * and lookahead == 1 (input done one byte at time)
          */
@@ -623,7 +623,7 @@ local void fill_window(void)
     /* At this point, more >= 2 */
     if (!eofile) {
         n = (*bits_read_buf)(window+deflate_strstart+lookahead, more);
-        if (n == 0 || n == EOF) {
+        if (n == 0 || n == (unsigned) EOF) {
             eofile = 1;
         } else {
             lookahead += n;
@@ -637,7 +637,7 @@ local void fill_window(void)
  */
 #define FLUSH_BLOCK(eof) \
   ct_flush_block(deflate_block_start >= 0L ? &window[deflate_block_start] : \
-                NULL, (long)deflate_strstart - deflate_block_start, (eof))
+                NULL, (unsigned) (deflate_strstart - (unsigned) deflate_block_start), (eof))
 
 /* ===========================================================================
  * Processes a new input file and return its compressed length. This
@@ -666,14 +666,14 @@ local ulg deflate_fast(void)
              * of window index 0 (in particular we have to avoid a match
              * of the string with itself at the start of the input file).
              */
-            match_length = longest_match (hash_head);
+            match_length = (unsigned) longest_match ((unsigned) hash_head);
             /* longest_match() sets match_start */
             if (match_length > lookahead) match_length = lookahead;
         }
         if (match_length >= MIN_MATCH) {
             check_match(deflate_strstart, match_start, match_length);
 
-            flush = ct_tally(deflate_strstart-match_start, match_length - MIN_MATCH);
+            flush = ct_tally((int)(deflate_strstart-match_start), match_length - MIN_MATCH);
 
             lookahead -= match_length;
 
@@ -708,7 +708,7 @@ local ulg deflate_fast(void)
             lookahead--;
             deflate_strstart++; 
         }
-        if (flush) FLUSH_BLOCK(0), deflate_block_start = deflate_strstart;
+        if (flush) FLUSH_BLOCK(0), deflate_block_start = (long) deflate_strstart;
 
         /* Make sure that we always have enough lookahead, except
          * at the end of the input file. We need MAX_MATCH bytes
@@ -757,7 +757,7 @@ ulg deflate(void)
              * of window index 0 (in particular we have to avoid a match
              * of the string with itself at the start of the input file).
              */
-            match_length = longest_match (hash_head);
+            match_length = (unsigned) longest_match (hash_head);
             /* longest_match() sets match_start */
             if (match_length > lookahead) match_length = lookahead;
 
@@ -776,7 +776,7 @@ ulg deflate(void)
 
             check_match(deflate_strstart-1, prev_match, prev_length);
 
-            flush = ct_tally(deflate_strstart-1-prev_match, prev_length - MIN_MATCH);
+            flush = ct_tally((int)deflate_strstart-1-(int)prev_match, prev_length - MIN_MATCH);
 
             /* Insert in hash table all strings up to the end of the match.
              * deflate_strstart-1 and deflate_strstart are already inserted.
@@ -795,7 +795,7 @@ ulg deflate(void)
             match_available = 0;
             match_length = MIN_MATCH-1;
             deflate_strstart++;
-            if (flush) FLUSH_BLOCK(0), deflate_block_start = deflate_strstart;
+            if (flush) FLUSH_BLOCK(0), deflate_block_start = (long) deflate_strstart;
 
         } else if (match_available) {
             /* If there was no match at the previous position, output a
@@ -804,7 +804,7 @@ ulg deflate(void)
              */
             Tracevv((stderr,"%c",window[deflate_strstart-1]));
             if (ct_tally (0, window[deflate_strstart-1])) {
-                FLUSH_BLOCK(0), deflate_block_start = deflate_strstart;
+                FLUSH_BLOCK(0), deflate_block_start = (long) deflate_strstart;
             }
             deflate_strstart++;
             lookahead--;

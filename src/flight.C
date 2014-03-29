@@ -69,18 +69,20 @@
 #include "flight.h"
 #include "rtkey.h"
 
-int no_g = 0;
-int no_f = 0;
-int no_r = 0;
-int no_l = 0;
-int no_d = 0;
+static int no_g = 0;
+static int no_f = 0;
+static int no_r = 0;
+static int no_l = 0;
+static int no_d = 0;
 
-#define INT_PERC(x) (((float)x) / 100.0)
+//#define INT_PERC(x) (((float)x) / 100.0)
 extern REAL_TYPE getGroundLevel(R_3DPoint &);
 
 REAL_TYPE Flight::rot_acc_max = 24.0;
 REAL_TYPE Flight::rot_rate_max = _PI34;
-REAL_TYPE Flight::rot_max = _PI2 * 0.4;
+REAL_TYPE Flight::rot_max = _PI2 * C(0.4);
+
+Flight::~Flight() = default;
 
 void Flight::read(std::istream &is)
 {
@@ -102,7 +104,7 @@ void Flight::write(std::ostream &os)
 
 void Flight::start()
 {
-  l_time = 0.1;
+  l_time = C(0.1);
   state.elapsed_time = 0.0;
   calcState(l_time);
   calcForces(l_time);
@@ -118,7 +120,7 @@ void Flight::update()
   // Get elapsed time in microseconds
   l_time = time_frame;
   if (l_time <= 0.0)
-    l_time = 0.1;
+    l_time = C(0.1);
   if (!no_f)
     applyForces(l_time);
   // Calculate & apply rotations
@@ -139,7 +141,7 @@ void Flight::calcState(float t)
   float  d;
 
   if (t <= 0.0)
-    t = 0.1;
+    t = C(0.1);
 
   state.elapsed_time += t;
 
@@ -160,9 +162,9 @@ void Flight::calcState(float t)
   if (state.velocity.magnitude > 0.01)
     {
       float  z_sq = state.vel_pv.Z * state.vel_pv.Z;
-      aoa = state.vel_pv.Y / (sqrt ( (state.vel_pv.Y * state.vel_pv.Y) + z_sq ) );
-      state.angle_of_attack = asin(-aoa);
-      state.yaw = state.vel_pv.X / ( sqrt ( (state.vel_pv.X * state.vel_pv.X) + z_sq ) );
+      aoa = C(state.vel_pv.Y / (sqrt ( (state.vel_pv.Y * state.vel_pv.Y) + z_sq ) ));
+      state.angle_of_attack = C(asin(-aoa));
+      state.yaw = C(state.vel_pv.X / ( sqrt ( (state.vel_pv.X * state.vel_pv.X) + z_sq ) ));
       //		state.yaw = acos(state.yaw);
     }
   else
@@ -177,10 +179,10 @@ void Flight::calcState(float t)
 			      state.flight_port.look_from.y,
 			      0.0);
   state.h_direction.Normalize();
-  state.heading = atan2(state.h_direction.Y + eps,state.h_direction.X + eps);
+  state.heading = C(atan2(state.h_direction.Y + eps,state.h_direction.X + eps));
   // Make heading 0 <= h < 2pi
   if (state.heading < 0.0)
-    state.heading = 6.2831853 + state.heading;
+    state.heading = C(6.2831853 + state.heading);
 
   // Set inverted flag
   state.negative_phi = 0;
@@ -241,9 +243,9 @@ void Flight::calcState(float t)
   if (d1 <= 1000.0)
     state.air_density = 1.0;
   else if (d1 >= 100000.0)
-    state.air_density = 0.05;
+    state.air_density = C(0.05);
   else
-    state.air_density = 1.0 - (d1 / 200000.0) + 0.10;
+    state.air_density = C(1.0 - (d1 / 200000.0) + 0.10);
     }
 
   R_KEY_END
@@ -268,15 +270,15 @@ void Flight::calcForces(float)
   if (state.z_vel < 0)
     z_vel_sq = -z_vel_sq;
   if (vel_sq < 1.0)
-    vel_sq = 1.0 + (1.0 - vel_sq);
+    vel_sq = C(1.0 + (1.0 - vel_sq));
 
   /***********************************************************
    *                   thrust                                *
    ***********************************************************/
-  forces.thrust.magnitude = specs->max_thrust *
+  forces.thrust.magnitude = C(specs->max_thrust *
     (controls.throttle * 0.01 ) *
     mods.engine_e *
-    state.air_density;
+    state.air_density);
   forces.thrust.direction = DVector(0,0,1);
 
 
@@ -288,9 +290,8 @@ void Flight::calcForces(float)
 
   if (!no_d && state.velocity.magnitude > 0.1)
     {
-      aoa_drg = (fabs(state.angle_of_attack) + specs->wing_aoa) *
-	specs->drag_aoa;
-      yaw_drg = fabs(state.yaw) * specs->drag_yaw;
+      aoa_drg = C((fabs(state.angle_of_attack) + specs->wing_aoa) * specs->drag_aoa);
+      yaw_drg = C(fabs(state.yaw) * specs->drag_yaw);
       add_drag += (aoa_drg + yaw_drg) * vel_sq;
       if (state.on_ground)
 	{
@@ -305,7 +306,7 @@ void Flight::calcForces(float)
 	add_drag += specs->drag_sb * z_vel_sq * mods.speed_brakes_e;
       if (controls.landing_gear)
 	add_drag += specs->drag_gr * vel_sq;
-      if (controls.flaps)
+      if ((bool) controls.flaps)
 	add_drag += ((float)controls.flaps) * specs->flap_drag * z_vel_sq;
       // Parasitic drag - proportional to velocity square
       forces.drag.magnitude = vel_sq * specs->drag_factor * mods.drag_e;
@@ -332,7 +333,7 @@ void Flight::calcForces(float)
 
   state.stalled = 0;
   eff_aoa = specs->wing_aoa + state.angle_of_attack;
-  a_aoa = fabs(eff_aoa);
+  a_aoa = C(fabs(eff_aoa));
   /* mx_aoa = specs->max_aoa_factor * state.velocity.magnitude;
   if (mx_aoa > specs->max_aoa)
     mx_aoa = specs->max_aoa;
@@ -343,7 +344,7 @@ void Flight::calcForces(float)
       state.near_stall = specs->max_aoa - a_aoa;
       forces.lift.magnitude = z_vel_sq * specs->lift_factor * eff_aoa *
 	mods.wing_e;
-      if (controls.flaps)
+      if ((bool) controls.flaps)
 	forces.lift.magnitude += z_vel_sq * ((float)controls.flaps)
 	  * specs->flap_lift * mods.flaps_e;
       forces.lift.magnitude *= state.air_density;
@@ -404,8 +405,7 @@ void Flight::calcRotations(float )
     state.vel_factor = 1.0;
   else
     {
-      state.vel_factor = fabs(state.velocity.magnitude) 
-	/ specs->corner_speed;
+      state.vel_factor = C(fabs(state.velocity.magnitude) / specs->corner_speed);
       if (state.vel_factor > 1.0)
 	state.vel_factor = 1.0;
       else if (state.vel_factor < 0.0)
@@ -443,9 +443,9 @@ void Flight::calcRotations(float )
 
   torque = specs->return_yaw * eff_yaw * mods.v_stab_e;
 
-  if (controls.rudder)
+  if ((bool) controls.rudder)
     torque += controls.rudder * specs->control_yaw * mods.rudder_e;
-  if (specs->adv_yaw != 0.0 && controls.ailerons &&
+  if (specs->adv_yaw != 0.0 && (bool) controls.ailerons &&
       !state.on_ground && !controls.auto_coord)
     torque += specs->adv_yaw * controls.ailerons;
   routine_key = 3307;
@@ -614,7 +614,7 @@ int no_z = 0;
 	{
 		float aX;
 		DVector v = to_port(state.velocity.direction);
-		aX = fabs(v.X);
+		aX = C(fabs(v.X));
 		if (aX > 0.0)
 		{
 			state.velocity.magnitude -= state.velocity.magnitude * aX;
@@ -647,14 +647,14 @@ float prate,yrate,rrate;
 	/*************************
 	* calc pitch            *
 	*************************/
-	pitch = state.pitch_rate * t + 0.5 * t_sq * forces.pitch_acc;
+	pitch = state.pitch_rate * t + C(0.5) * t_sq * forces.pitch_acc;
 	state.pitch_rate += forces.pitch_acc * t;
 	LIMIT(pitch,rot_max);
 
 	/***********************
 	* calc yaw            *
 	***********************/
-	yaw = state.yaw_rate * t + 0.5 * t_sq * forces.yaw_acc;
+	yaw = state.yaw_rate * t + C(0.5) * t_sq * forces.yaw_acc;
 	state.yaw_rate += forces.yaw_acc * t;
 	LIMIT(yaw,rot_max);
 
@@ -663,7 +663,7 @@ float prate,yrate,rrate;
 	**********************/
 	if (!state.on_ground)
 	{
-		roll = state.roll_rate * t + 0.5 * t_sq * forces.roll_acc;
+		roll = state.roll_rate * t + C(0.5) * t_sq * forces.roll_acc;
 		state.roll_rate += forces.roll_acc * t;
 		LIMIT(roll,rot_max);
 	}

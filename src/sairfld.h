@@ -60,6 +60,8 @@ public:
 	sAirfield()
 	{}
 
+	virtual ~sAirfield();
+
 	sAirfield(const sairfield_info &);
 
 	sRunway	*GetRunway(int which);		

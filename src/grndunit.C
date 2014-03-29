@@ -219,8 +219,8 @@ int Ground_Unit::ouch(const R_3DPoint &w0, float radius,
 R_3DPoint *Ground_Unit::get_hit_point()
 {
   C_ShapeInfo &si = z_manager->shape_info[hit_shape];
-  C_PolyInfo &pi = si.polyinfos[RANDOM(si.npolys)];
-  R_3DPoint &hp = pi.lpoints[RANDOM(pi.npoints)];
+  C_PolyInfo &p = si.polyinfos[RANDOM(si.npolys)];
+  R_3DPoint &hp = p.lpoints[RANDOM(p.npoints)];
   ref_port.port2world(hp,&hitpoint);
   return (&hitpoint);
 }
@@ -370,6 +370,7 @@ void Ground_Unit_Manager::read(std::istream &is)
     }  
 }
 
+std::ostream &operator >>(std::ostream &os, Ground_Unit_Manager &gum);
 std::ostream &operator >>(std::ostream &os, Ground_Unit_Manager &gum)
 {
   gum.write(os);

@@ -57,9 +57,6 @@ public:
 	 X -= v.X; Y -= v.Y; Z -= v.Z;
   }
 
-  friend int operator ==(const DVector &v1, const DVector &v2)
-  { return (v1.X==v2.X && v1.Y==v2.Y && v1.Z==v2.Z); }
-
   friend std::ostream &operator << (std::ostream &os,DVector &v)
 	 { return os  << '<' << v.X << ' ' << v.Y << ' ' << v.Z << '>' ; }
   friend std::istream &operator >> (std::istream &is,DVector &v);
@@ -143,7 +140,7 @@ inline float DVector::Magnitude( void ) const
 {
 	float f = (X*X) + (Y*Y) + (Z*Z);
 	if (f > 0)
-		return sqrt(f);
+		return (float) sqrt(f);
 	else
 		return 0;
 }

@@ -34,6 +34,7 @@
 
 static int fcount = 0;
 
+void buffer2ppm();
 void buffer2ppm()
 {
   char buff[32];

@@ -42,7 +42,7 @@
 #include "aipilot.h"
 #include "aipildef.h"
 
-const float g = 32.16;
+const float g = 32.16f;
 Flight_Specs **Flight_Specs::g_specs = NULL;
 int Flight_Specs::nspecs = 0;
 
@@ -84,14 +84,14 @@ Flight_Specs::Flight_Specs()
     adv_yaw = 0.0;
     adv_roll = 0.0;
     g_height = 0.0;
-    flap_lift = 0.01;
-    flap_drag = 0.003;
-    fuel_cap = 100.0;
-    wb_damp = 2.0;
-    load_limit = 9.9;
-    stall_spin = 0.5;
+    flap_lift = 0.01f;
+    flap_drag = 0.003f;
+    fuel_cap = 100.0f;
+    wb_damp = 2.0f;
+    load_limit = 9.9f;
+    stall_spin = 0.5f;
     max_damage = 100;
-    max_aoa_factor = 0.03;
+    max_aoa_factor = 0.03f;
     engine_type = JET_TYPE;
     flags = 0;
 	 default_sPID(&pitchPid);
@@ -107,7 +107,7 @@ Flight_Specs::Flight_Specs()
 	 formationWingLen = DEFLT_FORMATION_WINGLEN;
 	 formationOffset = aiPILOT_FORMATION_OFFSET;
 	 dihedralX = 2.0;
-	 dihedralY = 0.2;
+	 dihedralY = 0.2f;
 	 dihedralZ = 4.0;
 }
 
@@ -235,7 +235,7 @@ void Flight_Controls::read(std::istream &is)
 	is >> autopilot >> armed_w >> radar ;
 	is >> vdist >> vtheta >> vphi;
 	is >> view;
-	if (throttle)
+	if ((bool) throttle)
 		engine_on = 1;
 	// Default radar to on for now
 	radar = 1;

@@ -57,7 +57,7 @@
 #define sbrPRIORITY_LOW     0
 #define sbrPRIORITY_HIGH	10
 
-#define FLTPORT flight->state.flight_port
+//#define FLTPORT flight->state.flight_port
 
 /*
  *  Don't yack up the guns too much
@@ -73,16 +73,16 @@ void Pilot::UpdateStatics(void)
 	gunsGunsSoundTime -= time_frame;
 }
 
-Pilot::Pilot(Flight *flt, Pilot_Params *params,
-				Weapon_Instance *weapons, int n_weaps,
-				const char *hndl, Target *target_obj)
+Pilot::Pilot(Flight *flt, Pilot_Params *prms,
+				Weapon_Instance *wpns, int nwps,
+				const char *hndl, Target *tobj)
   : aiPilot(&sbrFlight),
     sbrFlight(flt)
 {
-	this->params = params;
-	this->weapons = weapons;
-	this->n_weaps = n_weaps;
-	this->target_obj = target_obj;
+	this->params = prms;
+	this->weapons = wpns;
+	this->n_weaps = nwps;
+	this->target_obj = tobj;
 	SetAffiliation(params->affiliation);
 	SetHandle(hndl);
 	SetTask(NOTHING);
@@ -424,8 +424,8 @@ FlightLight_Specs *flspecs;
 	gunAttackDistanceMul = 1.0;
 	gunAttackDistance = WPSPECS(sel_weapon)->max_range;
 	weaponLimits.jiggle.x = weaponLimits.jiggle.y = weaponLimits.jiggle.z = 0.0;
-	weaponLimits.burstTime = 0.4 + sRandPer() * 0.4;
-	weaponLimits.burstPauseTime = 0.1 + sRandPer() * 0.2;
+	weaponLimits.burstTime = C(0.4 + sRandPer() * 0.4);
+	weaponLimits.burstPauseTime = C(0.1 + sRandPer() * 0.2);
 	weaponLimits.cone.pitch = weaponLimits.cone.yaw = params->shootRadius;
 
 	if (IsPlayer())
@@ -446,7 +446,7 @@ void Pilot::GetRemoteControlInputs()
 
 void Pilot::CalcGunLeadPoint(sTargetGeometry &tg)
 {
-REAL_TYPE t;
+REAL_TYPE tee;
 sVector   temp;
 sPoint    leadPoint;
 sPoint    ourPosition;
@@ -458,26 +458,26 @@ sAttitude leadPointAtt;
 	in_range = 0;
 	GetPositionAndAttitude(ourPosition,ourAtt);
 	if (!target)
-		t = 1.0;
+		tee = 1.0;
 	else
 	{
 		time_to_target = sel_weapon->calc_hvtime(*flight,*target->get_position());
 		if (tg.range <= gunAttackDistance)
 		{
 			in_range = 1;
-			t = time_to_target;
+			tee = time_to_target;
 		}
 		else
-			t = 1.0;
+			tee = 1.0;
 	}
-	gun_point = sel_weapon->predict_path(*flight,t);
+	gun_point = sel_weapon->predict_path(*flight,tee);
 	R_3DPoint2sPoint(gun_point,gunPoint);
 	GetAttitude(gunPoint,temp,gunPointAtt);
 
 	sPoint2R_3DPoint(tg.worldPosition,sel_weapon->target_position);
 	
 	temp = tg.worldVelocity;
-	temp *= t;
+	temp *= tee;
 	leadPoint = tg.worldPosition + temp;
  	tg.gunLeadPoint = leadPoint;
 	GetAttitude(leadPoint,temp,leadPointAtt);
@@ -505,7 +505,7 @@ void Pilot::Shoot()
 		if (gunsGunsSoundTime <= 0.0)
 		{
 			sound_on("gunsguns",getAffiliation());
-			gunsGunsSoundTime = sRandPer() * GUNSGUNSPAUSE + 0.2;
+			gunsGunsSoundTime = C(sRandPer() * GUNSGUNSPAUSE + 0.2);
 		}
 	}
 }

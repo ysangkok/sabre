@@ -34,16 +34,18 @@
 #include "port_3d.h"
 #include "simfile.h"
 
-const float pi =					3.1415927;
-const float one_sixth_pi =		0.5235987;
-const float one_fourth_pi =	0.7853891;
-const float one_third_pi =		1.0471976;
-const float half_pi =			1.5707963;
-const float two_pi =				6.2831853;
-const float three_fourth_pi = 4.7123890;
-const float _degree =         0.0174533;
-const float _minute =			2.908882e-04;
-const float _second =			4.848137e-06;
+typedef REAL_TYPE C;
+
+const float pi =		3.1415927f;
+const float one_sixth_pi =	0.5235987f;
+const float one_fourth_pi =	0.7853891f;
+const float one_third_pi =	1.0471976f;
+const float half_pi =		1.5707963f;
+const float two_pi =		6.2831853f;
+const float three_fourth_pi =	4.7123890f;
+const float _degree =		0.0174533f;
+const float _minute =		2.908882e-04f;
+const float _second =		4.848137e-06f;
 
 Rect Port_3D::screen(0,0,SCREEN_WIDTH-1,SCREEN_HEIGHT-1);
 REAL_TYPE Port_3D::cx = SCREEN_WIDTH / 2;
@@ -64,8 +66,8 @@ void Port_3D::read(std::istream &is)
   calc_angles();
   calc_look_at();
   calc_view_normal();
-  sin_roll = sin(roll);
-  cos_roll = cos(roll);
+  sin_roll = (REAL_TYPE) (sin(roll));
+  cos_roll = (REAL_TYPE) (cos(roll));
 }
 
 std::istream &operator >>(std::istream &is, Port_3D &port)
@@ -111,8 +113,8 @@ Port_3D::Port_3D()
   calc_angles();
   calc_look_at();
   calc_view_normal();
-  sin_roll = sin(roll);
-  cos_roll = cos(roll);
+  sin_roll = (REAL_TYPE) sin(roll);
+  cos_roll = (REAL_TYPE) cos(roll);
   z_min = 1.0;
   z_max = 160.0;
   r = 0.0;
@@ -161,8 +163,8 @@ Port_3D::Port_3D(S_3DPoint &sfrom, R_3DPoint &at, REAL_TYPE , REAL_TYPE p)
   calc_angles();
   calc_look_at();
   calc_view_normal();
-  sin_roll = sin(roll);
-  cos_roll = cos(roll);
+  sin_roll = (REAL_TYPE) sin(roll);
+  cos_roll = (REAL_TYPE) cos(roll);
   horizon = 100;
 }
 
@@ -205,10 +207,10 @@ void Port_3D::port2screen(const TR_3DPoint &tr, TRF_2DPoint *rp)
   z = tr.r.z;
   if (z < 1.0)
 	  z = 1.0;
-	z_inv = 1.0 / z;
+	z_inv = (REAL_TYPE) (1.0 / z);
   rp->x = (fovx * tr.r.x * z_inv) + cx ;
   rp->y = -(fovy * tr.r.y * aspect_ratio * z_inv) + cy;
-  rp->z = (z - 1.0) / z;
+  rp->z = REAL_TYPE((z - 1.0) / z);
   rp->u = REAL_TYPE(tr.e.u);
   rp->v = REAL_TYPE(tr.e.v);
   rp->w = z;
@@ -251,13 +253,13 @@ int which_quad;
 		which_quad = 3;
 	else
 		which_quad = 4;
-	dr = sqrt(dx*dx + dy*dy);
+	dr = C(sqrt(dx*dx + dy*dy));
 	slook_from.rho = 1.0;
 	if (dr == 0.0)
 		dtheta = slook_from.theta;
 	else
 	{
-		dtheta = acos(dx/dr);
+		dtheta = C(acos(dx/dr));
 		if (dy <= 0.0)
 			dtheta = two_pi - dtheta;
 	}
@@ -267,7 +269,7 @@ int which_quad;
 		dphi = 0.0;
 	else
 	{
-		dphi = atan(dr/dz);
+		dphi = C(atan(dr/dz));
 		if (dphi < 0.0)
 		{
 			if (which_quad < 3)
@@ -296,7 +298,7 @@ int which_quad;
  * to quarternions in that it uses a forward and
  * up normals. 
  **************************************************************/
-void Port_3D::rotate(REAL_TYPE pitch, REAL_TYPE roll, REAL_TYPE yaw)
+void Port_3D::rotate(REAL_TYPE pitch, REAL_TYPE rol, REAL_TYPE yaw)
 {
   /* forward normal */
   R_3DPoint fwdNorm(0,0,1);
@@ -311,10 +313,10 @@ void Port_3D::rotate(REAL_TYPE pitch, REAL_TYPE roll, REAL_TYPE yaw)
   float		 rr;
   REAL_TYPE sinPitch,cosPitch,sinYaw,cosYaw;
 
-  sinPitch = sin(pitch);
-  cosPitch = cos(pitch);
-  sinYaw = sin(yaw);
-  cosYaw = cos(yaw);
+  sinPitch = C(sin(pitch));
+  cosPitch = C(cos(pitch));
+  sinYaw = C(sin(yaw));
+  cosYaw = C(cos(yaw));
   // Transform forward normal
   // Rotate about x-axis for pitch
   xTmp = fwdNorm.x;
@@ -343,15 +345,15 @@ void Port_3D::rotate(REAL_TYPE pitch, REAL_TYPE roll, REAL_TYPE yaw)
   // upward normal back from world coords
   world2port(upWorld,&rollPoint);
   // Get roll needed to match world
-  rr = -atan(rollPoint.x / (rollPoint.y+eps));
+  rr = C(-atan(rollPoint.x / (rollPoint.y+eps)));
   if (rollPoint.y < 0.0)
     rr -= _PI;
   if (rr < 0.0)
     rr = _2PI + rr;
 	
-  this->roll = limit_angle(rr + roll);
-  sin_roll = sin(this->roll);
-  cos_roll = cos(this->roll);
+  this->roll = limit_angle(rr + rol);
+  sin_roll = C(sin(this->roll));
+  cos_roll = C(cos(this->roll));
 }
 
 /************************************************************
@@ -364,18 +366,18 @@ REAL_TYPE yaw;
 R_3DPoint p0;
 
 	world2port(lf,&p0);
-	yaw = atan(p0.x / (p0.z + eps));
+	yaw = C(atan(p0.x / (p0.z + eps)));
 	if (p0.z < 0.0)
 		yaw += pi;
 	rotate(0.0,0.0,yaw);
 	world2port(lf,&p0);
-	pitch = -atan(p0.y / fabs(p0.z + eps));
+	pitch = C(-atan(p0.y / fabs(p0.z + eps)));
 	rotate(pitch,0.0,0.0);
 }
 
 // Calculate 3 points in world coordinants representing the left, center
 // and right expanse of the horizon
-REAL_TYPE vh_limit = 0.009;
+static REAL_TYPE vh_limit = C(0.009);
 void Port_3D::get_view_horizon(REAL_TYPE dst, R_3DPoint *wh_left,
 			       R_3DPoint *wh_center,
 			       R_3DPoint *wh_right,
@@ -387,7 +389,7 @@ R_3DPoint p,d;
 
   // Get the view normal on the xy plane
   d = look_at - look_from;
-  mag = sqrt((d.x*d.x)+(d.y*d.y));
+  mag = C(sqrt((d.x*d.x)+(d.y*d.y)));
   if (mag < vh_limit)
     mag = vh_limit;
   d.x = d.x / mag;
@@ -449,7 +451,7 @@ float sc_x,sc_y;
   vport.set_roll(0.0);
   if (world2portN(w,&p,&sc_x,&sc_y,vport))
     {
-      result = -atan(p.x / (p.y + eps));
+      result = C(-atan(p.x / (p.y + eps)));
       if (p.y < 0.0)
 			result -= _PI;
       if (result < 0.0)
@@ -458,6 +460,7 @@ float sc_x,sc_y;
   return (result);
 }
 
+float calcRollForPoint2(Port_3D &port, R_3DPoint &w, R_3DPoint *p, float *sc_x, float *sc_y);
 float calcRollForPoint2(Port_3D &port, R_3DPoint &w, R_3DPoint *p, float *sc_x, float *sc_y)
 {
 float result = 0.0;
@@ -472,7 +475,7 @@ Port_3D vport;
 	  p->y *= -1.0;
 	  //	  p.x *= -1.0;
 	}
-      result = -atan(p->x / (p->y + eps));
+      result = C(-atan(p->x / (p->y + eps)));
       if (p->y < 0.0)
 	result -= _PI;
       if (result < 0.0)

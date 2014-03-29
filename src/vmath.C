@@ -26,7 +26,7 @@
 #include "simfile.h"
 #include "vmath.h"
 
-const REAL_TYPE eps = 1E-7;
+const REAL_TYPE eps = REAL_TYPE(1E-7);
 #ifndef FLOAT_Z
 const REAL_TYPE zfact = REAL_TYPE(1L << Z_PREC);
 #else

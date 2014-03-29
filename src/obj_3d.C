@@ -55,8 +55,8 @@ extern int point_cnt;
 
 extern void blit_buff();
 
-static const REAL_TYPE z_min = -99999999.0;
-static const REAL_TYPE z_max =  99999999.0;
+static const REAL_TYPE z_min = (REAL_TYPE) -99999999.0;
+static const REAL_TYPE z_max = (REAL_TYPE)  99999999.0;
 
 REAL_TYPE C_3DObject_Base::dab_min = 1000.0;
 
@@ -74,10 +74,9 @@ inline void ZMIN(REAL_TYPE x, REAL_TYPE y, REAL_TYPE z,
  * C_3DObject_Base Methods                                     *
  ***************************************************************/
 
-C_3DObject_Base::~C_3DObject_Base()
-{
+C_3DObject_Base::~C_3DObject_Base() = default;
 
-}
+C_3DObject_Base::C_3DObject_Base(const C_3DObject_Base&) = default;
 
 void C_3DObject_Base::calc_bounding_sphere()
 {
@@ -97,7 +96,7 @@ void C_3DObject_Base::calc_screen_bounds(Port_3D &port, R_3DPoint *p)
   p1.x += bounding_sphere;
   port.port2screen(*p,&scx1,&scy1);
   port.port2screen(p1,&scx2,&scy2);
-  max_sc = fabs(scx2 - scx1);
+  max_sc = (REAL_TYPE) fabs(scx2 - scx1);
   /*
      if (frame_switch)
     {
@@ -164,12 +163,12 @@ C_3DPoly::C_3DPoly(C_PolyInfo *an_info, R_3DPoint & a_location,
   calc_bounding_sphere();
 }
 
-void C_3DPoly::create_poly(C_Poly &poly)
+void C_3DPoly::create_poly(C_Poly &pol)
 {
-  poly.set_scale(scale);
-  poly.set_params(param);
-  poly.create(info);
-  poly.set_world_points(location);
+  pol.set_scale(scale);
+  pol.set_params(param);
+  pol.create(info);
+  pol.set_world_points(location);
 }
 
 void C_3DPoly::build_bounding_cube()
@@ -260,7 +259,7 @@ void DrawList::drawz(Port_3D &port)
 */
 void DrawList::draw(Port_3D &port)
 {
-  REAL_TYPE high_z;
+  //REAL_TYPE high_z;
   REAL_TYPE low_z;
 
   int i;
@@ -268,7 +267,7 @@ void DrawList::draw(Port_3D &port)
   while (1)
     {
       cdraw = NULL;
-      high_z = z_min;
+      //high_z = z_min;
       low_z = z_max;
       for (i=0;i<n_objects;i++)
 	{
@@ -314,28 +313,28 @@ C_3DObjectInfo *C_3DInfoManager::getInfo(char *id)
   return (result);
 }
 
-void C_3DInfoManager::readFile(char *path)
+void C_3DInfoManager::readFile(char *pat)
 {
   std::ifstream is;
   if (this->path)
     delete this->path;
-  this->path = strdup(path);
-  if (open_is(is,path))
+  this->path = strdup(pat);
+  if (open_is(is,pat))
     read(is);
 }
 
-void C_3DInfoManager::writeFile(char *path)
+void C_3DInfoManager::writeFile(char *pat)
 {
   std::ofstream os;
   MYCHECK(path != NULL);
   if (this->path == NULL)
-    this->path = strdup(path);
-  else if (strcmp(this->path,path))
+    this->path = strdup(pat);
+  else if (strcmp(this->path,pat))
     {
       delete this->path;
-      this->path = strdup(path);
+      this->path = strdup(pat);
     }
-  if (open_os(os,path))
+  if (open_os(os,pat))
     write(os);
 }
 
@@ -494,7 +493,7 @@ REAL_TYPE C_3DObject2::draw_prep(Port_3D &port)
       ZMIN(bcube.max_x,bcube.min_y,bcube.max_z,port,z_order);
       ZMIN(bcube.max_x,bcube.max_y,bcube.min_z,port,z_order);
       ZMIN(bcube.max_x,bcube.max_y,bcube.max_z,port,z_order);
-      z_order = sqrt(z_order);
+      z_order = (REAL_TYPE) sqrt(z_order);
     }
   return z_order;
 }

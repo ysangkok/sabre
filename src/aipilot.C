@@ -42,12 +42,12 @@ extern "C" void __cdecl sim_printf(char *, ...);
 /*
  * constructor with flight model instance
  */
-aiPilot::aiPilot(sFlightModel *flightModel)
+aiPilot::aiPilot(sFlightModel *flightMdl)
 						:gunners(aiPILOT_MAX_GUNNERS)
 {
 	isPlayerFlag = 0;
 	timeFrame = elapsedTime = 0.0;
-	SetFlightModel(flightModel);
+	SetFlightModel(flightMdl);
 	task = NOTHING;
 	remoteControl = 0;
 	curTarget = &engageTarget;
@@ -140,9 +140,7 @@ void aiPilot::Init()
 	/*
 	 *	calc bullet radius
 	 */
-	bulletRadius = bulletRadiusMin
-						+ skillLevels[aiPILOT_SKILL_SHOOT] * 0.01
-						* bulletRadiusMax;
+	bulletRadius = C(bulletRadiusMin + skillLevels[aiPILOT_SKILL_SHOOT] * 0.01 * bulletRadiusMax);
 	playerInAttackList = 0;
 	isBombing = 0;
 	weaponLimits.Init();
@@ -182,10 +180,8 @@ void aiPilot::Update(double timeFrame)
 	/*
 	 *	calc some flight information
 	 */
-	Es = 32.2 * flightModel->GetAltitudeFPS() + 
-		flightModel->GetAirSpeedFPS() * flightModel->GetAirSpeedFPS() / 2;
-	Ps = (flightModel->GetThrust() - flightModel->GetDrag()) /
-			flightModel->GetWeight() * flightModel->GetAirSpeedFPS();
+	Es = C(32.2 * flightModel->GetAltitudeFPS() + flightModel->GetAirSpeedFPS() * flightModel->GetAirSpeedFPS() / 2);
+	Ps = C((flightModel->GetThrust() - flightModel->GetDrag()) / flightModel->GetWeight() * flightModel->GetAirSpeedFPS());
 
 	/*
 	 *	Keep track of change in altitude & airspeed
@@ -219,7 +215,7 @@ void aiPilot::Update(double timeFrame)
     /*
      * Update weapon limits
      */
-    weaponLimits.Update(timeFrame);
+    weaponLimits.Update(C(timeFrame));
 
 	/*
 	 * If we have gunners, update them
@@ -285,16 +281,16 @@ void aiPilot::Update(double timeFrame)
 				 TARGET_IDX == playerPilot->GetIdx()))
 				EvalThreatFromPlayer();
 			timers[ATTACKER_CHECK_TIMER] = 0.0;
-			sAttacker *newAttacker = CheckAttackerList();
-			if (newAttacker)
+			sAttacker *nwAttckr = CheckAttackerList();
+			if (nwAttckr)
 			{
 				if (HasGunners())
-					SetGunnersTarget(newAttacker);
+					SetGunnersTarget(nwAttckr);
 				if ((CAN_ENERGY_FIGHT || CAN_ANGLES_FIGHT) &&
-					 task == ENGAGE_TARGET && newAttacker->GetIdx() != TARGET_IDX)
+					 task == ENGAGE_TARGET && nwAttckr->GetIdx() != TARGET_IDX)
 				{
-					if (newAttacker->GetThreatValue() > TARGET_THREAT_VALUE)
-						SetTargetPilot(newAttacker->GetIdx());
+					if (nwAttckr->GetThreatValue() > TARGET_THREAT_VALUE)
+						SetTargetPilot(nwAttckr->GetIdx());
 				}
 			}
 		}
@@ -423,9 +419,9 @@ void aiPilot::CheckPlaneCaps(const char *model)
 /*
    If available, incorporate specific pilot capabilities
  */
-void aiPilot::CheckPilotCaps(const char *capsId)
+void aiPilot::CheckPilotCaps(const char *cpsId)
 {
-    sPilotCaps *icp = sPilotCaps::GetsPilotCaps(capsId);
+    sPilotCaps *icp = sPilotCaps::GetsPilotCaps(cpsId);
     if (icp)
     {
       tactics.SetPilotCaps(*icp);
@@ -448,20 +444,20 @@ void aiPilot::CheckPilotCaps(const char *capsId)
     }
 }
 
-void aiPilot::SetCapsId(const char *capsId)
+void aiPilot::SetCapsId(const char *cpsId)
 {
-  if (strlen(capsId) < 31)
-    strcpy(this->capsId,capsId);
+  if (strlen(cpsId) < 31)
+    strcpy(this->capsId,cpsId);
   else
     { 
-      memcpy(this->capsId,capsId,31);
+      memcpy(this->capsId,cpsId,31);
       this->capsId[31] = 0;
     }
 }
 
-void aiPilot::SetFlightModel(sFlightModel *flightModel)
+void aiPilot::SetFlightModel(sFlightModel *flightMdl)
 {
-	this->flightModel = flightModel;
+	this->flightModel = flightMdl;
 }
 
 /*******************************************
@@ -556,13 +552,12 @@ void aiPilot::Disengage()
 /******************************************
  * set target for formation flying        *
  ******************************************/
-void aiPilot::SetFormationTarget(unsigned long targetIdx, int wingPosition, 
-								int formationType)
+void aiPilot::SetFormationTarget(unsigned long targetIdx, int wingPosition, int frmtionTp)
 {
 	ClearManeuverStack();
 	curTarget = &formationTarget;
 	wingPos = wingPosition;
-	this->formationType = formationType;
+	this->formationType = frmtionTp;
 	TARGET_IDX = targetIdx;
 	GetTargetInfo(TARGET_IDX,TARGET_INFO);
 	SetTask(FORMATION_FLY);
@@ -1042,9 +1037,9 @@ void aiPilot::UpdateManeuver(sManeuverState &ms)
 
 
 // Allow the user to control the flight model
-void aiPilot::SetRemoteControl(int remoteControl)
+void aiPilot::SetRemoteControl(int rmtCtrl)
 {
-	this->remoteControl = remoteControl;
+	this->remoteControl = rmtCtrl;
 //	ClearManeuverStack();
 }
 
@@ -1054,7 +1049,7 @@ void aiPilot::SetRemoteControl(int remoteControl)
 // Update called by the flight model. This allows us to 
 // set control inputs as well as override various flight model
 // states such as roll rate, pitch rate, velocity.
-void aiPilot::UpdateCallback(int sw, int iter)
+void aiPilot::UpdateCallback(int sw)
 {
 	switch (sw)
 	{
@@ -1149,7 +1144,7 @@ sREAL rollNeeded;
 			 fabs(yaw) < (_degree * 3.0) ;
 	ControlsOff();
 	if (flag)
-		rollNeeded = atan(flightModel->GetAirSpeedFPS() *
+		rollNeeded = sATAN(flightModel->GetAirSpeedFPS() *
 								yaw / 32.2);
 	else
 		rollNeeded = Point2Roll(point);
@@ -1158,19 +1153,19 @@ sREAL rollNeeded;
 	SETYAWPID(yaw);
 }
 
-void aiPilot::SetNoseOn(sREAL pitch, sREAL yaw, sREAL rollLimit)
+void aiPilot::SetNoseOn(sREAL pitch, sREAL yaw, sREAL rlLim)
 {
 sREAL rollNeeded;
 
    ControlsOff();
-   rollNeeded = atan(flightModel->GetAirSpeedFPS() *
+   rollNeeded = sATAN(flightModel->GetAirSpeedFPS() *
 					 yaw / 32.2);
-   if (fabs(rollNeeded) > rollLimit)
+   if (fabs(rollNeeded) > rlLim)
    {
       if (rollNeeded < 0.0)
-        rollNeeded = -rollLimit;
+        rollNeeded = -rlLim;
       else
-        rollNeeded = rollLimit;
+        rollNeeded = rlLim;
    }
 	SETROLLPID(rollNeeded);
 	SETPITCHPID(pitch);
@@ -1178,19 +1173,19 @@ sREAL rollNeeded;
 }
 
 void aiPilot::SetNoseOnX(sREAL pitch, sREAL yaw, sREAL mul, 
-                              sREAL min, sREAL rollLimit)
+                              sREAL min, sREAL rlLim)
 {
    sREAL rollNeeded;
    ControlsOff();
 
-   rollNeeded = atan(flightModel->GetAirSpeedFPS() *
+   rollNeeded = sATAN(flightModel->GetAirSpeedFPS() *
 					 yaw / 32.2);
-   if (fabs(rollNeeded) > rollLimit)
+   if (fabs(rollNeeded) > rlLim)
    {
       if (rollNeeded < 0.0)
-        rollNeeded = -rollLimit;
+        rollNeeded = -rlLim;
       else
-        rollNeeded = rollLimit;
+        rollNeeded = rlLim;
    }
    SETCONTROLX(rollCtl,rollNeeded,mul,min);
    SETCONTROLX(pitchRateCtl,pitch,mul,min);
@@ -1265,13 +1260,13 @@ void aiPilot::UpdateRollCtl(sControlState &ctl)
 void aiPilot::UpdateRollCtlDirect(sControlState &ctl)
 {
 	sREAL curRoll;
-	sREAL diff;
+	//sREAL diff;
 	sREAL rate;
 
 	ctl.flag = 0;
 	curRoll = flightModel->GetRoll();
 	rate = sGetCircularDistance(curRoll,ctl.setPoint);
-	diff = fabs(rate);
+	//diff = fabs(rate);
 	rate *= rollMult;
 	rollLimit = Pi_4;
 	/* GetMaxRollRate() doesn't work quite right yet */
@@ -1556,7 +1551,7 @@ void aiPilot::GetTargetFlags(sTarget &tg)
 		tg.flags.Reset();
 		for (int i=0;i<aiPILOT_AVERAGING_N;i++)
 			tg.flags.Add(tg.tFlags[i]);
-		 tg.flags.Set(aiPILOT_AVERAGING_N / 2.0);
+		 tg.flags.Set((int) (aiPILOT_AVERAGING_N / 2.0));
 	}
 }
 
@@ -1677,11 +1672,11 @@ int			i;
 	directionToTarget.Normalize();
 	targetHeading.Normalize();
 	dotProd = dot(directionToTarget,targetHeading);
-	tg.aspect = acos(dotProd);
+	tg.aspect = sACOS(dotProd);
 	/* calc angle off */
 	ourHeading.Normalize();
 	dotProd = dot(ourHeading,targetHeading);
-	tg.angleOff = acos(dotProd);
+	tg.angleOff = sACOS(dotProd);
 
 	/* Get gun lead information */
 	CalcGunLeadPoint(tg);
@@ -1776,11 +1771,11 @@ void aiPilot::GetQuickTargetGeometry(unsigned long targetIdx, sTargetGeometry &t
 	directionToTarget.Normalize();
 	targetHeading.Normalize();
 	dotProd = dot(directionToTarget,targetHeading);
-	tg.aspect = acos(dotProd);
+	tg.aspect = sACOS(dotProd);
 	/* calc angle off */
 	ourHeading.Normalize();
 	dotProd = dot(ourHeading,targetHeading);
-	tg.angleOff = acos(dotProd);
+	tg.angleOff = sACOS(dotProd);
 }
 
 void aiPilot::GetDirectionNormal(sVector &directionNormal)
@@ -1927,11 +1922,11 @@ sREAL aiPilot::GetNavigationDistance()
 /*
  * Determine guiding point for formation flying
  */
-void aiPilot::GetFormationPoint(int wingPos, int formationType, 
+void aiPilot::GetFormationPoint(int wngPos, int frmationType, 
 								int leaderIndex, sPoint &pnt)
 {
 	sVector offset;
-	sFormationData::GetWingmanVector(formationType,wingPos,offset);
+	sFormationData::GetWingmanVector(frmationType,wngPos,offset);
 	offset *= formationWingLen;
 	offset.y += formationOffset;
 	BodyPoint2WorldPoint(leaderIndex,(const sPoint &)offset,pnt);
@@ -2054,7 +2049,7 @@ sREAL aiPilot::EvalThreat(unsigned long idx, aiPilot **pil)
 	if (ppil)
 	{
 		GetQuickTargetGeometry(idx,tg);
-		sREAL distanceVal = tg.range / 500.0;
+		sREAL distanceVal = C(tg.range / 500.0);
 		if (distanceVal > maxDistance)
 			distanceVal = maxDistance;
 		result += maxDistance - distanceVal;
@@ -2121,16 +2116,16 @@ sAttacker *aiPilot::CheckAttackerList()
 	{
 		sAttacker *attkr;
 		attkr = EvalAttackerList();
-		int newAttacker = 0;
+		int nwAttckr = 0;
 		if (attkr && currentAttkrPrime == 0)
 		{
-			newAttacker = 1;
+			nwAttckr = 1;
 			currentAttkrPrime = 1;
 		}
 		else if (attkr && attkr->GetIdx() != currentHiThreatAttkrIdx)
-			newAttacker = 1;
+			nwAttckr = 1;
 
-		if (newAttacker)
+		if (nwAttckr)
 		{
 			result = attkr;
 			currentHiThreatAttkrIdx = attkr->GetIdx();
@@ -2269,16 +2264,16 @@ sREAL aiPilot::GetDamagePer()
     return (1.0);
 }
 
-void aiPilot::SetDeath(int dead)
+void aiPilot::SetDeath(int ded)
 {
-	this->dead = dead;
+	this->dead = ded;
     if (dead)
       ClearTargetPilot();
 }
 
-void aiPilot::SetEjected(int ejected)
+void aiPilot::SetEjected(int ejctd)
 {
-	this->ejected = ejected;
+	this->ejected = ejctd;
     if (ejected)
       ClearTargetPilot();
 }
@@ -2305,9 +2300,9 @@ void aiPilot::SetTargetPilot(unsigned long targetIdx)
 		return;
 	}
 
-	int broadcastChannel = GetAffiliation();
-	if (pil->IsPlayer())
-		broadcastChannel = aiPILOT_BROADCAST_ALL;
+	//int broadcastChannel = GetAffiliation();
+	//if (pil->IsPlayer())
+	//	broadcastChannel = aiPILOT_BROADCAST_ALL;
 
 	/*
 	 * Inform target pilot only if
@@ -2436,13 +2431,13 @@ sREAL result;
 	z += eps;
 
 	if (x > 0 && z > 0)
-		result = (atan(x/z));
+		result = (sATAN(x/z));
 	else if (x > 0 && z < 0)
-		result = (Pi + atan(x/z));
+		result = C(Pi + atan(x/z));
 	else if (x < 0 && z > 0)
-		result = (atan(x/z));
+		result = (sATAN(x/z));
 	else
-		result = (-Pi + atan(x/z));
+		result = C(-Pi + atan(x/z));
 
 	return result;
 }
@@ -2501,8 +2496,7 @@ sREAL per;
 
 	targetSpeed = tg.airSpeed;
 
-	per = 1.0 + (targetClosurePid.p * targetDistance - 
-					targetClosurePid.d * targetRate) * targetClosurePid.i;
+	per = C(1.0 + (targetClosurePid.p * targetDistance - targetClosurePid.d * targetRate) * targetClosurePid.i);
 	result = targetSpeed * per;
 	return result;
 }
@@ -2656,15 +2650,14 @@ aiPilot *pilot = GetaiPilot(idx);
 	Control is directed to the pilot instance by
 	casting the void * to an aiPilot *
  */
-void aiPilot::aiPilotUpdateCallback(int sw, int iter, 
-								  sFlightModel *im, 
+void aiPilot::aiPilotUpdateCallback(int sw,
 								  void *data)
 {
 	/* cast to an aiPilot */
 	aiPilot *thePilot = (aiPilot *) data;
 	/* call the aiPilot instance callback function */
 	if (thePilot)
-		thePilot->UpdateCallback(sw,iter);
+		thePilot->UpdateCallback(sw);
 }
 
 

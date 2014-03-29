@@ -152,6 +152,7 @@ std::istream & operator >>(std::istream &is, TextrMap &tm)
   return (is);
 }
 
+std::ostream & operator <<(std::ostream &os, TextrMap &tm);
 std::ostream & operator <<(std::ostream &os, TextrMap &tm)
 {
   tm.write(os);
