@@ -195,7 +195,7 @@ std::ofstream os;
 			delete [] fname;
 		}
 		else
-			printf("compression error: %d\n",n);
+			printf("compression error: %du\n",n);
 		delete [] tgt;
 	}
 }

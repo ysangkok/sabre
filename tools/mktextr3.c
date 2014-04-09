@@ -26,28 +26,23 @@
 #include <stdarg.h>
 #include <string.h>
 #include <math.h>
+#include <stdbool.h>
+#include <assert.h>
 #include "swap.h"
 
-#define MAXLEN 70
-#define NO_ERR 0
-#define OUTFILE_ERR 1
-#define INFILE_ERR 2
-#define BUFFERGET_ERR 3
+static int ncolors;
+static long textr_width;
+static long textr_height;
+static int nrows;
+static int ncols;
+static int ntextr = -1;
+static int textr_trans = -1;
+static char *pcx_file = NULL;
+static char *out_file = NULL;
 
-int color_counts[256];
-int ncolors;
-long textr_width;
-long textr_height;
-int nrows;
-int ncols;
-int ntextr = -1;
-int textr_trans = -1;
-char *pcx_file = NULL;
-char *out_file = NULL;
-
-char *id = NULL;
-int renumber = -1;
-int reverse_y = 0;
+static char *id = NULL;
+static int renumber = -1;
+static int reverse_y = 0;
 
 typedef struct rgb_struct
 {
@@ -64,9 +59,9 @@ typedef struct rgb_info_struct
   int  mapped_color;
 } rgb_info;
 
-rgb_info rgb_infos[256];
+static rgb_info rgb_infos[256];
 
-int found_palette;
+static int found_palette;
 
 typedef struct PCX_HEADER {
   int8_t  manufacturer;
@@ -84,7 +79,7 @@ typedef struct PCX_HEADER {
   int8_t  filler[58];
 } pcx_header;
 
-struct IMG {
+static struct IMG {
   unsigned char  *buffer;
   unsigned int xsize;
   unsigned int ysize;
@@ -142,8 +137,8 @@ int main(int argc, char *argv[])
     fprintf(stderr,"     ntextr: %d\n",ntextr);
   loadpcx(pcx_file);
 
-  nrows = image.ysize / textr_height;
-  ncols = image.xsize / textr_width;
+  nrows = (int) (image.ysize / (unsigned) textr_height);
+  ncols = (int) (image.xsize / (unsigned) textr_width);
 
   tmp = nrows * ncols;
   if (ntextr == -1)
@@ -200,14 +195,14 @@ float calc_rgb_distance(_rgb *rgb)
   dg = (float) rgb->g;
   db = (float) rgb->b;
 
-  result = sqrt((dr * dr) + (dg * dg) + (db * db));
+  result = sqrtf((dr * dr) + (dg * dg) + (db * db));
   return (result);
 }
 
 void renumber_image(int start)
 {
   //int points;
-  int i,n;
+  int i,n=-1;
   int flags[256];
   int flg;
   int  mincolor;
@@ -243,7 +238,8 @@ void renumber_image(int start)
   while (flg)
     {
       flg = 0;
-      mincolor = sqrt((255 * 255) + (255 * 255) + (255 * 255)) + 100;
+      mincolor = (int) (sqrtf((255 * 255) + (255 * 255) + (255 * 255))) + 100;
+      bool n_set = false;
       for (i=0;i<256;i++)
 	{
 	  if (flags[i])
@@ -253,9 +249,10 @@ void renumber_image(int start)
 		rgb_infos[i].rgb.g +
 		rgb_infos[i].rgb.b;
 		*/
-	      mc = calc_rgb_distance(&rgb_infos[i].rgb);
+	      mc = (int) (calc_rgb_distance(&rgb_infos[i].rgb));
 	      if (mc < mincolor)
 		{
+		  n_set = true;
 		  n = i;
 		  flg = 1;
 		  mincolor = mc;
@@ -264,6 +261,7 @@ void renumber_image(int start)
 	}
       if (flg)
 	{
+	  assert(n_set);
 	  if (mincolor == 0.0 && textr_trans != 0)
 	    rgb_infos[n].mapped_color = 0;
 	  else
@@ -419,14 +417,14 @@ void loadpcx(char * filename)
     error_exit(1,"Couldn't Open %s",filename);
   fseek(infile,0L,SEEK_SET);
   fread(&pcxhead,sizeof(pcx_header),1,infile);
-  pcxhead.xmin = ltohs(pcxhead.xmin);
-  pcxhead.xmax = ltohs(pcxhead.xmax);
-  pcxhead.ymin = ltohs(pcxhead.ymin);
-  pcxhead.ymax = ltohs(pcxhead.ymax);
-  pcxhead.hres = ltohs(pcxhead.hres);
-  pcxhead.vres = ltohs(pcxhead.vres);
-  image.xsize = (pcxhead.xmax-pcxhead.xmin) + 1;
-  image.ysize = (pcxhead.ymax-pcxhead.ymin) + 1;
+  pcxhead.xmin = (short) ltohs((unsigned short) pcxhead.xmin);
+  pcxhead.xmax = (short) ltohs((unsigned short) pcxhead.xmax);
+  pcxhead.ymin = (short) ltohs((unsigned short) pcxhead.ymin);
+  pcxhead.ymax = (short) ltohs((unsigned short) pcxhead.ymax);
+  pcxhead.hres = (short) ltohs((unsigned short) pcxhead.hres);
+  pcxhead.vres = (short) ltohs((unsigned short) pcxhead.vres);
+  image.xsize = (unsigned) (pcxhead.xmax-pcxhead.xmin + 1);
+  image.ysize = (unsigned) (pcxhead.ymax-pcxhead.ymin + 1);
   fprintf(stderr,"xsize: %d, ysize %d\n",
 	  image.xsize,
 	  image.ysize);
@@ -444,7 +442,7 @@ void loadpcx(char * filename)
 	  c=fgetc(infile);
 	  while(x--)
 	    {
-	      *(ImagePtr++)=c;
+	      *(ImagePtr++) = (unsigned char) c;
 	      rgb_infos[c].count++;
 	      i++;
 	    }
@@ -452,7 +450,7 @@ void loadpcx(char * filename)
 	}
       else
 	{
-	  *(ImagePtr++)=c;
+	  *(ImagePtr++) = (unsigned char) c;
 	}
     }
   c = fgetc(infile);
@@ -463,8 +461,8 @@ void loadpcx(char * filename)
       for (i=0;i<256;i++)
 	{
 	  fread(&rgb_infos[i].rgb,3,1,infile);
-	  rgb_infos[i].color = i;
-	  rgb_infos[i].mapped_color = i;
+	  rgb_infos[i].color = (int) i;
+	  rgb_infos[i].mapped_color = (int) i;
 	}
     }
   fclose(infile);

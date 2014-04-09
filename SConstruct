@@ -10,9 +10,12 @@ if everything:
 	if clang:
 		warn = ["-Weverything"]
 	else:
-		warn = ["-Wall", "-Wextra", "-Wno-error=attributes"]
+		warn = ["-Wall", "-Wextra"]
 else:
 	warn = ["-Wall"]
+
+if not clang:
+	warn += ["-Wno-error=attributes"]
 
 warn += ["-Werror"]
 
@@ -23,8 +26,11 @@ orgenv = Environment(
 	CPPDEFINES = {"VERSION":"\\\"0.2.4b\\\"","REV_DATE":"\\\"11/21/99\\\"","JSTICK_INSTALLED":"1"},
 	CPPPATH=(["gdev"] if do_vga else []) + ["src"]
 )
+
 orgenv['ENV']['TERM'] = os.environ['TERM']
-#orgenv.Append(LINKFLAGS=Split("-pg -g -Wl,--gc-sections,--print-gc-sections"))
+
+orgenv.Append(LINKFLAGS=Split("-pg -g -Wl,--gc-sections,--print-gc-sections"))
+
 if clang:
 	orgenv.Append(CXXFLAGS=["-stdlib=libc++", "-ferror-limit=5"])
 	orgenv.Append(LINKFLAGS="-stdlib=libc++")

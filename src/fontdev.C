@@ -225,7 +225,7 @@ int fontdev::setcell( int _dimx, int _dimy )
       }      
    }
    memcpy( fbp, newfbp, _dimx*_dimy*256 );
-   delete newfbp;
+   delete[] newfbp;
    dimx=_dimx;
    dimy=_dimy;
    calcmin();
@@ -243,7 +243,7 @@ void fontdev::rotate( int what, int where )
       memcpy( hold, p, dimx );
       memcpy( p, p+dimx, (dimy-1)*dimx );
       memcpy( p+(dimy-1)*dimx, hold, dimx );
-      delete hold;
+      delete[] hold;
       break;
     case right: 
       hold=new unsigned char[dimy];
@@ -255,6 +255,7 @@ void fontdev::rotate( int what, int where )
 	   p[i]=p[i-1];
 	 *p=hold[j];
       }
+      delete[] hold;
       break;
     case left: 
       hold=new unsigned char[dimy];
@@ -265,6 +266,7 @@ void fontdev::rotate( int what, int where )
 	 memcpy( p, p+1, dimx-1 );
 	 p[dimx-1]=hold[i];
       }
+      delete[] hold;
       break;
     case down: 
       hold=new unsigned char[dimx];
@@ -272,7 +274,7 @@ void fontdev::rotate( int what, int where )
       memcpy( hold, p+(dimy-1)*dimx, dimx );
       memcpy( p+dimx, p, (dimy-1)*dimx );
       memcpy( p, hold, dimx );
-      delete hold;
+      delete[] hold;
       break;
     case turn_right: 
       hold=new unsigned char[dimx*dimy];
@@ -285,6 +287,7 @@ void fontdev::rotate( int what, int where )
 	      break;
 	 }
       }
+      delete[] hold;
       break;
     case turn_left:
       break;

@@ -281,9 +281,9 @@ void aiBase::UpdateManeuver(sManeuverState &)
 /**************************************************************
  * Log                                                        *
  **************************************************************/
-int aiBase::OpenLog(char *path)
+int aiBase::OpenLog(const char *path)
 {
-char logPath[BUFSIZ];
+	char logPath[BUFSIZ];
 
 	if (path == NULL)
 	{
@@ -292,7 +292,7 @@ char logPath[BUFSIZ];
 		path = logPath;
 	}
 
-	logFile = fopen(logPath,"w");
+	logFile = fopen(path,"w");
 	if (logFile != NULL)
 		logFlag = 1;
 	return (logFlag);

@@ -1,0 +1,3 @@
+- removed unused functions (gprof)
+- de-warn auxiliary programs
+- rewrite in rust

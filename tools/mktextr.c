@@ -22,21 +22,15 @@
 #include <string.h>
 #include "swap.h"
 
-#define MAXLEN 70
-#define NO_ERR 0
-#define OUTFILE_ERR 1
-#define INFILE_ERR 2
-#define BUFFERGET_ERR 3
-
-int color_counts[256];
-int ncolors;
-int textr_width;
-int textr_height;
-int ntextr;
-int textr_trans = -1;
-char *pcx_file = NULL;
-char *out_file = NULL;
-int renumber = -1;
+static int color_counts[256];
+static int ncolors;
+static int textr_width;
+static int textr_height;
+static int ntextr;
+static int textr_trans = -1;
+static char *pcx_file = NULL;
+static char *out_file = NULL;
+static int renumber = -1;
 
 typedef struct rgb_struct
 {
@@ -45,8 +39,8 @@ typedef struct rgb_struct
   unsigned char b;
 } rgb ;
 
-rgb rgbs[256];
-int found_palette;
+static rgb rgbs[256];
+static int found_palette;
 
 typedef struct PCX_HEADER {
   int8_t  manufacturer;
@@ -64,7 +58,7 @@ typedef struct PCX_HEADER {
   int8_t  filler[58];
 } pcx_header;
 
-struct IMG {
+static struct IMG {
   unsigned char  *buffer;
   unsigned int xsize;
   unsigned int ysize;
@@ -142,7 +136,7 @@ int count_colors()
     color_counts[i] = 0;
   ncolors = 0;
 
-  points = image.xsize * image.ysize;
+  points = (int) (image.xsize * image.ysize);
   bfptr = image.buffer;
   while (points--)
     {
@@ -175,7 +169,7 @@ void renumber_image(int start)
     {
       if (ccx[i] > 0)
 	{
-	  points = image.xsize * image.ysize;
+	  points = (int) (image.xsize * image.ysize);
 	  bfptr = image.buffer;
 	  color_counts[i] = 0;
 	  color_counts[start] = ccx[i];
@@ -203,7 +197,7 @@ void write_tmap(FILE *f, int which)
   fprintf(f,"%d %d %d\n",textr_width,textr_height,textr_trans);
   for (i=0;i<textr_height;i++)
     {
-      bfptr = image.buffer + (image.xsize * i) + (which * textr_width);
+      bfptr = image.buffer + (image.xsize * (unsigned) i) + (which * textr_width);
       fprintf(f,"\t");
       for (j=0;j<textr_width;j++)
 	fprintf(f,"%s ", format_byte(*bfptr++));
@@ -249,14 +243,14 @@ void loadpcx(char * filename)
     error_exit(1,"Couldn't Open %s",filename);
   fseek(infile,0L,SEEK_SET);
   fread(&pcxhead,sizeof(pcx_header),1,infile);
-  pcxhead.xmin = ltohs(pcxhead.xmin);
-  pcxhead.xmax = ltohs(pcxhead.xmax);
-  pcxhead.ymin = ltohs(pcxhead.ymin);
-  pcxhead.ymax = ltohs(pcxhead.ymax);
-  pcxhead.hres = ltohs(pcxhead.hres);
-  pcxhead.vres = ltohs(pcxhead.vres);
-  image.xsize = (pcxhead.xmax-pcxhead.xmin) + 1;
-  image.ysize = (pcxhead.ymax-pcxhead.ymin) + 1;
+  pcxhead.xmin = (short) ltohs((unsigned short) pcxhead.xmin);
+  pcxhead.xmax = (short) ltohs((unsigned short) pcxhead.xmax);
+  pcxhead.ymin = (short) ltohs((unsigned short) pcxhead.ymin);
+  pcxhead.ymax = (short) ltohs((unsigned short) pcxhead.ymax);
+  pcxhead.hres = (short) ltohs((unsigned short) pcxhead.hres);
+  pcxhead.vres = (short) ltohs((unsigned short) pcxhead.vres);
+  image.xsize = (unsigned) ((pcxhead.xmax-pcxhead.xmin) + 1);
+  image.ysize = (unsigned) ((pcxhead.ymax-pcxhead.ymin) + 1);
   Points = image.xsize * image.ysize;
   image.buffer = malloc(Points);
   if(image.buffer==NULL)
@@ -271,14 +265,14 @@ void loadpcx(char * filename)
 	  c=fgetc(infile);
 	  while(x--)
 	    {
-	      *(ImagePtr++)=c;
+	      *(ImagePtr++) = (unsigned char) c;
 	      i++;
 	    }
 	  i--;
 	}
       else
 	{
-	  *(ImagePtr++)=c;
+	  *(ImagePtr++) = (unsigned char) c;
 	}
     }
   c = fgetc(infile);

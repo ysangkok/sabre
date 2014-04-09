@@ -28,27 +28,19 @@
 #include <math.h>
 #include "swap.h"
 
-#define MAXLEN 70
-#define NO_ERR 0
-#define OUTFILE_ERR 1
-#define INFILE_ERR 2
-#define BUFFERGET_ERR 3
+static int ncolors;
+static long textr_width;
+static long textr_height;
+static int nrows;
+static int ncols;
+static int ntextr = -1;
+static int textr_trans = 0;
+static int reverse_y = 0;
+static char *pcx_file = NULL;
+static char *out_file = NULL;
+static char *palette_file = NULL;
 
-int color_counts[256];
-int ncolors;
-long textr_width;
-long textr_height;
-int nrows;
-int ncols;
-int ntextr = -1;
-int textr_trans = 0;
-int reverse_y = 0;
-char *pcx_file = NULL;
-char *out_file = NULL;
-char *palette_file = NULL;
-
-char *id = NULL;
-int renumber = -1;
+static char *id = NULL;
 
 typedef struct rgb_struct
 {
@@ -65,10 +57,10 @@ typedef struct rgb_info_struct
   int  mapped_color;
 } rgb_info;
 
-rgb_info rgb_infos[256];
-rgb_info remap_infos[256];
+static rgb_info rgb_infos[256];
+static rgb_info remap_infos[256];
 
-int found_palette;
+static int found_palette;
 
 typedef struct PCX_HEADER {
   int8_t  manufacturer;
@@ -86,7 +78,7 @@ typedef struct PCX_HEADER {
   int8_t  filler[58];
 } pcx_header;
 
-struct IMG {
+static struct IMG {
   unsigned char  *buffer;
   unsigned int xsize;
   unsigned int ysize;
@@ -132,8 +124,8 @@ int main(int argc, char *argv[])
 	 pcx_file,out_file,palette_file,textr_width,textr_height,textr_trans,reverse_y);
   loadpcx(pcx_file);
   loadpal(palette_file);
-  nrows = image.ysize / textr_height;
-  ncols = image.xsize / textr_width;
+  nrows = (int) (image.ysize / (unsigned) textr_height);
+  ncols = (int) (image.xsize / (unsigned) textr_width);
   ntextr = nrows * ncols;
   fprintf(stderr,"Image xsize: %d\n"
          "Image ysize: %d\n"
@@ -172,7 +164,7 @@ float calc_rgb_distance(_rgb *rgb0, _rgb *rgb1)
   dg = (float) (rgb0->g - rgb1->g);
   db = (float) (rgb0->b - rgb1->b);
 
-  result = sqrt((dr * dr) + (dg * dg) + (db * db));
+  result = sqrtf((dr * dr) + (dg * dg) + (db * db));
   return (result);
 }
 
@@ -191,7 +183,7 @@ int  maprgb(rgb_info *rinfo, rgb_info *map, int n)
 
   result = -1;
 
-  mindist = sqrt((255 * 255) + (255 * 255) + (255 * 255)) + 100;
+  mindist = sqrtf((255 * 255) + (255 * 255) + (255 * 255)) + 100;
  
   for (i=1;i<n;i++)
     {
@@ -364,14 +356,14 @@ void loadpcx(char * filename)
     error_exit(1,"Couldn't Open %s",filename);
   fseek(infile,0L,SEEK_SET);
   fread(&pcxhead,sizeof(pcx_header),1,infile);
-  pcxhead.xmin = ltohs(pcxhead.xmin);
-  pcxhead.xmax = ltohs(pcxhead.xmax);
-  pcxhead.ymin = ltohs(pcxhead.ymin);
-  pcxhead.ymax = ltohs(pcxhead.ymax);
-  pcxhead.hres = ltohs(pcxhead.hres);
-  pcxhead.vres = ltohs(pcxhead.vres);
-  image.xsize = (pcxhead.xmax-pcxhead.xmin) + 1;
-  image.ysize = (pcxhead.ymax-pcxhead.ymin) + 1;
+  pcxhead.xmin = (short) ltohs((unsigned short) pcxhead.xmin);
+  pcxhead.xmax = (short) ltohs((unsigned short) pcxhead.xmax);
+  pcxhead.ymin = (short) ltohs((unsigned short) pcxhead.ymin);
+  pcxhead.ymax = (short) ltohs((unsigned short) pcxhead.ymax);
+  pcxhead.hres = (short) ltohs((unsigned short) pcxhead.hres);
+  pcxhead.vres = (short) ltohs((unsigned short) pcxhead.vres);
+  image.xsize = (unsigned) (pcxhead.xmax-pcxhead.xmin + 1);
+  image.ysize = (unsigned) (pcxhead.ymax-pcxhead.ymin + 1);
   fprintf(stderr,"xsize: %d, ysize %d\n",
 	  image.xsize,
 	  image.ysize);
@@ -389,7 +381,7 @@ void loadpcx(char * filename)
 	  c=fgetc(infile);
 	  while(x--)
 	    {
-	      *(ImagePtr++)=c;
+	      *(ImagePtr++) = (unsigned char) c;
 	      rgb_infos[c].count++;
 	      i++;
 	    }
@@ -397,7 +389,7 @@ void loadpcx(char * filename)
 	}
       else
 	{
-	  *(ImagePtr++)=c;
+	  *(ImagePtr++) = (unsigned char) c;
 	}
     }
   c = fgetc(infile);
@@ -408,8 +400,8 @@ void loadpcx(char * filename)
       for (i=0;i<256;i++)
 	{
 	  fread(&rgb_infos[i].rgb,3,1,infile);
-	  rgb_infos[i].color = i;
-	  rgb_infos[i].mapped_color = i;
+	  rgb_infos[i].color = (int) i;
+	  rgb_infos[i].mapped_color = (int) i;
 	}
     }
   fclose(infile);
@@ -429,17 +421,17 @@ void loadpal(char *path)
     {
       if ((cptr = strchr(buff,'(')))
 	{
-	  idx = atoi(strtok(cptr,"( "));
-	  r   = atoi(strtok(NULL," "));
-	  g   = atoi(strtok(NULL," "));
-	  b   = atoi(strtok(NULL,") "));
+	  idx = (unsigned) atoi(strtok(cptr,"( "));
+	  r   = (unsigned) atoi(strtok(NULL," "));
+	  g   = (unsigned) atoi(strtok(NULL," "));
+	  b   = (unsigned) atoi(strtok(NULL,") "));
 	  /*
 	  fprintf(stderr,"( %d %d %d %d )\n",
 		  idx,r,g,b);
 		  */
-	  remap_infos[idx].rgb.r = r * 4;
-	  remap_infos[idx].rgb.g = g * 4;
-	  remap_infos[idx].rgb.b = b * 4;
+	  remap_infos[idx].rgb.r = (unsigned char) r * 4;
+	  remap_infos[idx].rgb.g = (unsigned char) g * 4;
+	  remap_infos[idx].rgb.b = (unsigned char) b * 4;
 	}
     }
 }

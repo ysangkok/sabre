@@ -265,7 +265,7 @@ void LinuxJoystick::setDeadZone(unsigned int idx,float zone)
 {
   if (idx >= NUM_AXIS)
     return;
-  if ((zone > 0.0) &&(zone > 0.5)) { // Let it work at least a minimum !!!
+  if (zone > 0.5) { // Let it work at least a minimum !!!
     dead_zone[idx] = zone;
     scale[idx] = 1.0f / (1.0f - zone);
   }

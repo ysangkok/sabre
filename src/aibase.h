@@ -114,7 +114,7 @@ public:
 								  sREAL d0 = 0.0, sREAL d1 = 0.0, sREAL d2 = 0.0,
 								  sREAL d3 = 0.0, sREAL d4 = 0.0, sREAL d5 = 0.0);
 
-	int OpenLog(char *path = NULL);
+	int OpenLog(const char *path = NULL);
 	void CloseLog();
 	void __cdecl LOG(const char *, ...);
 	sREAL GetTimeFrame()

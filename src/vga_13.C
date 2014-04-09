@@ -449,7 +449,7 @@ for(int x=startcolor;x<=endcolor;x++)
 
 SDL_SetColors(screen,ColorStructPtr, startcolor,endcolor - startcolor);
 
-delete ColorStructPtr;
+delete[] ColorStructPtr;
 
 
 #else

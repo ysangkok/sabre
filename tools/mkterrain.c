@@ -23,29 +23,19 @@
 #include <math.h>
 #include "swap.h"
 
-#define MAXLEN 70
-#define NO_ERR 0
-#define OUTFILE_ERR 1
-#define INFILE_ERR 2
-#define BUFFERGET_ERR 3
-
-long textr_width;
-long textr_height;
-int nrows;
-int ncols;
-int ntextr = -1;
-int textr_trans = -1;
-char *pcx_file = NULL;
-char *out_file = NULL;
-float max_colval;
-float min_colval;
-float maxc = 63.0 * 4.0;
-float base_zval = 0.0;
-float max_zval = 4000.0;
-float floor_val = 0.0;
-int norm_flag = 1;
-int color_counts[256];
-int ncolors;
+static long textr_width;
+static long textr_height;
+static int nrows;
+static int ncols;
+static int ntextr = -1;
+static char *pcx_file = NULL;
+static char *out_file = NULL;
+static float max_colval;
+static float min_colval;
+static float max_zval = 4000.0;
+static float floor_val = 0.0;
+static int color_counts[256];
+static int ncolors;
 
 typedef struct terrain_points_struct
 {
@@ -59,7 +49,7 @@ typedef struct terrain_points_struct
   float p4;
 } terrain_points;
 
-terrain_points tpoints[33][33];
+static terrain_points tpoints[33][33];
 
 typedef struct rgb_struct
 {
@@ -67,8 +57,8 @@ typedef struct rgb_struct
   unsigned char g;
   unsigned char b;
 } rgb ;
-rgb rgbs[256];
-int found_palette;
+static rgb rgbs[256];
+static int found_palette;
 
 typedef struct PCX_HEADER {
   int8_t  manufacturer;
@@ -86,7 +76,7 @@ typedef struct PCX_HEADER {
   int8_t  filler[58];
 } pcx_header;
 
-struct IMG {
+static struct IMG {
   unsigned char  *buffer;
   unsigned int xsize;
   unsigned int ysize;
@@ -119,9 +109,9 @@ int main(int argc, char *argv[])
   textr_height = atoi(argv[4]);
 
   if (argc == 6)
-    max_zval = atof(argv[5]);
+    max_zval = (float) atof(argv[5]);
   if (argc == 7)
-    floor_val = atof(argv[6]);
+    floor_val = (float) atof(argv[6]);
   fprintf(stderr," Input File: %s\n"
 	 "Output File: %s\n"
 	 "      width: %ld\n"
@@ -130,8 +120,8 @@ int main(int argc, char *argv[])
 	 "  floor_val: %5.3f\n",
 	 pcx_file,out_file,textr_width,textr_height,max_zval,floor_val);
   loadpcx(pcx_file);
-  nrows = image.ysize / textr_width;
-  ncols = image.xsize / textr_height;
+  nrows = (int) (image.ysize / (unsigned) textr_width);
+  ncols = (int) (image.xsize / (unsigned) textr_height);
   ntextr = nrows * ncols;
   if (ntextr > 32 * 32)
     {
@@ -187,7 +177,7 @@ void calc_terrain(long i, long j)
   
   if ((q1 = tpoints[i][j].q1) < 0.0)
     {
-      q1 = calcZ(*(bptr - ((textr_height-1) * image.xsize)));
+      q1 = calcZ(*(bptr - ((unsigned) (textr_height-1) * image.xsize)));
       tpoints[i][j].q1 = q1;
       tpoints[i+1][j].q7 = q1;
       if (j > 0)
@@ -198,7 +188,7 @@ void calc_terrain(long i, long j)
 
   if ((q3 = tpoints[i][j].q3) < 0.0)
     {
-      q3 = calcZ(*(bptr + textr_width - 1 - ((textr_height-1) * image.xsize)));      
+      q3 = calcZ(*(bptr + textr_width - 1 - ((unsigned) (textr_height-1) * image.xsize)));      
       tpoints[i][j].q3 = q3;
       
       tpoints[i+1][j].q5 = q3;
@@ -233,13 +223,13 @@ void calc_terrain(long i, long j)
 	tpoints[i][j-1].q5 = q7;
     }
 
-  tpoints[i][j].p4 = calcZ(*(bptr + ((textr_width-1) / 4) - (textr_height / 4 * image.xsize)));
+  tpoints[i][j].p4 = calcZ(*(bptr + ((textr_width-1) / 4) - ((unsigned) textr_height / 4 * image.xsize)));
   tpoints[i][j].p3 = calcZ(*(bptr + ((textr_width-1) - (textr_width / 4))
-	       - (textr_height / 4 * image.xsize) ));
+	       - ((unsigned) textr_height / 4 * image.xsize) ));
   tpoints[i][j].p2 = calcZ(*(bptr + ((textr_width-1) - (textr_width / 4))
-	       - (((textr_height-1) - (textr_height / 4)) * image.xsize) ));
+	       - ((unsigned) ((textr_height-1) - (textr_height / 4)) * image.xsize) ));
   tpoints[i][j].p1 = calcZ(*(bptr + (textr_width / 4)
-	       - (((textr_height-1) - (textr_height / 4)) * image.xsize) ));
+	       - ((unsigned) ((textr_height-1) - (textr_height / 4)) * image.xsize) ));
   
 }
 
@@ -260,6 +250,7 @@ void write_terrain(FILE *f,long i,long j,int x,int y,int n, int quad)
 		      if ((x) < 0.0) \
 				       (x) = 0.0; \
 						    }
+void set_floor(void);
 void set_floor()
 {
   long i,j;
@@ -287,6 +278,7 @@ void set_floor()
 #define FN2(x) { \
   (x) -= minval; \
 		   }
+void normalize(void);
 void normalize()
 {
   float minval;
@@ -294,7 +286,7 @@ void normalize()
   long i,j;
 
   fprintf(stderr,"Normalizing\n");
-  minval = max_zval * 10.0;
+  minval = (float) max_zval * 10.0f;
   maxval = -1.0;
 
   for (i=0;i<nrows;i++)
@@ -368,10 +360,10 @@ void make_terrains(char *path)
     }
 
   fprintf(f,"%d\n",ntextr);
-  y = -nrows / 2.0;
+  y = (int) (-nrows / 2.0);
   for (i=0; i<nrows; i++)
     {
-      x = -ncols / 2.0;
+      x = (int) (-ncols / 2.0);
       for (j=0;j<ncols;j++)
 	{
 	  if (x > 0 && y > 0)
@@ -405,14 +397,14 @@ void loadpcx(char * filename)
     error_exit(1,"Couldn't Open %s",filename);
   fseek(infile,0L,SEEK_SET);
   fread(&pcxhead,sizeof(pcx_header),1,infile);
-  pcxhead.xmin = ltohs(pcxhead.xmin);
-  pcxhead.xmax = ltohs(pcxhead.xmax);
-  pcxhead.ymin = ltohs(pcxhead.ymin);
-  pcxhead.ymax = ltohs(pcxhead.ymax);
-  pcxhead.hres = ltohs(pcxhead.hres);
-  pcxhead.vres = ltohs(pcxhead.vres);
-  image.xsize = (pcxhead.xmax-pcxhead.xmin) + 1;
-  image.ysize = (pcxhead.ymax-pcxhead.ymin) + 1;
+  pcxhead.xmin = (short) ltohs((unsigned short) pcxhead.xmin);
+  pcxhead.xmax = (short) ltohs((unsigned short) pcxhead.xmax);
+  pcxhead.ymin = (short) ltohs((unsigned short) pcxhead.ymin);
+  pcxhead.ymax = (short) ltohs((unsigned short) pcxhead.ymax);
+  pcxhead.hres = (short) ltohs((unsigned short) pcxhead.hres);
+  pcxhead.vres = (short) ltohs((unsigned short) pcxhead.vres);
+  image.xsize = (unsigned) ((pcxhead.xmax-pcxhead.xmin) + 1);
+  image.ysize = (unsigned) ((pcxhead.ymax-pcxhead.ymin) + 1);
   Points = image.xsize * image.ysize;
   image.buffer = (unsigned char  *) malloc(Points);
   if(image.buffer==NULL)
@@ -427,14 +419,14 @@ void loadpcx(char * filename)
 	  c=fgetc(infile);
 	  while(x--)
 	    {
-	      *(ImagePtr++)=c;
+	      *(ImagePtr++) = (unsigned char) c;
 	      i++;
 	    }
 	  i--;
 	}
       else
 	{
-	  *(ImagePtr++)=c;
+	  *(ImagePtr++) = (unsigned char) c;
 	}
     }
   c = fgetc(infile);
@@ -464,6 +456,7 @@ void error_exit(int err, char *format, ...)
     }
 }
 
+int count_colors(void);
 int count_colors()
 {
   int i;
@@ -475,7 +468,7 @@ int count_colors()
     color_counts[i] = 0;
   ncolors = 0;
 
-  points = image.xsize * image.ysize;
+  points = (int) (image.xsize * image.ysize);
   bfptr = image.buffer;
   while (points--)
     {
