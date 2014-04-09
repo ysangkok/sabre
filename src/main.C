@@ -354,6 +354,8 @@ void doGame()
 		      demo,
 		      messageLoop);
   theGame.doGame();
+  delete map_man;
+  delete g_font;
   theGame.printResults(std::cout);
 }
 

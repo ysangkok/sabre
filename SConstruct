@@ -20,7 +20,7 @@ if not clang:
 warn += ["-Werror"]
 
 orgenv = Environment(
-	CC="clang" if clang else "colorgcc", CFLAGS=warn+Split('-pg -g -ansi -pedantic -std=c11'), CXX="clang++" if clang else "colorgcc", CXXFLAGS=warn+Split('-pg -g -Wno-sign-conversion -ansi -pedantic -std=c++11'), LIBS=["m"], 
+	CC="clang" if clang else "colorgcc", CFLAGS=warn+Split('-pg -ggdb3 -ansi -pedantic -std=c11'), CXX="clang++" if clang else "colorgcc", CXXFLAGS=warn+Split('-pg -ggdb3 -Wno-sign-conversion -ansi -pedantic -std=c++11'), LIBS=["m"], 
 	LINK="clang++" if clang else "g++", 
 	#CXXFLAGS="-nodefaultlibs -fno-exceptions -w", 
 	CPPDEFINES = {"VERSION":"\\\"0.2.4b\\\"","REV_DATE":"\\\"11/21/99\\\"","JSTICK_INSTALLED":"1"},
@@ -29,7 +29,7 @@ orgenv = Environment(
 
 orgenv['ENV']['TERM'] = os.environ['TERM']
 
-orgenv.Append(LINKFLAGS=Split("-pg -g -Wl,--gc-sections,--print-gc-sections"))
+orgenv.Append(LINKFLAGS=Split("-pg -ggdb3 -Wl,--gc-sections,--print-gc-sections"))
 
 if clang:
 	orgenv.Append(CXXFLAGS=["-stdlib=libc++", "-ferror-limit=5"])

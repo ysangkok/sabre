@@ -203,12 +203,13 @@ std::ofstream os;
 void TextrMap::read_compressed(int cflg)
 {
 uint32_t          n;
-char              *fname;
 FILE              *f;
 int               nread;
 const char              *path;
 const char              *open_params;
 
+{
+char              *fname;
 	fname = new char[strlen(id) + 10];
 #ifdef SABREWIN
 	/* ain't DOS dumb? */
@@ -219,6 +220,8 @@ const char              *open_params;
 	open_params = "r";
 #endif
 	path = build_libpath(fname);
+	delete[] fname;
+}
 	if ((f = fopen(path,open_params)) != NULL)
 	{
 		fread(&map_w,sizeof(map_w),1,f);
@@ -235,7 +238,7 @@ const char              *open_params;
 		if (ferror(f))
 		{
 			error_jump("TextrMap: error reading from file %s %d bytes\n",
-			 fname,nread);
+			 path,nread);
 			delete [] cbytes;
 			cbytes = NULL;
 			return;

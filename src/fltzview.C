@@ -84,7 +84,10 @@ REAL_TYPE Flight_ZViewer::draw_prep(Port_3D &port)
   REAL_TYPE result;
   reference_port = &(flt->state.flight_port);
   result = Z_Viewer::draw_prep(port);
-  if (!cpk_flg && visible_flag && wil != NULL && wil->hasExterns())
+  if (!cpk_flg && 
+      visible_flag && 
+      wil != NULL && 
+      wil->hasExterns())
     wil->draw_prep(&port,&(flt->state.flight_port));
   return (result);
 }

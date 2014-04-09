@@ -464,7 +464,11 @@ void get_palette(int startcolor, int endcolor, char *palette)
 
 for(int x=startcolor;x<=endcolor;x++)
    {
-   *(palette++) = screen->format->palette->colors[x].r;
+   *(palette++) = screen
+		->format
+		->palette
+		->colors[x]
+		.r;
    *(palette++) = screen->format->palette->colors[x].g;
    *(palette++) = screen->format->palette->colors[x].b;
    }
