@@ -55,7 +55,7 @@ extern int point_cnt;
 
 extern void blit_buff();
 
-static const REAL_TYPE z_min = (REAL_TYPE) -99999999.0;
+//static const REAL_TYPE z_min = (REAL_TYPE) -99999999.0;
 static const REAL_TYPE z_max = (REAL_TYPE)  99999999.0;
 
 REAL_TYPE C_3DObject_Base::dab_min = 1000.0;

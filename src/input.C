@@ -47,9 +47,6 @@
 #endif
 #endif
 
-const int mouse_manual_flag = 0;
-
-const char MOUSE_PATH[] = "/dev/mouse";
 
 InputDevice_2D::~InputDevice_2D() = default;
 InputDevice::~InputDevice() = default;
@@ -65,6 +62,9 @@ int Mouse::ResetDriver( void ) const
 // init mouse events for SDL ...
 return true;
 #else
+const int mouse_manual_flag = 0;
+
+const char MOUSE_PATH[] = "/dev/mouse";
 #ifndef SABREWIN
   if (mouse_manual_flag)
     {

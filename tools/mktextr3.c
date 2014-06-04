@@ -87,7 +87,7 @@ static struct IMG {
 
 int count_colors(void);
 void renumber_image(int);
-void error_exit(int err, char *format, ...);
+void error_exit(int err, const char *format, ...);
 
 void write_tmap(FILE *f, char *id, long i, long j);
 void write_tmap_rv(FILE *f, char *id, long i, long j);
@@ -156,17 +156,17 @@ int main(int argc, char *argv[])
     renumber_image(renumber);
   make_maps(out_file);
   if (*out_file == '-')
-    plt_file = "mktextr3.plt";
+      pf = fopen("mktextr3.plt","w");
   else
     {
       plt_file = (char *) malloc(strlen(out_file) + 10);
       sprintf(plt_file,"%s.plt",out_file);
+      pf = fopen(plt_file,"w");
     }
-  pf = fopen(plt_file,"w");
   if (pf)
     write_palette(pf);
   else
-    fprintf(stderr,"error opening %s for write\n",plt_file);
+    fprintf(stderr,"error opening for writing\n");
 }
 
 char *format_byte(int byte)
@@ -468,7 +468,7 @@ void loadpcx(char * filename)
   fclose(infile);
 }
 
-void error_exit(int err, char *format, ...)
+void error_exit(int err, const char *format, ...)
 {
   va_list ap;
   va_start(ap,format);

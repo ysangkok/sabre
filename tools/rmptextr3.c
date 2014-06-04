@@ -86,7 +86,7 @@ static struct IMG {
 
 int count_colors(void);
 void remap_colors(void);
-void error_exit(int err, char *format, ...);
+void error_exit(int err, const char *format, ...);
 void write_tmap(FILE *f, char *id, long i, long j);
 void write_tmap_rv(FILE *f, char *id, long i, long j);
 char *format_byte(int );
@@ -437,7 +437,7 @@ void loadpal(char *path)
 }
 
 
-void error_exit(int err, char *format, ...)
+void error_exit(int err, const char *format, ...)
 {
   va_list ap;
   va_start(ap,format);

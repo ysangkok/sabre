@@ -83,7 +83,7 @@ static struct IMG {
 } image;
 
 void get_color_range(void);
-void error_exit(int err, char *format, ...);
+void error_exit(int err, const char *format, ...);
 void calc_terrain(long i, long j);
 void normalize();
 void set_floor();
@@ -442,7 +442,7 @@ void loadpcx(char * filename)
   fclose(infile);
 }
 
-void error_exit(int err, char *format, ...)
+void error_exit(int err, const char *format, ...)
 {
   va_list ap;
   va_start(ap,format);

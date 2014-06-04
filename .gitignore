@@ -1,5 +1,13 @@
 .sconsign.dblite
-src/*.o
-gdev/*.o
-tools/*.o
+*.a
+*.o
 *.swp
+src/sabre
+tools/calibrate
+tools/mkterrain
+tools/mktextr
+tools/mktextr3
+tools/rmptextr3
+*.gcda
+*.gcno
+gmon.out

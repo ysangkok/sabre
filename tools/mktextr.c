@@ -66,7 +66,7 @@ static struct IMG {
 
 int count_colors(void);
 void renumber_image(int);
-void error_exit(int err, char *format, ...);
+void error_exit(int err, const char *format, ...);
 void write_tmap(FILE *f, int which);
 char *format_byte(unsigned char );
 void make_maps(char *);
@@ -286,7 +286,7 @@ void loadpcx(char * filename)
   fclose(infile);
 }
 
-void error_exit(int err, char *format, ...)
+void error_exit(int err, const char *format, ...)
 {
   va_list ap;
   va_start(ap,format);

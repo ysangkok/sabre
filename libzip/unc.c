@@ -66,7 +66,7 @@ long unc_file_to_file(FILE *output,
 static long do_uncompress(void);
 int local_flush(int num_bytes);
 int local_nextbyte(void);
-static void unc_error(char * message);
+static void unc_error(const char * message);
 /* END FUNCTION PROTOTYPES (created by emacs, do not edit) */
 
 long unc_mem_to_mem(unsigned char *dst, long dst_size,
@@ -245,7 +245,7 @@ int local_nextbyte(void)
   return byte;
 }
 
-__attribute__((noreturn)) static void unc_error(char * message)
+__attribute__((noreturn)) static void unc_error(const char * message)
 {
 #ifdef WIN31
   /* do something for windows */

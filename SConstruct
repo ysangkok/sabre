@@ -1,6 +1,6 @@
 import os
 
-clang = 1
+clang = 0
 everything = 1
 do_vga = False
 do_sdl = True
@@ -19,8 +19,10 @@ if not clang:
 
 warn += ["-Werror"]
 
+debug_profile_and_coverage = Split("-pg -ggdb3 -ftest-coverage -fprofile-arcs")
+
 orgenv = Environment(
-	CC="clang" if clang else "colorgcc", CFLAGS=warn+Split('-pg -ggdb3 -ansi -pedantic -std=c11'), CXX="clang++" if clang else "colorgcc", CXXFLAGS=warn+Split('-pg -ggdb3 -Wno-sign-conversion -ansi -pedantic -std=c++11'), LIBS=["m"], 
+	CC="clang" if clang else "colorgcc", CFLAGS=warn + debug_profile_and_coverage + Split('-ansi -pedantic -std=c11'), CXX="clang++" if clang else "colorgcc", CXXFLAGS=warn + debug_profile_and_coverage + Split('-Wno-sign-conversion -ansi -pedantic -std=c++11'), LIBS=["m"], 
 	LINK="clang++" if clang else "g++", 
 	#CXXFLAGS="-nodefaultlibs -fno-exceptions -w", 
 	CPPDEFINES = {"VERSION":"\\\"0.2.4b\\\"","REV_DATE":"\\\"11/21/99\\\"","JSTICK_INSTALLED":"1"},
@@ -29,7 +31,7 @@ orgenv = Environment(
 
 orgenv['ENV']['TERM'] = os.environ['TERM']
 
-orgenv.Append(LINKFLAGS=Split("-pg -ggdb3 -Wl,--gc-sections,--print-gc-sections"))
+orgenv.Append(LINKFLAGS=debug_profile_and_coverage + Split("-Wl,--gc-sections,--print-gc-sections"))
 
 if clang:
 	orgenv.Append(CXXFLAGS=["-stdlib=libc++", "-ferror-limit=5"])

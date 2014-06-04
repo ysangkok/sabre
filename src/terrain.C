@@ -48,7 +48,7 @@ int Terrain_Shape::txtr_flag = 1;
 int Terrain_Shape::color = 154;
 int Terrain_Shape::color_range = 100;
 
-static int * const ttxtflg = & Terrain_Shape::txtr_flag;
+//static int * const ttxtflg = & Terrain_Shape::txtr_flag;
 
 #define NTPOLYS 2
 
