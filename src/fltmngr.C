@@ -571,9 +571,9 @@ void Flight_Manager::readFlites(std::istream &is)
 {
 #define MAX_SWAYPOINT_INFOS 16
   swaypoint_info waypoints[MAX_SWAYPOINT_INFOS];
-  int nwaypoints;
-  int nflites;
-  int npilots;
+  SafeInt<unsigned int> nwaypoints;
+  SafeInt<unsigned int> nflites;
+  SafeInt<unsigned int> npilots;
   char fliteId[aiB_HANDLE_SIZE];
   char pilotHandle[aiB_HANDLE_SIZE];
   char waypointTaskStr[32];

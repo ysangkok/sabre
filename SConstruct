@@ -1,6 +1,6 @@
 import os
 
-clang = 0
+clang = 1
 everything = 1
 do_vga = False
 do_sdl = True
@@ -15,11 +15,11 @@ else:
 	warn = ["-Wall"]
 
 if not clang:
-	warn += ["-Wno-error=attributes"]
+	warn += ["-Wno-attributes", "-Wno-unused-local-typedefs"]
 
 warn += ["-Werror"]
 
-debug_profile_and_coverage = Split("-pg -ggdb3 -ftest-coverage -fprofile-arcs")
+debug_profile_and_coverage = Split("-pg -ggdb3 -ftest-coverage -fprofile-arcs") # this and SafeInt is apparently enough to provoke the llvm_gcda SIGSEGV on exit: Split("-fprofile-arcs") 
 
 orgenv = Environment(
 	CC="clang" if clang else "colorgcc", CFLAGS=warn + debug_profile_and_coverage + Split('-ansi -pedantic -std=c11'), CXX="clang++" if clang else "colorgcc", CXXFLAGS=warn + debug_profile_and_coverage + Split('-Wno-sign-conversion -ansi -pedantic -std=c++11'), LIBS=["m"], 

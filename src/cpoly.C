@@ -295,8 +295,10 @@ void shape_params::read(std::istream &is)
   
   READ_TOKI('[',is,c)
     
-    is >> flags >> n_params;
-  p_params = new poly_params[n_params];
+  unsigned int read_n_params;
+    is >> flags >> read_n_params;
+  n_params = read_n_params;
+  p_params = new poly_params[static_cast<unsigned int>(n_params)];
   MYCHECK(p_params != NULL);
 
   if (flags & CPY_PARAMS)
@@ -328,7 +330,7 @@ void shape_params::write(std::ostream &os)
 	}
       if (copy)
 	flags |= CPY_PARAMS;
-      os << "[\n" << flags << ' ' << n_params << '\n';
+      os << "[\n" << flags << ' ' << static_cast<unsigned int>(n_params) << '\n';
       if (flags & CPY_PARAMS)
 	os << p_params[0] << '\n';
       else
@@ -346,7 +348,7 @@ void shape_params::copy(const shape_params &sp)
   n_params = sp.n_params;
   if (p_params)
     delete [] p_params;
-  p_params = new poly_params[n_params];
+  p_params = new poly_params[static_cast<unsigned int>(n_params)];
   for (int i=0;i<n_params;i++)
     p_params[i] = sp.p_params[i];
 }
@@ -355,7 +357,7 @@ void shape_params::add(const poly_params &pm)
 {
   if (p_params != NULL)
     {
-      poly_params *tmp = new poly_params[n_params + 1];
+      poly_params *tmp = new poly_params[static_cast<unsigned int>(n_params + 1)];
       for (int i=0;i<n_params;i++)
 	tmp[i] = p_params[i];
       delete [] p_params;

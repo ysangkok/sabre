@@ -25,6 +25,7 @@
 
 #include <string.h>
 #include "fltlite.h"
+#include "SafeInt.h"
 
 class Target;
 class Z_Node_Manager;
@@ -471,7 +472,7 @@ class Weapon_Instance
 {
 public:
   REAL_TYPE elapsed_time;
-  int rounds_remaining;
+  SafeInt<unsigned int> rounds_remaining;
   int launch_idx;
   int rounds_per_launch;
   int flags;

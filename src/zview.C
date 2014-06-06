@@ -146,8 +146,10 @@ void Z_Node_Manager::read(std::istream &is)
   char c;
   READ_TOKI('{',is,c)
     is >> scaler;
-  is >> n_reference;
-  reference_info = new C_ShapeInfo[n_reference];
+  unsigned int sn_reference;
+  is >> sn_reference;
+  n_reference = sn_reference;
+  reference_info = new C_ShapeInfo[static_cast<unsigned int>(n_reference)];
   MYCHECK(reference_info != NULL);
   shape_cnt = 0;
   for (int i=0;i<n_reference;i++)
@@ -155,10 +157,12 @@ void Z_Node_Manager::read(std::istream &is)
       is >> reference_info[i];
       reference_info[i] *= scaler * world_scale;
     }
-  is >> n_shapes;
-  shape_info = new C_ShapeInfo[n_shapes];
+  unsigned int sn_shapes;
+  is >> sn_shapes;
+  n_shapes = sn_shapes;
+  shape_info = new C_ShapeInfo[static_cast<unsigned int>(n_shapes)];
   MYCHECK(shape_info != NULL);
-  s_params = new shape_params[n_shapes];
+  s_params = new shape_params[static_cast<unsigned int>(n_shapes)];
   MYCHECK(s_params != NULL);
   for (int i=0;i<n_shapes;i++)
     {
@@ -186,7 +190,7 @@ void Z_Node_Manager::read(std::istream &is)
   READ_TOK('}',is,c);
   buildShapes();
 
-  reference_shape = new C_Oriented_Shape[n_reference];
+  reference_shape = new C_Oriented_Shape[static_cast<unsigned int>(n_reference)];
   MYCHECK(reference_shape != NULL);
   for (int i=0;i<n_reference;i++)
     reference_shape[i].create(&(reference_info[i]));
@@ -202,9 +206,9 @@ void Z_Node_Manager::add(C_ShapeInfo &new_info, shape_params &new_param)
 {
   C_ShapeInfo *new_infos;
   shape_params *new_params;
-  new_infos = new C_ShapeInfo[n_shapes + 1];
+  new_infos = new C_ShapeInfo[static_cast<unsigned int>(n_shapes + 1)];
   MYCHECK(new_infos != NULL);
-  new_params = new shape_params[n_shapes + 1];
+  new_params = new shape_params[static_cast<unsigned int>(n_shapes + 1)];
   MYCHECK(new_params != NULL);
   for (int i=0;i<n_shapes;i++)
     {
@@ -229,7 +233,7 @@ void Z_Node_Manager::buildShapes()
 {
   if (shapes)
     delete [] shapes;
-  shapes = new C_Oriented_Shape[n_shapes];
+  shapes = new C_Oriented_Shape[static_cast<unsigned int>(n_shapes)];
   MYCHECK(shapes != NULL);
   for (int i=0;i<n_shapes;i++)
     {
@@ -245,9 +249,9 @@ void Z_Node_Manager::deleteShape(int which)
   shape_params *new_params;
   if (which < 0 || which >= n_shapes)
     return;
-  new_infos = new C_ShapeInfo[n_shapes - 1];
+  new_infos = new C_ShapeInfo[static_cast<unsigned int>(n_shapes - 1)];
   MYCHECK(new_infos != NULL);
-  new_params = new shape_params[n_shapes - 1];
+  new_params = new shape_params[static_cast<unsigned int>(n_shapes - 1)];
   MYCHECK(new_params != NULL);
   for (int i=0,ix=0;i<n_shapes;i++)
     {
@@ -275,11 +279,11 @@ void Z_Node_Manager::create()
   int i;
   if (shapes != NULL)
     delete [] shapes;
-  shapes = new C_Oriented_Shape[n_shapes];
+  shapes = new C_Oriented_Shape[static_cast<unsigned int>(n_shapes)];
   MYCHECK(shapes != NULL);
   if (reference_shape != NULL)
     delete [] reference_shape;
-  reference_shape = new C_Oriented_Shape[n_reference];
+  reference_shape = new C_Oriented_Shape[static_cast<unsigned int>(n_reference)];
   MYCHECK(reference_shape != NULL);
   for (i=0;i<n_shapes;i++)
     {
@@ -310,7 +314,7 @@ void Z_Node_Manager::write(std::ostream &os)
   int i;
   os << "{\n";
   os << scaler << "\n";
-  os << n_reference << "\n";
+  os << static_cast<unsigned int>(n_reference) << "\n";
 
   for (i=0;i<n_reference;i++)
     {
@@ -319,7 +323,7 @@ void Z_Node_Manager::write(std::ostream &os)
       tmp *= C(1.0 / (scaler * world_scale));
       os << tmp;
     }
-  os << n_shapes << '\n';
+  os << static_cast<unsigned int>(n_shapes) << '\n';
   for (i=0;i<n_shapes;i++)
     {
       C_ShapeInfo tmp;

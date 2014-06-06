@@ -37,6 +37,8 @@
 #include <d3d.h>
 #endif
 
+#include "SafeInt.h"
+
 class TextrMap
 {
 private:
@@ -200,7 +202,7 @@ extern TextrMap nullmap;
 class TextrMap_Manager
 {
 public:
-	int n_maps;
+	SafeInt<unsigned int> n_maps;
 	int nxt;
 	static int reserved;
 

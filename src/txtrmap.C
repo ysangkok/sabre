@@ -792,7 +792,7 @@ void TextrMap::Release(void)
 TextrMap_Manager::TextrMap_Manager(int n)
 {
   n_maps = n;
-  tmaps = new TextrMap[n_maps];
+  tmaps = new TextrMap[static_cast<unsigned int>(n_maps)];
   MYCHECK(tmaps != NULL);
   nxt = 0;
 }
@@ -814,10 +814,12 @@ int n;
 
 	if (tmaps == NULL)
 	{
-		is >> n_maps;
+		unsigned int sn_maps;
+		is >> sn_maps;
+		n_maps = sn_maps;
 		if (n_maps <= 0)
 			return;
-		tmaps = new TextrMap[n_maps];
+		tmaps = new TextrMap[static_cast<unsigned int>(n_maps)];
 		MYCHECK(tmaps != NULL);
 		for (int i=0;i<n_maps;i++)
 			is >> tmaps[i];

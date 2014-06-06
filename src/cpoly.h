@@ -50,6 +50,8 @@
 
 #include "clstypes.h"
 
+#include "SafeInt.h"
+
 /****************************************
  * Bit-flag values used to set various  *
  * properties of polygons, shapes and   *
@@ -170,7 +172,7 @@ class shape_params
 public:
   unsigned long flags;
   poly_params *p_params;
-  int n_params;
+  SafeInt<unsigned int> n_params;
 
   shape_params()
     : p_params(NULL),

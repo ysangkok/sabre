@@ -642,12 +642,15 @@ void C_DrawList2::read(std::istream &is)
   shape_cnt = poly_cnt = 0;
   file_context = "C_DrawList2";
   READ_TOKI('(',is,c)
-    is >> n_objects >> n_groups;
+  unsigned int sn_objects, sn_groups;
+    is >> sn_objects >> sn_groups;
+  n_objects = sn_objects;
+  n_groups = sn_groups;
   READ_TOK(')',is,c)
-   objects = new C_3DObject2[n_objects];
+   objects = new C_3DObject2[static_cast<unsigned int>(n_objects)];
   for (i=0;i<n_objects;i++)
     objects[i].im = im;
-  groups = new C_3DObject_Group[n_groups];
+  groups = new C_3DObject_Group[static_cast<unsigned int>(n_groups)];
   MYCHECK(groups != NULL);
   idx = 0;
   for (i=0;(i<n_groups) && (idx<n_objects);i++)

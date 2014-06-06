@@ -954,7 +954,7 @@ int Unguided_Manager::update()
 }
 
 int Unguided_Manager::new_smoke(R_3DPoint &p,
-		int n_smokes,
+		SafeInt<unsigned int> n_smokes,
 		float init_size,
 		float d_size,
 		float d_len,
@@ -962,7 +962,7 @@ int Unguided_Manager::new_smoke(R_3DPoint &p,
 		float max_time,
 		int has_flame,
 		float flame_time_max,
-		int n_flames,
+		SafeInt<unsigned int> n_flames,
 		const char *smokemap_id,
 		const char *firemap_id)
 {

@@ -59,8 +59,8 @@ public:
   C_Oriented_Shape *reference_shape;
   C_Oriented_Shape *shapes;
   shape_params *s_params;
-  int n_reference;
-  int n_shapes;
+  SafeInt<unsigned int> n_reference;
+  SafeInt<unsigned int> n_shapes;
   C_Oriented_Shape *cur_shapes;
   C_Oriented_Shape *cur_reference;
   Port_3D *cur_port;
