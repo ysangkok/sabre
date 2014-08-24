@@ -99,7 +99,7 @@ class poly_params
 {
 public:
   int color;
-  unsigned long flags;
+  uint32_t flags;
   int color_range;
   int tmap;
 
@@ -111,7 +111,7 @@ public:
     {}
 
   poly_params(int a_color,
-	      unsigned long a_flag,
+	      uint32_t a_flag,
 	      int a_color_range,
 	      int a_tmap)
     : color(a_color),
@@ -170,7 +170,7 @@ inline std::ostream &operator <<(std::ostream &os, poly_params &ps)
 class shape_params
 {
 public:
-  unsigned long flags;
+  uint32_t flags;
   poly_params *p_params;
   SafeInt<unsigned int> n_params;
 
@@ -179,7 +179,7 @@ public:
     n_params(0)
     {}
 
-  shape_params(int n, unsigned long flgs, poly_params *pr)
+  shape_params(int n, uint32_t flgs, poly_params *pr)
     : flags(flgs),
     p_params(pr),
     n_params(n)
@@ -404,7 +404,7 @@ class C_Poly
 public:
   int color,base_color;
   int tmap;
-  unsigned long flags;
+  uint32_t flags;
   int color_range;
   int visible;
   REAL_TYPE scale;
@@ -446,7 +446,7 @@ class C_Shape
 public:
   int npolys;
   int visible;
-  unsigned long flags;
+  uint32_t flags;
   REAL_TYPE maxlen;
   C_Poly *polys;
   C_ShapeInfo *info_ptr;

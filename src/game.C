@@ -190,10 +190,10 @@ void GameSession::setup()
 
 	Unguided_Manager::initUnguided();
 	Pilot::initPilot();
-	sim_printf("%d textures\n",map_man->n_maps);
+	sim_printf("%d textures\n",static_cast<unsigned int>(map_man->n_maps));
 	sim_printf("%d terrain shapes\n",earth.ntshapes);
 	sim_printf("%d static shape definitions\n",info_manager.ninfos);
-	sim_printf("%d static shape objects\n",clist.n_objects);
+	sim_printf("%d static shape objects\n",static_cast<unsigned int>(clist.n_objects));
 	sim_printf("%d dynamic shape definitions\n",fm.n_managers);
 	sim_printf("%d flights\n",fm.n_flights);
 	sim_printf("%d ground units\n",gm.nunits);
@@ -788,7 +788,7 @@ void /*_cdecl*/ GameSession::show_message(int bot, const char *str, ...)
   va_end(ap);
 
   int poly[10];
-  int l = strlen(buf) * 6;
+  int l = (int) strlen(buf) * 6;
   int y = bot ?  SCREEN_HEIGHT - 8 : 0;
   int yd = bot ? SCREEN_HEIGHT - 1 : 7;
   if (l > 0)

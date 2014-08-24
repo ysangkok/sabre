@@ -38,7 +38,7 @@
 class sAttacker
 {
 protected:
-	unsigned long idx;
+	uint32_t idx;
 	sREAL	threatValue;
 public:
 
@@ -48,7 +48,7 @@ public:
 		threatValue = 0.0;
 	}
 
-	sAttacker(unsigned long ix)
+	sAttacker(uint32_t ix)
 	{
 		this->idx = ix;
 		threatValue = 0.0;
@@ -76,7 +76,7 @@ public:
 		return (idx == attkr.idx);
 	}
 
-    unsigned long GetIdx()
+    uint32_t GetIdx()
     {
       return (idx);
     }
@@ -114,8 +114,8 @@ public:
 		dhlist_free(&attacker_list,1);
 	}
 
-	void AddAttacker(unsigned long idx);
-	void DeleteAttacker(unsigned long idx);
+	void AddAttacker(uint32_t idx);
+	void DeleteAttacker(uint32_t idx);
 	void DeleteAllAttackers();
 	int GetCount()
 	{
@@ -124,7 +124,7 @@ public:
 
 	sAttacker *GetFirstAttacker();
 	sAttacker *GetNextAttacker();
-	sAttacker *GetAttackerByIdx(unsigned long idx);
+	sAttacker *GetAttackerByIdx(uint32_t idx);
 
 	static void DeleteSAttacker(void *);
 	static int CompareSAttacker(void *, void *);

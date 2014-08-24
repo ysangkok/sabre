@@ -1,8 +1,8 @@
 #ifndef COMP_H_RCSID
 #define COMP_H_RCSID "$Id$"
 /* Compress the source buffer src into the target buffer tgt. */
-unsigned long memcompress (char *tgt, 
-			   unsigned long tgtsize, 
+uint32_t memcompress (char *tgt, 
+			   uint32_t tgtsize, 
 			   char *src, 
-			   unsigned long srcsize);
+			   uint32_t srcsize);
 #endif /* COMP_H_RCSID */

@@ -357,7 +357,7 @@ local void flush_outbuf(unsigned int w, unsigned int bytes)
  * In-memory read function. As opposed to file_read(), this function
  * does not perform end-of-line translation, and does not update the
  * crc and input size.
- *    Note that the size of the entire input buffer is an unsigned long,
+ *    Note that the size of the entire input buffer is an uint32_t,
  * but the size used in mem_read() is only an unsigned int. This makes a
  * difference on 16 bit machines. mem_read() may be called several
  * times for an in-memory compression.

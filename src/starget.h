@@ -153,19 +153,19 @@ public:
   sTargetFlags     flags;
   sTargetFlags     tFlags[FLAG_AVERAGING_N];
   int              tFlagIndex;
-  unsigned long    idx;
+  uint32_t    idx;
   int              active;
   sREAL            threatValue;
   sTarget()
     {
       tFlagIndex = 0;
       active = 1;
-      idx = (unsigned long) TRG_NO_TARGET;
+      idx = (uint32_t) TRG_NO_TARGET;
       threatValue = ITARGET_MIN_THREAT_VALUE;
     }
-  static void GetTargetInfo(unsigned long targetIdx, sPoint &position, 
+  static void GetTargetInfo(uint32_t targetIdx, sPoint &position, 
 			    sVector &velocity, sVector &heading);
-  static int GetTargetActive(unsigned long targetIdx);
+  static int GetTargetActive(uint32_t targetIdx);
   virtual ~sTarget();
 };
 

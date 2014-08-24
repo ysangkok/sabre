@@ -463,7 +463,7 @@ void aiPilot::SetFlightModel(sFlightModel *flightMdl)
 /*******************************************
  * Set surface target                      *
  *******************************************/
-void aiPilot::SetSurfaceTarget(unsigned long surfaceTargetIndex, int attackMethod, 
+void aiPilot::SetSurfaceTarget(uint32_t surfaceTargetIndex, int attackMethod, 
                               sPoint *worldPoint)
 {
 	ClearManeuverStack();
@@ -495,7 +495,7 @@ void aiPilot::SetSurfaceTarget(unsigned long surfaceTargetIndex, int attackMetho
 /********************************************
  * set intercept target
  ********************************************/
-void aiPilot::SetInterceptTarget(unsigned long targetIdx)
+void aiPilot::SetInterceptTarget(uint32_t targetIdx)
 {
 	ClearTargetPilot();
 	ClearManeuverStack();
@@ -510,7 +510,7 @@ void aiPilot::SetInterceptTarget(unsigned long targetIdx)
 /*******************************************
  * set target for engagement               *
  *******************************************/
-void aiPilot::SetEngageTarget(unsigned long targetIdx)
+void aiPilot::SetEngageTarget(uint32_t targetIdx)
 {
 	ClearManeuverStack();
 	SetTask(ENGAGE_TARGET);
@@ -530,7 +530,7 @@ void aiPilot::SetEngageTarget(unsigned long targetIdx)
 /******************************************
  * set target for evasive maneuvers only  *
  ******************************************/
-void aiPilot::SetEvadeTarget(unsigned long targetIdx)
+void aiPilot::SetEvadeTarget(uint32_t targetIdx)
 {
 	ClearManeuverStack();
 	SetTask(EVADE_TARGET);
@@ -552,7 +552,7 @@ void aiPilot::Disengage()
 /******************************************
  * set target for formation flying        *
  ******************************************/
-void aiPilot::SetFormationTarget(unsigned long targetIdx, int wingPosition, int frmtionTp)
+void aiPilot::SetFormationTarget(uint32_t targetIdx, int wingPosition, int frmtionTp)
 {
 	ClearManeuverStack();
 	curTarget = &formationTarget;
@@ -866,7 +866,7 @@ int aiPilot::GetEngageStatus()
 /*
  * return index of current target
  */
-unsigned long aiPilot::GetTargetIdx()
+uint32_t aiPilot::GetTargetIdx()
 {
   return (TARGET_IDX);
 }
@@ -1629,7 +1629,7 @@ void aiPilot::GetTargetFlags(sTargetFlags &tflags, sTargetGeometry &tGeom)
 /**************************************************************
  * calculate target geometry                                  *
  **************************************************************/
-void aiPilot::GetTargetGeometry(unsigned long targetIdx, sTargetGeometry &tg)
+void aiPilot::GetTargetGeometry(uint32_t targetIdx, sTargetGeometry &tg)
 {
 sREAL			nRange;
 sREAL			newRange;
@@ -1746,7 +1746,7 @@ sAttitude ourAtt;
 /*****************************************
  * abbreviated version of above          *
  *****************************************/
-void aiPilot::GetQuickTargetGeometry(unsigned long targetIdx, sTargetGeometry &tg)
+void aiPilot::GetQuickTargetGeometry(uint32_t targetIdx, sTargetGeometry &tg)
 {
 	sREAL dotProd;
 	sPoint    targetPosition;
@@ -1783,7 +1783,7 @@ void aiPilot::GetDirectionNormal(sVector &directionNormal)
 	flightModel->GetDirectionNormal(directionNormal);
 }
 
-void aiPilot::GetAttitudeToTarget(unsigned long targetIdx,
+void aiPilot::GetAttitudeToTarget(uint32_t targetIdx,
 											sPoint    &targetPosition,
 											sAttitude &attitudeToTarget,
 											sVector   &directionToTarget,
@@ -1808,7 +1808,7 @@ void aiPilot::GetAttitudeToTarget(unsigned long targetIdx,
  *   Return turn rate for a given target index
  *   
  */
-sREAL aiPilot::GetTargetTurnRate(unsigned long targetIdx)
+sREAL aiPilot::GetTargetTurnRate(uint32_t targetIdx)
 {
 	sREAL result;
 	aiPilot *tPilot = GetaiPilot(targetIdx);
@@ -1825,7 +1825,7 @@ sREAL aiPilot::GetTargetTurnRate(unsigned long targetIdx)
 /* 
  *  Return load for given target index 
  */
-sREAL aiPilot::GetTargetLoad(unsigned long targetIdx)
+sREAL aiPilot::GetTargetLoad(uint32_t targetIdx)
 {
 	sREAL result;
 	aiPilot *tPilot = GetaiPilot(targetIdx);
@@ -1842,7 +1842,7 @@ sREAL aiPilot::GetTargetLoad(unsigned long targetIdx)
 /*
  *  Return airspeed for given target index
  */
-sREAL aiPilot::GetTargetAirSpeed(unsigned long targetIdx)
+sREAL aiPilot::GetTargetAirSpeed(uint32_t targetIdx)
 {
 	sREAL result;
 	aiPilot *tPilot = GetaiPilot(targetIdx);
@@ -1856,7 +1856,7 @@ sREAL aiPilot::GetTargetAirSpeed(unsigned long targetIdx)
 	return (result);
 }
 
-void aiPilot::GetTargetInfo(unsigned long targetIdx, sTargetInfo &targetInfo)
+void aiPilot::GetTargetInfo(uint32_t targetIdx, sTargetInfo &targetInfo)
 {
 	aiPilot *tPilot = GetaiPilot(targetIdx);
 	if (tPilot)
@@ -1886,7 +1886,7 @@ void aiPilot::GetTargetInfo(unsigned long targetIdx, sTargetInfo &targetInfo)
 /*
  * Get whether a given target is active
  */
-int aiPilot::GetTargetActive(unsigned long targetIdx)
+int aiPilot::GetTargetActive(uint32_t targetIdx)
 {
 	int result = 0;
 	aiPilot *tPilot = GetaiPilot(targetIdx);
@@ -2037,7 +2037,7 @@ void aiPilot::DeleteAttacker(aiPilot *pil)
 /*
  *	Evaluate threat from target
  */
-sREAL aiPilot::EvalThreat(unsigned long idx, aiPilot **pil)
+sREAL aiPilot::EvalThreat(uint32_t idx, aiPilot **pil)
 {
 	sTargetGeometry tg;
 	aiPilot *ppil;
@@ -2197,7 +2197,7 @@ void aiPilot::UpdateGunners()
 			GetGunner(i)->Update(timeFrame);
 }
 
-void aiPilot::SetGunnersTarget(unsigned long targetIdx, sREAL threatValue)
+void aiPilot::SetGunnersTarget(uint32_t targetIdx, sREAL threatValue)
 {
 	if (HasGunners())
 		for (int i=0;i<gunners.Count();i++)
@@ -2211,7 +2211,7 @@ void aiPilot::SetGunnersTarget(sAttacker *attkr)
 			SetGunnerTarget(i,attkr->GetIdx(),attkr->GetThreatValue());
 }
 
-void aiPilot::SetGunnerTarget(int whichGunner, unsigned long targetIdx,
+void aiPilot::SetGunnerTarget(int whichGunner, uint32_t targetIdx,
 									  sREAL targetThreatValue)
 {
 	aiGunner *gunner = GetGunner(whichGunner);
@@ -2286,7 +2286,7 @@ void aiPilot::ClearTargetPilot()
 	engageTarget.active = 0;
 }
 
-void aiPilot::SetTargetPilot(unsigned long targetIdx)
+void aiPilot::SetTargetPilot(uint32_t targetIdx)
 {
 
 	aiPilot *pil;
@@ -2377,7 +2377,7 @@ void aiPilot::GetLevelAttitude(sAttitude &att, sREAL offset)
 /*
  * Select the kind of fight we want to do
  */
-void aiPilot::SelectEngagementFightType(unsigned long )
+void aiPilot::SelectEngagementFightType(uint32_t )
 {
 	tactics.curTactic = sPilotTactics::ANGLES_FIGHT;
 	/*
@@ -2506,7 +2506,7 @@ sREAL per;
  *******************************************/
 sObjectArray aiPilot::aiPilots(aiPILOT_MAX_PILOTS,aiPILOT_DEFAULT_OWNERSHIP);
 aiPilot *aiPilot::playerPilot = NULL;
-unsigned long aiPilot::nextIdx = 0L;
+uint32_t aiPilot::nextIdx = 0L;
 aiPilot *aiPilot::cashedPilot = NULL;
 
 /*******************************************
@@ -2527,7 +2527,7 @@ void aiPilot::AddaiPilot(aiPilot *pilot)
    Retrieve a pilot from the global array 
    by unique id
 */
-aiPilot *aiPilot::GetaiPilot(unsigned long idx)
+aiPilot *aiPilot::GetaiPilot(uint32_t idx)
 {
 	aiPilot *result = NULL;
 	if (cashedPilot != NULL &&	cashedPilot->GetIdx() == idx)

@@ -143,7 +143,7 @@ Pilot &pilot = *my_node.pilot;
 		the_font->font_sprintf(gns_x,gns_y,hud_color,NORMAL,
 										"%3.0f%% %d %3.1f",
 										d1,
-										pilot.get_sel_weapon()->rounds_remaining,
+										static_cast<unsigned int>(pilot.get_sel_weapon()->rounds_remaining),
 										d2);
 	}
 	else
@@ -178,7 +178,7 @@ Pilot &pilot = *my_node.pilot;
 											cc,
 											d1,
 											pilot.get_sel_weapon()->weapon->w_specs->wep_name,
-											pilot.get_sel_weapon()->rounds_remaining
+											static_cast<unsigned int>(pilot.get_sel_weapon()->rounds_remaining)
 											);
 		else
 			the_font->font_sprintf(gns_x,gns_y,hud_color,NORMAL,

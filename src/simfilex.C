@@ -64,7 +64,7 @@ int simfileX::readstr(std::istream &is, char *buff, int maxlen, char tok0, char 
   if (strlen(lbuff) > (unsigned) (maxlen - 1))
     lbuff[maxlen-1] = 0;
   strcpy(buff,lbuff);
-  l = strlen(buff);
+  l = (int) strlen(buff);
   if (buff[l-1] == '\n')
     buff[l-1] = 0;
   if (buff[l-1] == '\r')
@@ -76,7 +76,7 @@ int simfileX::readstr(std::istream &is, char *buff, int maxlen, char tok0, char 
 	  READ_TOK(tok1,is,c1)
 	    }
     }
-  l = strlen(buff);
+  l = (int) strlen(buff);
   return (l);
 }
 

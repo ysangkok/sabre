@@ -138,12 +138,12 @@ void sTargetFlags::Set(int max)
   SetFunct(lowAOT,highAOT);
 }
 
-void sTarget::GetTargetInfo(__attribute__((unused)) unsigned long targetIdx, __attribute__((unused)) sPoint &position, 
+void sTarget::GetTargetInfo(__attribute__((unused)) uint32_t targetIdx, __attribute__((unused)) sPoint &position, 
 			    __attribute__((unused)) sVector &velocity, __attribute__((unused)) sVector &heading)
 {
 }
 
-int sTarget::GetTargetActive(__attribute__((unused)) unsigned long targetIdx)
+int sTarget::GetTargetActive(__attribute__((unused)) uint32_t targetIdx)
 {
   return 0;
 }

@@ -86,6 +86,7 @@ int vga_mode, colors=(1<<vicinity);
 	 height==MOODE->height && colors==MOODE->colors)
        break; 
    vga_mode=vga_hasmode(vga_mode)?vga_mode:0;
+   if (!vga_mode) printf("SCAN_MOODE: tried getting mode %dx%d colors %d but I don't have it\n", width, height, colors);
    return vga_mode;
 }
 
@@ -94,17 +95,21 @@ int gdev_svgalib::open( int width, int height, int vicinity, int wwidth, int whe
 {
    if( gflags & graphics_on ) {
       // you must close it first
+      printf("gdev_svgalib::open: error number 1\n");
       return -1;
    }
    
    int vga_mode;
-   if( ( vga_mode = SCAN_MOODE(width,height,vicinity) ) == 0 )
+   if( ( vga_mode = SCAN_MOODE(width,height,vicinity) ) == 0 ) {
+     printf("gdev_svgalib::open: error number 2\n");
      return -1;
+   }
 
    int rc=vga_setmode(vga_mode);
    gl_setcontextvga(vga_mode);
    
    if( !rc ) {
+      printf("gdev_svgalib::open: warning number 3: rc=%d\n", rc);
       gflags   |= graphics_on;
       dimx	= vga_getxdim();	
       dimy	= vga_getydim();
@@ -250,6 +255,22 @@ int gdev_svgalib::rect( int x, int y,  int w, int h, int c, int fill )
       }
    }
    return 0;
+}
+
+// --
+// -- method ( x, y, c ) 
+// --
+// -- returns the color palette index for viewport position (x,y)
+// -- if color palette index c is not -1 viewport position (x,y) is
+// -- set to c
+// --
+
+inline int gdev_svgalib::pixel( int x, int y, int c )
+{
+   unsigned char *ofs=vbuf+x+y*vdimx;
+   if( c != -1 )
+     *ofs=(unsigned char) c;
+   return *ofs;
 }
 
 // --

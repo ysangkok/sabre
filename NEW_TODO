@@ -1,3 +1,4 @@
-- removed unused functions (gprof)
-- de-warn auxiliary programs
+- fix svgalib 64-bit build
+- removed unused functions (gcov)
+- C++'ize (instead of C-style arrays)
 - rewrite in rust

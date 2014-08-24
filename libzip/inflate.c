@@ -187,7 +187,7 @@
 
         typedef unsigned char uch;
         typedef unsigned short ush;
-        typedef unsigned long ulg;
+        typedef uint32_t ulg;
 
     This module uses the external functions malloc() and free() (and
     probably memset() or bzero() in the memzero() macro).  Their

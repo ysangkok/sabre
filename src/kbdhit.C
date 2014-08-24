@@ -115,20 +115,20 @@ int KBHit::getch()
         c = (unsigned char) event.key.keysym.sym;
         c = sdl_to_standard[c];
 #else
-        c = vga_getkey();
+        c = (unsigned char) vga_getkey();
 #endif      
         if (c==ESC)
           {
 #ifdef HAVE_LIBSDL
             c = (unsigned char) event.key.keysym.sym;
 #else
-            c = vga_getkey();
+            c = (unsigned char) vga_getkey();
 #endif     
             if (c=='[')
 #ifdef HAVE_LIBSDL 
               c = (unsigned char) event.key.keysym.sym;
 #else
-              c = vga_getkey();
+              c = (unsigned char) vga_getkey();
 #endif
             else
               {

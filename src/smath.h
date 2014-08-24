@@ -28,6 +28,7 @@
 #ifndef __smath_h
 #define __smath_h
 
+#include <stdint.h>
 #include <math.h>
 
 #define sREAL float

@@ -17,6 +17,7 @@
 
 /* some standard includes */
 #include <unistd.h>
+#include <stdint.h>
 
 /* Set up portability */
 #include "tailor.h"
@@ -48,9 +49,9 @@
 
 /* Types centralized here for easy modification */
 #define local static            /* More meaningful outside functions */
-typedef unsigned char uch;      /* unsigned 8-bit value */
-typedef unsigned short ush;     /* unsigned 16-bit value */
-typedef unsigned long ulg;      /* unsigned 32-bit value */
+typedef uint8_t uch;      /* unsigned 8-bit value */
+typedef uint16_t ush;     /* unsigned 16-bit value */
+typedef uint32_t ulg;      /* unsigned 32-bit value */
 
 /* crc.h needs typedef of ulg */
 #include "crc.h"

@@ -103,19 +103,19 @@ public:
 	/*
 	 * Set a task
 	 */
-	void SetInterceptTarget(unsigned long targetIndex);
-	void SetEngageTarget(unsigned long targetIndex);
-	void SetFormationTarget(unsigned long targetIndex, int wingPosition = 1, int formationType = 0);
+	void SetInterceptTarget(uint32_t targetIndex);
+	void SetEngageTarget(uint32_t targetIndex);
+	void SetFormationTarget(uint32_t targetIndex, int wingPosition = 1, int formationType = 0);
 	void SetNavigatePoint(sWaypoint *wp);
-	void SetSurfaceTarget(unsigned long surfaceTargetIndex, int attackMethod, sPoint *worldPoint = NULL);
+	void SetSurfaceTarget(uint32_t surfaceTargetIndex, int attackMethod, sPoint *worldPoint = NULL);
 	void SetAirShowPoint(sWaypoint *wp);
-	void SetEvadeTarget(unsigned long targetIndex);
+	void SetEvadeTarget(uint32_t targetIndex);
 	void SetTakeOff(sWaypoint *wp);
 	void SetLand(sWaypoint *wp);
 
    int GetInterceptStatus();
 	int	GetEngageStatus();
-   unsigned long GetTargetIdx();
+   uint32_t GetTargetIdx();
 	void Disengage();
 
    void AddAttacker(aiPilot *pil);
@@ -131,11 +131,11 @@ public:
 		return (flightModel);
 	}
 
-	unsigned long GetFliteId()
+	uint32_t GetFliteId()
 	{
 		return (fliteId);
 	}
-	void SetFliteId(unsigned long fltId)
+	void SetFliteId(uint32_t fltId)
 	{
 		this->fliteId = fltId;
 	}
@@ -251,9 +251,9 @@ public:
 	}
 	void SetClearForLanding(int clear);
 
-	void SetGunnersTarget(unsigned long targetIdx, sREAL threatValue = ITARGET_MIN_THREAT_VALUE);
+	void SetGunnersTarget(uint32_t targetIdx, sREAL threatValue = ITARGET_MIN_THREAT_VALUE);
 	void SetGunnersTarget(sAttacker *attkr);
-	void SetGunnerTarget(int whichGunner, unsigned long targetIdx, 
+	void SetGunnerTarget(int whichGunner, uint32_t targetIdx, 
 								sREAL threatValue = ITARGET_MIN_THREAT_VALUE);
 	void ClearGunnersTarget();
 
@@ -310,11 +310,11 @@ public:
 
 	/* static functions */
 	static sObjectArray aiPilots;
-	static unsigned long	nextIdx;
+	static uint32_t	nextIdx;
 	static aiPilot *playerPilot; /* represents player */
 	static aiPilot *cashedPilot;	/* to avoid too many array lookups */
 	static void AddaiPilot(aiPilot *pilot);
-	static aiPilot *GetaiPilot(unsigned long idx);
+	static aiPilot *GetaiPilot(uint32_t idx);
 	static aiPilot *GetaiPilot(const char *handle);
 	static int GetPilotCount();
 	static void aiPilotUpdateCallback(int, void *);
@@ -388,7 +388,7 @@ protected:
     
    int               dead;                      /* living or dead */
    int               ejected;                   /* in the silk */
-   unsigned long     fliteId;                   /* id of flite we're part of */              
+   uint32_t     fliteId;                   /* id of flite we're part of */              
 
    sREAL           timers[8];                  /* multi-purpose timers */
    int             remoteControl;              /* if true, allow player to fly us */
@@ -453,7 +453,7 @@ protected:
    sREAL          playerThreatDistance;      /* distance at which player becomes threat */
    sREAL          playerThreatAspect;        /* aspect at which player becomes threat   */
    sREAL          playerThreatValue;         /* additional threat value of player       */
-   unsigned long  currentHiThreatAttkrIdx;   /* idx of current highest-threat attacker  */
+   uint32_t  currentHiThreatAttkrIdx;   /* idx of current highest-threat attacker  */
    int            currentAttkrPrime;         /* priming flag for above                  */
 
    char            capsId[32];              /* id for pilot caps lookup                 */
@@ -573,30 +573,30 @@ protected:
    }
    void GetTargetFlags(sTarget &);
    virtual void GetNavigationGeometry(sNavInfo &ni);
-   virtual void GetTargetGeometry(unsigned long targetIdx, sTargetGeometry &targetGeometry);
+   virtual void GetTargetGeometry(uint32_t targetIdx, sTargetGeometry &targetGeometry);
    virtual void CalcGunLeadPoint(sTargetGeometry &targetGeometry);
-   void GetQuickTargetGeometry(unsigned long targetIdx, sTargetGeometry &tg);
-   virtual void GetTargetInfo(unsigned long idx,   sTargetInfo &targetInfo);
+   void GetQuickTargetGeometry(uint32_t targetIdx, sTargetGeometry &tg);
+   virtual void GetTargetInfo(uint32_t idx,   sTargetInfo &targetInfo);
    virtual void GetTargetFlags(sTargetFlags &, sTargetGeometry &);
-   virtual void GetAttitudeToTarget(unsigned long targetIdx,
+   virtual void GetAttitudeToTarget(uint32_t targetIdx,
                                     sPoint &targetPosition,
                                     sAttitude &attitudeToTarget,
                                     sVector &directionToTarget,
                                     sVector &targetHeading,
                                     sVector &targetVelocity);
-   virtual sREAL GetTargetTurnRate(unsigned long targetIdx);
-   virtual sREAL GetTargetLoad(unsigned long targetIdx);
-   virtual sREAL GetTargetAirSpeed(unsigned long targetIdx);
-   virtual int GetTargetActive(unsigned long targetIdx);
+   virtual sREAL GetTargetTurnRate(uint32_t targetIdx);
+   virtual sREAL GetTargetLoad(uint32_t targetIdx);
+   virtual sREAL GetTargetAirSpeed(uint32_t targetIdx);
+   virtual int GetTargetActive(uint32_t targetIdx);
    void GetSurfaceTargetGeometry(sSurfaceTarget &st);
    void CalcAlignPoint(sSurfaceTarget &st);
    virtual void GetWeaponLimits(sWeaponLimits &weaponLimits) = 0;
    void GetFormationPoint(int wingPos, int formationType, 
                    int leaderIdx, sPoint &offset);
    void ClearTargetPilot();
-   void SetTargetPilot(unsigned long targetIdx);
+   void SetTargetPilot(uint32_t targetIdx);
    int EvalThreatFromPlayer();
-   void SelectEngagementFightType(unsigned long targetIdx);
+   void SelectEngagementFightType(uint32_t targetIdx);
    void SetNoseOn(sREAL, sREAL, sREAL = Pi_2);
    void SetNoseOn(int flag, const sPoint &, sREAL pitch, sREAL yaw);
 
@@ -630,7 +630,7 @@ protected:
    sAttacker *CheckAttackerList();
    sAttacker *EvalAttackerList();
    void DistributeAttackers();
-   sREAL EvalThreat(unsigned long idx, aiPilot **pil);
+   sREAL EvalThreat(uint32_t idx, aiPilot **pil);
 
    void SETROLLPID(sREAL goal, sREAL dVel = 0.0, sREAL controlStep = 1.0)
    {

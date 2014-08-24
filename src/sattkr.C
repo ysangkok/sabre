@@ -64,7 +64,7 @@ int sAttackerList::CompareSAttackerThreat(void *v0, void *v1)
 /*
  *  add an attacker 
  */
-void sAttackerList::AddAttacker(unsigned long idx)
+void sAttackerList::AddAttacker(uint32_t idx)
 {
 	void *v;
 	sAttacker tmp(idx);
@@ -80,7 +80,7 @@ void sAttackerList::AddAttacker(unsigned long idx)
 /*
  * delete an attacker
  */
-void sAttackerList::DeleteAttacker(unsigned long idx)
+void sAttackerList::DeleteAttacker(uint32_t idx)
 {
 	void *v;
 	sAttacker tmp(idx);
@@ -120,7 +120,7 @@ sAttacker *sAttackerList::GetNextAttacker()
 }
 
 
-sAttacker *sAttackerList::GetAttackerByIdx(unsigned long idx)
+sAttacker *sAttackerList::GetAttackerByIdx(uint32_t idx)
 {
 	sAttacker *result = NULL;
 	sAttacker *attkr = GetFirstAttacker();

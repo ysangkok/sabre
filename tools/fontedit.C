@@ -32,9 +32,9 @@
 // --
 
 // standard vga mode
-int screen_dimx=320, screen_dimy=200;
-const char *fontfn;
-const char *editfontpaths[]={
+static int screen_dimx=320, screen_dimy=200;
+static const char *fontfn;
+static const char *editfontpaths[]={
    "/usr/lib/kbd/consolefonts",
    "lib/fonts",
    "../lib/fonts",
@@ -60,7 +60,7 @@ int main( int argc, char ** argv )
 // --
 // --
 
-void usage( void )
+__attribute__((noreturn)) void usage( void )
 {
    fprintf( stderr, "usage: fontedit [options] <file>\n" 
 	              );
@@ -90,7 +90,6 @@ void parseargs( int argc, char **argv )
       switch( c ) {
 	 case '?':
 	   usage();
-          break;  
       } 
    }
    
@@ -100,8 +99,8 @@ void parseargs( int argc, char **argv )
      usage();
 }
 
-fontdev *FONT=new fontdev;
-fontdev *SYSFONT=new fontdev;
+static fontdev *FONT=new fontdev;
+static fontdev *SYSFONT=new fontdev;
 
 #define colormouse         23
 #define colorborderdark    25

@@ -318,7 +318,7 @@ void shape_params::write(std::ostream &os)
 {
   if (p_params)
     {
-      flags &= ~((unsigned long)CPY_PARAMS);
+      flags &= ~((uint32_t)CPY_PARAMS);
       int copy = 1;
       for (int i=1;i<n_params;i++)
 	{

@@ -7,10 +7,10 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-unsigned long memcompress (char *tgt, 
-			   unsigned long tgtsize, 
+uint32_t memcompress (char *tgt, 
+			   uint32_t tgtsize, 
 			   char *src, 
-			   unsigned long srcsize);
+			   uint32_t srcsize);
 #ifdef __cplusplus
 }
 #endif
