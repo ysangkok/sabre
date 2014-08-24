@@ -30,15 +30,22 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <cstddef>
+#include <cassert>
 #include "defs.h"
 #include "grafix.h"
 #include "traveler.h"
 #include "vga_13.h"
 #include "ddaline.h"
 #ifdef HAVE_LIBSDL
-#include <SDL/SDL.h>
-int FilterEvents(const SDL_Event *event);
-static SDL_Surface *screen; 
+#include <SDL2/SDL.h>
+int FilterEvents(void *userdata, SDL_Event *event);
+static SDL_Texture *screen; 
+static SDL_Color *colors;
+static Uint32* myBuf;
+static unsigned int screen_width;
+static unsigned int screen_height;
+static SDL_Renderer *sdlRenderer;
 #else
 #include "gdev-svgalib.h"
 #endif
@@ -133,8 +140,7 @@ void init_vga_13(void)
              SDL_GetError());     
      exit(0);        
      } 
-  SDL_WM_SetCaption("Sabre - SDL Version", "Sabre"); 
-  SDL_SetEventFilter(FilterEvents);
+  SDL_SetEventFilter(FilterEvents, nullptr);
   SDL_EventState(SDL_MOUSEMOTION, SDL_ENABLE);
 #else    
   /* Create gdev for svgalib */
@@ -184,24 +190,32 @@ void init_vga_13(void)
 // then  setup the display ...
 
 //   SDL_Surface *screen; is define above ...
-   screen = SDL_SetVideoMode(dimx, dimy, 8, 
-                             SDL_HWSURFACE|SDL_HWPALETTE); //|SDL_FULLSCREEN
+SDL_Window *sdlWindow;
+screen_width = dimx;
+screen_height = dimy;
+SDL_CreateWindowAndRenderer(dimx, dimy, 0, &sdlWindow, &sdlRenderer);
+myBuf=new Uint32[dimx*dimy*4];
+screen = SDL_CreateTexture(sdlRenderer,
+                               SDL_PIXELFORMAT_ARGB8888,
+                               SDL_TEXTUREACCESS_STREAMING,
+                               dimx, dimy);
    if (screen == NULL) 
       { 
       fprintf(stderr, "Couldn't set SDL video mode: %s\n",
               SDL_GetError());
       exit(1);   
       }
+SDL_SetWindowTitle(sdlWindow, "Sabre - SDL Version");
       
 // now setup all of the Sabre stuff to point to our new buffer ...
-   xbuffer    = (unsigned char *) screen->pixels;
+   xbuffer    = (unsigned char *) malloc(dimx*dimy);
    screen_ptr = xbuffer;
    buffer_ptr = xbuffer;
 	 
-   SCREEN_WIDTH = dimx;    
-   SCREEN_HEIGHT = dimy;   
-   MXSCREEN_WIDTH = dimx;  
-   MXSCREEN_HEIGHT = dimy; 
+   SCREEN_WIDTH = dimx;
+   SCREEN_HEIGHT = dimy;
+   MXSCREEN_WIDTH = dimx;
+   MXSCREEN_HEIGHT = dimy;
    MAX_X = SCREEN_WIDTH - 1;
    MAX_Y = SCREEN_HEIGHT - 1;
    cliprect.topLeft.x = 0;
@@ -284,7 +298,20 @@ float calc_aspect_ratio(float width, float height)
 void blit_buff()
 {
 #ifdef HAVE_LIBSDL
-   SDL_UpdateRect(screen, 0, 0, 0, 0);
+   assert(screen_width != 0);
+   for (unsigned int j=0; j<screen_height; j++) {
+     for (unsigned int i=0; i<screen_width; i++) {
+       unsigned char idx = screen_ptr[j*screen_width + i];
+       int r = colors[idx].r, g = colors[idx].g, b = colors[idx].b;
+       //printf("%d %d %d %d\n", idx, r, g, b);
+       myBuf[j*screen_width + i] = colors[idx].a << 24 | r << 16 | g << 8 | b << 0;
+     }
+   }
+   SDL_UpdateTexture(screen, NULL, myBuf, screen_width * 4);
+   SDL_RenderClear(sdlRenderer);
+   SDL_RenderCopy(sdlRenderer, screen, NULL, NULL);
+   SDL_RenderPresent(sdlRenderer);
+   //SDL_UpdateRect(screen, 0, 0, 0, 0);
 #else
    G->update();
 #endif
@@ -295,18 +322,13 @@ void clear_scr(int color)
   clear_scr(color,MAX_Y);
 }
 
-void clear_scr(int color, int row)
+void clear_scr(int color, int)
 {
 #ifdef HAVE_LIBSDL
-SDL_Rect ScreenClearRect;         // no optimize, not a freq call. (I think)
-
-ScreenClearRect.x = 0;
-ScreenClearRect.y = 0;
-ScreenClearRect.w = (Uint16) MAX_X;
-ScreenClearRect.h = Uint16(row+1);        // overrun bug here??  check it out for sure.
-// possible BUG !!
-
-SDL_FillRect(screen, &ScreenClearRect, (Uint32) color);   
+assert(color < 256);
+SDL_SetRenderDrawColor(sdlRenderer, colors[color].r, colors[color].b, colors[color].g, colors[color].a);
+SDL_RenderClear(sdlRenderer);
+SDL_RenderPresent(sdlRenderer);
 #else
   G->rect(0,0,SCREEN_WIDTH,row+1,(int) color);
 #endif
@@ -315,18 +337,21 @@ SDL_FillRect(screen, &ScreenClearRect, (Uint32) color);
 void fill_rect(Rect &r, int color)
 {
 #ifdef HAVE_LIBSDL
-  SDL_Rect FillRect;   
+  //SDL_Rect FillRect;   
   
   if (valid_rect(r))       
     {
       Rect r0 = r;
       cliprect2rect(cliprect,r0);
-      FillRect.x = (Sint16) r0.left();
-      FillRect.y = (Sint16) r0.top();
-      FillRect.w = (Sint16) RWIDTH(r0);
-      FillRect.h = (Sint16) RHEIGHT(r0);
-      SDL_FillRect(screen, &FillRect, (Uint32) color);   
-    }   
+      //FillRect.x = (Sint16) r0.left();
+      //FillRect.y = (Sint16) r0.top();
+      //FillRect.w = (Sint16) RWIDTH(r0);
+      //FillRect.h = (Sint16) RHEIGHT(r0);
+      //SDL_FillRect(screen, &FillRect, (Uint32) color);   
+      for (int j1=r0.top(); j1<r0.bottom(); j1++)
+        for (int i1=r0.left(); i1<r0.right(); i1++)
+          putpixel(i1, j1, color);
+    }
 #else
   if (valid_rect(r))
     {
@@ -363,6 +388,14 @@ void v_line(int x, int y, int len, int color)
 void set_rgb_value(int color, char red, char green, char blue)
 {
 #ifdef HAVE_LIBSDL
+assert(color < 256);
+if (!colors) colors = new SDL_Color[256];
+
+colors[color].r = Uint8(red << 2);
+colors[color].g = Uint8(green << 2);
+colors[color].b = Uint8(blue << 2);
+colors[color].a = 255;
+
 // this is a palette set function
 // Gonna have to set cursor remap in here someday!
 
@@ -386,7 +419,7 @@ void set_rgb_value(int color, char red, char green, char blue)
 //        Uint8 unused;
 // } SDL_Color;
 
-SDL_Color ColorStruct;
+//SDL_Color ColorStruct;
 /*
 ColorStruct.r = (unsigned char)
        (pow(
@@ -408,29 +441,31 @@ ColorStruct.b = (unsigned char)
            (float)1/GAMMA_CORRECTION
            ) * 255);
 */
-ColorStruct.r = Uint8(red << 2);
-ColorStruct.g = Uint8(green << 2);
-ColorStruct.b = Uint8(blue << 2);
-
-SDL_SetColors(screen,&ColorStruct,color,1);
+//ColorStruct.r = Uint8(red << 2);
+//ColorStruct.g = Uint8(green << 2);
+//ColorStruct.b = Uint8(blue << 2);
+//
+//SDL_SetColors(screen,&ColorStruct,color,1);
 #else
   RGB8->set(color,red,green,blue);
 #endif
 }
 
+#ifdef HAVE_LIBSDL
 void get_rgb_value(int color, char *red, char *green, char *blue)
 {
-#ifdef HAVE_LIBSDL
+assert(color < 256);
 // this gets a RGB tuple from the current palette
-*red   = screen->format->palette->colors[color].r;
-*green = screen->format->palette->colors[color].g;
-*blue  = screen->format->palette->colors[color].b;
-
-#else
-  RGB8->get(color,red,green,blue);
-#endif
+*red   = colors[color].r;
+*green = colors[color].g;
+*blue  = colors[color].b;
 }
-
+#else
+void get_rgb_value(int color, char *red, char *green, char *blue)
+{
+  RGB8->get(color,red,green,blue);
+}
+#endif
 void set_palette(int startcolor, int endcolor, char *palette)
 {
 // this is a palette set function that reads tupples of 3 bytes in RGB order
@@ -440,18 +475,17 @@ void set_palette(int startcolor, int endcolor, char *palette)
 // Gonna have to set cursor remap in here!
 
 
-SDL_Color *ColorStructPtr = new SDL_Color[endcolor - startcolor];
-
 for(int x=startcolor;x<=endcolor;x++)
    {
-   ColorStructPtr[x].r = *(palette++);
-   ColorStructPtr[x].g = *(palette++);
-   ColorStructPtr[x].b = *(palette++);
+   colors[x].r = *(palette++);
+   colors[x].g = *(palette++);
+   colors[x].b = *(palette++);
+   colors[x].a = 255;
    }
 
-SDL_SetColors(screen,ColorStructPtr, startcolor,endcolor - startcolor);
+//SDL_SetColors(screen,ColorStructPtr, startcolor,endcolor - startcolor);
 
-delete[] ColorStructPtr;
+//delete[] ColorStructPtr;
 
 
 #else
@@ -466,13 +500,9 @@ void get_palette(int startcolor, int endcolor, char *palette)
 
 for(int x=startcolor;x<=endcolor;x++)
    {
-   *(palette++) = screen
-		->format
-		->palette
-		->colors[x]
-		.r;
-   *(palette++) = screen->format->palette->colors[x].g;
-   *(palette++) = screen->format->palette->colors[x].b;
+   *(palette++) = colors[x].r;
+   *(palette++) = colors[x].g;
+   *(palette++) = colors[x].b;
    }
 
 #else
@@ -548,7 +578,7 @@ void mline(int x0, int y0, int x1, int y1, char color)
 }
 
 #ifdef HAVE_LIBSDL
-int FilterEvents(const SDL_Event *event)
+int FilterEvents(void *, SDL_Event *event)
 {
   if(event->type == SDL_KEYDOWN)
     return 1;

@@ -2,8 +2,8 @@ import os
 
 clang = 1
 everything = 1
-do_vga = 1
-do_sdl = 0
+do_vga = 0
+do_sdl = 1
 do_ncurses = 1
 fast = 0
 memdebug = 0
@@ -71,7 +71,7 @@ if clang:
 	orgenv.Append(LINKFLAGS="-stdlib=libc++")
 	if not fast and everything:
 		common_flags = ["-Wno-float-equal", "-Wno-padded", "-Wno-format-nonliteral", "-Wno-disabled-macro-expansion"]
-		orgenv.Append(CXXFLAGS=common_flags + ["-Wno-c++11-extensions", "-Wno-c++98-compat-pedantic", "-Wno-exit-time-destructors", "-Wno-global-constructors"])
+		orgenv.Append(CXXFLAGS=common_flags + ["-Wno-c++11-compat", "-Wno-c++11-extensions", "-Wno-c++98-compat-pedantic", "-Wno-exit-time-destructors", "-Wno-global-constructors"])
 		orgenv.Append(CFLAGS=common_flags)
 
 env = orgenv.Clone()
@@ -82,7 +82,7 @@ if do_vga: env.Append(CPPDEFINES = {"HAVE_LIBVGA":"1"})
 if do_ncurses: env.ParseConfig('pkg-config --libs --cflags ncurses')
 
 if do_sdl:
-	env.ParseConfig('pkg-config --libs --cflags sdl')
+	env.ParseConfig('PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig/ pkg-config --libs --cflags sdl2')
 	env.Append(CPPDEFINES = {"HAVE_LIBSDL": "1"})
 
 if do_vga: env.Append(LIBS = ["vga", "vgagl"])

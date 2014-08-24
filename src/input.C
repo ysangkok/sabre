@@ -38,7 +38,7 @@
 #include "vga_13.h"
 #include "input.h"
 #ifdef HAVE_LIBSDL
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 #else
 #ifndef SABREWIN
 #include "vga.h"

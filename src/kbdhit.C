@@ -37,7 +37,7 @@ int kbdin = 0;
 /* 12/98 David Vandewalle: SDL port */
 
 #ifdef HAVE_LIBSDL
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 #else
 #include "vga.h"
 #endif
