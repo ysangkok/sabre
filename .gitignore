@@ -8,6 +8,8 @@ tools/mkterrain
 tools/mktextr
 tools/mktextr3
 tools/rmptextr3
+tools/hello
+tools/fontedit
 *.gcda
 *.gcno
 gmon.out

@@ -94,7 +94,7 @@ int main( int argc, char ** argv )
 // --
 // --
 
-void usage( void )
+__attribute__((noreturn)) void usage( void )
 {
    fprintf( stderr, "usage: hello [options]\n" 
 	            "options:\n"
@@ -145,17 +145,17 @@ static void fade( int out=1 )
      RGB8->set( mypal );   
 }
 
-fontdev *FONT=new fontdev;
-fontdev *BROADWAYFONT=new fontdev;
-fontdev *SMALLERFONT=new fontdev;
-fontdev *MEDIEVALFONT=new fontdev;
+static fontdev *FONT=new fontdev;
+static fontdev *BROADWAYFONT=new fontdev;
+static fontdev *SMALLERFONT=new fontdev;
+static fontdev *MEDIEVALFONT=new fontdev;
 
 void test( void )
 {
    int i;
    ffactor[0]=0.0;
    for( i=1; i<64; i++ )
-     ffactor[i]=(i*1.0)/64.0;
+     ffactor[i]=(i*1.0f)/64.0f;
    
    RGB8->get( mypal );
 
@@ -188,7 +188,7 @@ void test( void )
    //
    int radius=dx>dy?dy/2:dx/2;
    for( i=0; i<32; i++ ) {
-      float angle=(i/32.0)*2*3.14159;
+      float angle=(i/32.0f)*2*3.14159f;
       int ddx=(int)(sin(angle)*radius);
       int ddy=(int)(cos(angle)*radius);
       G->line( dx/2, dy/2, dx/2+ddx, dy/2+ddy, 32+i );
@@ -217,7 +217,7 @@ void test( void )
    //
    unsigned char pattern[225];
    for( i=0; i<224; i++ )
-     pattern[i]=i+32;
+     pattern[i]=(unsigned char) i+32;
    pattern[i]=0;
    unsigned char *start_pattern=pattern;
    time_t end=clock()+CLOCKS_PER_SEC;
@@ -247,7 +247,7 @@ void test( void )
 // --
 
 
-const char *myfontpaths[] = {
+static const char *myfontpaths[] = {
    "fonts",
    "../fonts",
    "lib/fonts",

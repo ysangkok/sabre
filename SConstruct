@@ -1,11 +1,11 @@
 import os
 
-clang = 0
+clang = 1
 everything = 1
 do_vga = 1
 do_sdl = 0
 do_ncurses = 1
-fast = 1
+fast = 0
 memdebug = 0
 coverage = 0
 
@@ -27,7 +27,7 @@ if not clang:
 warn += ["-Werror"]
 
 if fast:
-	warn = machine
+	warn = machine + ["-w"]
 
 # AddressSanitizer
 if memdebug:
