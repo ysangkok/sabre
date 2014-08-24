@@ -80,8 +80,10 @@ int           window_height      = 0;
 SimFont       *g_font = NULL;
 Rect          cliprect(0,0,319,199);
 
-//#define GDEV_SCREEN_DIM 1
-//#define GDEV_WINDOW_DIM 0
+#ifdef HAVE_LIBVGA
+#define GDEV_SCREEN_DIM 1
+#define GDEV_WINDOW_DIM 0
+#endif
 
 void init_vga_13(void)
 {

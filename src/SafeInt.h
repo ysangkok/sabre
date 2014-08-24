@@ -72,7 +72,7 @@ Version 3.0
 
 #include <assert.h>
 // Need this for ptrdiff_t on some compilers
-//#include <cstddef>
+#include <cstddef>
 #include <cstdlib>
 
 #if !defined __GNUC__ && defined _M_AMD64
@@ -119,7 +119,9 @@ Version 3.0
 #endif
 
 #if NEEDS_NULLPTR_DEFINED
+#ifndef nullptr
 #define nullptr NULL
+#endif
 #endif
 
 

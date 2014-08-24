@@ -1,28 +1,58 @@
 import os
 
-clang = 1
+clang = 0
 everything = 1
-do_vga = False
-do_sdl = True
-do_ncurses = True
+do_vga = 1
+do_sdl = 0
+do_ncurses = 1
+fast = 1
+memdebug = 0
+coverage = 0
+
+warn = []
+machine = ["-m32"]
+#machine = []
 
 if everything:
 	if clang:
-		warn = ["-Weverything"]
+		warn += machine + ["-Weverything"]
 	else:
-		warn = ["-Wall", "-Wextra"]
+		warn += machine + ["-Wall", "-Wextra"]
 else:
-	warn = ["-Wall"]
+	warn += machine + ["-Wall"]
 
 if not clang:
 	warn += ["-Wno-attributes", "-Wno-unused-local-typedefs"]
 
 warn += ["-Werror"]
 
-debug_profile_and_coverage = Split("-pg -ggdb3 -ftest-coverage -fprofile-arcs") # this and SafeInt is apparently enough to provoke the llvm_gcda SIGSEGV on exit: Split("-fprofile-arcs") 
+if fast:
+	warn = machine
+
+# AddressSanitizer
+if memdebug:
+	debug_profile_and_coverage = Split("-fsanitize=undefined -fsanitize=memory -fno-omit-frame-pointer -fsanitize-memory-track-origins")
+else: # prevent relocation R_X86_64_32S against `__libc_csu_fini' can not be used when making a shared object
+# Profile
+	debug_profile_and_coverage = Split("-pg")
+
+# Stack protection
+debug_profile_and_coverage += Split("-fstack-protector-all")
+
+# Debug
+debug_profile_and_coverage += Split("-ggdb3")
+
+# Coverage
+if coverage:
+	debug_profile_and_coverage += Split("-ftest-coverage -fprofile-arcs")
+
+debug_profile_and_coverage += Split("-fPIC")
+
+if fast:
+	debug_profile_and_coverage = []
 
 orgenv = Environment(
-	CC="clang" if clang else "colorgcc", CFLAGS=warn + debug_profile_and_coverage + Split('-ansi -pedantic -std=c11'), CXX="clang++" if clang else "colorgcc", CXXFLAGS=warn + debug_profile_and_coverage + Split('-Wno-sign-conversion -ansi -pedantic -std=c++11'), LIBS=["m"], 
+	CC="clang" if clang else "gcc", CFLAGS=warn + debug_profile_and_coverage + ([] if fast else Split('-ansi -pedantic -std=c11')), CXX="clang++" if clang else "gcc", CXXFLAGS=warn + debug_profile_and_coverage + ["-std=c++11"] + ([] if fast else Split('-Wno-sign-conversion -ansi -pedantic')), LIBS=["m"], 
 	LINK="clang++" if clang else "g++", 
 	#CXXFLAGS="-nodefaultlibs -fno-exceptions -w", 
 	CPPDEFINES = {"VERSION":"\\\"0.2.4b\\\"","REV_DATE":"\\\"11/21/99\\\"","JSTICK_INSTALLED":"1"},
@@ -31,14 +61,18 @@ orgenv = Environment(
 
 orgenv['ENV']['TERM'] = os.environ['TERM']
 
-orgenv.Append(LINKFLAGS=debug_profile_and_coverage + Split("-Wl,--gc-sections,--print-gc-sections"))
+orgenv.Append(LINKFLAGS=machine)
+
+if not fast:
+	orgenv.Append(LINKFLAGS=debug_profile_and_coverage + Split("-Wl,--gc-sections")) #,--print-gc-sections
 
 if clang:
-	orgenv.Append(CXXFLAGS=["-stdlib=libc++", "-ferror-limit=5"])
+	orgenv.Append(CXXFLAGS=["-stdlib=libc++"] + (["-ferror-limit=5"] if not fast else []))
 	orgenv.Append(LINKFLAGS="-stdlib=libc++")
-	if everything:
-		orgenv.Append(CXXFLAGS=["-Wno-float-equal", "-Wno-padded", "-Wno-format-nonliteral", "-Wno-disabled-macro-expansion", "-Wno-c++98-compat-pedantic", "-Wno-exit-time-destructors", "-Wno-global-constructors"])
-		orgenv.Append(CFLAGS=  ["-Wno-float-equal", "-Wno-padded", "-Wno-format-nonliteral", "-Wno-disabled-macro-expansion"])
+	if not fast and everything:
+		common_flags = ["-Wno-float-equal", "-Wno-padded", "-Wno-format-nonliteral", "-Wno-disabled-macro-expansion"]
+		orgenv.Append(CXXFLAGS=common_flags + ["-Wno-c++11-extensions", "-Wno-c++98-compat-pedantic", "-Wno-exit-time-destructors", "-Wno-global-constructors"])
+		orgenv.Append(CFLAGS=common_flags)
 
 env = orgenv.Clone()
 
@@ -53,7 +87,11 @@ if do_sdl:
 
 if do_vga: env.Append(LIBS = ["vga", "vgagl"])
 
-libgdev = Library([env.Object("gdev/gdev.C"), env.Object("gdev/gdev-svgalib.C"), env.Object("src/fontdev.C")])
+gdev_objs = [env.Object("gdev/gdev.C"),  env.Object("src/fontdev.C")]
+if do_vga:
+	gdev_objs += [env.Object("gdev/gdev-svgalib.C")]
+
+libgdev = Library(gdev_objs)
 
 objects = env.Object(Glob("src/*.C")) + env.Object(Glob("src/*.c")) + env.Object(Glob("libzip/*.c"))
 if do_vga: objects += libgdev

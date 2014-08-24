@@ -62,39 +62,41 @@ int Mouse::ResetDriver( void ) const
 // init mouse events for SDL ...
 return true;
 #else
-const int mouse_manual_flag = 0;
+//const int mouse_manual_flag = 0;
 
-const char MOUSE_PATH[] = "/dev/mouse";
+//const char MOUSE_PATH[] = "/dev/mouse";
 #ifndef SABREWIN
-  if (mouse_manual_flag)
-    {
-      if (mouse_init(const_cast<char*>(MOUSE_PATH),MOUSE_MICROSOFT,
-		     MOUSE_DEFAULTSAMPLERATE) > 0)
-	{
-	  mouse_setxrange(0,SCREEN_WIDTH-1);
-	  mouse_setyrange(0,SCREEN_HEIGHT-1);
-	  mouse_setwrap(MOUSE_NOWRAP);
-	}
-      else
-	return(0);
-    }
-  else
+//  if (mouse_manual_flag)
+//    {
+//      if (mouse_init(const_cast<char*>(MOUSE_PATH),MOUSE_MICROSOFT,
+//		     MOUSE_DEFAULTSAMPLERATE) > 0)
+//	{
+//	  mouse_setxrange(0,SCREEN_WIDTH-1);
+//	  mouse_setyrange(0,SCREEN_HEIGHT-1);
+//	  mouse_setwrap(MOUSE_NOWRAP);
+//	}
+//      else
+//	return(0);
+//    }
+//  else
     vga_setmousesupport(1);
 #endif
   return (1);
 #endif
 }
 
+#ifdef HAVE_LIBSDL
 void Mouse::set_position(__attribute__((unused)) int x, __attribute__((unused)) int y)
 {
-#ifdef HAVE_LIBSDL
-
+}
 #else
 #ifndef SABREWIN
+void Mouse::set_position(int x, int y)
+{
   mouse_setposition(x,y);
-#endif
-#endif
 }
+#endif
+#endif
 
 /*
  * void Mouse::Update( void )
@@ -145,8 +147,8 @@ Mouse::~Mouse()
 
 #else
 #ifndef SABREWIN
-  if (mouse_manual_flag)
-    mouse_close();
+//  if (mouse_manual_flag)
+//    mouse_close();
 #endif
 #endif
 }
