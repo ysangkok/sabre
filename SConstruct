@@ -21,8 +21,14 @@ if everything:
 else:
 	warn += machine + ["-Wall"]
 
+lto = []
+link_lto = []
+
 if not clang:
 	warn += ["-Wno-attributes", "-Wno-unused-local-typedefs"]
+else:
+	lto += ["-flto"]
+	link_lto += ["-B/usr/lib/gold-ld"]
 
 warn += ["-Werror"]
 
@@ -52,7 +58,7 @@ if fast:
 	debug_profile_and_coverage = []
 
 orgenv = Environment(
-	CC="clang" if clang else "gcc", CFLAGS=warn + debug_profile_and_coverage + ([] if fast else Split('-ansi -pedantic -std=c11')), CXX="clang++" if clang else "gcc", CXXFLAGS=warn + debug_profile_and_coverage + ["-std=c++11"] + ([] if fast else Split('-Wno-sign-conversion -ansi -pedantic')), LIBS=["m"], 
+	CC="clang" if clang else "gcc", CFLAGS=lto + warn + debug_profile_and_coverage + ([] if fast else Split('-ansi -pedantic -std=c11')), CXX="clang++" if clang else "gcc", CXXFLAGS=lto + warn + debug_profile_and_coverage + ["-std=c++11"] + ([] if fast else Split('-Wno-sign-conversion -ansi -pedantic')), LIBS=["m"], 
 	LINK="clang++" if clang else "g++", 
 	#CXXFLAGS="-nodefaultlibs -fno-exceptions -w", 
 	CPPDEFINES = {"VERSION":"\\\"0.2.4b\\\"","REV_DATE":"\\\"11/21/99\\\"","JSTICK_INSTALLED":"1"},
@@ -61,7 +67,7 @@ orgenv = Environment(
 
 orgenv['ENV']['TERM'] = os.environ['TERM']
 
-orgenv.Append(LINKFLAGS=machine)
+orgenv.Append(LINKFLAGS=machine + lto + link_lto)
 
 if not fast:
 	orgenv.Append(LINKFLAGS=debug_profile_and_coverage + Split("-Wl,--gc-sections")) #,--print-gc-sections

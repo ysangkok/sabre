@@ -239,14 +239,14 @@ public:
     : npoints(0),
     lpoints(NULL),
     tpoints(NULL),
-    delete_flag(1)
+    delete_flag(0)
     {}
 
   C_PolyInfo(int np, R_3DPoint *pnts, TxtPoint *tpnts = NULL)
     :npoints(np),
     lpoints(pnts),
     tpoints(tpnts),
-    delete_flag(1)
+    delete_flag(0)
     {}
 
   C_PolyInfo(const C_PolyInfo &cp)
@@ -302,13 +302,13 @@ public:
   C_ShapeInfo()
     : npolys(0),
     polyinfos(NULL),
-    delete_flag(1)
+    delete_flag(0)
     {}
 
   C_ShapeInfo(int np, C_PolyInfo *ip)
     :npolys(np),
     polyinfos(ip),
-    delete_flag(1)
+    delete_flag(0)
     {}
 
   C_ShapeInfo(const C_ShapeInfo &cs)
