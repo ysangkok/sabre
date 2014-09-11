@@ -208,7 +208,7 @@ screen = SDL_CreateTexture(sdlRenderer,
 SDL_SetWindowTitle(sdlWindow, "Sabre - SDL Version");
       
 // now setup all of the Sabre stuff to point to our new buffer ...
-   xbuffer    = (unsigned char *) malloc(dimx*dimy);
+   xbuffer    = (unsigned char *) calloc(dimx*dimy, sizeof(char));
    screen_ptr = xbuffer;
    buffer_ptr = xbuffer;
 	 
@@ -475,7 +475,7 @@ void set_palette(int startcolor, int endcolor, char *palette)
 // Gonna have to set cursor remap in here!
 
 
-for(int x=startcolor;x<=endcolor;x++)
+for(int x=startcolor;x<endcolor;x++)
    {
    colors[x].r = *(palette++);
    colors[x].g = *(palette++);
@@ -498,7 +498,7 @@ void get_palette(int startcolor, int endcolor, char *palette)
 #ifdef HAVE_LIBSDL
 // this gets a block of palette entries in one call.
 
-for(int x=startcolor;x<=endcolor;x++)
+for(int x=startcolor;x<endcolor;x++)
    {
    *(palette++) = colors[x].r;
    *(palette++) = colors[x].g;

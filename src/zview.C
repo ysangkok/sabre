@@ -522,7 +522,8 @@ void Z_Viewer::init(Z_Node_Manager *zmd)
   min_partial = 1.0;
   min_full = 16.0;
   min_sw = 0.5;
-
+  visible_flag = 1;
+  da_level = da_minimal;
 }
 
 Z_Viewer::Z_Viewer(Z_Node_Manager *zm)
