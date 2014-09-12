@@ -395,57 +395,6 @@ colors[color].r = Uint8(red << 2);
 colors[color].g = Uint8(green << 2);
 colors[color].b = Uint8(blue << 2);
 colors[color].a = 255;
-
-// this is a palette set function
-// Gonna have to set cursor remap in here someday!
-
-//
-// DANGER!!!!  The SDL version of this routine has been modified to do gamma
-//             correction on the palette when it is set with this function.
-//             
-//             This banks on the current behavior of Sabre ... basically Sabre
-//             only calls this function when first loading the palette, so 
-//             everything works OK.
-//            
-//             This is also DIRT slow, cause it uses the evil floating point
-//             number.
-
-
-
-// typedef struct {
-//        Uint8 r;
-//        Uint8 g;
-//        Uint8 b;
-//        Uint8 unused;
-// } SDL_Color;
-
-//SDL_Color ColorStruct;
-/*
-ColorStruct.r = (unsigned char)
-       (pow(
-           ((float)red/(float)255),
-           (float)1/GAMMA_CORRECTION
-           ) * 255);
-
-
-ColorStruct.g = (unsigned char)
-       (pow(
-           ((float)green/(float)255),
-           (float)1/GAMMA_CORRECTION
-           ) * 255);
-
-
-ColorStruct.b = (unsigned char)
-       (pow(
-           ((float)blue/(float)255),
-           (float)1/GAMMA_CORRECTION
-           ) * 255);
-*/
-//ColorStruct.r = Uint8(red << 2);
-//ColorStruct.g = Uint8(green << 2);
-//ColorStruct.b = Uint8(blue << 2);
-//
-//SDL_SetColors(screen,&ColorStruct,color,1);
 #else
   RGB8->set(color,red,green,blue);
 #endif
@@ -473,8 +422,6 @@ void set_palette(int startcolor, int endcolor, char *palette)
 
 #ifdef HAVE_LIBSDL
 // Gonna have to set cursor remap in here!
-
-
 for(int x=startcolor;x<endcolor;x++)
    {
    colors[x].r = *(palette++);
@@ -482,12 +429,6 @@ for(int x=startcolor;x<endcolor;x++)
    colors[x].b = *(palette++);
    colors[x].a = 255;
    }
-
-//SDL_SetColors(screen,ColorStructPtr, startcolor,endcolor - startcolor);
-
-//delete[] ColorStructPtr;
-
-
 #else
   RGB8->set(palette,startcolor,endcolor);
 #endif
@@ -497,14 +438,12 @@ void get_palette(int startcolor, int endcolor, char *palette)
 {
 #ifdef HAVE_LIBSDL
 // this gets a block of palette entries in one call.
-
 for(int x=startcolor;x<endcolor;x++)
    {
    *(palette++) = colors[x].r;
    *(palette++) = colors[x].g;
    *(palette++) = colors[x].b;
    }
-
 #else
   RGB8->get(palette,startcolor,endcolor);
 #endif
@@ -595,31 +534,10 @@ unsigned char *lock_xbuff()
   return (xbuffer);
 }
 
-void free_xbuff()
-{
-
-}
-
-void vga13_suspend()
-{
-
-}
-
-void vga13_resume()
-{
-
-}
-
+void free_xbuff() { }
+void vga13_suspend() { }
+void vga13_resume() { }
 void vga13_drawprep();
-void vga13_drawprep()
-{
-
-}
-
-void vga13_begin_scene()
-{
-}
-
-void vga13_end_scene()
-{
-}
+void vga13_drawprep() { }
+void vga13_begin_scene() { }
+void vga13_end_scene() { }

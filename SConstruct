@@ -1,7 +1,7 @@
 import os
 
 clang = 1
-everything = 1
+everything = 0
 do_vga = 1
 do_sdl = 0
 do_ncurses = 1
@@ -30,6 +30,9 @@ if not clang:
 else:
 	lto += ["-flto"]
 	link_lto += ["-B/usr/lib/gold-ld"]
+
+
+warn += ["-Wno-c++11-long-long", "-Wno-variadic-macros", "-Wno-c99-extensions", "-Wno-c++11-extensions"]
 
 warn += ["-Werror"]
 

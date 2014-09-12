@@ -51,7 +51,7 @@ class gdev_svgalib:public gdev {
 
 void assign_gdev_svgalib( void )
 {
-   vga_disabledriverreport();
+   //vga_disabledriverreport();
    G = new gdev_svgalib;
 }
 
@@ -60,7 +60,7 @@ static int mouse_events=0;
 void start_mouse_gdev_svgalib( void )
 {
    mouse_events=1;
-   vga_setmousesupport(1);
+   //vga_setmousesupport(1);
 }
 
 // --
