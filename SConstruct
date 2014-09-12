@@ -2,8 +2,8 @@ import os
 
 clang = 0
 everything = 1
-do_vga = 0
-do_sdl = 1
+do_vga = 1
+do_sdl = 0
 do_ncurses = 1
 fast = 1
 memdebug = 0
@@ -23,6 +23,10 @@ else:
 
 if not clang:
 	warn += ["-Wno-attributes", "-Wno-unused-local-typedefs"]
+else:
+	#lto += ["-flto"]
+        link_lto += lto
+	link_lto += ["-B/usr/lib/gold-ld"]
 
 warn += ["-Werror"]
 
@@ -61,7 +65,7 @@ orgenv = Environment(
 
 orgenv['ENV']['TERM'] = os.environ['TERM']
 
-orgenv.Append(LINKFLAGS=machine)
+orgenv.Append(LINKFLAGS=machine + link_lto)
 
 if not fast:
 	orgenv.Append(LINKFLAGS=debug_profile_and_coverage + Split("-Wl,--gc-sections")) #,--print-gc-sections
@@ -87,14 +91,12 @@ if do_sdl:
 
 if do_vga: env.Append(LIBS = ["vga", "vgagl"])
 
-gdev_objs = [env.Object("gdev/gdev.C"),  env.Object("src/fontdev.C")]
+gdev_objs = [env.Object("gdev/gdev.C")]
 if do_vga:
 	gdev_objs += [env.Object("gdev/gdev-svgalib.C")]
 
-libgdev = Library(gdev_objs)
-
 objects = env.Object(Glob("src/*.C")) + env.Object(Glob("src/*.c")) + env.Object(Glob("libzip/*.c"))
-if do_vga: objects += libgdev
+if do_vga: objects += gdev_objs
 
 env.Program("src/sabre", objects)
 
@@ -108,9 +110,11 @@ gdevenv = orgenv.Clone()
 gdevenv.Append(LIBS = ["vga", "vgagl"])
 gdevenv.Append(CPPDEFINES = {"HAVE_LIBVGA":"1"})
 
+gdev_objs += [env.Object("src/fontdev.C")]
+
 if do_vga:
-	gdevenv.Program("tools/fontedit", [gdevenv.Object("tools/fontedit.C"), gdevenv.Object("tools/fontutils.C"), libgdev])
-	gdevenv.Program("tools/hello", [gdevenv.Object("tools/hello.C"), gdevenv.Object("tools/fontutils.C"), libgdev])
+	gdevenv.Program("tools/fontedit", [gdevenv.Object("tools/fontedit.C"), gdevenv.Object("tools/fontutils.C"), gdev_objs])
+	gdevenv.Program("tools/hello", [gdevenv.Object("tools/hello.C"), gdevenv.Object("tools/fontutils.C"), gdev_objs])
 
 orgenv.Program(orgenv.Object("tools/mkterrain.c"))
 orgenv = orgenv.Clone()

@@ -27,6 +27,7 @@
 #ifndef __starget_h
 #define __starget_h
 
+#include <cstdint>
 #include "sobject.h"
 #include "smath.h"
 #include "stact.h"

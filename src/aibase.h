@@ -30,6 +30,7 @@
 #define __aibase_h
 
 #ifdef __cplusplus
+#include <cstdint>
 #include "sobject.h"
 #include "sarray.h"
 #include "smnvrst.h"

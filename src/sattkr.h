@@ -29,6 +29,7 @@
 
 #ifdef __cplusplus
 
+#include <cstdint>
 #include "smath.h"
 #include "dhlist.h"
 

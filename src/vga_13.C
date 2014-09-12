@@ -295,19 +295,16 @@ void clear_scr(int color)
   clear_scr(color,MAX_Y);
 }
 
+#ifdef HAVE_LIBSDL
+void clear_scr(int color, int)
+{
+assert(color < 256);
+SDL_SetRenderDrawColor(sdlRenderer, colors[color].r, colors[color].b, colors[color].g, colors[color].a);
+SDL_RenderClear(sdlRenderer);
+SDL_RenderPresent(sdlRenderer);
+#else
 void clear_scr(int color, int row)
 {
-#ifdef HAVE_LIBSDL
-SDL_Rect ScreenClearRect;         // no optimize, not a freq call. (I think)
-
-ScreenClearRect.x = 0;
-ScreenClearRect.y = 0;
-ScreenClearRect.w = (Uint16) MAX_X;
-ScreenClearRect.h = Uint16(row+1);        // overrun bug here??  check it out for sure.
-// possible BUG !!
-
-SDL_FillRect(screen, &ScreenClearRect, (Uint32) color);   
-#else
   G->rect(0,0,SCREEN_WIDTH,row+1,(int) color);
 #endif
 }
