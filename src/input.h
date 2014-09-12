@@ -26,11 +26,7 @@
 #ifndef __input_h
 #define __input_h
 
-#ifdef SABREWIN
-#include "winjoy.h"
-#else
 #include "linux_joy.h"
-#endif
 
 class InputDevice
 {
@@ -64,11 +60,7 @@ class Joystick : public InputDevice_2D
 protected:
   float z,r;
 public:
-#ifdef SABREWIN
-  WinJoy ljoy;
-#else
   LinuxJoystick ljoy;
-#endif
   int HasZ()
     {
       return (ljoy.has_z);

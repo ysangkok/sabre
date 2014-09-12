@@ -26,9 +26,7 @@
 #include "simerr.h"
 #include "grafix.h"
 #include "vga_13.h"
-#ifndef SABREWIN
 #include "fontdev.h"
-#endif
 #include "font8x8.h"
 
 extern const char *build_libpath(const char *);
@@ -125,13 +123,8 @@ void Font8x8::put_char(unsigned char c, int x, int y, int color,
   free_xbuff();
 }
 
-#ifndef SABREWIN
 ConsoleFont::ConsoleFont(const char *fname)
-#else
-ConsoleFont::ConsoleFont(const char *)
-#endif
 {
-#ifndef SABREWIN
   const char *pat;
   fdev = new fontdev;
   MYCHECK(fdev != NULL);
@@ -141,26 +134,18 @@ ConsoleFont::ConsoleFont(const char *)
   height = fdev->getdimy();
   put_width = width;
   put_height = height;
-#endif
 }
 
 ConsoleFont::~ConsoleFont()
 {
-#ifndef SABREWIN
   if (fdev != NULL)
     delete fdev;
-#endif
 }
 
 /* from hello.C prtxy() */
-#ifndef SABREWIN
 void ConsoleFont::put_char(unsigned char c, int x, int y, int color,
 			   int )
-#else
-void ConsoleFont::put_char(unsigned char , int , int , int , int )
-#endif
 {
-#ifndef SABREWIN
   unsigned char *dest = lock_xbuff() + x + y * SCREEN_PITCH;
   unsigned char *src = (unsigned char *) fdev->getfbp(c);
   int i,j;
@@ -176,5 +161,4 @@ void ConsoleFont::put_char(unsigned char , int , int , int , int )
 	}
       y++;
     }
-#endif
 }

@@ -18,9 +18,6 @@
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef SABREWIN
-int kbdin = 0;
-#else
 #include <stdio.h>
 #include <ctype.h>
 #include "pc_keys.h"
@@ -39,7 +36,7 @@ int kbdin = 0;
 #ifdef HAVE_LIBSDL
 #include <SDL2/SDL.h>
 #else
-#include "vga.h"
+#include <directfb.h>
 #endif
 
 // #define TESTME
@@ -151,5 +148,3 @@ KBHit::~KBHit()
 {
   tcsetattr(0,TCSAFLUSH,&oldios);
 }
-
-#endif // SABREWIN

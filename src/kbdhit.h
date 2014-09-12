@@ -20,7 +20,6 @@
 #ifndef __kbdhit_h
 #define __kbdhit_h
 
-#ifndef SABREWIN
 #include <sys/time.h>
 #include <sys/types.h>
 #include <sys/termios.h>
@@ -46,6 +45,3 @@ public:
 extern KBHit kbhit;
 
 #endif
-
-#endif
-

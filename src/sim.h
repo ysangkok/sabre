@@ -30,9 +30,7 @@ extern float player_hit_scaler;
 
 #include "rtkey.h"
 
-#ifndef SABREWIN
 #define __cdecl 
-#endif
 
 inline int RANDOM(int x) 
 {

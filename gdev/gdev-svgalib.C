@@ -30,9 +30,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <vga.h>
-#include <vgagl.h>
-#include <vgamouse.h>
+#include <directfb.h>
 
 #include "gdev-svgalib.h"
 

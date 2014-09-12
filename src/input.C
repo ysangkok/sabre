@@ -40,11 +40,7 @@
 #ifdef HAVE_LIBSDL
 #include <SDL2/SDL.h>
 #else
-#ifndef SABREWIN
-#include "vga.h"
-#include "vgagl.h"
-#include "vgamouse.h"
-#endif
+#include <directfb.h>
 #endif
 
 
@@ -59,43 +55,22 @@ Joystick::~Joystick() = default;
 int Mouse::ResetDriver( void ) const
 {
 #ifdef HAVE_LIBSDL
-// init mouse events for SDL ...
 return true;
 #else
-//const int mouse_manual_flag = 0;
-
-//const char MOUSE_PATH[] = "/dev/mouse";
-#ifndef SABREWIN
-//  if (mouse_manual_flag)
-//    {
-//      if (mouse_init(const_cast<char*>(MOUSE_PATH),MOUSE_MICROSOFT,
-//		     MOUSE_DEFAULTSAMPLERATE) > 0)
-//	{
-//	  mouse_setxrange(0,SCREEN_WIDTH-1);
-//	  mouse_setyrange(0,SCREEN_HEIGHT-1);
-//	  mouse_setwrap(MOUSE_NOWRAP);
-//	}
-//      else
-//	return(0);
-//    }
-//  else
     vga_setmousesupport(1);
-#endif
   return (1);
 #endif
 }
 
 #ifdef HAVE_LIBSDL
-void Mouse::set_position(__attribute__((unused)) int x, __attribute__((unused)) int y)
+void Mouse::set_position(int, int)
 {
 }
 #else
-#ifndef SABREWIN
 void Mouse::set_position(int x, int y)
 {
   mouse_setposition(x,y);
 }
-#endif
 #endif
 
 /*
@@ -123,7 +98,6 @@ void Mouse::Update( void )
      y *= 2.0;
 
 #else
-#ifndef SABREWIN
   mouse_update();
   float scx,scy;
   buttons = mouse_getbutton();
@@ -138,17 +112,8 @@ void Mouse::Update( void )
   y -= 0.5;
   y *= 2.0;
 #endif
-#endif
 }
 
 Mouse::~Mouse()
 {
-#ifdef HAVE_LIBSDL
-
-#else
-#ifndef SABREWIN
-//  if (mouse_manual_flag)
-//    mouse_close();
-#endif
-#endif
 }

@@ -39,8 +39,8 @@ public:
   Point(int _x, int _y) : x(_x),y(_y) { }
   friend inline Point operator +(const Point &a, const Point &b);
   friend inline Point operator -(const Point &a, const Point &b);
-  friend inline Boolean operator ==(const Point &a, const Point &b);
-  friend inline Boolean operator !=(const Point &a, const Point &b);
+  friend inline bool operator ==(const Point &a, const Point &b);
+  friend inline bool operator !=(const Point &a, const Point &b);
   inline Point & operator +=(const Point &p);
 };
 
@@ -79,12 +79,12 @@ inline Point operator -(const Point &a, const Point &b)
   return Point(a.x - b.x, a.y - b.y);
 }
 
-inline Boolean operator ==(const Point &a, const Point &b)
+inline bool operator ==(const Point &a, const Point &b)
 {
   return ((a.x == b.x) && (a.y == b.y));
 }
 
-inline Boolean operator !=(const Point &a, const Point &b)
+inline bool operator !=(const Point &a, const Point &b)
 {
   return ((a.x != b.x) || (a.y != b.y));
 }

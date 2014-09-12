@@ -32,11 +32,7 @@
 #include "globals.h"
 
 #ifndef DEFAULT_LIB
-#ifdef SABREWIN
-#define DEFAULT_LIB ".\\lib"
-#else
 #define DEFAULT_LIB "./lib"
-#endif
 #endif
 
 Mouse mouse;

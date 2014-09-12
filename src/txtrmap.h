@@ -56,22 +56,6 @@ public:
 	ColorMap *cmaps;
 	int      *mc;
 	int      nm;
-#ifdef SABREWIN
-	long hBitmap;
-#ifdef USES_DDRAW
-	IDirectDrawSurface *MemorySurface;  // system memory surface
-   IDirectDrawSurface *DeviceSurface;  // video memory texture
-	IDirectDrawPalette *Palette;
-	D3DTEXTUREHANDLE    Handle;
-	D3DTEXTUREHANDLE    GetHandle()    {return Handle;}
-	IDirectDrawSurface* GetSurface()   {return MemorySurface;}
-	IDirectDrawPalette* GetPalette()   {return Palette;}
-	BOOL Load(IDirect3DDevice2 *Device, char *BitmapName);
-	BOOL Copy(HBITMAP Bitmap);
-	void Release(void);
-	BOOL Restore(void);
-#endif
-#endif
 
 	TextrMap()
 	{
@@ -85,15 +69,6 @@ public:
 		cmaps = NULL;
 		mc = NULL;
 		nm = 0;
-#ifdef SABREWIN
-		hBitmap = 0;
-#ifdef USES_DDRAW
-		MemorySurface = 0;
-		DeviceSurface = 0;
-		Palette = 0;
-		Handle = 0;
-#endif
-#endif
 	}
 
 	TextrMap(unsigned char *bts, int mw, int mh, int tc, int del, int flgs = 0)
@@ -111,15 +86,6 @@ public:
 		cmaps = NULL;
 		mc = NULL;
 		nm = 0;
-#ifdef SABREWIN
-		hBitmap = 0;
-#ifdef USES_DDRAW
-		MemorySurface = 0;
-		DeviceSurface = 0;
-		Palette = 0;
-		Handle = 0;
-#endif
-#endif
 	}
 
 	void copy(TextrMap &tm);
@@ -137,12 +103,6 @@ public:
 
 	~TextrMap()
 	{
-#ifdef SABREWIN
-		freeDIB();
-#ifdef USES_DDRAW
-		Release();	
-#endif
-#endif
 		if (delf)
 		{
 			if (bytes != NULL)
@@ -191,10 +151,6 @@ public:
 			result = getColorMap(result);
 		return result;
 	}
-#ifdef SABREWIN
-	long createDIB(long hdc);
-	void freeDIB();
-#endif
 };
 
 extern TextrMap nullmap;

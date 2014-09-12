@@ -25,11 +25,4 @@
 typedef unsigned char byte;
 typedef unsigned int word;
 typedef uint32_t dword,d_word;
-typedef int Boolean;
-#ifdef SABREWIN
-#else
-#ifndef USES_DDRAW
-typedef int boolean;
-#endif
-#endif
 #endif

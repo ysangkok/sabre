@@ -41,7 +41,7 @@
 #include <setjmp.h>
 #include <stdarg.h>
 #ifdef HAVE_LIBVGA
-#include <vga.h>
+#include <directfb.h>
 #endif
 
 #include "siminc.h"

@@ -2,8 +2,8 @@ import os
 
 clang = 1
 everything = 1
-do_vga = 0
-do_sdl = 1
+do_vga = 1
+do_sdl = 0
 do_ncurses = 1
 fast = 0
 memdebug = 0
@@ -95,7 +95,8 @@ if do_sdl:
 	env.ParseConfig('PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig/ pkg-config --libs --cflags sdl2')
 	env.Append(CPPDEFINES = {"HAVE_LIBSDL": "1"})
 
-if do_vga: env.Append(LIBS = ["vga", "vgagl"])
+if do_vga: env.ParseConfig('pkg-config --libs --cflags directfb')
+	
 
 gdev_objs = [env.Object("gdev/gdev.C"),  env.Object("src/fontdev.C")]
 if do_vga:
@@ -115,7 +116,7 @@ joyenv.Append(CPPDEFINES = ["JOYCAL"])
 joyenv.Program(joyenv.Object("tools/calibrate.C"))
 
 gdevenv = orgenv.Clone()
-gdevenv.Append(LIBS = ["vga", "vgagl"])
+gdevenv.ParseConfig('pkg-config --libs --cflags directfb')
 gdevenv.Append(CPPDEFINES = {"HAVE_LIBVGA":"1"})
 
 if do_vga:

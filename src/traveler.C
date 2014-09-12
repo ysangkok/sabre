@@ -110,7 +110,7 @@ void LineTraveler::NextStep()
 	 }
 }
 
-Boolean LineTraveler::Done()
+bool LineTraveler::Done()
 {
 	 if (here == there)
 		  return true;

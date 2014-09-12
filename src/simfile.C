@@ -50,11 +50,7 @@ const char *build_libpath(const char *filename)
   int l2 = (int) strlen(lib_path);
   if ((l + l2 + 2) > 200)
     error_jump("Can't build path, length too long: %s %s",lib_path,filename);
-#ifdef SABREWIN
-  sprintf(tmppath,"%s\\%s",lib_path,filename);
-#else
   sprintf(tmppath,"%s/%s",lib_path,filename);
-#endif
   l = (int) strlen(tmppath);
   if (tmppath[l-1] == '\n' || tmppath[l-1]=='\r')
     tmppath[l-1] = 0;
@@ -64,11 +60,6 @@ const char *build_libpath(const char *filename)
 void read_texture_file(const char *path)
 {
   std::ifstream is;
-#ifdef SABREWIN
-  if (map_man)
-    delete map_man;
-  map_man = new TextrMap_Manager();
-#endif
 
   if (map_man != NULL)
     {
@@ -205,7 +196,3 @@ int __cdecl sim_printf(const char *format, ...)
   fflush(simlog);
   return (r);
 }
-
-
-
-

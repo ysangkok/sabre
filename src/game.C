@@ -129,17 +129,13 @@ void GameSession::readWorldFile()
 	{
 		// Get path to palette file
 		get_line(is,buff,sizeof(buff));
-#ifndef SABREWIN
 		printf("reading palette file %s\n",	buff);
 		read_palette_file(buff);
-#endif
 		// Get path to texture file
 		get_line(is,buff,sizeof(buff));
-#ifndef SABREWIN
 		sim_printf("reading texture file %s\n",
 				buff);
 		read_texture_file(buff);
-#endif
 		READ_TOKI('{',is,c)
 			is >> world_scale >> time_factor >> hit_scaler >> 
 			max_time >> shadow_level;
@@ -294,11 +290,7 @@ inline int INTERESTING(Flight_Node &nde)
 	return result;
 }
 
-#ifndef SABREWIN
 inline int DECIDEVIEW(int , int )
-#else
-int DECIDEVIEW(int, int)
-#endif
 {
 	int dec = RANDOM(3);
 	switch (dec)
@@ -578,25 +570,6 @@ Flight_ZViewer &vwr = fm.get_view_viewer();
 	earth.terrain_on = display_flags & TERRAIN_ON;
 	earth.render_ground(*pport);
 
-#ifdef SABREWIN
-	if (vwr.hitme && fc.controls.view <= fv_rear)
-	{
-		R_3DPoint p0(0,0,1.2);
-		R_3DPoint w0;
-		vport.port2world(p0,&w0);
-		TextrMap *tmap;
-		if (vwr.hurt >= vwr.max_damage / 2.0)
-			tmap = map_man->get_map_ptr("fire");
-		else
-			tmap = map_man->get_map_ptr("smoke");
-		MYCHECK(tmap != NULL);
-		Bitmap_View bm(tmap,&w0,
-			  1.0,1.0);
-		bm.draw_prep(vport);
-		bm.draw(vport);
-	}
-#endif
-
 	if (pflg)
 		show_port_vars(*pport,*pport,g_font);
 	else
@@ -639,8 +612,6 @@ Flight_ZViewer &vwr = fm.get_view_viewer();
 
 void GameSession::doPaletteEffect()
 {
-
-#ifndef SABREWIN
   if (pe == NULL)
     return;
 
@@ -663,28 +634,16 @@ void GameSession::doPaletteEffect()
 	    }
 	}
     }
-#else
-
-#endif
 }
 
-#ifndef SABREWIN
 inline void PRINTLN(std::ostream &os, const char *s, ...)
-#else
-void __cdecl PRINTLN(std::ostream &os, const char *s, ...)
-#endif
 {
   va_list ap;
   va_start(ap,s);
-#ifdef SABREWIN
-  vfprintf(simlog,s,ap);
-  va_end(ap);
-#else
   char buf[512];
   vsprintf(buf,s,ap);
   va_end(ap);
   os << buf;
-#endif
 }
 
 

@@ -27,9 +27,7 @@
 #ifndef __sobject_h
 #define __sobject_h
 
-#ifndef SABREWIN
 #define __cdecl
-#endif
 
 #ifdef __cplusplus
 

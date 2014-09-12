@@ -77,17 +77,13 @@ char buff[100];
 	{
 		// Get path to palette file
 		get_line(is,buff,sizeof(buff));
-#ifndef SABREWIN
 		printf("reading palette file %s\n",	buff);
 		read_palette_file(buff);
-#endif
 		// Get path to texture file
 		get_line(is,buff,sizeof(buff));
-#ifndef SABREWIN
 		sim_printf("reading texture file %s\n",
 		buff);
 		read_texture_file(buff);
-#endif
 		READ_TOKI('{',is,c)
 		is >> world_scale >> time_factor >> hit_scaler >> 
 		max_time >> shadow_level;
