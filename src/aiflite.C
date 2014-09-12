@@ -52,7 +52,7 @@ aiFlite::aiFlite()
   viewPilot = 0;
   isPlayerFlite = 0;
   playerPilotWingPos = -1;
-  idx = (unsigned long)-1;
+  idx = (uint32_t)-1;
   affiliation = -1;
   id[0] = 0;
   activeCount = 1;
@@ -74,7 +74,7 @@ aiFlite::aiFlite(int mx, int owns, const char *i)
   viewPilot = 0;
   isPlayerFlite = 0;
   playerPilotWingPos = -1;
-  idx = (unsigned long)-1;
+  idx = (uint32_t)-1;
   affiliation = -1;
   SetId(i);
   activeCount = 1;
@@ -238,7 +238,7 @@ void aiFlite::InitFormation(sWaypoint *wp)
     default:
       {
 	int wingPos = 1;
-	unsigned long targetIdx;
+	uint32_t targetIdx;
 
 	targetIdx = leader->GetIdx();
 	if (wp->task == swpAIRSHOW)
@@ -861,7 +861,7 @@ void aiFlite::DoInterceptWaypoint()
   if (interceptFlite && interceptFlite->IsActive())
     {
       interceptFliteIdx = interceptFlite->GetIdx();
-      unsigned long targetIdx;
+      uint32_t targetIdx;
       aiPilot *oppLeader = interceptFlite->leader;
       targetIdx = oppLeader->GetIdx();
       leader->SetInterceptTarget(targetIdx);
@@ -1025,7 +1025,7 @@ int aiFlite::IncViewPilot()
   return (viewPilot);
 }
 
-void aiFlite::SetManeuver(int maneuver, unsigned long flags, sREAL d0,
+void aiFlite::SetManeuver(int maneuver, uint32_t flags, sREAL d0,
 			  sREAL d1, sREAL d2)
 {
   for (int i=0;i<GetCount();i++)
@@ -1039,7 +1039,7 @@ void aiFlite::SetManeuver(int maneuver, unsigned long flags, sREAL d0,
 
 void aiFlite::SetFormationWaypoint(sWaypoint *wp, int leaderIdx)
 {
-  unsigned long targetIdx;
+  uint32_t targetIdx;
   SetWaypoints(wp,1);
   if (leaderIndex < 0)
     leaderIndex = 0;
@@ -1129,7 +1129,7 @@ void aiFlite::EngageFlite(aiFlite *flite)
  *****************************************************************/
 void aiFlite::EngageNearestFlite()
 {
-  unsigned long	idx = 0;	
+  uint32_t	idx = 0;	
   sREAL	minDistance = visualEngagementRadius + (sREAL) 100.0;
   int foundOne = 0;
 
@@ -1306,7 +1306,7 @@ void aiFlite::IssuePlayerAttackWarning(aiFlite *plyrFlit, aiPilot *attackerPilot
  * static aiFlite members                   *
  *******************************************/
 sObjectArray aiFlite::aiFlites(aiMAX_FLITES,aiFLITE_DEFAULT_OWNERSHIP);
-unsigned long aiFlite::nextIdx = 0L;
+uint32_t aiFlite::nextIdx = 0L;
 aiFlite *aiFlite::playerFlite = NULL;
 
 void aiFlite::AddaiFlite(aiFlite *flite)
@@ -1317,7 +1317,7 @@ void aiFlite::AddaiFlite(aiFlite *flite)
     playerFlite = flite;
 }
 
-aiFlite *aiFlite::GetaiFlite(unsigned long idx)
+aiFlite *aiFlite::GetaiFlite(uint32_t idx)
 {
   aiFlite *result = NULL;
   for (int i=0;i<aiFlites.Count();i++)

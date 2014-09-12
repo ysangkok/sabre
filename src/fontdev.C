@@ -90,7 +90,7 @@ int fontdev::load( const char *fn )
    }
    unsigned char buf[4096];
    // (try to) read 256 8x16 cells
-   int scans=fread( buf, 1, 4096, fp );
+   size_t scans=fread( buf, 1, 4096, fp );
    fclose( fp );
    // analyze fontset
    if( scans > 2048 )
@@ -98,7 +98,7 @@ int fontdev::load( const char *fn )
    else
      dimy=8;
    unsigned char *p=buf, mask=0;
-   int i, j;
+   size_t i; int j;
    for( i=0; i<scans; i++, p++ ) {
       mask|=*p;
    }

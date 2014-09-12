@@ -151,6 +151,7 @@
 
 /* Define void, voidp, and extent (size_t) */
 #include <stdio.h>
+#include <stdint.h>
 #ifdef MODERN
 #  if (!defined(M_XENIX) && !(defined(__GNUC__) && defined(sun)))
 #    include <stddef.h>
@@ -159,7 +160,7 @@
 #  if defined(SYSV) || defined(__386BSD__)
 #    include <unistd.h>
 #  endif
-   typedef size_t extent;
+   typedef uint32_t extent;
    typedef void voidp;
 #else /* !MODERN */
    typedef unsigned int extent;

@@ -199,7 +199,7 @@ int main(int argc, char *argv[])
   mouse_avail = mouse.IsAvailable();
   if (!mouse_avail)
     printf("Mouse not available\n");
-  srand(time(NULL));
+  srand( static_cast<unsigned int>(time(NULL)));
   
   if (setjmp(jump_buff))
     {

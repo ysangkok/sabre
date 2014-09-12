@@ -27,10 +27,12 @@
 #ifndef __smnvrst_h
 #define __smnvrst_h
 
+#include <stdint.h>
+
 typedef struct maneuver_st_type
 {
   int type;
-  unsigned long flags;
+  uint32_t flags;
   float data0;
   float data1;
   float data2;
@@ -110,7 +112,7 @@ public:
 	int state;
 	int done;
 	int  stackLevel;
-	unsigned long flags;
+	uint32_t flags;
 	sREAL data0;
 	sREAL data1;
 	sREAL data2;
@@ -131,7 +133,7 @@ public:
 	friend void SETMANEUVER(sManeuverState &ms,
 								   int maneuve,
 								   int stackLeve,
-								   unsigned long flgs = 0,
+								   uint32_t flgs = 0,
 								   sREAL d0 = 0.0,
 								   sREAL d1 = 0.0,
 								   sREAL d2 = 0.0)
@@ -149,7 +151,7 @@ public:
 	friend void SETMANEUVERX(sManeuverState &ms,
 								   int maneuve,
 								   int stackLvl,
-								   unsigned long flgs = 0,
+								   uint32_t flgs = 0,
 								   sREAL e0 = 0.0,
 								   sREAL e1 = 0.0,
 								   sREAL e2 = 0.0,

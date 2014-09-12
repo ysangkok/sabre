@@ -30,6 +30,7 @@
 #define __aibase_h
 
 #ifdef __cplusplus
+#include <cstdint>
 #include "sobject.h"
 #include "sarray.h"
 #include "smnvrst.h"
@@ -71,11 +72,11 @@ public:
 	{
 		this->task = tsk;
 	}
-	unsigned long GetIdx()
+	uint32_t GetIdx()
 	{
 		return idx;
 	}
-	void SetIdx(unsigned long ix)
+	void SetIdx(uint32_t ix)
 	{
 		this->idx = ix;
 	}
@@ -91,8 +92,8 @@ public:
    {
 		return attackList.GetCount();
    }
-   void AddAttacker(unsigned long attackerIdx);
-   void DeleteAttacker(unsigned long attackerIdx);
+   void AddAttacker(uint32_t attackerIdx);
+   void DeleteAttacker(uint32_t attackerIdx);
 	int HasAttackers()
 	{
 		return attackList.GetCount() > 0;
@@ -108,9 +109,9 @@ public:
 	}
 	void SetSkillLevel(int level, int slot);
 	int GetSkillLevel(int slot);
-	virtual void SetManeuver(int mnvr, unsigned long flags = 0, sREAL d0 = 0.0,
+	virtual void SetManeuver(int mnvr, uint32_t flags = 0, sREAL d0 = 0.0,
 						 sREAL d1 = 0.0, sREAL d2 = 0.0);
-	virtual void SetManeuverX(int mnvr, unsigned long flags = 0, 
+	virtual void SetManeuverX(int mnvr, uint32_t flags = 0, 
 								  sREAL d0 = 0.0, sREAL d1 = 0.0, sREAL d2 = 0.0,
 								  sREAL d3 = 0.0, sREAL d4 = 0.0, sREAL d5 = 0.0);
 
@@ -138,7 +139,7 @@ protected:
 	/**************************************************************************
     * protected members                                                      *
     **************************************************************************/
-   unsigned long  idx;                       /* unique id                    */
+   uint32_t  idx;                       /* unique id                    */
    int            index;                     /* ordinal value                */
    char           debug_str[aiB_DEBUG_MAX];  /* debugging string             */
    int            affiliation;               /* whose side we're on          */
@@ -165,9 +166,9 @@ protected:
 
 	void					ExecManeuverStack(void);
 	virtual void		UpdateManeuver(sManeuverState &im);
-	sManeuverState		*PushManeuver(int mnvr, unsigned long flags = 0, sREAL d0 = 0.0,
+	sManeuverState		*PushManeuver(int mnvr, uint32_t flags = 0, sREAL d0 = 0.0,
 												sREAL d1 = 0.0, sREAL d2 = 0.0);
-	sManeuverState		*PushManeuverX(int mnvr, unsigned long flags = 0,
+	sManeuverState		*PushManeuverX(int mnvr, uint32_t flags = 0,
 												sREAL d0 = 0.0, sREAL d1 = 0.0, sREAL d2 = 0.0,
 												sREAL d3 = 0.0, sREAL d4 = 0.0, sREAL d5 = 0.0);
 	sManeuverState		*PopManeuver(void);

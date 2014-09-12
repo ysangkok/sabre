@@ -162,15 +162,15 @@ std::ostream & operator <<(std::ostream &os, TextrMap &tm)
 void TextrMap::compress()
 {
 unsigned int  n;
-unsigned long tgtsize;
-unsigned long srcsize;
+uint32_t tgtsize;
+uint32_t srcsize;
 char     *tgt;
 char     *fname;
 std::ofstream os;
 
 	if (bytes != NULL)
 	{
-		tgtsize = (unsigned long) map_w * map_h;
+		tgtsize = (uint32_t) map_w * map_h;
 		srcsize = tgtsize;
 		tgt = new char[tgtsize];
 		if ((n = memcompress(tgt,tgtsize,(char *)bytes,srcsize)) != 0)
@@ -234,7 +234,7 @@ char              *fname;
 		csize = n;
 		cbytes = new unsigned char[csize];
 		MYCHECK(cbytes != NULL);
-		nread = fread(cbytes,1,csize,f);
+		nread = (int) fread(cbytes,1,csize,f);
 		if (ferror(f))
 		{
 			error_jump("TextrMap: error reading from file %s %d bytes\n",

@@ -19,9 +19,12 @@
 */
 #ifndef __defs_h
 #define __defs_h
+
+#include <stdint.h>
+
 typedef unsigned char byte;
 typedef unsigned int word;
-typedef unsigned long dword,d_word;
+typedef uint32_t dword,d_word;
 typedef int Boolean;
 #ifdef SABREWIN
 #else

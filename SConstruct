@@ -8,10 +8,11 @@ do_ncurses = 1
 fast = 0
 memdebug = 0
 coverage = 0
+profile = 0
 
 warn = []
-machine = ["-m32"]
-#machine = []
+#machine = ["-m32"]
+machine = []
 
 if everything:
 	if clang:
@@ -40,7 +41,10 @@ if memdebug:
 	debug_profile_and_coverage = Split("-fsanitize=undefined -fsanitize=memory -fno-omit-frame-pointer -fsanitize-memory-track-origins")
 else: # prevent relocation R_X86_64_32S against `__libc_csu_fini' can not be used when making a shared object
 # Profile
-	debug_profile_and_coverage = Split("-pg")
+	if profile:
+		debug_profile_and_coverage = Split("-pg")
+	else:
+		debug_profile_and_coverage = []
 
 # Stack protection
 debug_profile_and_coverage += Split("-fstack-protector-all")

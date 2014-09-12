@@ -50,7 +50,7 @@ protected:
 	* protected members                                                 *
 	*********************************************************************/
 	int				index;					/* index                        */
-	unsigned long	ownerIdx;				/* owner's idx						  */
+	uint32_t	ownerIdx;				/* owner's idx						  */
 	int				affiliation;			/* whose side                   */
 	sVector			offset;					/* offset relative to 0,0,0 in  */
 													/*  plane's body coords         */
@@ -78,7 +78,7 @@ protected:
 public:
 	aiGunner();
 	aiGunner(sFlightModel *fltModel, int index,
-			unsigned long ownerIdx, int affiliation, sREAL bulletRadius,
+			uint32_t ownerIdx, int affiliation, sREAL bulletRadius,
 			sREAL gunPitchRate = aiGUN_PITCH_RATE,
 			sREAL gunYawRate = aiGUN_YAW_RATE,
 			sAttitude *jiggleAtt = NULL );
@@ -92,12 +92,12 @@ public:
 	{
 		return (hasTarget);
 	}
-	void  SetTarget(unsigned long targetIdx);
+	void  SetTarget(uint32_t targetIdx);
 	void  UnsetTarget()
 	{
 		hasTarget = 0;
 	}
-	unsigned long GetTargetIdx();
+	uint32_t GetTargetIdx();
 	int GetAffiliation()
 	{
 		return (affiliation);
@@ -114,11 +114,11 @@ public:
 	{
 		this->index = idx;
 	}
-	unsigned long GetOwnerIdx()
+	uint32_t GetOwnerIdx()
 	{
 		return (ownerIdx);
 	}
-	void SetOwnerIdx(unsigned long ownIdx)
+	void SetOwnerIdx(uint32_t ownIdx)
 	{
 		this->ownerIdx = ownIdx;
 	}

@@ -78,7 +78,7 @@ public:
 		bytes = NULL;
 		cbytes = NULL;
 		map_w = map_h = 0;
-		delf = 0;
+		delf = 1;
 		trans_colr = -1;
 		id[0] = 0;
 		flags = 0;

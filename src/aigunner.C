@@ -82,7 +82,7 @@ aiGunner::aiGunner()
 }
 
 aiGunner::aiGunner(sFlightModel *flightMdl, int idx,
-					  unsigned long ownIdx, int affiliatio, sREAL bulletRadiu,
+					  uint32_t ownIdx, int affiliatio, sREAL bulletRadiu,
                  sREAL gunPitchRat, sREAL gunYawRat,
                  sAttitude *jigAtt)
 {
@@ -164,12 +164,12 @@ void aiGunner::AdjustGun()
 /*
  * return index of current target
  */
-unsigned long aiGunner::GetTargetIdx()
+uint32_t aiGunner::GetTargetIdx()
 {
   return (TARGET_IDX);
 }
 
-void aiGunner::SetTarget(unsigned long targetIdx)
+void aiGunner::SetTarget(uint32_t targetIdx)
 {
 	TARGET_IDX = targetIdx;
 	hasTarget = 1;

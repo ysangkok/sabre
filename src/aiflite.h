@@ -103,7 +103,7 @@ public:
     }
 
   void SetFormationWaypoint(sWaypoint *wp, int leadPilot = 0);
-  void SetManeuver(int maneuver, unsigned long flags, sREAL d0, sREAL d1,
+  void SetManeuver(int maneuver, uint32_t flags, sREAL d0, sREAL d1,
 		   sREAL d2);
    
   void EngageFlite(aiFlite *);
@@ -202,8 +202,8 @@ protected:
   int            viewPilot;              /* pilot providing debug viewpoint    */
   int            isPlayerFlite;          /* true if player is in this flite    */
   int            playerPilotWingPos;     /* player's wing position             */
-  unsigned long  engageFliteIdx;         /* idx of flite engaged with          */
-  unsigned long  interceptFliteIdx;      /* idx of flite intercepting          */
+  uint32_t  engageFliteIdx;         /* idx of flite engaged with          */
+  uint32_t  interceptFliteIdx;      /* idx of flite intercepting          */
   char           id[9];                  /* char id                            */
   aiPilot        *leader;                /* flite leader pilot                 */
   int            leaderIndex;            /* index of                           */
@@ -215,7 +215,7 @@ protected:
   sObjectArray   freePilots;             /* working free pilot list            */
   int            targetMode;             /* mode for acting as target-practice */
   int            damageFlag;             /* true if any pilots hit by enemy fire*/
-  unsigned long  damagerIdx;             /* idx of pilot causing above damage  */
+  uint32_t  damagerIdx;             /* idx of pilot causing above damage  */
   int            nextPilot;              /* next pilot to takeoff,land         */
   int            playerCommandMode;      /* if 1 & player is leader, player    */
   /*    commands flite                  */
@@ -229,11 +229,11 @@ public:
    * static members
    ******************/
   static sObjectArray aiFlites;
-  static unsigned long nextIdx;
+  static uint32_t nextIdx;
   static aiFlite *playerFlite;
 
   static void AddaiFlite(aiFlite *flite);
-  static aiFlite *GetaiFlite(unsigned long idx);
+  static aiFlite *GetaiFlite(uint32_t idx);
   static aiFlite *GetaiFlite(char *id);
   static int GetFliteCount();
   static void FlushaiFlites();

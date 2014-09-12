@@ -187,7 +187,7 @@ void __cdecl SceneEdit::show_message(int bot, char *str, ...)
   va_end(ap);
 
   int poly[10];
-  int l = strlen(buf) * 6;
+  int l = (int) strlen(buf) * 6;
   int y = bot ?  SCREEN_HEIGHT - 8 : 0;
   int yd = bot ? SCREEN_HEIGHT - 1 : 7;
   if (l > 0)
