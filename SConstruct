@@ -2,12 +2,12 @@ import os
 
 clang = 1
 everything = 1
-do_vga = 1
-do_sdl = 0
-fast = 0
+do_vga = 0
+do_sdl = not do_vga
 memdebug = 0
 coverage = 0
 profile = 0
+opt = ["-O3"]
 
 warn = []
 #machine = ["-m32"]
@@ -18,31 +18,26 @@ if everything:
 		warn += machine + ["-Weverything"]
 	else:
 		warn += machine + ["-Wall", "-Wextra"]
+		warn += ["-Wno-attributes", "-Wno-unused-local-typedefs"]
 else:
 	warn += machine + ["-Wall"]
 
 lto = []
 link_lto = []
 
-if not clang:
-	warn += ["-Wno-attributes", "-Wno-unused-local-typedefs"]
-else:
-	pass
-	#lto += ["-flto"]
-	#link_lto += lto + ["-B/usr/lib/gold-ld"]
+if not memdebug:
+	lto += ["-flto"]
+if clang:
+	link_lto += lto + ["-B/usr/lib/gold-ld"]
 
-
-warn += ["-Wno-c++11-long-long", "-Wno-variadic-macros", "-Wno-c99-extensions", "-Wno-c++11-extensions", "-Wno-shift-sign-overflow"]
-
-#warn += ["-Werror"]
-
-if fast:
-	warn = machine + ["-w"]
+if everything:
+	warn += ["-Wno-variadic-macros", "-Wno-sign-conversion"]
+	warn += ["-Werror"]
 
 # AddressSanitizer
 if memdebug:
 	debug_profile_and_coverage = Split("-fsanitize=memory -fno-omit-frame-pointer -fsanitize-memory-track-origins") + Split("-fsanitize=undefined")
-else: # prevent relocation R_X86_64_32S against `__libc_csu_fini' can not be used when making a shared object
+else:
 # Profile
 	if profile:
 		debug_profile_and_coverage = Split("-pg")
@@ -61,11 +56,8 @@ if coverage:
 
 debug_profile_and_coverage += Split("-fPIC")
 
-if fast:
-	debug_profile_and_coverage = []
-
 orgenv = Environment(
-	CC="clang" if clang else "gcc", CFLAGS=lto + warn + debug_profile_and_coverage + ([] if fast else Split('-ansi -pedantic -std=c11')), CXX="clang++" if clang else "gcc", CXXFLAGS=lto + warn + debug_profile_and_coverage + ["-std=c++11"] + ([] if fast else Split('-Wno-sign-conversion -ansi -pedantic')), LIBS=["m"], 
+	CC="clang" if clang else "gcc", CFLAGS=lto + opt + warn + debug_profile_and_coverage + ([] if not everything else Split('-ansi -pedantic -std=c11')), CXX="clang++" if clang else "gcc", CXXFLAGS=lto + opt + warn + debug_profile_and_coverage + ["-std=c++11"] + ([] if not everything else Split('-ansi -pedantic')), LIBS=["m"], 
 	LINK="clang++" if clang else "g++", 
 	#CXXFLAGS="-nodefaultlibs -fno-exceptions -w", 
 	CPPDEFINES = {"VERSION":"\\\"0.2.4b\\\"","REV_DATE":"\\\"11/21/99\\\"","JSTICK_INSTALLED":"1"},
@@ -76,15 +68,15 @@ orgenv['ENV']['TERM'] = os.environ['TERM']
 
 orgenv.Append(LINKFLAGS=machine + link_lto)
 
-if not fast:
+if everything:
 	orgenv.Append(LINKFLAGS=debug_profile_and_coverage + Split("-Wl,--gc-sections")) #,--print-gc-sections
 
 if clang:
-	orgenv.Append(CXXFLAGS=["-stdlib=libc++"] + (["-ferror-limit=5"] if not fast else []))
+	orgenv.Append(CXXFLAGS=["-stdlib=libc++"] + (["-ferror-limit=5"] if everything else []))
 	orgenv.Append(LINKFLAGS="-stdlib=libc++")
-	if not fast and everything:
-		common_flags = ["-Wno-float-equal", "-Wno-padded", "-Wno-format-nonliteral", "-Wno-disabled-macro-expansion"]
-		orgenv.Append(CXXFLAGS=common_flags + ["-Wno-c++11-compat", "-Wno-c++11-extensions", "-Wno-c++98-compat-pedantic", "-Wno-exit-time-destructors", "-Wno-global-constructors"])
+	if everything:
+		common_flags = ["-Wno-c++11-long-long", "-Wno-float-equal", "-Wno-padded", "-Wno-format-nonliteral", "-Wno-disabled-macro-expansion", "-Wno-shift-sign-overflow"]
+		orgenv.Append(CXXFLAGS=common_flags + ["-Wno-c99-extensions", "-Wno-c++11-extensions", "-Wno-c++11-compat", "-Wno-c++11-extensions", "-Wno-c++98-compat-pedantic", "-Wno-exit-time-destructors", "-Wno-global-constructors"])
 		orgenv.Append(CFLAGS=common_flags)
 
 env = orgenv.Clone()

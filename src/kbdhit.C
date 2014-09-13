@@ -129,7 +129,7 @@ void show_mouse_event(DFBInputEvent* evt) {
             case DIAI_Z:
                  printf("Z axis (abs): %d\n", evt->axisabs);
                  break;
-            default:
+            case DIAI_LAST:
                  printf("Axis %d (abs): %d\n", evt->axis, evt->axisabs);
                  break;
             }
@@ -146,7 +146,7 @@ void show_mouse_event(DFBInputEvent* evt) {
             case DIAI_Z:
                  printf("Z axis (rel): %d\n", evt->axisrel);
                  break;
-            default:
+            case DIAI_LAST:
                  printf("Axis %d (rel): %d\n", evt->axis, evt->axisrel);
                  break;
             }
@@ -229,8 +229,7 @@ enum_input_device( DFBInputDeviceID           device_id,
 }
 #endif
 
-int KBHit::getch()
-{
+int KBHit::getch() {
 #ifdef HAVE_LIBSDL
   SDL_Event event;
 #else
@@ -241,14 +240,31 @@ int KBHit::getch()
   DFBInputEvent event;
 #endif
 
-  unsigned char c;
 
 #ifdef HAVE_LIBSDL
-if(SDL_PollEvent(&event)) {
+  if (SDL_PollEvent(&event)) {
+    unsigned char c;
+    c = (unsigned char) event.key.keysym.sym;
+    c = sdl_to_standard[c];
+    if (c==ESC) {
+      c = (unsigned char) event.key.keysym.sym;
+      if (c=='[') {
+        c = (unsigned char) event.key.keysym.sym;
+      } else {
+        putchar(c);
+        c = ESC;
+      }
+    }
+    tcflush(0,TCIFLUSH);
+    kbdin = (int) c;
+    return ((int)c);
+  }
+  kbdin = 0;
+  return (0);
 #else  
-  if (buffer->GetEvent (buffer, DFB_EVENT(&event)) == DFB_OK) {
+  while (buffer->GetEvent (buffer, DFB_EVENT(&event)) == DFB_OK) {
     if (event.type == DIET_AXISMOTION || event.type == DIET_BUTTONPRESS || event.type == DIET_BUTTONRELEASE) {
-      DeviceInfo            *devices = NULL;
+      DeviceInfo *devices = NULL;
       dfb->EnumInputDevices( dfb, enum_input_device, &devices );
       DFBInputDeviceTypeFlags device_type = get_device_type( devices, event.device_id);
       if (device_type & DIDTF_MOUSE )
@@ -257,42 +273,26 @@ if(SDL_PollEvent(&event)) {
         show_any_button_event(&event);
       else
         show_any_axis_event(&event);
-      return 0;
     } else if (event.type == DIET_KEYPRESS) {
-#endif
-#ifdef HAVE_LIBSDL
-        c = (unsigned char) event.key.keysym.sym;
-        c = sdl_to_standard[c];
-#else
-        c = (unsigned char) event.key_symbol;
-#endif
-        if (c==ESC) {
-#ifdef HAVE_LIBSDL
-            c = (unsigned char) event.key.keysym.sym;
-#endif     
-            if (c=='[') {
-#ifdef HAVE_LIBSDL 
-              c = (unsigned char) event.key.keysym.sym;
-#endif
-            } else {
-              putchar(c);
-              c = ESC;
-            }
+      unsigned char c;
+      c = (unsigned char) event.key_symbol;
+/*
+      if (c==ESC) {
+        if (c=='[') {
+        } else {
+            putchar(c);
+            c = ESC;
         }
-        tcflush(0,TCIFLUSH);
-        kbdin = (int) c;
-        return ((int)c);
-      } else {
-        kbdin = 0;
-        return 0;
       }
-#ifdef HAVE_LIBVGA
-  } else {
-      kbdin = 0;
-      return (0);
+      tcflush(0,TCIFLUSH);
+*/
+      kbdin = (int) c;
+      return ((int)c);
+    }
   }
+  kbdin = 0;
+  return 0;
 #endif
-
 }
 
 KBHit::~KBHit()
