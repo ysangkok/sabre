@@ -41,12 +41,14 @@
 #include <SDL2/SDL.h>
 #else
 #include <directfb.h>
+#include "../gdev/gdev.h"
 #endif
-
 
 InputDevice_2D::~InputDevice_2D() = default;
 InputDevice::~InputDevice() = default;
 Joystick::~Joystick() = default;
+
+extern int adjusted_mouse_x, adjusted_mouse_y, adjusted_buttons;
 
 /*
  * This resets the mouse driver.  The value returned is "true"
@@ -57,7 +59,6 @@ int Mouse::ResetDriver( void ) const
 #ifdef HAVE_LIBSDL
 return true;
 #else
-    vga_setmousesupport(1);
   return (1);
 #endif
 }
@@ -67,9 +68,9 @@ void Mouse::set_position(int, int)
 {
 }
 #else
-void Mouse::set_position(int x, int y)
+void Mouse::set_position(int, int)
 {
-  mouse_setposition(x,y);
+  //mouse_setposition(x,y);
 }
 #endif
 
@@ -98,17 +99,13 @@ void Mouse::Update( void )
      y *= 2.0;
 
 #else
-  mouse_update();
-  float scx,scy;
-  buttons = mouse_getbutton();
-  screenx = mouse_getx();
-  screeny = mouse_gety();
-  scx = (float) screenx;
-  scy = (float) screeny;
-  x = scx / (MXSCREEN_WIDTH - 1);
+  screenx = adjusted_mouse_x;
+  screeny = adjusted_mouse_y;
+  buttons = adjusted_buttons;
+  x = (float) adjusted_mouse_x / (MXSCREEN_WIDTH - 1);
   x -= 0.5;
   x *= 2.0;
-  y = scy / (MXSCREEN_HEIGHT - 1);
+  y = (float) adjusted_mouse_y / (MXSCREEN_HEIGHT - 1);
   y -= 0.5;
   y *= 2.0;
 #endif

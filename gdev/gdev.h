@@ -22,6 +22,12 @@
 #ifndef __gdev_h
 #define __gdev_h
 
+#ifdef HAVE_LIBVGA
+#include <directfb.h>
+
+extern IDirectFB *dfb;
+#endif
+
 struct gevent {
    enum {
       click_mask		= 0xC0000000, // if not, there is motion

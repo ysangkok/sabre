@@ -41,14 +41,25 @@
 #include <SDL2/SDL.h>
 int FilterEvents(void *userdata, SDL_Event *event);
 static SDL_Texture *screen; 
-static SDL_Color *colors;
 static Uint32* myBuf;
-static unsigned int screen_width;
-static unsigned int screen_height;
 static SDL_Renderer *sdlRenderer;
 #else
 #include "gdev-svgalib.h"
+#include <directfb.h>
+typedef struct { uint8_t a,r,g,b;} SDL_Color;
+static IDirectFBSurface *primary = NULL;
+#define DFBCHECK(x...)                                         \
+  {                                                            \
+    DFBResult err = x;                                         \
+                                                               \
+    if (err != DFB_OK)                                         \
+      {                                                        \
+        fprintf( stderr, "%s <%d>:\n\t", __FILE__, __LINE__ ); \
+        DirectFBError( #x, err );                         \
+      }                                                        \
+  }
 #endif
+static SDL_Color *colors;
 
 /*
   Define our own "vgamodes"
@@ -88,8 +99,16 @@ SimFont       *g_font = NULL;
 Rect          cliprect(0,0,319,199);
 
 #ifdef HAVE_LIBVGA
-#define GDEV_SCREEN_DIM 1
-#define GDEV_WINDOW_DIM 0
+void upload_palette(int, int);
+void upload_palette(int start, int end) {
+   DFBSurfacePixelFormat  format;
+   IDirectFBPalette* ret_interface;
+
+   DFBCHECK(primary->GetPixelFormat(primary, &format));
+   if (format != DSPF_LUT8) abort();
+   DFBCHECK(primary->GetPalette(primary, &ret_interface));
+   DFBCHECK(ret_interface->SetEntries(ret_interface, (const DFBColor*) colors, /*num_entries*/(end==-1 || start==-1 ? N_COLORS : end-start), /*offset*/start==-1 ? 0 : start));
+}
 #endif
 
 void init_vga_13(void)
@@ -142,11 +161,7 @@ void init_vga_13(void)
      } 
   SDL_SetEventFilter(FilterEvents, nullptr);
   SDL_EventState(SDL_MOUSEMOTION, SDL_ENABLE);
-#else    
-  /* Create gdev for svgalib */
-  assign_gdev_svgalib();
-  /* Create rgbdev for svgalib */
-  assign_rgbdev8_svgalib();
+#else
 #endif
 
 //
@@ -178,6 +193,9 @@ void init_vga_13(void)
 //
 
 
+   xbuffer    = (unsigned char *) calloc(dimx*dimy, sizeof(char));
+   screen_ptr = xbuffer;
+   buffer_ptr = xbuffer;
 #ifdef HAVE_LIBSDL
 // this is where we try to get our video mode
 
@@ -191,8 +209,6 @@ void init_vga_13(void)
 
 //   SDL_Surface *screen; is define above ...
 SDL_Window *sdlWindow;
-screen_width = dimx;
-screen_height = dimy;
 SDL_CreateWindowAndRenderer(dimx, dimy, 0, &sdlWindow, &sdlRenderer);
 myBuf=new Uint32[dimx*dimy*4];
 screen = SDL_CreateTexture(sdlRenderer,
@@ -208,9 +224,6 @@ screen = SDL_CreateTexture(sdlRenderer,
 SDL_SetWindowTitle(sdlWindow, "Sabre - SDL Version");
       
 // now setup all of the Sabre stuff to point to our new buffer ...
-   xbuffer    = (unsigned char *) calloc(dimx*dimy, sizeof(char));
-   screen_ptr = xbuffer;
-   buffer_ptr = xbuffer;
 	 
    SCREEN_WIDTH = dimx;
    SCREEN_HEIGHT = dimy;
@@ -225,57 +238,48 @@ SDL_SetWindowTitle(sdlWindow, "Sabre - SDL Version");
    aspect_ratio = calc_aspect_ratio(MXSCREEN_WIDTH,MXSCREEN_HEIGHT);
    SCREEN_PITCH = SCREEN_WIDTH;
 #else
-  /* 
-     Try twice, once with desired dims, 
-     next with standard VGA 320x200 if desired dims
-     are not available
-  */
-  int goodOpen = 0;
-  for (int i=0;i<2;i++)
-    {
-      if (G->open(dimx,dimy,8,window_width,window_height) == 0)
-	{
-	  G->clear(0,3);
-	  /* always point to buffered screen */
-	  xbuffer    = (unsigned char *) G->getvbuf();
-	  screen_ptr = xbuffer;
-	  buffer_ptr = xbuffer;
-	  SCREEN_WIDTH = G->getdimx(GDEV_WINDOW_DIM);
-	  SCREEN_HEIGHT = G->getdimy(GDEV_WINDOW_DIM);
-	  MXSCREEN_WIDTH = G->getdimx(GDEV_SCREEN_DIM);
-	  MXSCREEN_HEIGHT = G->getdimy(GDEV_SCREEN_DIM);
-	  MAX_X = SCREEN_WIDTH - 1;
-	  MAX_Y = SCREEN_HEIGHT - 1;
-	  cliprect.topLeft.x = 0;
-	  cliprect.topLeft.y = 0;
-	  cliprect.botRight.x = MAX_X;
-	  cliprect.botRight.y = MAX_Y;
-	  aspect_ratio = calc_aspect_ratio(MXSCREEN_WIDTH,MXSCREEN_HEIGHT);
-	  goodOpen = 1;
-	  SCREEN_PITCH = SCREEN_WIDTH;
-	}
-      if (!goodOpen && i==0)
-	{
-	  printf("%dx%d mode not available, using 320x200\n",dimx,dimy);
-	  dimx = 320;
-	  dimy = 200;
-	  if (window_width > dimx)
-	    window_width = dimx;
-	  if (window_height > dimy)
-	    window_height = dimy;
-	}
-      else
-	break;
-    }
+  DFBCHECK(DirectFBCreate (&dfb));
+  DFBCHECK(dfb->SetCooperativeLevel (dfb, DFSCL_NORMAL));
+  DFBCHECK(dfb->SetVideoMode(dfb, dimx, dimy, 8));
 
-  if (!goodOpen)
-    {
-      /* couldn't even open a 320x200 VGA mode ... */
-      printf("Unable to set video mode ... exiting\n");
-      exit(1);
-    }
+  DFBSurfaceDescription   dsc;
+  dsc.flags = DFBSurfaceDescriptionFlags(DSDESC_CAPS | DSDESC_PIXELFORMAT);
+  dsc.caps  = DSCAPS_PRIMARY;
+  dsc.pixelformat = DSPF_LUT8;
+  DFBCHECK(dfb->CreateSurface( dfb, &dsc, &primary ));
+
+/*
+  IDirectFBDisplayLayer* layer;
+  dfb->GetDisplayLayer(dfb, DLID_PRIMARY, &layer);
+  DFBWindowDescription wdesc;
+  IDirectFBWindow* window;
+  wdesc.flags = DFBWindowDescriptionFlags(DWDESC_SURFACE_CAPS | DWDESC_PIXELFORMAT); // | DWDESC_WIDTH | DWDESC_HEIGHT 
+  //wdesc.caps = DSCAPS_PRIMARY;
+  //wdesc.width = width;
+  //wdesc.height = height;
+  wdesc.pixelformat = DSPF_ARGB;
+  wdesc.surface_caps = DSCAPS_PRIMARY;
+  DFBCHECK(layer->CreateWindow(layer, &wdesc, &window));
+  DFBCHECK(window->GetSurface(window, &primary));
+*/
+
+  DFBCHECK(primary->GetSize (primary, &SCREEN_WIDTH, &SCREEN_HEIGHT));
+  DFBCHECK(primary->GetSize (primary, &MXSCREEN_WIDTH, &MXSCREEN_HEIGHT));
+  MAX_X = SCREEN_WIDTH - 1;
+  MAX_Y = SCREEN_HEIGHT - 1;
+  cliprect.topLeft.x = 0;
+  cliprect.topLeft.y = 0;
+  cliprect.botRight.x = MAX_X;
+  cliprect.botRight.y = MAX_Y;
+  SCREEN_PITCH = SCREEN_WIDTH;
+/*
+  int ret_x, ret_y;
+  DFBRectangle ret_rect;
+  primary->GetPosition(primary, &ret_x, &ret_y);
+  primary->GetVisibleRectangle(primary, &ret_rect);
+  printf("POSITION!! %d %d SCRN W/H %d %d VISIBLE RECT %d %d\n", ret_x, ret_y, SCREEN_WIDTH, SCREEN_HEIGHT, ret_rect.w, ret_rect.h);
+*/
 #endif
-
 }
 
 void restorecrtmode()
@@ -284,7 +288,6 @@ void restorecrtmode()
    //  we are in X11, never touched the CRT mode to begin with. 
    //  soooooo do nothing as the atexit() stuff will do our cleanup.
 #else
-  G->close();
 #endif
 }
 
@@ -298,22 +301,35 @@ float calc_aspect_ratio(float width, float height)
 void blit_buff()
 {
 #ifdef HAVE_LIBSDL
-   assert(screen_width != 0);
-   for (unsigned int j=0; j<screen_height; j++) {
-     for (unsigned int i=0; i<screen_width; i++) {
-       unsigned char idx = screen_ptr[j*screen_width + i];
+   assert(SCREEN_WIDTH != 0);
+   for (int j=0; j<SCREEN_HEIGHT; j++) {
+     for (int i=0; i<SCREEN_WIDTH; i++) {
+       unsigned char idx = screen_ptr[j*SCREEN_WIDTH + i];
        int r = colors[idx].r, g = colors[idx].g, b = colors[idx].b;
        //printf("%d %d %d %d\n", idx, r, g, b);
-       myBuf[j*screen_width + i] = colors[idx].a << 24 | r << 16 | g << 8 | b << 0;
+       myBuf[j*SCREEN_WIDTH + i] = colors[idx].a << 24 | r << 16 | g << 8 | b << 0;
      }
    }
-   SDL_UpdateTexture(screen, NULL, myBuf, screen_width * 4);
+   SDL_UpdateTexture(screen, NULL, myBuf, SCREEN_WIDTH * 4);
    SDL_RenderClear(sdlRenderer);
    SDL_RenderCopy(sdlRenderer, screen, NULL, NULL);
    SDL_RenderPresent(sdlRenderer);
    //SDL_UpdateRect(screen, 0, 0, 0, 0);
 #else
-   G->update();
+
+   u8* data;
+   int pitch;
+
+   DFBCHECK(primary->Lock( primary, DSLF_WRITE, (void**) &data, &pitch ));
+   for (int j=0; j<SCREEN_HEIGHT; j++) {
+     u8* dst = data + j * pitch;
+     for (int i=0; i<SCREEN_WIDTH; i++) {
+       unsigned char idx = screen_ptr[j*SCREEN_WIDTH + i];
+       dst[i] = idx;
+     }
+   }
+   primary->Unlock(primary);
+   primary->Flip (primary, NULL, DSFLIP_NONE);
 #endif
 }
 
@@ -322,23 +338,24 @@ void clear_scr(int color)
   clear_scr(color,MAX_Y);
 }
 
+#ifdef HAVE_LIBSDL
 void clear_scr(int color, int)
 {
-#ifdef HAVE_LIBSDL
 assert(color < 256);
 SDL_SetRenderDrawColor(sdlRenderer, colors[color].r, colors[color].b, colors[color].g, colors[color].a);
 SDL_RenderClear(sdlRenderer);
 SDL_RenderPresent(sdlRenderer);
-#else
-  G->rect(0,0,SCREEN_WIDTH,row+1,(int) color);
-#endif
 }
+#else
+void clear_scr(int color, int)
+{
+  primary->SetColor (primary, colors[color].r, colors[color].b, colors[color].g, colors[color].a);
+  primary->FillRectangle (primary, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+}
+#endif
 
 void fill_rect(Rect &r, int color)
 {
-#ifdef HAVE_LIBSDL
-  //SDL_Rect FillRect;   
-  
   if (valid_rect(r))       
     {
       Rect r0 = r;
@@ -352,14 +369,6 @@ void fill_rect(Rect &r, int color)
         for (int i1=r0.left(); i1<r0.right(); i1++)
           putpixel(i1, j1, color);
     }
-#else
-  if (valid_rect(r))
-    {
-      Rect r0 = r;
-      cliprect2rect(cliprect,r0);
-      G->rect(r0.left(),r0.top(),RWIDTH(r0),RHEIGHT(r0),color);
-    }
-#endif
 }
 
 void putpixel(int x, int y, int color)
@@ -387,20 +396,17 @@ void v_line(int x, int y, int len, int color)
 
 void set_rgb_value(int color, char red, char green, char blue)
 {
-#ifdef HAVE_LIBSDL
 assert(color < 256);
 if (!colors) colors = new SDL_Color[256];
-
-colors[color].r = Uint8(red << 2);
-colors[color].g = Uint8(green << 2);
-colors[color].b = Uint8(blue << 2);
+colors[color].r = uint8_t(red << 2);
+colors[color].g = uint8_t(green << 2);
+colors[color].b = uint8_t(blue << 2);
 colors[color].a = 255;
-#else
-  RGB8->set(color,red,green,blue);
+#ifdef HAVE_LIBVGA
+upload_palette(-1,-1);
 #endif
 }
 
-#ifdef HAVE_LIBSDL
 void get_rgb_value(int color, char *red, char *green, char *blue)
 {
 assert(color < 256);
@@ -409,18 +415,12 @@ assert(color < 256);
 *green = colors[color].g;
 *blue  = colors[color].b;
 }
-#else
-void get_rgb_value(int color, char *red, char *green, char *blue)
-{
-  RGB8->get(color,red,green,blue);
-}
-#endif
+
 void set_palette(int startcolor, int endcolor, char *palette)
 {
 // this is a palette set function that reads tupples of 3 bytes in RGB order
 // and sets them into the palette at the appropriate slot.
 
-#ifdef HAVE_LIBSDL
 // Gonna have to set cursor remap in here!
 for(int x=startcolor;x<endcolor;x++)
    {
@@ -429,14 +429,13 @@ for(int x=startcolor;x<endcolor;x++)
    colors[x].b = *(palette++);
    colors[x].a = 255;
    }
-#else
-  RGB8->set(palette,startcolor,endcolor);
+#ifdef HAVE_LIBVGA
+upload_palette(startcolor, endcolor);
 #endif
 }
 
 void get_palette(int startcolor, int endcolor, char *palette)
 {
-#ifdef HAVE_LIBSDL
 // this gets a block of palette entries in one call.
 for(int x=startcolor;x<endcolor;x++)
    {
@@ -444,9 +443,6 @@ for(int x=startcolor;x<endcolor;x++)
    *(palette++) = colors[x].g;
    *(palette++) = colors[x].b;
    }
-#else
-  RGB8->get(palette,startcolor,endcolor);
-#endif
 }
 
 void fade_palette_out(int startcolor, int endcolor, p_callback *pb)

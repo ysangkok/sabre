@@ -122,12 +122,7 @@ void mysigfpe(int fp);
 int main(int argc, char *argv[])
 {
 #ifdef HAVE_LIBVGA
-  vga_disabledriverreport();
-  if (vga_init())
-    {
-      printf("Cannot initialize VGA device.\n");
-      return -1;
-    }
+  DirectFBInit (&argc, &argv);
 #endif
   int i;
   int m;

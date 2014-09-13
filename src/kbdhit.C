@@ -22,6 +22,7 @@
 #include <ctype.h>
 #include "pc_keys.h"
 #include "kbdhit.h"
+#include "vga_13.h"
 
 
 /*
@@ -67,6 +68,13 @@ static const unsigned char sdl_to_standard[256] =
 
 KBHit kbhit;
 int   KBHit::kbdin = 0;
+
+#ifdef HAVE_LIBVGA
+static IDirectFBEventBuffer *buffer = NULL;
+static IDirectFBInputDevice *keyboard = NULL;
+IDirectFB* dfb = NULL;
+#endif
+
 KBHit::KBHit()
 {
 
@@ -94,54 +102,197 @@ int KBHit::kbdhit()
   return(select(1,&rfds,NULL,NULL,&tv));
 }
 
+#ifdef HAVE_LIBVGA
+static int mouse_x, mouse_y, mouse_y_min, mouse_y_max, mouse_x_min, mouse_x_max, raxis;
+extern int adjusted_mouse_x;
+extern int adjusted_mouse_y;
+extern int adjusted_buttons;
+int adjusted_mouse_x;
+int adjusted_mouse_y;
+int adjusted_buttons;
+
+void show_mouse_event(DFBInputEvent*);
+void show_mouse_event(DFBInputEvent* evt) {
+  if (evt->type == DIET_AXISMOTION) {
+       if (evt->flags & DIEF_AXISABS) {
+            switch (evt->axis) {
+            case DIAI_X:
+                 mouse_x = evt->axisabs;
+                 mouse_x_min = evt->min;
+                 mouse_x_max = evt->max;
+            break;
+            case DIAI_Y:
+                 mouse_y = evt->axisabs;
+                 mouse_y_min = evt->min;
+                 mouse_y_max = evt->max;
+                 break;
+            case DIAI_Z:
+                 printf("Z axis (abs): %d\n", evt->axisabs);
+                 break;
+            default:
+                 printf("Axis %d (abs): %d\n", evt->axis, evt->axisabs);
+                 break;
+            }
+            raxis = 0;
+       }
+       else if (evt->flags & DIEF_AXISREL) {
+            switch (evt->axis) {
+            case DIAI_X:
+                 mouse_x += evt->axisrel;
+                 break;
+            case DIAI_Y:
+                 mouse_y += evt->axisrel;
+                 break;
+            case DIAI_Z:
+                 printf("Z axis (rel): %d\n", evt->axisrel);
+                 break;
+            default:
+                 printf("Axis %d (rel): %d\n", evt->axis, evt->axisrel);
+                 break;
+            }
+            raxis = 1;
+       }
+
+       /* Touchpad axis range may not be the same as screen size */
+       if ((mouse_y_min < mouse_y_max) && (mouse_x_min < mouse_x_max)) {
+            adjusted_mouse_x = CLAMP (mouse_x, 0, mouse_x_max);
+            adjusted_mouse_y = CLAMP (mouse_y, 0, mouse_y_max);
+            adjusted_mouse_x = ((SCREEN_WIDTH  - 1) * adjusted_mouse_x) / mouse_x_max;
+            adjusted_mouse_y = ((SCREEN_HEIGHT - 1) * adjusted_mouse_y) / mouse_y_max;
+       } else {
+            adjusted_mouse_x = CLAMP (mouse_x, 0, SCREEN_WIDTH  - 1);
+            adjusted_mouse_y = CLAMP (mouse_y, 0, SCREEN_HEIGHT - 1);
+       }
+  } else if (evt->type == DIET_BUTTONPRESS) {
+       printf ("Button press %d\n", evt->button);
+       adjusted_buttons ^= 1 << evt->button;
+  } else if (evt->type == DIET_BUTTONRELEASE) {
+       printf ("Button release %d\n", evt->button);
+       adjusted_buttons ^= 1 << evt->button;
+  }
+}
+
+void show_any_button_event( DFBInputEvent *);
+void show_any_button_event( DFBInputEvent *evt ) {
+  printf ("Button %d %s\n", evt->button,
+            (evt->type == DIET_BUTTONPRESS) ? "pressed" : "released");
+}
+
+void show_any_axis_event( DFBInputEvent *);
+void show_any_axis_event( DFBInputEvent *evt ) {
+  if (evt->flags & DIEF_AXISABS)
+       printf (
+                 "Axis %d (abs): %d\n", evt->axis, evt->axisabs);
+  else
+       printf (
+                 "Axis %d (rel): %d\n", evt->axis, evt->axisrel);
+}
+
+typedef struct _DeviceInfo DeviceInfo;
+
+struct _DeviceInfo {
+     DFBInputDeviceID           device_id;
+     DFBInputDeviceDescription  desc;
+     DeviceInfo                *next;
+};
+
+DFBInputDeviceTypeFlags get_device_type(DeviceInfo *devices, DFBInputDeviceID device_id);
+DFBInputDeviceTypeFlags get_device_type(DeviceInfo *devices, DFBInputDeviceID device_id)
+{
+     while (devices) {
+          if (devices->device_id == device_id)
+               return devices->desc.type;
+          devices = devices->next;
+     }
+
+     return DIDTF_NONE;
+}
+
+DFBEnumerationResult enum_input_device( DFBInputDeviceID, DFBInputDeviceDescription, void *);
+DFBEnumerationResult
+enum_input_device( DFBInputDeviceID           device_id,
+                   DFBInputDeviceDescription  desc,
+                   void                      *data )
+{
+     DeviceInfo **devices = (DeviceInfo**) data;
+     DeviceInfo  *device;
+
+     device = (DeviceInfo*) malloc( sizeof(DeviceInfo) );
+
+     device->device_id = device_id;
+     device->desc      = desc;
+     device->next      = *devices;
+
+     *devices = device;
+
+     return DFENUM_OK;
+}
+#endif
+
 int KBHit::getch()
 {
 #ifdef HAVE_LIBSDL
   SDL_Event event;
+#else
+  if (!buffer) {
+    dfb->GetInputDevice (dfb, DIDID_KEYBOARD, &keyboard);
+    keyboard->CreateEventBuffer (keyboard, &buffer);
+  }
+  DFBInputEvent event;
 #endif
 
   unsigned char c;
 
 #ifdef HAVE_LIBSDL
-  if(SDL_PollEvent(&event))
+if(SDL_PollEvent(&event)) {
 #else  
-    if (kbdhit())
+  if (buffer->GetEvent (buffer, DFB_EVENT(&event)) == DFB_OK) {
+    if (event.type == DIET_AXISMOTION || event.type == DIET_BUTTONPRESS || event.type == DIET_BUTTONRELEASE) {
+      DeviceInfo            *devices = NULL;
+      dfb->EnumInputDevices( dfb, enum_input_device, &devices );
+      DFBInputDeviceTypeFlags device_type = get_device_type( devices, event.device_id);
+      if (device_type & DIDTF_MOUSE )
+        show_mouse_event(&event);
+      else if (event.type == DIET_BUTTONPRESS || event.type == DIET_BUTTONRELEASE)
+        show_any_button_event(&event);
+      else
+        show_any_axis_event(&event);
+      return 0;
+    } else if (event.type == DIET_KEYPRESS) {
 #endif
-      {
 #ifdef HAVE_LIBSDL
         c = (unsigned char) event.key.keysym.sym;
         c = sdl_to_standard[c];
 #else
-        c = (unsigned char) vga_getkey();
-#endif      
-        if (c==ESC)
-          {
+        c = (unsigned char) event.key_symbol;
+#endif
+        if (c==ESC) {
 #ifdef HAVE_LIBSDL
             c = (unsigned char) event.key.keysym.sym;
-#else
-            c = (unsigned char) vga_getkey();
 #endif     
-            if (c=='[')
+            if (c=='[') {
 #ifdef HAVE_LIBSDL 
               c = (unsigned char) event.key.keysym.sym;
-#else
-              c = (unsigned char) vga_getkey();
 #endif
-            else
-              {
+            } else {
               putchar(c);
               c = ESC;
-              }
-          }
+            }
+        }
         tcflush(0,TCIFLUSH);
         kbdin = (int) c;
         return ((int)c);
-      }
-    else
-      {
+      } else {
         kbdin = 0;
-        return (0);
+        return 0;
       }
+#ifdef HAVE_LIBVGA
+  } else {
+      kbdin = 0;
+      return (0);
+  }
+#endif
+
 }
 
 KBHit::~KBHit()
