@@ -26,14 +26,14 @@
 #ifndef __sweapon_h
 #define __sweapon_h
 
-#define swDEFAULT_CONE_PITCH        ((sREAL) (_degree * 1.0))
-#define swDEFAULT_CONE_YAW          ((sREAL) (_degree * 1.0))
-#define swDEFAULT_MAX_RANGE         ((sREAL) 1360.0)
-#define swDEFAULT_INITIAL_VELOCITY  ((sREAL) 2502.0)
-#define swDEFAULT_BURST_TIME        ((sREAL) 0.5)
-#define swDEFAULT_BURST_PAUSE       ((sREAL) 0.4)
-#define swDEFAULT_CONVERGANCE       ((sREAL) 900.0)
-#define swMAX_RANGE_FACTOR          ((sREAL) 0.6)
+#define swDEFAULT_CONE_PITCH        (static_cast<sREAL>(_degree * 1.0))
+#define swDEFAULT_CONE_YAW          (static_cast<sREAL>(_degree * 1.0))
+#define swDEFAULT_MAX_RANGE         (static_cast<sREAL>(1360.0))
+#define swDEFAULT_INITIAL_VELOCITY  (static_cast<sREAL>(2502.0))
+#define swDEFAULT_BURST_TIME        (static_cast<sREAL>(0.5))
+#define swDEFAULT_BURST_PAUSE       (static_cast<sREAL>(0.4))
+#define swDEFAULT_CONVERGANCE       (static_cast<sREAL>(900.0))
+#define swMAX_RANGE_FACTOR          (static_cast<sREAL>(0.6))
 
 #ifdef __cplusplus
 
@@ -81,7 +81,7 @@ public:
         cone.yaw = swDEFAULT_CONE_YAW;
         jiggle.x = jiggle.y = jiggle.z = 0.0;
         initialVelocity = swDEFAULT_INITIAL_VELOCITY;
-        fireInterval = (sREAL) 0.06;
+        fireInterval = static_cast<sREAL>(0.06);
         fireTimeAccumulator = 0.0;
         burstTimeAccumulator = 0.0;
         burstState = BURST_INIT;

@@ -157,7 +157,7 @@ for checking attacker list */
 
 inline sREAL ANGELS(aiPilot *pil)
 {
-    return (pil->GetAltitudeFPS() / (sREAL) 1000.0);
+    return (pil->GetAltitudeFPS() / static_cast<sREAL>(1000.0));
 }
 
 #define ISINVERTED (fabs(flightModel->GetRoll()) > Pi_2)

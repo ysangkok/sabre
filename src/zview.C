@@ -67,14 +67,14 @@ typedef REAL_TYPE C;
 extern float world_scale;
 
 Z_Node_Manager **Z_Node_Manager::g_zmanagers = NULL;
-int Z_Node_Manager::nzmanagers = 0;
+unsigned int Z_Node_Manager::nzmanagers = 0;
 
 Z_Node_Manager *Z_Node_Manager::getZNode(const char *id)
 {
   Z_Node_Manager *result = NULL;
   if (g_zmanagers != NULL)
     {
-      for (int i=0;i<nzmanagers;i++)
+      for (unsigned int i=0;i<nzmanagers;i++)
 	{
 	  if (g_zmanagers[i] != NULL)
 	    {
@@ -152,7 +152,7 @@ void Z_Node_Manager::read(std::istream &is)
   reference_info = new C_ShapeInfo[static_cast<unsigned int>(n_reference)];
   MYCHECK(reference_info != NULL);
   shape_cnt = 0;
-  for (int i=0;i<n_reference;i++)
+  for (unsigned int i=0;i<n_reference;i++)
     {
       is >> reference_info[i];
       reference_info[i] *= scaler * world_scale;
@@ -164,7 +164,7 @@ void Z_Node_Manager::read(std::istream &is)
   MYCHECK(shape_info != NULL);
   s_params = new shape_params[static_cast<unsigned int>(n_shapes)];
   MYCHECK(s_params != NULL);
-  for (int i=0;i<n_shapes;i++)
+  for (unsigned int i=0;i<n_shapes;i++)
     {
       is >> c;
       while (is && (c != '{'))
@@ -177,7 +177,7 @@ void Z_Node_Manager::read(std::istream &is)
       s_params[i].p_params = new poly_params[shape_info[i].npolys];
       s_params[i].n_params = shape_info[i].npolys;
       MYCHECK(s_params[i].p_params != NULL);
-      for (int j=0;j<shape_info[i].npolys;j++)
+      for (unsigned int j=0;j<shape_info[i].npolys;j++)
 	is >> s_params[i].p_params[j];
       is >> c;
       file_context = "ZView";
@@ -192,7 +192,7 @@ void Z_Node_Manager::read(std::istream &is)
 
   reference_shape = new C_Oriented_Shape[static_cast<unsigned int>(n_reference)];
   MYCHECK(reference_shape != NULL);
-  for (int i=0;i<n_reference;i++)
+  for (unsigned int i=0;i<n_reference;i++)
     reference_shape[i].create(&(reference_info[i]));
 }
 
@@ -210,7 +210,7 @@ void Z_Node_Manager::add(C_ShapeInfo &new_info, shape_params &new_param)
   MYCHECK(new_infos != NULL);
   new_params = new shape_params[static_cast<unsigned int>(n_shapes + 1)];
   MYCHECK(new_params != NULL);
-  for (int i=0;i<n_shapes;i++)
+  for (unsigned int i=0;i<n_shapes;i++)
     {
       new_infos[i] = shape_info[i];
       new_params[i] = s_params[i];
@@ -235,7 +235,7 @@ void Z_Node_Manager::buildShapes()
     delete [] shapes;
   shapes = new C_Oriented_Shape[static_cast<unsigned int>(n_shapes)];
   MYCHECK(shapes != NULL);
-  for (int i=0;i<n_shapes;i++)
+  for (unsigned int i=0;i<n_shapes;i++)
     {
       shapes[i].create(&(shape_info[i]));
       shapes[i].set_params(&(s_params[i]));
@@ -247,15 +247,15 @@ void Z_Node_Manager::deleteShape(int which)
 {
   C_ShapeInfo *new_infos;
   shape_params *new_params;
-  if (which < 0 || which >= n_shapes)
+  if (which < 0 || static_cast<unsigned int>(which) >= n_shapes)
     return;
   new_infos = new C_ShapeInfo[static_cast<unsigned int>(n_shapes - 1)];
   MYCHECK(new_infos != NULL);
   new_params = new shape_params[static_cast<unsigned int>(n_shapes - 1)];
   MYCHECK(new_params != NULL);
-  for (int i=0,ix=0;i<n_shapes;i++)
+  for (unsigned int i=0,ix=0;i<n_shapes;i++)
     {
-      if (i != which)
+      if (i != static_cast<unsigned int>(which))
 	{
 	  new_infos[ix] = shape_info[i];
 	  new_params[ix] = s_params[i];
@@ -276,7 +276,7 @@ void Z_Node_Manager::deleteShape(int which)
 
 void Z_Node_Manager::create()
 {
-  int i;
+  unsigned int i;
   if (shapes != NULL)
     delete [] shapes;
   shapes = new C_Oriented_Shape[static_cast<unsigned int>(n_shapes)];
@@ -311,7 +311,7 @@ int Z_Node_Manager::write_file(const char *path)
 
 void Z_Node_Manager::write(std::ostream &os)
 {
-  int i;
+  unsigned int i;
   os << "{\n";
   os << scaler << "\n";
   os << static_cast<unsigned int>(n_reference) << "\n";
@@ -332,7 +332,7 @@ void Z_Node_Manager::write(std::ostream &os)
       tmp *= C(1.0 / (scaler * world_scale));
       os << tmp;
       os << s_params[i].flags << '\n';
-      for (int j=0;j<shape_info[i].npolys;j++)
+      for (unsigned int j=0;j<shape_info[i].npolys;j++)
 	os << s_params[i].p_params[j] << '\n';
       os << "}\n";
     }
@@ -345,10 +345,10 @@ void Z_Node_Manager::write(std::ostream &os)
 
 void Z_Node_Manager::write_params(std::ostream &os, int i)
 {
-  if (i >= 0 && i < n_shapes)
+  if (i >= 0 && static_cast<unsigned int>(i) < n_shapes)
     {
       os << s_params[i].flags << '\n';
-      for (int j=0;j<shape_info[i].npolys;j++)
+      for (unsigned int j=0;j<shape_info[i].npolys;j++)
 	os << s_params[i].p_params[j] << '\n';
     }
 }
@@ -375,7 +375,7 @@ void Z_Viewer::draw(Port_3D &port)
     {
       Vector vc = world_light_source;
       vc.Normalize();
-      for (int i=0;i<nshapes;i++)
+      for (unsigned int i=0;i<nshapes;i++)
 	{
 	  if (shapes[i].visible)
 	    {
@@ -389,21 +389,21 @@ void Z_Viewer::draw(Port_3D &port)
       if (draw_shadow)
 	{
 	  Vector v = world_light_source + Vector(reference_port->look_from);
-	  for (int i=0;i<nshapes;i++)
+	  for (unsigned int i=0;i<nshapes;i++)
 	    {
 	      if (shapes[i].visible)
 		shapes[i].render_shadow(port,v);
 	    }
 	}
 
-      for (int i=nshapes-1;i>=0;i--)
+      for (int i=static_cast<int>(nshapes)-1;i>=0;i--)
 	if (shapes[i].visible)
 	  shapes[i].draw(port,reference_port->look_from);
     }
   
   TSTPS = tstps;
   drawn_flag = 1;
-  for (int i=0;i<nshapes;i++)
+  for (unsigned int i=0;i<nshapes;i++)
     shapes[i].visible = 1;
 
 }
@@ -433,10 +433,10 @@ void Z_Viewer::draw_partial(Port_3D &port)
   Vector vc = world_light_source;
   vc.Normalize();
   
-  for (int i=0;i<nreference;i++)
+  for (unsigned int i=0;i<nreference;i++)
     reference_shape[i].set_world_points(*reference_port);
 
-  for (int i=0;i<nshapes;i++)
+  for (unsigned int i=0;i<nshapes;i++)
     {
       if (shapes[i].flags & MAJOR_SHAPE)
 	{
@@ -455,14 +455,14 @@ void Z_Viewer::draw_partial(Port_3D &port)
   if (draw_shadow)
     {
       Vector v = world_light_source + Vector(reference_port->look_from);
-      for (int i=0;i<nshapes;i++)
+      for (unsigned int i=0;i<nshapes;i++)
 	{
 	  if (shapes[i].visible && shapes[i].flags & MAJOR_SHAPE)
 	    shapes[i].render_shadow(port,v);
 	}
     }
 
-  for (int i=0;i<nshapes;i++)
+  for (unsigned int i=0;i<nshapes;i++)
     if ((shapes[i].flags & MAJOR_SHAPE) && shapes[i].visible)
       shapes[i].draw(port,reference_port->look_from);
   
@@ -549,7 +549,7 @@ Z_Viewer::~Z_Viewer()
 void Z_Viewer::build_bounding_cube()
 {
   bcube.flg = 0;
-  for (int i=0;i<nshapes;i++)
+  for (unsigned int i=0;i<nshapes;i++)
     {
       bounding_cube &bc = z_manager->shape_info[i].bcube;
       if (fabs(bc.min_y - bc.max_y) < world_scale)
@@ -595,7 +595,7 @@ void Z_Viewer::write(std::ostream &os)
   os << "XXXXXX\n";
   os << nshapes << '\n';
 
-  for (int i=0;i<nshapes;i++)
+  for (unsigned int i=0;i<nshapes;i++)
     {
       os << "{\n";
       shapes[i].create_points(*reference_port);

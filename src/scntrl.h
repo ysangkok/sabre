@@ -45,7 +45,7 @@ public:
       on = 0;
       setPoint = 0.0;
       flag = 0;
-      controlStep = (sREAL) 0.1;
+      controlStep = static_cast<sREAL>(0.1);
     }
 
   friend void SETCONTROL(sControlState &cs,
@@ -72,7 +72,7 @@ public:
 
   friend void SETCONTROLX(sControlState &cs,
 			  sREAL setPoin,
-			  sREAL controlStp = (sREAL) 0.01,
+			  sREAL controlStp = static_cast<sREAL>(0.01),
 			  sREAL = 0.0
 			  )
     {

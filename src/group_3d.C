@@ -66,7 +66,7 @@ int C_3DObject_Group::isVisible(Port_3D &port)
 
 void C_3DObject_Group::addDrawList(DrawList &dlist, Port_3D &port)
 {
-  int i;
+  unsigned int i;
   if ((n_objects > 0) && isVisible(port))
     {
       for (i = 0; i<n_objects;i++)

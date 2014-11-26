@@ -1,6 +1,6 @@
 import os
 
-clang = 1
+clang = 0
 everything = 1
 do_vga = 0
 do_sdl = not do_vga
@@ -16,6 +16,7 @@ machine = []
 if everything:
 	if clang:
 		warn += machine + ["-Weverything"]
+		warn += ["-Wno-old-style-cast", "-Wno-date-time"]
 	else:
 		warn += machine + ["-Wall", "-Wextra"]
 		warn += ["-Wno-attributes", "-Wno-unused-local-typedefs"]
@@ -57,7 +58,7 @@ if coverage:
 debug_profile_and_coverage += Split("-fPIC")
 
 orgenv = Environment(
-	CC="clang" if clang else "gcc", CFLAGS=lto + opt + warn + debug_profile_and_coverage + ([] if not everything else Split('-ansi -pedantic -std=c11')), CXX="clang++" if clang else "gcc", CXXFLAGS=lto + opt + warn + debug_profile_and_coverage + ["-std=c++11"] + ([] if not everything else Split('-ansi -pedantic')), LIBS=["m"], 
+	CC="clang" if clang else "gcc", CFLAGS=lto + opt + warn + debug_profile_and_coverage + ([] if not everything else Split('-ansi -pedantic -std=c11')), CXX="clang++" if clang else "gcc", CXXFLAGS=lto + opt + warn + debug_profile_and_coverage + ["-std=c++11"] + ([] if not everything else Split('-pedantic')), LIBS=["m"], 
 	LINK="clang++" if clang else "g++", 
 	#CXXFLAGS="-nodefaultlibs -fno-exceptions -w", 
 	CPPDEFINES = {"VERSION":"\\\"0.2.4b\\\"","REV_DATE":"\\\"11/21/99\\\"","JSTICK_INSTALLED":"1"},
@@ -78,6 +79,8 @@ if clang:
 		common_flags = ["-Wno-c++11-long-long", "-Wno-float-equal", "-Wno-padded", "-Wno-format-nonliteral", "-Wno-disabled-macro-expansion", "-Wno-shift-sign-overflow"]
 		orgenv.Append(CXXFLAGS=common_flags + ["-Wno-c99-extensions", "-Wno-c++11-extensions", "-Wno-c++11-compat", "-Wno-c++11-extensions", "-Wno-c++98-compat-pedantic", "-Wno-exit-time-destructors", "-Wno-global-constructors"])
 		orgenv.Append(CFLAGS=common_flags)
+else:
+	orgenv.Append(CXXFLAGS=["-fdiagnostics-color=always"])
 
 env = orgenv.Clone()
 

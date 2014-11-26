@@ -60,7 +60,7 @@ public:
 	}
 	void set_dbg(const char *s)
 	{
-		dbg = (char *) s;
+		dbg = const_cast<char *>(s);
 	}
    Weapon_Instance *get_sel_weapon(void)
 	{

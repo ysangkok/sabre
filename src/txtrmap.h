@@ -37,8 +37,6 @@
 #include <d3d.h>
 #endif
 
-#include "SafeInt.h"
-
 class TextrMap
 {
 private:
@@ -144,7 +142,7 @@ public:
 		)
 			result = fill_color;
 		else
-			result = (int) *(bytes + (v * map_w) + u);
+			result = *(bytes + (v * map_w) + u);
 		if (result == trans_colr)
 			result = fill_color;
 		else if (cmaps)
@@ -158,8 +156,8 @@ extern TextrMap nullmap;
 class TextrMap_Manager
 {
 public:
-	SafeInt<unsigned int> n_maps;
-	int nxt;
+	unsigned int n_maps;
+	unsigned int nxt;
 	static int reserved;
 
 	TextrMap *tmaps;
@@ -191,7 +189,7 @@ public:
 
 	TextrMap &get_map(int n)
 	{
-		if (tmaps != NULL && n >= 0 && n < n_maps)
+		if (tmaps != NULL && n >= 0 && static_cast<unsigned int>(n) < n_maps)
 			return (tmaps[n]);
 		else
 			return (nullmap);
@@ -199,7 +197,7 @@ public:
 
 	TextrMap *get_map_ptr(int n)
 	{
-		if (tmaps != NULL && n >= 0 && n < n_maps)
+		if (tmaps != NULL && n >= 0 && static_cast<unsigned int>(n) < n_maps)
 			return (& tmaps[n]);
 		else
 			return (NULL);

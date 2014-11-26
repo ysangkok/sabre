@@ -400,7 +400,7 @@ void LinuxJoystick::calibrate()
 	  deadZone = dead_zone[i];
 	  printf("Dead zone for axis %d is %f\n",i,deadZone);
 	  printf("Enter new value: (0 ... 1.0) >>");
-	  scanf("%f",&deadZone);
+	  if (1 != scanf("%f",&deadZone)) abort();
 	  printf("\n");
 	  {
 	    if (deadZone >= 0.0 && deadZone <= 1.0)

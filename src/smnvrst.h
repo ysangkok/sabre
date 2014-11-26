@@ -174,7 +174,7 @@ public:
 	int GetManeuverDirection();
 	int IsLoop()
 	{
-		return (((int)(flags & IMNVR_LOOPBIT)) != 0);
+		return ((static_cast<int>(flags & IMNVR_LOOPBIT)) != 0);
 	}
 	const char *GetManeuverString()
 	{

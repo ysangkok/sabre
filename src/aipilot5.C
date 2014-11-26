@@ -98,7 +98,7 @@ void aiPilot::DoEvade(sManeuverState &mv)
       rcvrAGL = (grndColRcvrAGL);
       if (flightModel->GetHeightAGL() + deltaAltitude * secs <= agl)
 	{
-	  mv.data3 = (sREAL) mv.state;
+	  mv.data3 = static_cast<sREAL>(mv.state);
 	  mv.state = AVOID_GROUND;
 	  ClearManeuverStackTo(mv.stackLevel);
 	  PushManeuver(sManeuver::PULLUP,0,

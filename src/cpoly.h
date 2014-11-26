@@ -50,8 +50,6 @@
 
 #include "clstypes.h"
 
-#include "SafeInt.h"
-
 /****************************************
  * Bit-flag values used to set various  *
  * properties of polygons, shapes and   *
@@ -92,7 +90,7 @@ inline REAL_TYPE Intensity( const Vector &light_source,
 const Vector &norm)
 {
   REAL_TYPE val = light_source.Dot(norm  ) + 1;
-  return (REAL_TYPE) ((double) val / 2.0);
+  return static_cast<REAL_TYPE>(val / 2.0);
 }
 
 class poly_params
@@ -172,7 +170,7 @@ class shape_params
 public:
   unsigned long flags;
   poly_params *p_params;
-  SafeInt<unsigned int> n_params;
+  unsigned int n_params;
 
   shape_params()
     : p_params(NULL),
@@ -229,7 +227,7 @@ inline std::ostream & operator <<(std::ostream &os, shape_params &sp)
 class C_PolyInfo
 {
 public:
-  int npoints;
+  unsigned int npoints;
   R_3DPoint *lpoints;
   TxtPoint  *tpoints;
   int delete_flag;
@@ -293,7 +291,7 @@ inline std::ostream &operator <<(std::ostream &os, C_PolyInfo &cp)
 class C_ShapeInfo
 {
 public:
-  int npolys;
+  unsigned int npolys;
   C_PolyInfo *polyinfos;
   int delete_flag;
   bounding_cube bcube;
@@ -356,7 +354,7 @@ class C_3DObjectInfo
 {
 public:
   C_ShapeInfo *shapes;
-  int nshapes;
+  unsigned int nshapes;
   shape_params *dflt_params;
   bounding_cube bcube;
   char *path;
@@ -444,7 +442,7 @@ public:
 class C_Shape
 {
 public:
-  int npolys;
+  unsigned int npolys;
   int visible;
   unsigned long flags;
   REAL_TYPE maxlen;

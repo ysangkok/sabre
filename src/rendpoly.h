@@ -35,7 +35,7 @@ inline void rendply(int *poly, int n, int color, Rect *bounds)
   int clipped_points[MAX_CLIP];
   int cn;
   int clip_n;
-  if (poly_clip((int *)poly,clipped_points,n,&clip_n,bounds))
+  if (poly_clip(poly,clipped_points,n,&clip_n,bounds))
     {
       cn = (clip_n + 1) * 2;
       clipped_points[cn - 1] = clipped_points[1];

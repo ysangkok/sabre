@@ -74,7 +74,7 @@ void aiBase::Init()
 // Update routine. 
 void aiBase::Update(double timeFrm)
 {
-	timeFrame = (sREAL) timeFrm;
+	timeFrame = static_cast<sREAL>(timeFrm);
 	oneOverTimeFrame = 1 / (timeFrame + eps);
 	elapsedTime += timeFrame;
 }

@@ -120,7 +120,7 @@ void FlightLight::activate(Port_3D &fport, FlightLight_Specs *flt_specs,
   state.flight_port = fport;
   R_3DPoint p2,wp1,wp2;
   v.Normalize();
-  p2 = p1 + (R_3DPoint) v;
+  p2 = p1 + static_cast<R_3DPoint>(v);
   fport.port2world(p1,&wp1);
   fport.port2world(p2,&wp2);
   state.flight_port.set_view(wp1,wp2);
@@ -137,7 +137,7 @@ void FlightLight::activate(R_3DPoint &p, Vector &dir)
 {
   Vector v1;
   dir.Normalize();
-  R_3DPoint p1 = p + (R_3DPoint)dir;
+  R_3DPoint p1 = p + static_cast<R_3DPoint>(dir);
   state.flight_port.set_view(p,p1);
   v1 = state.flight_port.calc_view_normal();
   Vector_Q vq1(specs->init_speed,DVector(v1));

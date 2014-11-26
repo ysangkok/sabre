@@ -161,7 +161,7 @@ public:
     {
       tFlagIndex = 0;
       active = 1;
-      idx = (uint32_t) TRG_NO_TARGET;
+      idx = static_cast<uint32_t>(TRG_NO_TARGET);
       threatValue = ITARGET_MIN_THREAT_VALUE;
     }
   static void GetTargetInfo(uint32_t targetIdx, sPoint &position, 

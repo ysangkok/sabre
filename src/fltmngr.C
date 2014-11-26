@@ -116,7 +116,7 @@ void Flight_Node::read(std::istream &is)
     }
   else
     {
-      MYCHECK(n >= 0 && n < Z_Node_Manager::nzmanagers);
+      MYCHECK(n >= 0 && static_cast<unsigned int>(n) < Z_Node_Manager::nzmanagers);
       zm = Z_Node_Manager::g_zmanagers[n];
     }
   viewer = new Flight_ZViewer(zm);
@@ -304,11 +304,11 @@ void Flight_Node::update_sound(int weapon_fired, int landing_attempted,
       if ((flight->controls.throttle > 10) &&	(viewer->hurt < viewer->max_damage))
 	{
 	  sound_on(flight->specs->model,LOOP,vol);
-	  sound_freq(flight->specs->model,(int) (flight->controls.throttle * 100));
+	  sound_freq(flight->specs->model,static_cast<int>(flight->controls.throttle * 100));
 	}
       else
 	{
-	  sound_off((const char *)flight->specs->model);
+	  sound_off(const_cast<const char *>(flight->specs->model));
 	  wantWind = 1;
 	}
     }
@@ -358,7 +358,7 @@ void Flight_Node::update_sound(int weapon_fired, int landing_attempted,
 
 void Flight_Node::stop_engine_sound()
 {
-  sound_off((const char *)flight->specs->model);
+  sound_off(const_cast<const char *>(flight->specs->model));
 }
 
 void Flight_Node::add_draw_list(DrawList &dlist, Port_3D &port)
@@ -571,9 +571,9 @@ void Flight_Manager::readFlites(std::istream &is)
 {
 #define MAX_SWAYPOINT_INFOS 16
   swaypoint_info waypoints[MAX_SWAYPOINT_INFOS];
-  SafeInt<unsigned int> nwaypoints;
-  SafeInt<unsigned int> nflites;
-  SafeInt<unsigned int> npilots;
+  unsigned int nwaypoints;
+  unsigned int nflites;
+  unsigned int npilots;
   char fliteId[aiB_HANDLE_SIZE];
   char pilotHandle[aiB_HANDLE_SIZE];
   char waypointTaskStr[32];
@@ -581,7 +581,7 @@ void Flight_Manager::readFlites(std::istream &is)
   char maneuverTypeStr[32];
   char c;
   aiFlite *theFlite = NULL;
-  int i,j;
+  unsigned int i,j;
 #define NWPTASKS 15
   static simfileX::dict wptask[NWPTASKS] =
   {

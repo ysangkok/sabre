@@ -133,7 +133,7 @@ void copy_row(unsigned char *src, int src_w,
 	  while (w-- && (cols_used <= src_w))
 	    {
 	      unsigned char c = *src++;
-	      if (c != (unsigned char) trans_color)
+	      if (c != static_cast<unsigned char>(trans_color))
 		*dest++ = c;
 	      else
 		dest++;
@@ -192,7 +192,7 @@ void expand_row(unsigned char *src, int src_w,
 	    {
 	      if (trans_color == -1)
 		memset(dst,*src,putw);
-	      else if (*src != (unsigned char) trans_color)
+	      else if (*src != static_cast<unsigned char>(trans_color))
 		memset(dst,*src,putw);
 	    }
 	  else
@@ -204,7 +204,7 @@ void expand_row(unsigned char *src, int src_w,
 		    {
 		      if (trans_color == -1)
 			*dst = *src;
-		      else if (*src != (unsigned char) trans_color)
+		      else if (*src != static_cast<unsigned char>(trans_color))
 			*dst = *src;
 		    }
 		  dst++;
@@ -250,7 +250,7 @@ void compress_row(unsigned char *src, int src_w,
 	{
 	  if (trans_color == -1)
 	    *dest++ = *src;
-	  else if (*src != (unsigned char) trans_color)
+	  else if (*src != static_cast<unsigned char>(trans_color))
 	    *dest++ = *src;
 	  else
 	    dest++;

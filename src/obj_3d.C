@@ -174,7 +174,7 @@ void C_3DPoly::create_poly(C_Poly &pol)
 void C_3DPoly::build_bounding_cube()
 {
   bcube.reset();
-  for (int i=0;i<info->npoints;i++)
+  for (unsigned int i=0;i<info->npoints;i++)
     bcube.set(poly.wpoints[i]);
 }
 
@@ -246,7 +246,7 @@ int C_3DObject_List::add_object(C_3DObject_Base *obj)
 */
 void DrawList::drawz(Port_3D &port)
 {
-  for (int i=0;i<n_objects;i++)
+  for (unsigned int i=0;i<n_objects;i++)
     if (objects[i]->visible_flag)
       {
 	objects[i]->draw(port);
@@ -262,7 +262,7 @@ void DrawList::draw(Port_3D &port)
   //REAL_TYPE high_z;
   REAL_TYPE low_z;
 
-  int i;
+  unsigned int i;
   C_3DObject_Base *cdraw;
   while (1)
     {
@@ -293,7 +293,7 @@ void DrawList::draw(Port_3D &port)
 
 C_3DObjectInfo *C_3DInfoManager::getInfo(int i)
 {
-  if (i >= 0 && i < ninfos)
+  if (i >= 0 && static_cast<unsigned int>(i) < ninfos)
     return(&infos[i]);
   else
     return(NULL);
@@ -302,7 +302,7 @@ C_3DObjectInfo *C_3DInfoManager::getInfo(int i)
 C_3DObjectInfo *C_3DInfoManager::getInfo(char *id)
 {
   C_3DObjectInfo *result = NULL;
-  for (int i=0;i<ninfos;i++)
+  for (unsigned int i=0;i<ninfos;i++)
     {
       if (!strcmp(id,infos[i].id))
 	{
@@ -348,7 +348,7 @@ void C_3DInfoManager::read(std::istream &is)
   infos = new C_3DObjectInfo[ninfos];
   MYCHECK(infos != NULL);
 
-  for (int i=0;i<ninfos;i++)
+  for (unsigned int i=0;i<ninfos;i++)
     {
       is >> buff;
       if (*buff != '@')
@@ -363,7 +363,7 @@ void C_3DInfoManager::read(std::istream &is)
 void C_3DInfoManager::write(std::ostream &os)
 {
   os << "{\n" << ninfos << "\n";
-  for (int i=0;i<ninfos;i++)
+  for (unsigned int i=0;i<ninfos;i++)
     {
       os << infos[i].path << "\n";
       infos[i].writeFile(infos[i].path);
@@ -379,7 +379,7 @@ void C_3DInfoManager::write(std::ostream &os)
 void C_3DObject2::read(std::istream &is)
 {
   char c;
-  int i;
+  unsigned int i;
 
   MYCHECK(im != NULL);
 
@@ -439,7 +439,7 @@ void C_3DObject2::read(std::istream &is)
 void C_3DObject2::build_bounding_cube()
 {
   bcube.reset();
-  for (int i=0;i<nshapes;i++)
+  for (unsigned int i=0;i<nshapes;i++)
     {
       shapes[i].getBounds(bcubes[i]);
       bcube.set(bcubes[i]);
@@ -449,7 +449,7 @@ void C_3DObject2::build_bounding_cube()
 void C_3DObject2::translate(R_3DPoint &r)
 {
   w_origin = r + world_origin;
-  for (int i=0;i<nshapes;i++)
+  for (unsigned int i=0;i<nshapes;i++)
     {
       shapes[i].set_world_location(w_origin);
       if (shapes[i].flags & SHADOW)
@@ -501,7 +501,7 @@ REAL_TYPE C_3DObject2::draw_prep(Port_3D &port)
 
 void C_3DObject2::draw(Port_3D &port)
 {
-  int i;
+  unsigned int i;
   int t;
   int tflg;
 
@@ -541,7 +541,7 @@ int C_3DObject2::ouch(const R_3DPoint &p1, const R_3DPoint &p2, int damage, Targ
   int result = 0;
   if (inbounds(p1,p2,bcube))
     {
-      for (int i=0;i<nshapes;i++)
+      for (unsigned int i=0;i<nshapes;i++)
 	{
 	  if (inbounds(p1,p2,bcubes[i]))
 	    {
@@ -565,7 +565,7 @@ int C_3DObject2::ouch(const R_3DPoint &p, int damage, Target *tg)
   int result = 0;
   if (inbounds(p,bcube))
     {
-      for (int i=0;i<nshapes;i++)
+      for (unsigned int i=0;i<nshapes;i++)
 	{
 	  if (inbounds(p,bcubes[i]))
 	    {
@@ -606,7 +606,7 @@ int C_3DObject2::ouch(const R_3DPoint &p, float radius, int damage, Target *tg)
 
 R_3DPoint *C_3DObject2::get_hit_point()
 {
-  if (hit_shape >= 0 && hit_shape < nshapes)
+  if (hit_shape >= 0 && static_cast<unsigned int>(hit_shape) < nshapes)
     {
       C_Shape & cs = shapes[hit_shape];
       C_Poly & cp = cs.polys[RANDOM(cs.npolys)];
@@ -636,7 +636,7 @@ C_DrawList2::~C_DrawList2()
 
 void C_DrawList2::read(std::istream &is)
 {
-  int i,j,idx,n;
+  unsigned int i,j,idx,n;
   char c;
 
   shape_cnt = poly_cnt = 0;
@@ -677,26 +677,26 @@ std::istream &operator >>(std::istream &is, C_DrawList2 &cd)
 
 void C_DrawList2::translate(R_3DPoint &r)
 {
-  for (int i=0;i<n_objects;i++)
+  for (unsigned int i=0;i<n_objects;i++)
     objects[i].translate(r);
 }
 
 void C_DrawList2::get_targets(Target_List &tlist)
 {
-  for (int i=0;i<n_objects;i++)
+  for (unsigned int i=0;i<n_objects;i++)
     if (objects[i].flags & HIT_ME)
       tlist.add_target(&objects[i]);
 }
 
 void C_DrawList2::add_draw_list(DrawList &dlist, Port_3D &port)
 {
-  for (int i=0;i<n_groups;i++)
+  for (unsigned int i=0;i<n_groups;i++)
     groups[i].addDrawList(dlist,port);
 }
 
 void C_DrawList2::setTextrFlag(int flag, const char *id, int id_len)
 {
-  for (int i=0;i<n_objects;i++)
+  for (unsigned int i=0;i<n_objects;i++)
     {
       if (id != NULL)
 	{
@@ -710,7 +710,7 @@ void C_DrawList2::setTextrFlag(int flag, const char *id, int id_len)
 
 void C_DrawList2::setVisibleFlag(int flag, const char *id, int id_len)
 {
-  for (int i=0;i<n_objects;i++)
+  for (unsigned int i=0;i<n_objects;i++)
     {
       if (id != NULL)
 	{

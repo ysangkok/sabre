@@ -59,8 +59,8 @@ public:
   C_Oriented_Shape *reference_shape;
   C_Oriented_Shape *shapes;
   shape_params *s_params;
-  SafeInt<unsigned int> n_reference;
-  SafeInt<unsigned int> n_shapes;
+  unsigned int n_reference;
+  unsigned int n_shapes;
   C_Oriented_Shape *cur_shapes;
   C_Oriented_Shape *cur_reference;
   Port_3D *cur_port;
@@ -85,7 +85,7 @@ public:
   void setId(const char *);
 
   static Z_Node_Manager **g_zmanagers;
-  static int nzmanagers;
+  static unsigned int nzmanagers;
   static Z_Node_Manager *getZNode(const char *);
 };
 
@@ -100,8 +100,8 @@ public:
   C_Oriented_Shape *shapes;
   virtual void draw_minimal(Port_3D &port);
   virtual void draw_partial(Port_3D &port);
-  int nshapes;
-  int nreference;
+  unsigned int nshapes;
+  unsigned int nreference;
   // distance abstraction levels
   enum distance_abstraction_type { da_full, da_partial, da_minimal };
   // current level

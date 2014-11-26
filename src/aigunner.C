@@ -76,7 +76,7 @@ aiGunner::aiGunner()
 	isDead = isEjected = 0;
 	affiliation = 0;
 	hasTarget = 0;
-	bulletRadius = (sREAL) 2.6;
+	bulletRadius = static_cast<sREAL>(2.6);
 	gunPitchRate = aiGUN_PITCH_RATE;
 	gunYawRate = aiGUN_YAW_RATE;
 }
@@ -119,7 +119,7 @@ void aiGunner::Destroy()
 
 void aiGunner::Update(double timeFrm)
 {
-	this->timeFrame = (sREAL) timeFrm;
+	this->timeFrame = static_cast<sREAL>(timeFrm);
 	if (!IsActive())
 		return;
 	weaponLimits.Update(timeFrame);
@@ -144,7 +144,7 @@ void aiGunner::AdjustGun()
 		d = sGetCircularDistance(GUN_PITCH,LEAD_PITCH);
 		pitchStep = gunPitchRate * timeFrame;
 		if (pitchStep > fabs(d))
-			pitchStep = (sREAL) fabs(d);
+			pitchStep = static_cast<sREAL>(fabs(d));
 		if (d < 0)
 			pitchStep = -pitchStep;
 		GUN_PITCH = sIncrementAngle(GUN_PITCH,pitchStep);
@@ -154,7 +154,7 @@ void aiGunner::AdjustGun()
 		d = sGetCircularDistance(GUN_YAW,LEAD_YAW);
 		yawStep = gunYawRate * timeFrame;
 		if (yawStep > fabs(d))
-			yawStep = (sREAL) fabs(d);
+			yawStep = static_cast<sREAL>(fabs(d));
 		if (d < 0)
 			yawStep = -yawStep;
 		GUN_YAW = sIncrementAngle(GUN_YAW,yawStep);

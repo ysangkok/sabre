@@ -600,7 +600,7 @@ protected:
    void SetNoseOn(sREAL, sREAL, sREAL = Pi_2);
    void SetNoseOn(int flag, const sPoint &, sREAL pitch, sREAL yaw);
 
-   void SetNoseOnX(sREAL, sREAL, sREAL = 0.5, sREAL = 0.0, sREAL = (sREAL) Pi_2);
+   void SetNoseOnX(sREAL, sREAL, sREAL = 0.5, sREAL = 0.0, sREAL = static_cast<sREAL>(Pi_2));
    sREAL Point2Roll(const sPoint &rollPosition);
    sREAL CalcClosureSpeed(const sTargetGeometry &, int flg = 0);
    /* communication */

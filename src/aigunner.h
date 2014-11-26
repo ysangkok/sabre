@@ -27,8 +27,8 @@
 #ifndef __aigunner_h
 #define __aigunner_h
 
-#define aiGUN_PITCH_RATE      ((sREAL)(_degree * 20.0))
-#define aiGUN_YAW_RATE        ((sREAL)(_degree * 20.0))
+#define aiGUN_PITCH_RATE      (static_cast<sREAL>(_degree * 20.0))
+#define aiGUN_YAW_RATE        (static_cast<sREAL>(_degree * 20.0))
 
 #ifdef __cplusplus
 #include "fstream"
@@ -148,7 +148,7 @@ public:
 	}
 	long GetBulletRadius()
 	{
-		return ((long)bulletRadius);
+		return (static_cast<long>(bulletRadius));
 	}
 	void SetFlightModel(sFlightModel *flightMdl)
 	{

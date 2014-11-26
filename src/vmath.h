@@ -43,19 +43,19 @@ inline int r_equal(REAL_TYPE x, REAL_TYPE y)
 
 inline REAL_TYPE abs_max(REAL_TYPE a, REAL_TYPE b)
 {
-  double ax = fabs((double)a);
-  double bx = fabs((double)b);
-  return (REAL_TYPE) (ax > bx ? ax : bx);
+  double ax = fabs(a);
+  double bx = fabs(b);
+  return static_cast<REAL_TYPE>(ax > bx ? ax : bx);
 }
 
 inline REAL_TYPE arc_cos(REAL_TYPE a)
 {
   if (a < -1.00)
-    return ((REAL_TYPE) 0.0);
+    return 0.0;
   else if (a > 1.00)
-    return ((REAL_TYPE) 0.0);
+    return 0.0;
   else
-    return ((REAL_TYPE) (acos((double)a)));
+    return static_cast<REAL_TYPE>(acos(a));
 }
 
 inline REAL_TYPE arc_sin(REAL_TYPE a)
@@ -64,7 +64,7 @@ inline REAL_TYPE arc_sin(REAL_TYPE a)
     a = -1.00;
   else if (a > 1.00)
     a = 1.00;
-  return ((REAL_TYPE) (asin((double)a)));
+  return static_cast<REAL_TYPE>(asin(a));
 }
 
 class R_3DPoint;
@@ -155,7 +155,7 @@ public:
     {
       REAL_TYPE f = (X*X) + (Y*Y) + (Z*Z);
       if (f > 0)
-	return (REAL_TYPE) sqrt(f);
+	return static_cast<REAL_TYPE>(sqrt(f));
       else
 	return 0;
     }
@@ -370,7 +370,7 @@ inline REAL_TYPE distance_squared(const R_3DPoint &r1, const R_3DPoint &r2)
 
 inline REAL_TYPE distance(const R_3DPoint &r1, const R_3DPoint &r2)
 {
-  return (REAL_TYPE) sqrt(distance_squared(r1,r2));
+  return static_cast<REAL_TYPE>(sqrt(distance_squared(r1,r2)));
 }
 
 inline Vector to_nvector(const R_3DPoint &from, const R_3DPoint &to, REAL_TYPE m = 1)

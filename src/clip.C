@@ -116,10 +116,10 @@ int accept = 0, done = 0;
 
 	if (accept)
 	{
-		points[0] = (int) x0;
-		points[1] = (int) y0;
-		points[2] = (int) x1;
-		points[3] = (int) y1;
+		points[0] = static_cast<int>(x0);
+		points[1] = static_cast<int>(y0);
+		points[2] = static_cast<int>(x1);
+		points[3] = static_cast<int>(y1);
 	}
 	return accept;
 }
@@ -201,12 +201,12 @@ int accept = 0, done = 0;
 
 	if (accept)
 	{
-		pt0.x = (R2D_TYPE) x0;
-		pt0.y = (R2D_TYPE) y0;
-		pt0.z = (R2D_TYPE) z0;
-		pt1.x = (R2D_TYPE) x1;
-		pt1.y = (R2D_TYPE) y1;
-		pt1.z = (R2D_TYPE) z1;
+		pt0.x = static_cast<R2D_TYPE>(x0);
+		pt0.y = static_cast<R2D_TYPE>(y0);
+		pt0.z = static_cast<R2D_TYPE>(z0);
+		pt1.x = static_cast<R2D_TYPE>(x1);
+		pt1.y = static_cast<R2D_TYPE>(y1);
+		pt1.z = static_cast<R2D_TYPE>(z1);
 	}
 	return accept;
 }
@@ -262,8 +262,8 @@ y1 = REAL_TYPE(second[1]);
 		else
 			xR = ((yR - y0) / m) +  x0;
 	}
-	result[0] = (int) xR;
-	result[1] = (int) yR;
+	result[0] = static_cast<int>(xR);
+	result[1] = static_cast<int>(yR);
 }
 
 int poly_clip(int *in_poly, int *clipped_poly, int n,
@@ -346,13 +346,13 @@ static int f_clip_counts[3];
 inline int f_inside(int side, float *pt)
 {
 	if (side == left)
-		return (*pt >= (float) bounds->topLeft.x);
+		return (*pt >= static_cast<float>(bounds->topLeft.x));
 	if (side == top)
-		return (*(pt+1) >= (float) bounds->topLeft.y);
+		return (*(pt+1) >= static_cast<float>(bounds->topLeft.y));
 	if (side == right)
-		return (*pt <= (float) bounds->botRight.x);
+		return (*pt <= static_cast<float>(bounds->botRight.x));
 	if (side == bottom)
-		return (*(pt+1) <= (float) bounds->botRight.y);
+		return (*(pt+1) <= static_cast<float>(bounds->botRight.y));
 	return -1;
 }
 
@@ -372,17 +372,17 @@ float x0,y0,x1,y1,xR,yR,m;
 	if (side == left || side == right)
 	{
 		if (side == left)
-			xR = (float) bounds->topLeft.x;
+			xR = static_cast<float>( bounds->topLeft.x);
 		else
-			xR = (float) bounds->botRight.x;
+			xR = static_cast<float>( bounds->botRight.x);
 		yR = (m * (xR - x0)) + y0;
 	}
 	else
 	{
 		if (side == top)
-			yR = (float) bounds->topLeft.y;
+			yR = static_cast<float>( bounds->topLeft.y);
 		else
-			yR = (float) bounds->botRight.y;
+			yR = static_cast<float>( bounds->botRight.y);
 		if (m == 0)
 			xR = x0;
 		else
@@ -1063,7 +1063,7 @@ int i_count, *o_count;
 			o_poly = clip_polys3[plane];
 			o_count = &clip_counts3[plane];
 		}
-		if (poly_clip_3D(i_poly,i_count,o_poly,o_count,b_cube,(bounding_plane) plane) <= 0)
+		if (poly_clip_3D(i_poly,i_count,o_poly,o_count,b_cube,static_cast<bounding_plane>(plane)) <= 0)
 			return 0;
 	}
 	return *out_count;
@@ -1240,21 +1240,21 @@ void bounding_cube::set(R_2DPoint &p)
 {
   if (!flg)
     {
-      min_x = max_x = (REAL_TYPE) p.x;
-      min_y = max_y = (REAL_TYPE) p.y;
+      min_x = max_x = static_cast<REAL_TYPE>(p.x);
+      min_y = max_y = static_cast<REAL_TYPE>(p.y);
       min_z = max_z = 0.0;
       flg = 1;
     }
   else
     {
-      if (max_x < ((REAL_TYPE) p.x))
-	max_x = (REAL_TYPE) p.x;
-      if (min_x > ((REAL_TYPE) p.x))
-	min_x = (REAL_TYPE) p.x;
-      if (max_y < ((REAL_TYPE) p.y))
-	max_y = (REAL_TYPE) p.y;
-      if (min_y > ((REAL_TYPE) p.y))
-	min_y = (REAL_TYPE) p.y;
+      if (max_x < static_cast<REAL_TYPE>(p.x))
+	max_x =   static_cast<REAL_TYPE>(p.x);
+      if (min_x > static_cast<REAL_TYPE>(p.x))
+	min_x =   static_cast<REAL_TYPE>(p.x);
+      if (max_y < static_cast<REAL_TYPE>(p.y))
+	max_y =   static_cast<REAL_TYPE>(p.y);
+      if (min_y > static_cast<REAL_TYPE>(p.y))
+	min_y =   static_cast<REAL_TYPE>(p.y);
     }
 }
 

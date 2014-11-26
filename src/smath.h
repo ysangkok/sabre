@@ -31,7 +31,7 @@
 #include <math.h>
 
 #define sREAL float
-#define C(x) ((sREAL) (x))
+#define C(x) (static_cast<sREAL>(x))
 
 #ifdef WIN32
 #pragma warning ( 4 : 4244 )
@@ -150,7 +150,7 @@ public:
 
   sREAL Magnitude()
     {
-      return ((sREAL) sqrt(MagnitudeSquared()));
+      return static_cast<sREAL>(sqrt(MagnitudeSquared()));
     }
 
   void Normalize()
@@ -294,7 +294,7 @@ inline sREAL ConvertAngle(sREAL angle)
   if (angle >= 0.0)
     return (angle);
   else
-    return (sREAL) (_2Pi + angle);
+    return (_2Pi + angle);
 }
 
 /*

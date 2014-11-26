@@ -306,8 +306,8 @@ void Flight::calcForces(float)
 	add_drag += specs->drag_sb * z_vel_sq * mods.speed_brakes_e;
       if (controls.landing_gear)
 	add_drag += specs->drag_gr * vel_sq;
-      if ((bool) controls.flaps)
-	add_drag += ((float)controls.flaps) * specs->flap_drag * z_vel_sq;
+      if (static_cast<bool>(controls.flaps))
+	add_drag += (static_cast<float>(controls.flaps)) * specs->flap_drag * z_vel_sq;
       // Parasitic drag - proportional to velocity square
       forces.drag.magnitude = vel_sq * specs->drag_factor * mods.drag_e;
       // Induced drag - proportional to lift and inversely proportional to velocity square
@@ -344,8 +344,8 @@ void Flight::calcForces(float)
       state.near_stall = specs->max_aoa - a_aoa;
       forces.lift.magnitude = z_vel_sq * specs->lift_factor * eff_aoa *
 	mods.wing_e;
-      if ((bool) controls.flaps)
-	forces.lift.magnitude += z_vel_sq * ((float)controls.flaps)
+      if (static_cast<bool>(controls.flaps))
+	forces.lift.magnitude += z_vel_sq * (static_cast<float>(controls.flaps))
 	  * specs->flap_lift * mods.flaps_e;
       forces.lift.magnitude *= state.air_density;
     }
@@ -443,9 +443,9 @@ void Flight::calcRotations(float )
 
   torque = specs->return_yaw * eff_yaw * mods.v_stab_e;
 
-  if ((bool) controls.rudder)
+  if (static_cast<bool>(controls.rudder))
     torque += controls.rudder * specs->control_yaw * mods.rudder_e;
-  if (specs->adv_yaw != 0.0 && (bool) controls.ailerons &&
+  if (specs->adv_yaw != 0.0 && static_cast<bool>(controls.ailerons) &&
       !state.on_ground && !controls.auto_coord)
     torque += specs->adv_yaw * controls.ailerons;
   routine_key = 3307;

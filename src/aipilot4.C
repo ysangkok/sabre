@@ -396,7 +396,7 @@ void aiPilot::DoAirShow(sManeuverState &mv)
 			break;
        }
 
-		int maneuver = (int) mv.data0++;
+		int maneuver = static_cast<int>(mv.data0++);
 		if (mv.data0 > 5)
 			mv.data0 = 0;
 

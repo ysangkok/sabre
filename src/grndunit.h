@@ -151,7 +151,7 @@ public:
     {
       hits = kills = 0;
       target = NULL;
-      gspcs = (Gun_Specs *) spcs->specs_extra;
+      gspcs = static_cast<Gun_Specs *>(spcs->specs_extra);
       elapsed_time = 0.0;
     }
   

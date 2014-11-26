@@ -275,21 +275,21 @@ int Flight_ZViewer::landing_report(Landing_Report &lr)
 		if (!flt->controls.landing_gear)
 		{
 			lr.gear_up = 1;
-			lr.score -= (int) (50 + 10 * flt->state.landing_velocity);
+			lr.score -= static_cast<int> (50 + 10 * flt->state.landing_velocity);
 		}
 		// Did we dig a hole?
 		if (flt->state.landing_z <= -flt->specs->l_z)
 		{
 			lr.l_z = 1;
 			lr.l_z_value = flt->state.landing_z;
-			lr.score -= (int) (10 * (fabs((flt->state.landing_z - -flt->specs->l_z)) / 10.0));
+			lr.score -= static_cast<int> (10 * (fabs((flt->state.landing_z - -flt->specs->l_z)) / 10.0));
 		}
 		// Too fast?
 		if (flt->state.landing_velocity > flt->specs->lspeed)
 		{
 			lr.v = 1;
 			lr.v_value = flt->state.landing_velocity;
-			lr.score -= (int) ((flt->state.landing_velocity - flt->specs->lspeed) / 10);
+			lr.score -= static_cast<int> ((flt->state.landing_velocity - flt->specs->lspeed) / 10);
 		}
 
 		// bad pitch?
@@ -298,7 +298,7 @@ int Flight_ZViewer::landing_report(Landing_Report &lr)
 		{
 			lr.phi = 1;
 			lr.phi_value = flt->state.landing_pitch;
-			lr.score -= (int) (fabs(_PI2 - flt->state.landing_pitch) * 20);
+			lr.score -= static_cast<int> (fabs(_PI2 - flt->state.landing_pitch) * 20);
 		}
 
 		// bad roll?
@@ -306,7 +306,7 @@ int Flight_ZViewer::landing_report(Landing_Report &lr)
 		{
 			lr.roll = 1;
 			lr.roll_value = flt->state.landing_roll;
-			lr.score -= (int) (fabs(_PI - flt->state.landing_roll) * 20);
+			lr.score -= static_cast<int> (fabs(_PI - flt->state.landing_roll) * 20);
 		}
 
 		if (lr.score < 0)
@@ -348,7 +348,7 @@ void Flight_ZViewer::calc_damage(int hit_shp, int damage)
   else if (flt->mods.battle_damage >= max_damage / 4)
     {
       flt->mods.engine_e = C((max_damage - flt->mods.battle_damage) / 100.0);
-      float dmg = ((float)damage) / ((float)max_damage);
+      float dmg = static_cast<float>(damage) / max_damage;
       switch (hit_shp)
 	{
 	case fuselage:

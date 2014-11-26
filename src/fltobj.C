@@ -235,7 +235,7 @@ void Flight_Controls::read(std::istream &is)
 	is >> autopilot >> armed_w >> radar ;
 	is >> vdist >> vtheta >> vphi;
 	is >> view;
-	if ((bool) throttle)
+	if (static_cast<bool>(throttle))
 		engine_on = 1;
 	// Default radar to on for now
 	radar = 1;

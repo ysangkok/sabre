@@ -65,7 +65,7 @@ Earth_Watch::Earth_Watch(int)
    groups(NULL),
    polys(NULL)
 {
-  unit_size = (REAL_TYPE) 1.3;
+  unit_size = static_cast<REAL_TYPE>(1.3);
   x_width = y_width = 5;
   terrain_on = 1;
 }
@@ -213,7 +213,7 @@ void Earth_Watch::drawBackDrop(Port_3D &port)
  * Do a Genesis sort of thing -- divide up the world     *
  * into a basic earth/sky duality.                       *
  *********************************************************/
-const REAL_TYPE phi_fudge = (REAL_TYPE) 0.03;
+const REAL_TYPE phi_fudge = static_cast<REAL_TYPE>(0.03);
 
 void Earth_Watch::draw_horizon(Port_3D &port, int)
 {
@@ -462,11 +462,11 @@ void Earth_Watch::calc_texture_bounds(C_PolyInfo &ply, REAL_TYPE tw,
   yspan = ply.bcube.max_y - ply.bcube.min_y;
   min_x = ply.bcube.min_x;
   min_y = ply.bcube.min_y;
-  for (int i=0;i<ply.npoints;i++)
+  for (unsigned int i=0;i<ply.npoints;i++)
     {
       R_3DPoint &p = ply.lpoints[i];
-      dx = (REAL_TYPE) fabs((p.x - min_x) / xspan);
-      dy = (REAL_TYPE) fabs((p.y - min_y) / yspan);
+      dx = static_cast<REAL_TYPE>(fabs((p.x - min_x) / xspan));
+      dy = static_cast<REAL_TYPE>(fabs((p.y - min_y) / yspan));
       
       ply.tpoints[i].u = tw * dx;
       ply.tpoints[i].v = th * dy;
@@ -591,7 +591,7 @@ REAL_TYPE Earth_Watch2::getGroundLevel(R_3DPoint &tp)
 	{
 	  for (int j = 0;j<groups[i].getNObjects();j++)
 	    {
-	      Terrain_Shape *ts = (Terrain_Shape *) groups[i].getObject(j);
+	      Terrain_Shape *ts = static_cast<Terrain_Shape *>(groups[i].getObject(j));
 	      if (ts && ts->getGroundLevel(tmp))
 		{
 		  result = tmp.z;

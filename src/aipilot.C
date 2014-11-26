@@ -1551,7 +1551,7 @@ void aiPilot::GetTargetFlags(sTarget &tg)
 		tg.flags.Reset();
 		for (int i=0;i<aiPILOT_AVERAGING_N;i++)
 			tg.flags.Add(tg.tFlags[i]);
-		 tg.flags.Set((int) (aiPILOT_AVERAGING_N / 2.0));
+		 tg.flags.Set(static_cast<int>(aiPILOT_AVERAGING_N / 2.0));
 	}
 }
 
@@ -1929,7 +1929,7 @@ void aiPilot::GetFormationPoint(int wngPos, int frmationType,
 	sFormationData::GetWingmanVector(frmationType,wngPos,offset);
 	offset *= formationWingLen;
 	offset.y += formationOffset;
-	BodyPoint2WorldPoint(leaderIndex,(const sPoint &)offset,pnt);
+	BodyPoint2WorldPoint(leaderIndex,static_cast<const sPoint &>(offset),pnt);
 }
 
 /*
@@ -2185,9 +2185,9 @@ aiGunner *aiPilot::GetGunner(int whichGunner)
 {
 	if (hasGunners && whichGunner >= 0 && 
 		whichGunner < gunners.Count())
-		return ((aiGunner *)gunners[whichGunner]);
+		return static_cast<aiGunner *>(gunners[whichGunner]);
 	else
-		return (NULL);
+		return NULL;
 }
 
 void aiPilot::UpdateGunners()
@@ -2534,10 +2534,10 @@ aiPilot *aiPilot::GetaiPilot(uint32_t idx)
 		result = cashedPilot;
 	else
 	{
-		int i = (int) idx;
+		int i = static_cast<int>(idx);
 		if (i < GetPilotCount())
 		{
-			aiPilot *pil = (aiPilot *) aiPilots[i];
+			aiPilot *pil = static_cast<aiPilot *>(aiPilots[i]);
 			if (pil != NULL && pil->GetIdx() == idx)
 				result = pil;
 		}
@@ -2546,7 +2546,7 @@ aiPilot *aiPilot::GetaiPilot(uint32_t idx)
 	{
 		for (int i=0;i<GetPilotCount();i++)
 		{
-			aiPilot *pil = (aiPilot *) aiPilots[i];
+			aiPilot *pil = static_cast<aiPilot *>(aiPilots[i]);
 			if (pil != NULL && pil->GetIdx() == idx)
 			{
 				result = pil;
@@ -2595,7 +2595,7 @@ void aiPilot::RemoveaiPilot(aiPilot *pil)
 {
 	for (int i=0;i<aiPilots.Count();i++)
 	{
-		aiPilot *ppil = (aiPilot *)aiPilots[i];
+		aiPilot *ppil = static_cast<aiPilot *>(aiPilots[i]);
 		if (ppil != NULL && ppil == pil)
 			aiPilots.Remove(i);
 	}
@@ -2606,7 +2606,7 @@ void aiPilot::RemoveaiPilot(aiPilot *pil)
 aiPilot *aiPilot::GetPilotByIndex(int i)
 {
 	if (i >= 0 && i < aiPilots.Count())
-		return (aiPilot *)aiPilots[i];
+		return static_cast<aiPilot *>(aiPilots[i]);
 	else
 		return NULL;
 }
@@ -2654,7 +2654,7 @@ void aiPilot::aiPilotUpdateCallback(int sw,
 								  void *data)
 {
 	/* cast to an aiPilot */
-	aiPilot *thePilot = (aiPilot *) data;
+	aiPilot *thePilot = static_cast<aiPilot *>(data);
 	/* call the aiPilot instance callback function */
 	if (thePilot)
 		thePilot->UpdateCallback(sw);

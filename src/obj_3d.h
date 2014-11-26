@@ -28,7 +28,6 @@
 #define __obj_3d_h
 
 #include "cpoly.h"
-#include "SafeInt.h"
 
 class C_3DObject_Base
 {
@@ -104,7 +103,7 @@ class C_3DObject_List
 {
 public:
   C_3DObject_Base *objects[MAX_OBJECTS];
-  SafeInt<unsigned int> n_objects;
+  unsigned int n_objects;
   int object_idx;
   C_3DObject_List()
   { n_objects = 0; object_idx = -1; }
@@ -124,7 +123,7 @@ class C_3DInfoManager
 {
 public:
   C_3DObjectInfo *infos;
-  int ninfos;
+  unsigned int ninfos;
   char *path;
 
   C_3DInfoManager()
@@ -167,7 +166,7 @@ std::ostream &operator <<(std::ostream &os, C_3DInfoManager &cm)
 class C_3DObject2 : public C_3DObject_Base, public Target
 {
 public:
-  int             nshapes;
+  unsigned int             nshapes;
   C_Shape         *shapes;
   bounding_cube   *bcubes;
   R_3DPoint       world_origin;
@@ -262,7 +261,7 @@ public:
   C_3DObject2           *objects;
   C_3DInfoManager       *im;
   C_3DObject_Group      *groups;
-  SafeInt<unsigned int> n_shapes,n_objects,n_groups;
+  unsigned int n_shapes,n_objects,n_groups;
 
   C_DrawList2(C_3DInfoManager *im2)
     : objects(NULL),

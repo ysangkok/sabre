@@ -140,7 +140,7 @@ inline float DVector::Magnitude( void ) const
 {
 	float f = (X*X) + (Y*Y) + (Z*Z);
 	if (f > 0)
-		return (float) sqrt(f);
+		return static_cast<float>(sqrt(f));
 	else
 		return 0;
 }

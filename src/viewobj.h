@@ -63,7 +63,7 @@ public:
   float world_len;
   float world_width;
   TR_2DPoint spoints[16];
-  int npoints;
+  unsigned int npoints;
 
   virtual class_types class_type()
     { return Bitmap_View_t; }
@@ -131,7 +131,7 @@ public:
   R_3DPoint points[4];
   R_3DPoint points1[4];
   R_2DPoint spoints[16];
-  int npoints;
+  unsigned int npoints;
   C_PolyInfo p_info[2];
   C_ShapeInfo info;
 

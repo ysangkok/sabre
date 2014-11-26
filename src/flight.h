@@ -40,7 +40,7 @@ public:
     : specs(spcs)
   {
     state.landing_z = 0.0;
-    l_time = (REAL_TYPE) 0.1;
+    l_time = static_cast<REAL_TYPE>(0.1);
   }
   virtual ~Flight();
   void start();

@@ -325,7 +325,7 @@ public:
 
   Smokey *smokeys[MAX_SMOKES];
   int new_smoke(R_3DPoint &p,
-		SafeInt<unsigned int> n_smokes,
+		unsigned int n_smokes,
 		float init_size,
 		float d_size,
 		float d_len,
@@ -333,7 +333,7 @@ public:
 		float max_time,
 		int has_flame,
 		float flame_time_max,
-		SafeInt<unsigned int> n_flames,
+		unsigned int n_flames,
 		const char *smokmap_id,
 		const char *firemap_id);
 

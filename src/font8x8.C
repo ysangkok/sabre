@@ -75,7 +75,7 @@ Font8x8::Font8x8(char *s)
     }
 
   for (a=0;a<256;a++)
-    fread(font[a],8,1,file);
+    if (!fread(font[a],8,1,file)) abort();
 
   fclose(file);
 }

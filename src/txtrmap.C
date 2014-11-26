@@ -211,11 +211,11 @@ char              *fname;
 }
 	if ((f = fopen(path,open_params)) != NULL)
 	{
-		fread(&map_w,sizeof(map_w),1,f);
+		if (!fread(&map_w,sizeof(map_w),1,f)) abort();
 		map_w = ltohl(map_w);
-		fread(&map_h,sizeof(map_h),1,f);
+		if (!fread(&map_h,sizeof(map_h),1,f)) abort();
 		map_h = ltohl(map_h);
-		fread(&n,sizeof(n),1,f);
+		if (!fread(&n,sizeof(n),1,f)) abort();
 		n = ltohl(n);
 		size = map_w * map_h;
 		csize = n;
@@ -316,7 +316,7 @@ int TextrMap_Manager::add_map(TextrMap &tm)
 
 void TextrMap_Manager::read(std::istream &is)
 {
-int n;
+unsigned int n;
 
 	if (tmaps == NULL)
 	{
@@ -327,14 +327,14 @@ int n;
 			return;
 		tmaps = new TextrMap[static_cast<unsigned int>(n_maps)];
 		MYCHECK(tmaps != NULL);
-		for (int i=0;i<n_maps;i++)
+		for (unsigned int i=0;i<n_maps;i++)
 			is >> tmaps[i];
 			nxt = n_maps - 1;
 	}
 	else
 	{
 		is >> n;
-		for (int i=0;i<n;i++)
+		for (unsigned int i=0;i<n;i++)
 		{
 			TextrMap tmp;
 			if (nxt < n_maps - 1)
@@ -364,7 +364,7 @@ void TextrMap_Manager::read_file(const char *path)
 void TextrMap_Manager::write(std::ostream &os)
 {
   os << nxt << '\n';
-  for (int i=0;i<nxt;i++)
+  for (unsigned int i=0;i<nxt;i++)
     os << tmaps[i] << '\n';
 }
 
@@ -386,7 +386,7 @@ void TextrMap_Manager::write_file(const char *path)
 TextrMap *TextrMap_Manager::get_map_ptr(const char *id)
 {
 	TextrMap *result = NULL;
-	for (int i=0;i<n_maps;i++)
+	for (unsigned int i=0;i<n_maps;i++)
 	{
 		if (!strcmp(id,tmaps[i].id))
 		{
@@ -396,7 +396,3 @@ TextrMap *TextrMap_Manager::get_map_ptr(const char *id)
 	}
 	return (result);
 }
-
-
-
-

@@ -81,7 +81,7 @@ public:
     :p(DEFAULT_P),
     i(DEFAULT_I),
     d(DEFAULT_D),
-    base((sREAL) (DEFAULT_BASE*DEFAULT_BASE))
+    base(static_cast<sREAL>(DEFAULT_BASE*DEFAULT_BASE))
     {}
 
   void Copy(const sPID &spid)
@@ -114,7 +114,7 @@ inline sREAL sPID::CalcPer(sREAL setPoint, sREAL curPoint, sREAL rate, sREAL cur
   sREAL result;
   sREAL distance;
 
-  fact = (sREAL) (base / (curBase+eps));
+  fact = static_cast<sREAL>(base / (curBase+eps));
   pp = p * fact;
   ii = i * fact;
   dd = d * fact;

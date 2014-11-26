@@ -48,7 +48,7 @@ public:
 
   C_3DObject_Base *getObject(int n)
     {
-      if (n >= 0 && n < n_objects)
+      if (n >= 0 && static_cast<unsigned int>(n) < n_objects)
 	return (objects[n]);
       else
 	return (NULL);

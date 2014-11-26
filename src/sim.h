@@ -73,7 +73,7 @@ inline float f2m(float f)
   return (f / 5280.0f);
 }
 
-#define INT_PERC(x) (((float)x) / 100.0f)
+#define INT_PERC(x) ((static_cast<float>(x)) / 100.0f)
 
 inline float frand(float val)
 {

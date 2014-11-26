@@ -53,7 +53,7 @@ int ColorMap::calcMappedColor(float r)
     r = -r;
   if (r > 1.0)
     r = 1.0;
-  mapped_color = base_color + (int) (r * n);
+  mapped_color = base_color + static_cast<int>(r * n);
   return (mapped_color);
 }
 
@@ -61,6 +61,6 @@ int ColorMap::calcMappedColor(int base, int range, int col)
 {
   float r;
 
-  r = ((float)(col - base)) / ((float)range);
-  return (calcMappedColor(r));
+  r = static_cast<float>(col - base) / range;
+  return calcMappedColor(r);
 }

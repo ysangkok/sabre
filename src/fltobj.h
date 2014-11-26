@@ -276,11 +276,11 @@ public:
     hud_on = 1;
     vect_on = 0;
     vdist = 100;
-    vtheta = (REAL_TYPE) 0.6;
-    vphi = (REAL_TYPE) 0.2;
+    vtheta = static_cast<REAL_TYPE>(0.6);
+    vphi = static_cast<REAL_TYPE>(0.2);
 	 virtTheta = 0.0;
 	 virtPhi = 0.0;
-	 virtStep = (REAL_TYPE) 0.1;
+	 virtStep = static_cast<REAL_TYPE>(0.1);
     show_controls = 1;
 	 show_ai_info = 0;
 	 auto_coord = 0;

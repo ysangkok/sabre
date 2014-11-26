@@ -69,7 +69,7 @@ void aiPilot::DoEngage(sManeuverState &mv)
       aiPilot *targetPilot = GetaiPilot(TARGET_IDX);
       if (targetPilot != NULL)
 	Broadcast(commWINGMAN_KILL,commCHANNEL_AFFILIATION,
-		  commPRIORITY_STANDARD,(void *)targetPilot);
+		  commPRIORITY_STANDARD,static_cast<void *>(targetPilot));
       ClearTargetPilot();
       ClearManeuverStackTo(mv.stackLevel);
       PushManeuver(sManeuver::STRAIGHT_AND_LEVEL,IMNVR_LOOPBIT);
@@ -106,7 +106,7 @@ void aiPilot::DoEngage(sManeuverState &mv)
 
       if (flightModel->GetHeightAGL() + deltaAltitude * secs <= agl)
 	{
-	  mv.data3 = (sREAL) mv.state;
+	  mv.data3 = static_cast<sREAL>(mv.state);
 	  mv.data4 = flightModel->GetHeightAGL();
 	  mv.state = AVOID_GROUND;
 	  ClearManeuverStackTo(mv.stackLevel);
@@ -483,7 +483,7 @@ void aiPilot::DoRQEngage(sManeuverState &mv)
 		    else
 		      turn_bits = IMNVR_RIGHT;
 		  }
-		mv.data3 = (sREAL) turn_bits;
+		mv.data3 = static_cast<sREAL>(turn_bits);
 		/*
 		  if (sFlipCoin())
 		  PushManeuver(sManeuver::CLIMBING_TURN,turn_bits);
@@ -531,7 +531,7 @@ void aiPilot::DoRQEngage(sManeuverState &mv)
 	  && TARGET_FLAGS.rear && TARGET_FLAGS.headOnAspect)
 	{
 	  ClearManeuverStackTo(mv.stackLevel);
-	  PushManeuver(sManeuver::BREAK_TURN,(int)mv.data3);
+	  PushManeuver(sManeuver::BREAK_TURN,static_cast<int>(mv.data3));
 	  mv.state = 2;
 	}
       if (TARGET_FLAGS.forward)

@@ -50,7 +50,7 @@ inline int O_CheckPlaneEquation(const Vector &point,
 inline float O_Intensity( const Vector &light_source,
 			  const Vector &normal)
 {
-  float val = (float) light_source.Dot(normal) + 1.0f;
+  float val = static_cast<float>(light_source.Dot(normal)) + 1.0f;
   return (val / 2.0f);
 }
 

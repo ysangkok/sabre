@@ -48,7 +48,7 @@ public:
     update_time = 0.1f;
 	 v_acquire_range = 3.0f * 5280.0f;
 	 hitScaler = 1.3f;
-	 shootRadius = (float) _degree * 2.0f;
+	 shootRadius = static_cast<float>(_degree * 2.0f);
 	 posG = 8.0f;
 	 negG = -3.0f;
 	 log = 0;
