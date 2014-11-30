@@ -51,9 +51,9 @@
 #include "aiflite.h"
 #include "sfrmtn.h"
 
-extern int gpause;
-extern int do_random;
-extern int no_crash;
+extern bool gpause;
+extern bool do_random;
+extern bool no_crash;
 
 //#define F2FIX(a) (a)
 //#define FIX2F(a) (a)
@@ -61,25 +61,28 @@ extern int no_crash;
 void Flight_Node::read(std::istream &is)
 {
   char buff[64];
-  int n;
+  unsigned int n;
+  int sn;
   char c;
   Flight_Specs *spcs = NULL;
   Z_Node_Manager *zm = NULL;
 
   READ_TOKI('[',is,c)
 
-    if (simfileX::readinput(is,buff,sizeof(buff),n) == simfileX::STR_INPUT)
+    if (simfileX::readinput(is,buff,sizeof(buff),sn) == simfileX::STR_INPUT)
       {
+	n = static_cast<unsigned int>(sn);
 	spcs = Flight_Specs::getSpecs(buff);
 	if (spcs == NULL)
 	  {
-	    printf("Couln't locate specs: %s\n",buff);
+	    printf("Couldn't locate specs: %s\n",buff);
 	    spcs = Flight_Specs::g_specs[0];
 	  }
       }
     else
       {
-	MYCHECK(n >= 0 && n < Flight_Specs::nspecs);
+	n = static_cast<unsigned int>(sn);
+	MYCHECK(n >= 0 && static_cast<unsigned int>(n) < Flight_Specs::nspecs);
 	spcs = Flight_Specs::g_specs[n];
       }
   MYCHECK(spcs != NULL);
@@ -105,17 +108,19 @@ void Flight_Node::read(std::istream &is)
   if (!user_node)
     flight->controls.autopilot = 1;
 
-  if (simfileX::readinput(is,buff,sizeof(buff),n) == simfileX::STR_INPUT)
+  if (simfileX::readinput(is,buff,sizeof(buff),sn) == simfileX::STR_INPUT)
     {
+      n = static_cast<unsigned int>(sn);
       zm = Z_Node_Manager::getZNode(buff);
       if (zm == NULL)
 	{
-	  printf("Couln't locate zm: %s\n", buff);
+	  printf("Couldn't locate zm: %s\n", buff);
 	  zm = Z_Node_Manager::g_zmanagers[0];
 	}
     }
   else
     {
+      n = static_cast<unsigned int>(sn);
       MYCHECK(n >= 0 && static_cast<unsigned int>(n) < Z_Node_Manager::nzmanagers);
       zm = Z_Node_Manager::g_zmanagers[n];
     }
@@ -124,10 +129,13 @@ void Flight_Node::read(std::istream &is)
 
 
   // Get weapon list
-  if (simfileX::readinput(is,buff,sizeof(buff),n) == simfileX::STR_INPUT)
+  if (simfileX::readinput(is,buff,sizeof(buff),sn) == simfileX::STR_INPUT) {
+    n = static_cast<unsigned int>(sn);
     wi = wpm.build_instance_list(n,&n_weaps,buff);
-  else
+  } else {
+    n = static_cast<unsigned int>(sn);
     wi = wpm.build_instance_list(n,&n_weaps);
+  }
 
   MYCHECK(wi != NULL);
 
@@ -375,7 +383,7 @@ Flight_Manager::~Flight_Manager()
 {
   if (specs != NULL)
     {
-      for (int i=0;i<n_specs;i++)
+      for (unsigned int i=0;i<n_specs;i++)
 	{
 	  if (specs[i] != NULL)
 	    delete specs[i];
@@ -385,7 +393,7 @@ Flight_Manager::~Flight_Manager()
     }
   if (z_managers != NULL)
     {
-      for (int i=0;i<n_managers;i++)
+      for (unsigned int i=0;i<n_managers;i++)
 	if (z_managers[i] != NULL)
 	  delete z_managers[i];
       delete [] z_managers;
@@ -393,14 +401,14 @@ Flight_Manager::~Flight_Manager()
     }
   if (p_params != NULL)
     {
-      for (int i=0;i<n_pparams;i++)
+      for (unsigned int i=0;i<n_pparams;i++)
 	if (p_params[i])
 	  delete p_params[i];
       delete [] p_params;
     }
   if (flight_nodes != NULL)
     {
-      for (int i=0;i<n_flights;i++)
+      for (unsigned int i=0;i<n_flights;i++)
 	if (flight_nodes[i])
 	  delete flight_nodes[i];
       delete [] flight_nodes;
@@ -426,15 +434,15 @@ int Flight_Manager::read_file(const char *path)
 void Flight_Manager::read(std::istream &is)
 {
   char buff[BUFSIZ];
-  int got_line;
+  bool got_line;
   std::ifstream is2;
-  int i;
+  unsigned int i;
 
   is.seekg(0L);
   // Get flight specification file(s)
   got_line = get_line(is,buff,sizeof(buff));
   MYCHECK(got_line);
-  n_specs = atoi(buff);
+  n_specs = static_cast<unsigned int>(atoi(buff));
   MYCHECK(n_specs > 0);
   // Create specs
   specs = new Flight_Specs *[n_specs];
@@ -456,7 +464,7 @@ void Flight_Manager::read(std::istream &is)
   got_line = get_line(is,buff,sizeof(buff));
   MYCHECK(got_line);
   // Create z_managers
-  n_managers = atoi(buff);
+  n_managers = static_cast<unsigned int>(atoi(buff));
   MYCHECK(n_managers > 0);
   z_managers = new Z_Node_Manager *[n_managers];
   MYCHECK(z_managers != NULL);
@@ -481,7 +489,7 @@ void Flight_Manager::read(std::istream &is)
   if (open_is(is2,buff))
     {
       // Create pilot parameters array
-      n_pparams = read_int(is2);
+      n_pparams = static_cast<unsigned int>(read_int(is2));
       p_params = new Pilot_Params *[n_pparams];
       MYCHECK(p_params != NULL);
       for (i=0;i<n_pparams;i++)
@@ -537,7 +545,7 @@ std::istream & operator >>(std::istream &is, Flight_Manager &fm)
 
 void Flight_Manager::readNodes(std::istream &is)
 {
-  int i;
+  unsigned int i;
 
   Pilot::npilots = 0;
   // Create flight nodes
@@ -636,7 +644,7 @@ void Flight_Manager::readFlites(std::istream &is)
 
   aiFlite::SetOwnership(1);
 	
-  nflites = simfileX::readint(is,'(',')');
+  nflites = static_cast<unsigned int>(simfileX::readint(is,'(',')'));
   if (nflites > aiMAX_FLITES)
     nflites = aiMAX_FLITES;
   for (i=0;i<nflites;i++)
@@ -644,7 +652,7 @@ void Flight_Manager::readFlites(std::istream &is)
       READ_TOKI('{',is,c);
 
       simfileX::readstr(is,fliteId,sizeof(fliteId),'"','"');
-      npilots = simfileX::readint(is,'(',')');
+      npilots = static_cast<unsigned int>(simfileX::readint(is,'(',')'));
       if (npilots > 0)
 	{
 	  theFlite = new aiFlite(npilots,0,fliteId);
@@ -656,7 +664,7 @@ void Flight_Manager::readFlites(std::istream &is)
 		theFlite->Add(pil);
 	    }
 	}
-      nwaypoints = simfileX::readint(is,'(',')');
+      nwaypoints = static_cast<unsigned int>(simfileX::readint(is,'(',')'));
       if (nwaypoints > 0)
 	{
 	  if (nwaypoints > MAX_SWAYPOINT_INFOS)
@@ -688,11 +696,13 @@ void Flight_Manager::readFlites(std::istream &is)
 	      READ_TOKI(')',is,c);
 							
 	      READ_TOKI('(',is,c);
-	      if (waypoint_info.task == swpMANEUVER)
+	      if (waypoint_info.task == swpMANEUVER) {
+		int tmp;
 		simfileX::readdictinput(is,maneuverTypeStr,sizeof(maneuverTypeStr),
-					waypoint_info.i_task_modifier[0],
+					tmp,
 					mnvrtypes,NMNVRTYPES);
-	      else
+		waypoint_info.i_task_modifier[0] = static_cast<unsigned int>(tmp);
+	      } else
 		is >> waypoint_info.i_task_modifier[0];
 	      is >> waypoint_info.i_task_modifier[1];
 	      is >> waypoint_info.i_task_modifier[2];
@@ -729,10 +739,10 @@ void Flight_Manager::readFliteFile(const char *path)
 
 void Flight_Manager::set_view_node(int vn)
 {
-  if (vn >= n_flights)
+  if (vn < 0)
+    vn = static_cast<int>(n_flights - 1);
+  else if (static_cast<unsigned int>(vn) >= n_flights)
     vn = 0;
-  else if (vn < 0)
-    vn = n_flights - 1;
   flight_nodes[view_node]->view_node = 0;
   flight_nodes[view_node]->stop_engine_sound();
   sound_set_affiliation(flight_nodes[view_node]->pilot->getAffiliation());
@@ -740,12 +750,12 @@ void Flight_Manager::set_view_node(int vn)
   flight_nodes[view_node]->view_node = 1;
 }
 
-int Flight_Manager::select_next_target(int fr)
+bool Flight_Manager::select_next_target(int fr)
 {
   int i;
-  int foundit = 0;
+  bool foundit = 0;
   int ii = flight_nodes[fr]->target_node;
-  for (i=ii+1;i<n_flights;i++)
+  for (i=ii+1;i<static_cast<int>(n_flights);i++)
     {
       if (
 	  (i != fr)
@@ -782,7 +792,7 @@ int Flight_Manager::select_next_target(int fr)
 
 void Flight_Manager::update(Unguided_Manager *um)
 {
-  int i;
+  unsigned int i;
   um->check_hits();
   for (i=0;i<n_flights;i++)
     {
@@ -797,19 +807,19 @@ void Flight_Manager::update(Unguided_Manager *um)
 
 void Flight_Manager::start()
 {
-  for (int i=0;i<n_flights;i++)
+  for (unsigned int i=0;i<n_flights;i++)
     flight_nodes[i]->start();
 }
 
 void Flight_Manager::pause()
 {
-  for (int i=0;i<n_flights;i++)
+  for (unsigned int i=0;i<n_flights;i++)
     flight_nodes[i]->pause();
 }
 
 void Flight_Manager::add_draw_list(DrawList &dlist, Port_3D &port)
 {
-  for (int i=0;i<n_flights;i++)
+  for (unsigned int i=0;i<n_flights;i++)
     flight_nodes[i]->add_draw_list(dlist,port);
 }
 

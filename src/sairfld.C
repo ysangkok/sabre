@@ -70,9 +70,9 @@ sAirfield::sAirfield(const sairfield_info &airf_info)
 	}
 }
 
-sRunway *sAirfield::GetRunway(int which)
+sRunway *sAirfield::GetRunway(unsigned int which)
 {
-	if (which >= 0 && which < runways.Count())
+	if (which < runways.Count())
 		return (sRunway *) runways[which];
 	else
 		return NULL;

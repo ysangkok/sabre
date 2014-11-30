@@ -440,7 +440,7 @@ void aiPilot::DoRQEngage(sManeuverState &mv)
 	  mv.state = 4;
 	}
 
-    //[[clang::fallthrough]];
+    [[clang::fallthrough]];
     case 1:
       if (flightModel->GetAirSpeedFPS() <= flightModel->GetStallSpeedFPS() * 1.1)
 	{
@@ -465,10 +465,10 @@ void aiPilot::DoRQEngage(sManeuverState &mv)
 		  mv.state = 3;
 		  break;
 		}
-	    //[[clang::fallthrough]];
+	    [[clang::fallthrough]];
 	    case 2:
 	      {
-		int turn_bits;
+		unsigned int turn_bits;
 		if (TARGET_FLAGS.rear)
 		  {
 		    if (sFlipCoin())
@@ -531,7 +531,8 @@ void aiPilot::DoRQEngage(sManeuverState &mv)
 	  && TARGET_FLAGS.rear && TARGET_FLAGS.headOnAspect)
 	{
 	  ClearManeuverStackTo(mv.stackLevel);
-	  PushManeuver(sManeuver::BREAK_TURN,static_cast<int>(mv.data3));
+	  if (mv.data3 < 0.0f) abort();
+	  PushManeuver(sManeuver::BREAK_TURN,static_cast<uint32_t>(mv.data3));
 	  mv.state = 2;
 	}
       if (TARGET_FLAGS.forward)

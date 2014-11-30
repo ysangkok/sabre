@@ -32,17 +32,11 @@ typedef struct dict_str
   int  val;
 } dict;
 static int readint(std::istream &is, char tok0 = 0, char tok1 = 0);
-static int readstr(std::istream &is, char *bff, int maxlen, char tok0 = 0, 
-		   char tok1 = 0);
-static int readinput(std::istream &is, char *buff, int maxlen, int &i, 
-	      char tok0 = 0,
-	      char tok1 = 0);
-static int readdictinput(std::istream &is, char *buff, int maxlen, int &i,
-			dict *d, int d_cnt,
-			char tok0 = 0,
-			char tok1 = 0);
+static int readstr(std::istream &is, char *bff, unsigned int maxlen, char tok0 = 0, char tok1 = 0);
+static int readinput(std::istream &is, char *buff, unsigned int maxlen, int &i, char tok0 = 0, char tok1 = 0);
+static int readdictinput(std::istream &is, char *buff, unsigned int maxlen, int &i, dict *d, int d_cnt, char tok0 = 0, char tok1 = 0);
 static int dictfind(char *buff, dict *d, int d_cnt, int &);
-static int isstringinput(char *bff);
+static bool isstringinput(char *bff);
 };
 
 #endif

@@ -58,7 +58,7 @@ void C_3DObject_Group::addObject(C_3DObject_Base *obj)
     bounds.set(obj->bcube);
 }
 
-int C_3DObject_Group::isVisible(Port_3D &port)
+bool C_3DObject_Group::isVisible(Port_3D &port)
 {
   visible = ::isVisible(port,bounds);
   return (visible);
@@ -93,7 +93,7 @@ Try to determine if a bounding_cube is visible by
 seeing if any of the faces formed from it's vertices
 would be visible.
 */
-int isVisible(Port_3D &port, bounding_cube &bounds)
+bool isVisible(Port_3D &port, bounding_cube &bounds)
 {
 
   float minz;
@@ -147,14 +147,14 @@ int isVisible(Port_3D &port, bounding_cube &bounds)
 }
 
 /* For bounding cubes in port coords */
-int isVisible(Port_3D &port, Port_3D &ref_port, bounding_cube &bounds)
+bool isVisible(Port_3D &port, Port_3D &ref_port, bounding_cube &bounds)
 {
 
   /* Convert to a world bounding cube */
   /* FIX ME! world cube isn't exactly right but
      works anyway
      */
-  int result;
+  bool result;
   bounding_cube wcube;
   R_3DPoint p,w;
   wcube.reset();
@@ -182,9 +182,9 @@ inline int VVTEST(R_3DPoint &p0, R_3DPoint &p1, R_3DPoint &p2,
   R_3DPoint rclipped_points[16];
   R_2DPoint screen_points[16];
   R_2DPoint clipped_points[32];
-  int       npoints;
-  int       nxpoints;
-  int result = 1;
+  unsigned int       npoints;
+  unsigned int       nxpoints;
+  bool result = 1;
   int zclp = 0;
   if (p0.z < minz)
     zclp++;
@@ -237,8 +237,8 @@ void VVSHOW(R_3DPoint &p0, R_3DPoint &p1, R_3DPoint &p2,
   R_3DPoint rclipped_points[16];
   R_2DPoint screen_points[16];
   R_2DPoint clipped_points[32];
-  int       npoints;
-  int       nxpoints;
+  unsigned int       npoints;
+  unsigned int       nxpoints;
 
   int zclp = 0;
   if (p0.z < minz)

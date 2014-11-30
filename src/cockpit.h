@@ -30,22 +30,22 @@
 class Instrument_Panel;
 class trans_table;
 
-extern int cockpit_x,cockpit_y,y_clip;
+extern unsigned int cockpit_x,cockpit_y,y_clip;
 
 class Cockpit
 {
 public:
   unsigned char *cbytes;
-  int x_size,y_size;
+  unsigned int x_size,y_size;
   int trans_color;
   Instrument_Panel *ipanel;
   trans_table *t_table;
-  int cockpit_y,cockpit_x;
-  int y_clip;
+  unsigned int cockpit_y,cockpit_x;
+  unsigned int y_clip;
 
   Cockpit(unsigned char *byts,
-	  int xs,
-	  int ys,
+	  unsigned int xs,
+	  unsigned int ys,
 	  int tclr,
 	  char *ipath);
   

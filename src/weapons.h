@@ -355,7 +355,7 @@ class Weapon
 public:
   Weapon_Specs    *w_specs;
   Weapon_Instance *wep_i;
-  int             n;
+  unsigned int    n;
   R_3DPoint       *positions;
   Vector          *vectors;
   R_3DPoint       aim_position;
@@ -376,7 +376,7 @@ public:
   virtual REAL_TYPE calc_htime(Flight &host_flight, R_3DPoint &p);
   virtual REAL_TYPE calc_hvtime(Flight &host_flight, R_3DPoint &);
   virtual void get_launch_params(Launch_Params &lp);
-  virtual int getMaxRounds()
+  virtual unsigned int getMaxRounds()
     {
       return (n);
     }
@@ -408,7 +408,7 @@ public:
   friend std::istream &operator >>(std::istream &is, Guns &gp);
   int update(Flight &host_flight, Unguided_Manager *um, 
 	     Weapon_Instance *, Target *);
-  int getMaxRounds();
+  unsigned int getMaxRounds();
 };
 
 class Bombs : public Weapon
@@ -565,7 +565,7 @@ public:
     }
   REAL_TYPE draw_prep(Port_3D *, Port_3D *);
   void draw(Port_3D *);
-  int isVisible();
+  bool isVisible();
 };
 
 class Weapon_List
@@ -631,7 +631,7 @@ public:
       return (has_externs);
     }
   void draw_prep(Port_3D *port, Port_3D *);
-  int isVisible();
+  bool isVisible();
   void draw(Port_3D *port);
 };
 
@@ -651,8 +651,8 @@ public:
   void read(std::istream &);
   Weapon_List *get_list(int n);
   Weapon_List *get_list(char *);
-  Weapon_Instance *build_instance_list(int n, int *cnt, char *id = NULL);
-  Weapon_Instance_List *build_instance_list(int n);
+  Weapon_Instance *build_instance_list(unsigned int n, unsigned int *cnt, char *id = NULL);
+  Weapon_Instance_List *build_instance_list(unsigned int n);
   Weapon_Specs *getSpecs(char *);
   Weapon *getWeapon(char *);
 

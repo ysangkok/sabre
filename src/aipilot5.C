@@ -126,7 +126,7 @@ void aiPilot::DoEvade(sManeuverState &mv)
 
     case INIT:
       {
-	int turn_bits;
+	unsigned int turn_bits;
 	if (TARGET_YAW < 0.0)
 	  turn_bits = IMNVR_LEFT;
 	else
@@ -162,7 +162,7 @@ void aiPilot::DoEvade(sManeuverState &mv)
 	  }
 	else if (TARGET_FLAGS.forward)
 	  {
-	    int turn_bits;
+	    unsigned int turn_bits;
 	    if (TARGET_YAW < 0.0)
 	      turn_bits = IMNVR_LEFT;
 	    else

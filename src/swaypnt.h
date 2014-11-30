@@ -34,7 +34,7 @@ typedef struct tag_swaypoint_info
 	float		speed;
 	float		altitude;
 	int		task;
-	int		i_task_modifier[3];
+	unsigned int	i_task_modifier[3];
 	float		d_task_modifier[3];
 	char		c_task_modifier[32];
 	int		formation_type;
@@ -84,16 +84,16 @@ class sWaypoint : public sObject
 {
 public:
 	sPoint		to;
-	sREAL			speed;
-	sREAL			altitude;
-	int			task;
-	int         iTaskModifier[3];
-	sREAL			dTaskModifier[3];
-   char			cTaskModifier[32];
-	int			idx;
-	int			formationType;
+	sREAL		speed;
+	sREAL		altitude;
+	int		task;
+	unsigned int	iTaskModifier[3];
+	sREAL		dTaskModifier[3];
+	char		cTaskModifier[32];
+	unsigned int	idx;
+	int		formationType;
 	double		time;
-	sWaypoint   *next;
+	sWaypoint	*next;
 
 	sWaypoint()
 	{
@@ -166,15 +166,15 @@ public:
 		return cTaskModifier;
 	}
 
-	int GetRunwayNo()
+	unsigned int GetRunwayNo()
 	{
 		return iTaskModifier[0];
 	}
-	int GetManeuverType()
+	unsigned int GetManeuverType()
 	{
 		return iTaskModifier[0];
 	}
-	int GetManeuverFlags()
+	unsigned int GetManeuverFlags()
 	{
 		return iTaskModifier[1];
 	}

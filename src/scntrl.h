@@ -88,7 +88,7 @@ public:
       return (flag);
     }
 
-  int IsOn()
+  bool IsOn()
     {
       return (on);
     }

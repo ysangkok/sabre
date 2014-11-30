@@ -33,11 +33,11 @@
 class sObjectArray : public sObject
 {
   sObject **objs;       // pointers to objects
-  int     size;         // size of array (max) 
-  int     n;            // how many assigned so far
-  int     owns;         // do we delete objects on Destroy()
+  unsigned int size;    // size of array (max) 
+  unsigned int n;       // how many assigned so far
+  bool    owns;         // do we delete objects on Destroy()
 public:
-  void Create(int size, int owns = 1);
+  void Create(unsigned int size, bool owns = true);
   void Destroy();
   void Flush();
 
@@ -49,12 +49,12 @@ public:
     objs = NULL;
   }
 
-  int IsA() const
+  bool IsA() const
   {
     return (sOBJECT_ARRAY_T);
   }
 
-  sObjectArray(int siz, int own = 1)
+  sObjectArray(unsigned int siz, bool own = true)
   {
     n = 0;
     objs = NULL;
@@ -63,32 +63,32 @@ public:
 
   ~sObjectArray();
 
-  sObject * operator[](int idx) const;
+  sObject * operator[](unsigned int idx) const;
 
-  int Count() const
+  unsigned int Count() const
   {
     return (n);
   }
 
-  int Size() const
+  unsigned int Size() const
   {
     return (size);
   }
 
-  int Add(sObject *obj);
-  int Append(sObject *obj);
+  unsigned int Add(sObject *obj);
+  unsigned int Append(sObject *obj);
 
-  int Owns() const
+  bool Owns() const
   {
     return (owns);
   }
 
-  void SetOwnership(int own)
+  void SetOwnership(bool own)
   {
 	this->owns = own;
   }
 
-  int Remove(int idx);
+  unsigned int Remove(unsigned int idx);
 };
 
 #endif

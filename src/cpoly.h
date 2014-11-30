@@ -177,7 +177,7 @@ public:
     n_params(0)
     {}
 
-  shape_params(int n, unsigned long flgs, poly_params *pr)
+  shape_params(unsigned int n, unsigned long flgs, poly_params *pr)
     : flags(flgs),
     p_params(pr),
     n_params(n)
@@ -230,7 +230,7 @@ public:
   unsigned int npoints;
   R_3DPoint *lpoints;
   TxtPoint  *tpoints;
-  int delete_flag;
+  bool delete_flag;
   bounding_cube bcube;
 
   C_PolyInfo()
@@ -240,7 +240,7 @@ public:
     delete_flag(0)
     {}
 
-  C_PolyInfo(int np, R_3DPoint *pnts, TxtPoint *tpnts = NULL)
+  C_PolyInfo(unsigned int np, R_3DPoint *pnts, TxtPoint *tpnts = NULL)
     :npoints(np),
     lpoints(pnts),
     tpoints(tpnts),
@@ -293,7 +293,7 @@ class C_ShapeInfo
 public:
   unsigned int npolys;
   C_PolyInfo *polyinfos;
-  int delete_flag;
+  bool delete_flag;
   bounding_cube bcube;
 
 
@@ -303,7 +303,7 @@ public:
     delete_flag(0)
     {}
 
-  C_ShapeInfo(int np, C_PolyInfo *ip)
+  C_ShapeInfo(unsigned int np, C_PolyInfo *ip)
     :npolys(np),
     polyinfos(ip),
     delete_flag(0)
@@ -411,8 +411,8 @@ public:
   R_3DPoint *zpoints;
   Vector	surface_normal;
   REAL_TYPE plane_constant;
-  int shadow_flag;
-  static int txtrflag;
+  bool shadow_flag;
+  static bool txtrflag;
 
   C_Poly();
   virtual ~C_Poly();

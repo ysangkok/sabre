@@ -29,7 +29,7 @@
 #include "grafix.h"
 #include "transblt.h"
 
-void trans_table::build_runs(unsigned char *img, int r, int w)
+void trans_table::build_runs(unsigned char *img, unsigned int r, unsigned int w)
 {
   int i,j, rn;
   unsigned char *img_ptr;
@@ -71,8 +71,8 @@ void trans_table::build_runs(unsigned char *img, int r, int w)
     }
 }
 
-void trans_table::trans_blit(unsigned char *dst, int x, int y,
-			     Rect *r, int fast_flag)
+void trans_table::trans_blit(unsigned char *dst, unsigned int x, unsigned int y,
+			     Rect *r, bool fast_flag)
 {
   unsigned char *dst_ptr,*dst_ptr1;
   unsigned char *src_ptr;

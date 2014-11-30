@@ -407,7 +407,7 @@ std::istream & operator >>(std::istream &is, Guns &gp)
   return is;
 }
 
-int Guns::getMaxRounds()
+unsigned int Guns::getMaxRounds()
 {
   if (gun_specs)
     return (gun_specs->max_rounds);
@@ -670,7 +670,7 @@ void Weapon_Instance::draw(Port_3D *port)
     }
 }
 
-int Weapon_Instance::isVisible()
+bool Weapon_Instance::isVisible()
 {
   if (viewers)
     {
@@ -743,7 +743,7 @@ Weapons_Manager::Weapons_Manager()
 
 Weapons_Manager::~Weapons_Manager()
 {
-  int i;
+  unsigned int i;
   if (wep_specs)
     {
       for (i=0;i<nspecs;i++)
@@ -756,7 +756,7 @@ Weapons_Manager::~Weapons_Manager()
     delete [] lists;
 }
 
-Weapon_Instance *Weapons_Manager::build_instance_list(int n, int *cnt, char *id)
+Weapon_Instance *Weapons_Manager::build_instance_list(unsigned int n, unsigned int *cnt, char *id)
 {
   Weapon_Instance *result = NULL;
   Weapon_List *wl;
@@ -768,7 +768,7 @@ Weapon_Instance *Weapons_Manager::build_instance_list(int n, int *cnt, char *id)
     {
       result = new Weapon_Instance[wl->n];
       MYCHECK(result != NULL);
-      for (int i=0;i<wl->n;i++)
+      for (unsigned int i=0;i<wl->n;i++)
 	{
 	  MYCHECK(wl->weapons[i] != NULL);
 	  result[i].set_weapon(wl->weapons[i]);
@@ -780,9 +780,9 @@ Weapon_Instance *Weapons_Manager::build_instance_list(int n, int *cnt, char *id)
   return result;
 }
 
-Weapon_Instance_List *Weapons_Manager::build_instance_list(int n)
+Weapon_Instance_List *Weapons_Manager::build_instance_list(unsigned int n)
 {
-  int cnt;
+  unsigned int cnt;
   Weapon_Instance *wi = build_instance_list(n,&cnt);
   return (new Weapon_Instance_List(wi,cnt));
 }
@@ -1065,7 +1065,7 @@ void Weapon_Instance_List::draw_prep(Port_3D *port, Port_3D *ref_port)
     weapons[i].draw_prep(port,ref_port);
 }
 
-int Weapon_Instance_List::isVisible()
+bool Weapon_Instance_List::isVisible()
 {
   for (int i=0;i<n_weaps;i++)
     if (weapons[i].isVisible())

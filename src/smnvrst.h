@@ -92,7 +92,7 @@ enum {
 	enum { LEFT, RIGHT };
 
 	static const char *maneuver2string[];
-	static const char *Maneuver2String(int);
+	static const char *Maneuver2String(unsigned int);
 };
 
 #define IMNVR_DIRBIT   0x01
@@ -108,9 +108,9 @@ enum {
 class sManeuverState
 {
 public:
-	int maneuver;
+	unsigned int maneuver;
 	int state;
-	int done;
+	bool done;
 	int  stackLevel;
 	uint32_t flags;
 	sREAL data0;
@@ -131,7 +131,7 @@ public:
 	}
 
 	friend void SETMANEUVER(sManeuverState &ms,
-								   int maneuve,
+								   unsigned int maneuve,
 								   int stackLeve,
 								   uint32_t flgs = 0,
 								   sREAL d0 = 0.0,
@@ -149,7 +149,7 @@ public:
 	}
 
 	friend void SETMANEUVERX(sManeuverState &ms,
-								   int maneuve,
+								   unsigned int maneuve,
 								   int stackLvl,
 								   uint32_t flgs = 0,
 								   sREAL e0 = 0.0,
@@ -172,7 +172,7 @@ public:
 	}
 
 	int GetManeuverDirection();
-	int IsLoop()
+	bool IsLoop()
 	{
 		return ((static_cast<int>(flags & IMNVR_LOOPBIT)) != 0);
 	}

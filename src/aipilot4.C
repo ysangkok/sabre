@@ -190,7 +190,7 @@ void aiPilot::DoNavigate(sManeuverState &mv)
 			mv.state = 4;
 		else
 		{
-			int turn_bits;
+			unsigned int turn_bits;
 			if (NAV_YAW > 0.0)
 				turn_bits = IMNVR_RIGHT;
 			else
@@ -396,7 +396,8 @@ void aiPilot::DoAirShow(sManeuverState &mv)
 			break;
        }
 
-		int maneuver = static_cast<int>(mv.data0++);
+		if (mv.data0 < -1) abort();
+		unsigned int maneuver = static_cast<unsigned int>(mv.data0++);
 		if (mv.data0 > 5)
 			mv.data0 = 0;
 
@@ -405,7 +406,7 @@ void aiPilot::DoAirShow(sManeuverState &mv)
 			
 		case 0:
 		{
-			int turn_bits;
+			unsigned int turn_bits;
 			if (sFlipCoin())
 				turn_bits = IMNVR_RIGHT;
 			else
@@ -428,7 +429,7 @@ void aiPilot::DoAirShow(sManeuverState &mv)
 
 		case 2:
 		{
-			int turn_bits;
+			unsigned int turn_bits;
 			if (sFlipCoin())
 				turn_bits = IMNVR_RIGHT;
 			else
@@ -444,7 +445,7 @@ void aiPilot::DoAirShow(sManeuverState &mv)
 
 		case 3:
 		{
-			int turn_bits;
+			unsigned int turn_bits;
 			if (sFlipCoin())
 				turn_bits = IMNVR_RIGHT;
 			else
@@ -458,7 +459,7 @@ void aiPilot::DoAirShow(sManeuverState &mv)
 
 		case 4:	
 		{
-			int turn_bits;
+			unsigned int turn_bits;
 			if (sFlipCoin())
 				turn_bits = IMNVR_RIGHT;
 			else

@@ -40,12 +40,12 @@ public:
 	Pilot_Params    **pilot_params;
 	Weapons_Manager &wpm;
 	Weapon_Instance *wi;
-	int             n_weaps;
+	unsigned int    n_weaps;
 	char            handle[17];
 	Landing_Report	 lr;
-	int             gear_sound_toggle;
-	int             flaps_sound_toggle;
-	int             speed_brakes_sound_toggle;
+	bool            gear_sound_toggle;
+	bool            flaps_sound_toggle;
+	bool            speed_brakes_sound_toggle;
 
 	Flight_Node(Flight_Specs **spcs, Z_Node_Manager **zm,
 					Pilot_Params **prms, Weapons_Manager &wp)
@@ -106,14 +106,14 @@ class Flight_Manager
 {
 public:
 	Flight_Specs   **specs;
-	int            n_specs;
+	unsigned int   n_specs;
 	Z_Node_Manager **z_managers;
-	int            n_managers;
+	unsigned int   n_managers;
 	Pilot_Params   **p_params;
-	int            n_pparams;
+	unsigned int   n_pparams;
 	Weapons_Manager wm;
 	Flight_Node    **flight_nodes;
-	int            n_flights;
+	unsigned int   n_flights;
 	int            view_node;
 
 	int            v_4_flag;
@@ -141,11 +141,11 @@ public:
 	void pause();
 	void add_draw_list(DrawList &, Port_3D &);
 	void set_flight_view(Port_3D &);
-	int select_next_target(int);
+	bool select_next_target(int);
 	void set_view_node(int);
 	Flight_Node *get_node(int n)
 	{
-		if (n >= 0 && n < n_flights)
+		if (n >= 0 && static_cast<unsigned int>(n) < n_flights)
 			return (flight_nodes[n]);
 		else
 			return NULL;
@@ -158,14 +158,14 @@ public:
 	{ return *(flight_nodes[view_node]->flight); }
 	Flight *get_flight(int i)
 	{
-		if (i < n_flights && i >= 0)
+		if (static_cast<unsigned int>(i) < n_flights && i >= 0)
 			return (flight_nodes[i]->flight);
 		else
 			return (NULL);
 	}
 	Pilot *get_pilot(int i)
 	{
-		if (i < n_flights && i >= 0)
+		if (static_cast<unsigned int>(i) < n_flights && i >= 0)
 			return (flight_nodes[i]->pilot);
 		else
 			return (NULL);
@@ -174,7 +174,7 @@ public:
 	{ return *(flight_nodes[view_node]->viewer); }
 	Flight_ZViewer *get_viewer(int i)
 	{
-		if (i < n_flights && i >= 0)
+		if (static_cast<unsigned int>(i) < n_flights && i >= 0)
 			return (flight_nodes[i]->viewer);
 		else
 			return NULL;

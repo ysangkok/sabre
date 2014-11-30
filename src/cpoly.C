@@ -52,7 +52,7 @@ int poly_cnt;
 
 static int point_cnt;
 
-int C_Poly::txtrflag = 1;
+bool C_Poly::txtrflag = 1;
 
 inline void set_context()
 {
@@ -551,14 +551,12 @@ void C_Poly::draw(Port_3D &port, int zclip)
 	  TextrMap *tmap_ptr = map_man->get_map_ptr(tmap);
 	  if (tmap_ptr != &nullmap)
 	    tmap_ptr->setColorMaps(base_color,color_range,color);
-	  tr_rendpoly(wpoints,p_info->tpoints,p_info->npoints,
-		      port,color,tmap_ptr);
+	  tr_rendpoly(wpoints,p_info->tpoints,p_info->npoints, port,color,tmap_ptr);
 	}
       else if (zbuff != NULL && zbff_flag)
 	rendzpoly(wpoints,p_info->npoints,color,port);
       else
-	rendpoly(wpoints,p_info->npoints,color,
-		 port,zclip);
+	rendpoly(wpoints,p_info->npoints,color, port,zclip);
     }
 }
 

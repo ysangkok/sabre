@@ -42,17 +42,17 @@
 
 extern REAL_TYPE world_scale;
 
-int rend2(R_3DPoint *poly, int n, int color, Port_3D &port);
+int rend2(R_3DPoint *poly, unsigned int n, int color, Port_3D &port);
 
-int rendpoly(R_3DPoint *poly, int n, int color,
-	     Port_3D &port, int wants_zclip)
+int rendpoly(R_3DPoint *poly, unsigned int n, int color,
+	     Port_3D &port, bool wants_zclip)
 {
   R_3DPoint ppoly[RENDMAX];
   R_3DPoint cpoly[RENDMAX];
   R_3DPoint *polyptr;
-  int zclipit = 0;
-  int skipit = 1;
-  int i,np;
+  bool zclipit = 0;
+  bool skipit = 1;
+  unsigned int i,np;
   REAL_TYPE z_min;
 
   z_min = port.z_min;
@@ -89,39 +89,38 @@ int rendpoly(R_3DPoint *poly, int n, int color,
   return (project_poly(polyptr, np,color, port));
 }
 
-int rend2(R_3DPoint *poly, int n, int color, Port_3D &port)
+int rend2(R_3DPoint *poly, unsigned int n, int color, Port_3D &port)
 {
   float spoints[RENDMAX];
   float cpoints[RENDMAX];
   int ipoints[RENDMAX];
   float *pnts;
-  int clip_n = 0,cn = 0;
+  unsigned int clip_n = 0,cn = 0;
 
   pnts = spoints;
-  for (int i = 0; i < n;i++)
+  for (unsigned int i = 0; i < n;i++)
     {
       port.port2screen(poly[i],pnts,pnts+1);
       pnts += 2;
     }
-  if (f_poly_clip(spoints,cpoints,n,&clip_n,
-		  &port.screen))
+  if (f_poly_clip(spoints,cpoints,n,&clip_n, &port.screen))
     {
       cn = (clip_n + 1) * 2;
       cpoints[cn - 1] = cpoints[1];
       cpoints[cn - 2] = cpoints[0];
-      for (int i=0;i<cn;i++)
+      for (unsigned int i=0;i<cn;i++)
 	ipoints[i] = (int)cpoints[i];
       fill_convpoly(ipoints,clip_n + 1,color);
     }
   return cn;
 }
 
-int project_poly(R_3DPoint *poly, int n, int color, Port_3D &port)
+int project_poly(R_3DPoint *poly, unsigned int n, int color, Port_3D &port)
 {
   int spoints[RENDMAX];
   int cpoints[RENDMAX];
   int *pnts,i;
-  int clip_n = 0;
+  unsigned int clip_n = 0;
 
   if (n > 0 && n < RENDMAX)
     {

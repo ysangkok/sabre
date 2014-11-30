@@ -61,20 +61,20 @@ public:
   R_3DPoint     points[NTP_POINTS];
   TxtPoint      tpoints[NTP_POINTS];
   TR_3DPoint    port_points[NTP_MAXPTS];
-  int           np;
-  TR_2DPoint	 screen_points_nc[NTP_MAXPTS];
+  unsigned int  np;
+  TR_2DPoint	screen_points_nc[NTP_MAXPTS];
   TR_2DPoint    screen_points[NTP_MAXPTS];
 #ifdef USES_DDRAW
-  TRF_2DPoint	 screen_points_ncf[NTP_MAXPTS];
+  TRF_2DPoint	screen_points_ncf[NTP_MAXPTS];
   TRF_2DPoint   screen_pointsf[NTP_MAXPTS];
 #endif
-  int           sp;
+  unsigned int  sp;
   LineEquat     eqs[NTP_POINTS];
   REAL_TYPE     plane_constant;
   Vector        surface_normal;
   REAL_TYPE     intensity;
   bounding_cube bcube;
-  int           visible_flag;
+  bool          visible_flag;
   R_3DPoint     cp;
 
   TPoly()
@@ -142,7 +142,7 @@ public:
   int      zflg;
   enum { q1,q2,q3,q4,q5,q6,q7,q8};
   enum { p1,p2,p3,p4 };
-  static int txtr_flag; 
+  static bool txtr_flag; 
   static int color, color_range;
 
   R_3DPoint points[4];

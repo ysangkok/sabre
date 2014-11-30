@@ -39,7 +39,7 @@ public:
   sSlewer()
     {}
 
-  virtual int IsA() const
+  virtual bool IsA() const
     {
       return (sSLEWER_T);
     }

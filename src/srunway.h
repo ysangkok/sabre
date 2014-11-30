@@ -51,7 +51,7 @@ public:
 
 	sRunway(const srunway_info &);
 
-	int GetRunwayNumber()
+	unsigned int GetRunwayNumber()
 	{
 		return runwayNumber;
 	}
@@ -113,7 +113,7 @@ public:
 	void GetTakeoffPositionAndAttitude(sPoint &, sAttitude &);
 
 protected:
-	int			runwayNumber;
+	unsigned int		runwayNumber;
 	sREAL			length;
 	sREAL			width;
 	sREAL			finalApproachHeading;

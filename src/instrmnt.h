@@ -27,7 +27,7 @@
 #ifndef __instrument_h
 #define __instrument_h
 
-extern int cockpit_y, cockpit_x;
+extern unsigned int cockpit_y, cockpit_x;
 class TextrMap;
 class Indicator
 {

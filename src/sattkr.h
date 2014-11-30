@@ -72,7 +72,7 @@ public:
 		return (*this);
 	}
 
-	int IsEqual(const sAttacker &attkr)
+	bool IsEqual(const sAttacker &attkr)
 	{
 		return (idx == attkr.idx);
 	}

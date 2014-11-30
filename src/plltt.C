@@ -61,9 +61,9 @@ void Palette_Effect::do_effect(void (  *funct) (Palette_Effect &),
   effect_on = 1;
 }
 
-int Palette_Effect::is_done(float t, int reset)
+bool Palette_Effect::is_done(float t, int reset)
 {
-  int result = 0;
+  bool result = 0;
   elapsed_time += t;
   if (elapsed_time >= effect_time)
     {

@@ -27,7 +27,7 @@
 #include "grafix.h"
 #endif
 
-void fill_convpoly(int *poly, int npoints, int clr);
-void frame_convpoly(int *poly, int npoints, int clr);
+void fill_convpoly(int *poly, unsigned int npoints, int clr);
+void frame_convpoly(int *poly, unsigned int npoints, int clr);
 void init_edge_bounds();
 #endif

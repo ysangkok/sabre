@@ -152,7 +152,7 @@ void clear_zbuff()
  * z-buffered texture-mapped poly rendering                      *
  *****************************************************************/
 
-int tr_rendpoly(R_3DPoint *poly, TxtPoint *txtr, int n, 
+int tr_rendpoly(R_3DPoint *poly, TxtPoint *txtr, unsigned int n, 
 		Port_3D &port, int fillcolor, 
 		TextrMap *tmap, TR_2DPoint *spoints)
 {
@@ -160,9 +160,9 @@ int tr_rendpoly(R_3DPoint *poly, TxtPoint *txtr, int n,
   TR_3DPoint cpoly[RENDMAX];
   TR_3DPoint *polyptr;
 
-  int zclipit = 0;
+  bool zclipit = 0;
   int nvis = 0;
-  int i,np;
+  unsigned int i,np;
   REAL_TYPE zmin = 1.0;
   for (i=0;i<n;i++)
     {
@@ -196,15 +196,15 @@ int tr_rendpoly(R_3DPoint *poly, TxtPoint *txtr, int n,
  * If spoints is not null, don't render the poly, just return  *
  * the converted points screen points if there are some        *
  ***************************************************************/
-int tr_project_poly(TR_3DPoint *poly, int n,
+int tr_project_poly(TR_3DPoint *poly, unsigned int n,
 		    Port_3D &port, int fillcolor, 
 		    TextrMap *tmap, TR_2DPoint *spoints )
 {
   TR_2DPoint scpoints[RENDMAX];
   TR_2DPoint cpoints[RENDMAX];
   TR_2DPoint *pnts;
-  int i;
-  int clip_n = 0;
+  unsigned int i;
+  unsigned int clip_n = 0;
 
   if (n > 0 && n < RENDMAX)
     {
@@ -310,8 +310,8 @@ inline void tr_set_edge(R2D_TYPE x, R2D_TYPE y, R2D_TYPE z, R2D_TYPE u, R2D_TYPE
 
 void rendzline(const R_2DPoint &, const R_2DPoint &, int);
 
-void tr_build_edge_array(TR_2DPoint *points, int n);
-void tr_build_edge_array(TR_2DPoint *points, int n)
+void tr_build_edge_array(TR_2DPoint *points, unsigned int n);
+void tr_build_edge_array(TR_2DPoint *points, unsigned int n)
 {
   int i;
   TR_2DPoint *p0,*p1;
@@ -384,8 +384,8 @@ void tr_build_edge_array(TR_2DPoint *points, int n)
 extern int frame_switch;
 extern void frame_convpoly(int *, int, int);
 
-void tr_frame_convpoly(TR_2DPoint *points, int n);
-void tr_frame_convpoly(TR_2DPoint *points, int n)
+void tr_frame_convpoly(TR_2DPoint *points, unsigned int n);
+void tr_frame_convpoly(TR_2DPoint *points, unsigned int n)
 {
   if (n >= RENDMAX)
     return;
@@ -405,22 +405,22 @@ void tr_frame_convpoly(TR_2DPoint *points, int n)
  * Texture mapping routines                                   *
  **************************************************************/
 /* No perspective correction */
-void tr_fill_convpoly_nc(TR_2DPoint *points, int n, TextrMap *tmap, 
+void tr_fill_convpoly_nc(TR_2DPoint *points, unsigned int n, TextrMap *tmap, 
 			 int fillcolor);
 /* <n> pixels perspective corrected */
-void tr_fill_convpoly_sc(TR_2DPoint *points, int n, TextrMap *tmap, 
+void tr_fill_convpoly_sc(TR_2DPoint *points, unsigned int n, TextrMap *tmap, 
 			 int fillcolor);
 /* all pixels perspective corrected */
-void tr_fill_convpoly_c(TR_2DPoint *points, int n, TextrMap *tmap, 
+void tr_fill_convpoly_c(TR_2DPoint *points, unsigned int n, TextrMap *tmap, 
 			int fillcolor);
 
 static unsigned char *buffer_ptr;
 
-void tr_fill_convpoly(TR_2DPoint *points, int n, TextrMap *tmap, 
+void tr_fill_convpoly(TR_2DPoint *points, unsigned int n, TextrMap *tmap, 
 		      int fillcolor)
 {
 #ifdef USES_DDRAW
-  extern void wvgad3_rndrpoly(TR_2DPoint *points, int n, TextrMap *tmap, 
+  extern void wvgad3_rndrpoly(TR_2DPoint *points, unsigned int n, TextrMap *tmap, 
 			      int fillcolor);
   wvgad3_rndrpoly(points,n-1,tmap,fillcolor);
   return;
@@ -443,7 +443,7 @@ void tr_fill_convpoly(TR_2DPoint *points, int n, TextrMap *tmap,
 /****************************************************************
  * All pixels perspective-corrected by dividing by z-value      *
  ****************************************************************/
-void tr_fill_convpoly_c(TR_2DPoint *points, int n, TextrMap *tmap, 
+void tr_fill_convpoly_c(TR_2DPoint *points, unsigned int n, TextrMap *tmap, 
 			int fillcolor)
 {
   int j,stps;
@@ -554,7 +554,7 @@ void tr_fill_convpoly_c(TR_2DPoint *points, int n, TextrMap *tmap,
 /****************************************************************
  * correct <n> pixels for perspective, interpolate between      *
  ****************************************************************/
-void tr_fill_convpoly_sc(TR_2DPoint *points, int n, TextrMap *tmap, 
+void tr_fill_convpoly_sc(TR_2DPoint *points, unsigned int n, TextrMap *tmap, 
 			 int fillcolor)
 {
   int j,stps,stpsi,stpsu;
@@ -753,7 +753,7 @@ void tr_fill_convpoly_sc(TR_2DPoint *points, int n, TextrMap *tmap,
 /****************************************************************
  * no perspective correction                                    *
  ****************************************************************/
-void tr_fill_convpoly_nc(TR_2DPoint *points, int n, TextrMap *tmap,
+void tr_fill_convpoly_nc(TR_2DPoint *points, unsigned int n, TextrMap *tmap,
 			 int fillcolor)
 {
   int j,stps;

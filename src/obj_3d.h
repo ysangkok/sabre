@@ -175,9 +175,9 @@ public:
   C_3DInfoManager *im;
   C_3DObjectInfo  *ci;
   char            obj_id[16];
-  int             hit_shape;
+  unsigned int    hit_shape;
   R_3DPoint       hit_point;
-  int             txtr_flag;
+  bool            txtr_flag;
 
   C_3DObject2()
     :shapes(NULL),

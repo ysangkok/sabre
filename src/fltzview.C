@@ -319,9 +319,9 @@ int Flight_ZViewer::landing_report(Landing_Report &lr)
 	return result;
 }
 
-void Flight_ZViewer::calc_damage(int hit_shp, int damage)
+void Flight_ZViewer::calc_damage(unsigned int hit_shp, int damage)
 {
-  int choice;
+  unsigned int choice;
   flt->mods.battle_damage += damage;
   hurt = flt->mods.battle_damage;
 

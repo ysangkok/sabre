@@ -72,7 +72,7 @@ public:
 
 	virtual ~aiPilot();
 
-	virtual int IsA() const
+	virtual bool IsA() const
 	{
 		return (sAI_PILOT_T);
 	}
@@ -144,14 +144,14 @@ public:
 		return (remoteControl);
 	}
 
-	int IsDead()
+	bool IsDead()
 	{
 		return (dead);
 	}
 
-	virtual void SetDeath(int dead);
+	virtual void SetDeath(bool dead);
 
-	int IsEjected()
+	bool IsEjected()
 	{
 		return (ejected);
 	}
@@ -161,11 +161,11 @@ public:
 	{
 		return (hasGunners);
 	}
-	int HasNGunners()
+	unsigned int HasNGunners()
 	{
 		return (gunners.Count());
 	}
-	int HasAttackers()
+	bool HasAttackers()
 	{
 		return (attackList.GetCount() > 0);
 	}
@@ -173,8 +173,8 @@ public:
 	 * to allow us to generically include the player as part of
 	 * flights
 	 */
-	int isPlayerFlag;
-	virtual int IsPlayer()
+	bool isPlayerFlag;
+	virtual bool IsPlayer()
 	{
 		return (isPlayerFlag);
 	}
@@ -195,7 +195,7 @@ public:
 	{
 		return formationOffset;
 	}
-	virtual int IsActive()	
+	virtual bool IsActive()	
 	{ 
 		return !(IsDead() || IsEjected());
 	}
@@ -213,7 +213,7 @@ public:
 
 	sREAL GetNavigationDistance();
 	sREAL GetSurfaceTargetDistance();
-	int   IsBombing()	
+	bool   IsBombing()	
 	{ 
 		return isBombing; 
 	}
@@ -253,8 +253,7 @@ public:
 
 	void SetGunnersTarget(uint32_t targetIdx, sREAL threatValue = ITARGET_MIN_THREAT_VALUE);
 	void SetGunnersTarget(sAttacker *attkr);
-	void SetGunnerTarget(int whichGunner, uint32_t targetIdx, 
-								sREAL threatValue = ITARGET_MIN_THREAT_VALUE);
+	void SetGunnerTarget(unsigned int whichGunner, uint32_t targetIdx, sREAL threatValue = ITARGET_MIN_THREAT_VALUE);
 	void ClearGunnersTarget();
 
 	void BodyVector2WorldVector(const sVector &body, sVector &world)
@@ -316,16 +315,16 @@ public:
 	static void AddaiPilot(aiPilot *pilot);
 	static aiPilot *GetaiPilot(uint32_t idx);
 	static aiPilot *GetaiPilot(const char *handle);
-	static int GetPilotCount();
+	static unsigned int GetPilotCount();
 	static void aiPilotUpdateCallback(int, void *);
 	static void FlushaiPilots();
 	static void RemoveaiPilot(aiPilot *pil);
-	static aiPilot *GetPilotByIndex(int i);
+	static aiPilot *GetPilotByIndex(unsigned int i);
 	static void __cdecl TextMessageToPlayer(const char *, ...);
-	static void BodyVector2WorldVector(int idx, const sVector &body, sVector &world);
-	static void WorldVector2BodyVector(int idx, const sVector &world, sVector &body);
-	static void BodyPoint2WorldPoint(int idx, const sPoint &body, sPoint &world);
-	static void WorldPoint2BodyPoint(int idx, const sPoint &world, sPoint &body);
+	static void BodyVector2WorldVector(unsigned int idx, const sVector &body, sVector &world);
+	static void WorldVector2BodyVector(unsigned int idx, const sVector &world, sVector &body);
+	static void BodyPoint2WorldPoint(unsigned int idx, const sPoint &body, sPoint &world);
+	static void WorldPoint2BodyPoint(unsigned int idx, const sPoint &world, sPoint &body);
 	
 	static void SetOwnership(int owns)
 	{
@@ -388,7 +387,7 @@ protected:
     
    int               dead;                      /* living or dead */
    int               ejected;                   /* in the silk */
-   uint32_t     fliteId;                   /* id of flite we're part of */              
+   uint32_t     fliteId;                         /* id of flite we're part of */              
 
    sREAL           timers[8];                  /* multi-purpose timers */
    int             remoteControl;              /* if true, allow player to fly us */
@@ -449,7 +448,7 @@ protected:
 
    /* attacker list */
    int            newAttacker;               /* set if a new attacker has been added    */
-   int            playerInAttackList;        /* player has been added to attacker list  */
+   bool           playerInAttackList;        /* player has been added to attacker list  */
    sREAL          playerThreatDistance;      /* distance at which player becomes threat */
    sREAL          playerThreatAspect;        /* aspect at which player becomes threat   */
    sREAL          playerThreatValue;         /* additional threat value of player       */
@@ -461,7 +460,7 @@ protected:
    /*****************************************************
     * gunners                                           *
     *****************************************************/
-   int            hasGunners;             /* if true, gunners aboard */
+   bool           hasGunners;             /* if true, gunners aboard */
    sObjectArray   gunners;                /* gunners                 */
    sREAL          gunnersPitchRate;       /* how fast gunners can swing gun up, down */
    sREAL          gunnersYawRate;         /*          "                    left, right */
@@ -473,10 +472,10 @@ protected:
    sREAL          bulletRadiusMax;        /* maximum bullet radius            */
    sREAL          bulletRadius;           /* calc'd from above w/ skill level */          
 
-   int            isBombing;              /* if true, droppin' iron           */
-   int            groundCollisionOn;      /* detect ground collision          */
-   int            clearForTakeoff;        /* takeoff flag                     */
-   int            clearForLanding;        /* landing flag                     */
+   bool           isBombing;              /* if true, droppin' iron           */
+   bool           groundCollisionOn;      /* detect ground collision          */
+   bool           clearForTakeoff;        /* takeoff flag                     */
+   bool           clearForLanding;        /* landing flag                     */
     /**********************************************************************
      * protected member functions                                         *
      **********************************************************************/
@@ -591,20 +590,19 @@ protected:
    void GetSurfaceTargetGeometry(sSurfaceTarget &st);
    void CalcAlignPoint(sSurfaceTarget &st);
    virtual void GetWeaponLimits(sWeaponLimits &weaponLimits) = 0;
-   void GetFormationPoint(int wingPos, int formationType, 
-                   int leaderIdx, sPoint &offset);
+   void GetFormationPoint(int wingPos, int formationType, unsigned int leaderIdx, sPoint &offset);
    void ClearTargetPilot();
    void SetTargetPilot(uint32_t targetIdx);
    int EvalThreatFromPlayer();
    void SelectEngagementFightType(uint32_t targetIdx);
    void SetNoseOn(sREAL, sREAL, sREAL = Pi_2);
-   void SetNoseOn(int flag, const sPoint &, sREAL pitch, sREAL yaw);
+   void SetNoseOn(bool flag, const sPoint &, sREAL pitch, sREAL yaw);
 
    void SetNoseOnX(sREAL, sREAL, sREAL = 0.5, sREAL = 0.0, sREAL = static_cast<sREAL>(Pi_2));
    sREAL Point2Roll(const sPoint &rollPosition);
    sREAL CalcClosureSpeed(const sTargetGeometry &, int flg = 0);
    /* communication */
-   virtual void Broadcast(int idx, int channel = commCHANNEL_AFFILIATION,
+   virtual void Broadcast(unsigned int idx, int channel = commCHANNEL_AFFILIATION,
                           int priority = commPRIORITY_STANDARD,
                           void *extraInfo = NULL) = 0;
 
@@ -623,7 +621,7 @@ protected:
     */
    virtual void BuildGunners() =0;
    void AddGunner(aiGunner *newGunner);
-   aiGunner *GetGunner(int whichGunner);
+   aiGunner *GetGunner(unsigned int whichGunner);
    void UpdateGunners();
 
    /* attacker list */

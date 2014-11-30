@@ -54,8 +54,8 @@
 #include "cockpit.h"
 
 Cockpit::Cockpit(unsigned char *byts,
-	  int xs,
-	  int ys,
+	  unsigned int xs,
+	  unsigned int ys,
 	  int tclr,
 	  char *ipath)
   : cbytes(byts),
@@ -66,7 +66,7 @@ Cockpit::Cockpit(unsigned char *byts,
   t_table = new trans_table();
   t_table->trans_color = trans_color;
   t_table->build_runs(cbytes,y_size,x_size);
-  y_clip = SCREEN_HEIGHT - y_size + t_table->ntrans_row;
+  y_clip = static_cast<unsigned int>(static_cast<int>(SCREEN_HEIGHT - y_size) + t_table->ntrans_row);
   ipanel = &instrument_panel;
   cockpit_y = SCREEN_HEIGHT - y_size;
   cockpit_x = 0;
@@ -92,7 +92,7 @@ Cockpit::Cockpit(const char *tmap_id, const char *ipath)
   t_table = new trans_table();
   t_table->trans_color = trans_color;
   t_table->build_runs(cbytes,y_size,x_size);
-  y_clip = SCREEN_HEIGHT - y_size + t_table->ntrans_row;
+  y_clip = static_cast<unsigned int>(static_cast<int>(SCREEN_HEIGHT - y_size) + t_table->ntrans_row);
   ipanel = &instrument_panel;
   cockpit_y = SCREEN_HEIGHT - y_size;
   cockpit_x = 0;

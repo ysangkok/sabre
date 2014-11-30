@@ -72,7 +72,7 @@ extern int rz_which_line;
  * z-buffered flat colored poly rendering                    *
  *************************************************************/
 
-int rendzpoly(R_3DPoint *poly, int n, int color, 
+int rendzpoly(R_3DPoint *poly, unsigned int n, int color, 
 	      Port_3D &port, R_2DPoint *spoints)
 {
   R_3DPoint ppoly[RENDMAX];
@@ -81,7 +81,7 @@ int rendzpoly(R_3DPoint *poly, int n, int color,
 
   int zclipit = 0;
   int nvis = 0;
-  int i,np;
+  unsigned int i,np;
   REAL_TYPE zmin = 1.0;
 
   for (i=0;i<n;i++)
@@ -113,14 +113,14 @@ int rendzpoly(R_3DPoint *poly, int n, int color,
   return (project_zpoly(polyptr, np,color, port, spoints));
 }
 
-int project_zpoly(R_3DPoint *poly, int n, int color,
+int project_zpoly(R_3DPoint *poly, unsigned int n, int color,
 		 Port_3D &port, R_2DPoint *spoints)
 {
   R_2DPoint scpoints[RENDMAX];
   R_2DPoint cpoints[RENDMAX];
   R_2DPoint *pnts;
-  int i;
-  int clip_n = 0;
+  unsigned int i;
+  unsigned int clip_n = 0;
 
   if (n > 0 && n < RENDMAX)
     {
@@ -218,8 +218,8 @@ inline void r_set_edge(R2D_TYPE x, int y, R2D_TYPE z)
     }
 }
 
-void r_build_edge_array(R_2DPoint *points, int n);
-void r_build_edge_array(R_2DPoint *points, int n)
+void r_build_edge_array(R_2DPoint *points, unsigned int n);
+void r_build_edge_array(R_2DPoint *points, unsigned int n)
 {
   int i;
   R_2DPoint *p0,*p1;
@@ -264,8 +264,8 @@ extern int frame_switch;
 extern int frame_color;
 extern void frame_convpoly(int *, int, int);
 
-void r_frame_convpoly(R_2DPoint *points, int n);
-void r_frame_convpoly(R_2DPoint *points, int n)
+void r_frame_convpoly(R_2DPoint *points, unsigned int n);
+void r_frame_convpoly(R_2DPoint *points, unsigned int n)
 {
   if (n >= RENDMAX)
     return;
@@ -281,7 +281,7 @@ void r_frame_convpoly(R_2DPoint *points, int n)
   frame_convpoly(ipoints,n,frame_color);
 }
 
-void r_fill_convpoly(R_2DPoint *points, int n, int colr)
+void r_fill_convpoly(R_2DPoint *points, unsigned int n, int colr)
 {
   int j,stps;
   unsigned char *b_ptr;

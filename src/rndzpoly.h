@@ -25,13 +25,13 @@ extern R2D_TYPE ztrans;
 extern int zbuff_size;
 extern R2D_TYPE zx;
 
-int rendzpoly(R_3DPoint *poly, int n, int color, 
+int rendzpoly(R_3DPoint *poly, unsigned int n, int color, 
 	      Port_3D &port, R_2DPoint *spoints = NULL);
 
-int project_zpoly(R_3DPoint *poly, int n, int color,
+int project_zpoly(R_3DPoint *poly, unsigned int n, int color,
 		 Port_3D &port, R_2DPoint *spoints = NULL);
 
-void r_fill_convpoly(R_2DPoint *points, int n, int colr);
+void r_fill_convpoly(R_2DPoint *points, unsigned int n, int colr);
 void zline(const R_3DPoint &p0, const R_3DPoint &p1, int colr, Port_3D &port);
 void rendzline(const R_2DPoint &p0, const R_2DPoint &p1, int colr);
 #endif

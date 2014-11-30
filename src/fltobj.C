@@ -44,7 +44,7 @@
 
 const float g = 32.16f;
 Flight_Specs **Flight_Specs::g_specs = NULL;
-int Flight_Specs::nspecs = 0;
+unsigned int Flight_Specs::nspecs = 0;
 
 /********************************************************
  * Flight_Specs members                                 *
@@ -117,7 +117,7 @@ Flight_Specs *result = NULL;
 
 	if (g_specs)
 	{
-		for (int i=0;i<nspecs;i++)
+		for (unsigned int i=0;i<nspecs;i++)
 		if (g_specs[i] && !strcmp(model,g_specs[i]->model))
 		{
 			result = g_specs[i];

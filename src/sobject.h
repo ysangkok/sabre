@@ -40,7 +40,7 @@ class sObject
 public:
   virtual ~sObject();
 
-  virtual int IsA() const
+  virtual bool IsA() const
     {
       return (sBASE_OBJECT);
     }

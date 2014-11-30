@@ -510,7 +510,7 @@ void Pilot::Shoot()
 	}
 }
 
-void Pilot::Broadcast(int idx, int channel, int priority, void *extraInfo)
+void Pilot::Broadcast(unsigned int idx, int channel, int priority, void *extraInfo)
 {
 int priorityValue;
 int affil;

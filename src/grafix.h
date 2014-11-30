@@ -23,11 +23,13 @@
 #ifndef __grafix_h
 #define __grafix_h
 
+#include <utility>
+#include <cstdlib>
+
 #ifndef __defs_h
 #include "defs.h"
 #endif
 
-int AbsInt(int x);
 int limit(int x, int r);
 
 class Point
@@ -44,14 +46,9 @@ public:
   inline Point & operator +=(const Point &p);
 };
 
-inline int AbsInt(int x)
-{
-  return (x < 0 ? -x : x);
-}
-
 inline int limit(int x, int l)
 {
-  if (AbsInt(x) > l)
+  if (abs(x) > l)
     {
       if (x < 0)
 	return -l;
@@ -111,7 +108,7 @@ public:
     { return botRight.y; }
 };
 
-inline int is_visible(Rect &r, int x, int y)
+inline bool is_visible(Rect &r, int x, int y)
 {
   return
     (
@@ -122,7 +119,7 @@ inline int is_visible(Rect &r, int x, int y)
      );
 }
 
-inline int valid_rect(Rect &r)
+inline bool valid_rect(Rect &r)
 {
   return
     (
@@ -144,17 +141,20 @@ inline void cliprect2rect(const Rect &cr, Rect &r)
     r.botRight.y = cr.botRight.y;
 }
 
-inline int RWIDTH(const Rect &r)
+template<typename T>
+typename std::make_unsigned<T>::type myabs(T x)
 {
-  return (r.botRight.x - r.topLeft.x + 1);
+    return x < 0 ? -static_cast<decltype(myabs(x))>(x) : static_cast<decltype(myabs(x))>(x);
 }
 
-inline int RHEIGHT(const Rect &r)
+inline unsigned int RWIDTH(const Rect &r)
 {
-  return (r.botRight.y - r.topLeft.y + 1);
+  return myabs(r.botRight.x - r.topLeft.x + 1);
+}
+
+inline unsigned int RHEIGHT(const Rect &r)
+{
+  return myabs(r.botRight.y - r.topLeft.y + 1);
 }
 
 #endif
-
-
-

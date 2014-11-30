@@ -416,7 +416,7 @@ void loadpcx(char * filename)
   if ((infile=fopen(filename,"rb"))==NULL)
     error_exit(1,"Couldn't Open %s",filename);
   fseek(infile,0L,SEEK_SET);
-  fread(&pcxhead,sizeof(pcx_header),1,infile);
+  if (!fread(&pcxhead,sizeof(pcx_header),1,infile)) abort();
   pcxhead.xmin = (short) ltohs((unsigned short) pcxhead.xmin);
   pcxhead.xmax = (short) ltohs((unsigned short) pcxhead.xmax);
   pcxhead.ymin = (short) ltohs((unsigned short) pcxhead.ymin);
@@ -460,7 +460,7 @@ void loadpcx(char * filename)
       found_palette = 1;
       for (i=0;i<256;i++)
 	{
-	  fread(&rgb_infos[i].rgb,3,1,infile);
+	  if (!fread(&rgb_infos[i].rgb,3,1,infile)) abort();
 	  rgb_infos[i].color = (int) i;
 	  rgb_infos[i].mapped_color = (int) i;
 	}

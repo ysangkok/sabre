@@ -44,7 +44,7 @@ typedef REAL_TYPE C;
 
 extern Vector world_light_source;
 
-int Terrain_Shape::txtr_flag = 1;
+bool Terrain_Shape::txtr_flag = 1;
 int Terrain_Shape::color = 154;
 int Terrain_Shape::color_range = 100;
 

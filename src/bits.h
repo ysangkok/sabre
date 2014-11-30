@@ -29,62 +29,62 @@
 
 #include "grafix.h"
 
-void trans_blit(int x1, int y1, int x2, int y2, 
+void trans_blit(size_t x1, size_t y1, size_t x2, size_t y2, 
 		unsigned char *src, unsigned char *);
 
-void scale_pixels(unsigned char *source, int source_width, int source_height,
-		  int dest_x, int dest_y, int dest_width,
-		  int dest_height, Rect *bounds,
+void scale_pixels(unsigned char *source, size_t source_width, size_t source_height,
+		  size_t dest_x, size_t dest_y, size_t dest_width,
+		  size_t dest_height, Rect *bounds,
 		  int trans_color = -1);
 
-void expand_pixels( unsigned char *source, int source_width,
-		    int source_height,
-		    int dest_x, int dest_y, int dest_width,
-		    int dest_height, Rect *bounds,
+void expand_pixels( unsigned char *source, size_t source_width,
+		    size_t source_height,
+		    size_t dest_x, size_t dest_y, size_t dest_width,
+		    size_t dest_height, Rect *bounds,
 		    int trans_color = -1);
 
-void compress_pixels(unsigned char *source, int source_width,
-		     int source_height,
-		     int dest_x, int dest_y, int dest_width,
-		     int dest_height, Rect *bounds,
+void compress_pixels(unsigned char *source, size_t source_width,
+		     size_t source_height,
+		     size_t dest_x, size_t dest_y, size_t dest_width,
+		     size_t dest_height, Rect *bounds,
 		     int trans_color = -1);
 
-void copy_row(unsigned char *src, int src_w,
-	      unsigned char *dest, int min_x, int max_x,
+void copy_row(unsigned char *src, size_t src_w,
+	      unsigned char *dest, size_t min_x, size_t max_x,
 	      Rect *bounds,int trans_color = -1);
 
-void expand_row(unsigned char *src, int src_w,
-		unsigned char *dest, int min_x, int max_x,
-		int cols, int r, Rect *bounds,
+void expand_row(unsigned char *src, size_t src_w,
+		unsigned char *dest, size_t min_x, size_t max_x,
+		size_t cols, size_t r, Rect *bounds,
 		int trans_color = -1);
 
-void compress_row(unsigned char *src, int src_w,
-		  unsigned char *dest, int min_x, int max_x,
-		  int cols, int r, Rect *bounds,
+void compress_row(unsigned char *src, size_t src_w,
+		  unsigned char *dest, size_t min_x, size_t max_x,
+		  size_t cols, size_t r, Rect *bounds,
 		  int trans_color = -1);
 
-void mask_scale_pixels(unsigned char *source, int source_width, int source_height,
-		       int dest_x, int dest_y, int dest_width,
-		       int dest_height,
-		       int mask_min_y, int mask_max_y,
-		       int *mask_ledge, int *mask_redge,
+void mask_scale_pixels(unsigned char *source, size_t source_width, size_t source_height,
+		       size_t dest_x, size_t dest_y, size_t dest_width,
+		       size_t dest_height,
+		       size_t mask_min_y, size_t mask_max_y,
+		       size_t *mask_ledge, size_t *mask_redge,
 		       int trans_color = -1);
 
-void mask_expand_pixels( unsigned char *source, int source_width,
-			 int source_height,
-			 int dest_x, int dest_y, int dest_width,
-			 int dest_height,
-			 int mask_min_y, int mask_max_y,
-			 int *mask_ledge, int *mask_redge,
+void mask_expand_pixels( unsigned char *source, size_t source_width,
+			 size_t source_height,
+			 size_t dest_x, size_t dest_y, size_t dest_width,
+			 size_t dest_height,
+			 size_t mask_min_y, size_t mask_max_y,
+			 size_t *mask_ledge, size_t *mask_redge,
 			 int trans_color = -1);
 
-void mask_compress_pixels(unsigned char *source, int source_width,
-			  int source_height,
-			  int dest_x, int dest_y, int dest_width,
-			  int dest_height, int mask_min_y, int mask_max_y,
-			  int *mask_ledge, int *mask_redge,
+void mask_compress_pixels(unsigned char *source, size_t source_width,
+			  size_t source_height,
+			  size_t dest_x, size_t dest_y, size_t dest_width,
+			  size_t dest_height, size_t mask_min_y, size_t mask_max_y,
+			  size_t *mask_ledge, size_t *mask_redge,
 			  int trans_color = -1);
 
-int rset_ptr(int & cur_x, int & w, Rect *bounds);
+size_t rset_ptr(size_t & cur_x, size_t & w, Rect *bounds);
 
 #endif

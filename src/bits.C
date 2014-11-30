@@ -34,84 +34,85 @@
 //#define LOW_VALUE -MAXINT
 //#define HIGH_VALUE MAXINT
 
-void trans_blit(int x1, int y1, int x2, int y2, 
+void trans_blit(size_t x1, size_t y1, size_t x2, size_t y2, 
 		unsigned char *src, unsigned char *)
 {
-  int w = x2 - x1 + 1;
-  int h = y2 - y1 + 1;
+  size_t w = x2 - x1 + 1;
+  size_t h = y2 - y1 + 1;
   scale_pixels(src,w,h,x1,y1,w,h,&Port_3D::screen,0);
 }
 
-int set_h(int &y_start, int &height, Rect *bounds);
-int set_ptr(unsigned char *( & dest), int & cur_x, int & w,
-	    Rect *bounds);
+size_t set_h(size_t &y_start, size_t &height, Rect *bounds);
+size_t set_ptr(unsigned char *( & dest), size_t & cur_x, size_t & w, Rect *bounds);
 // Set y_start, height equal to that
 //
-int set_h(int &y_start, int &height, Rect *bounds)
+size_t set_h(size_t &y_start, size_t &height, Rect *bounds)
 {
   if (height <= 0)
     return (0);
-  if (y_start > bounds->bottom())
+  if (y_start > static_cast<size_t>(bounds->bottom()))
     {
       height = 0;
       return (0);
     }
 
-  int yd = y_start + height - 1;
-  if (yd > bounds->bottom())
-    height -= yd - bounds->bottom();
+  size_t yd = y_start + height - 1;
+  if (yd > static_cast<size_t>(bounds->bottom()))
+    height -= yd - static_cast<size_t>(bounds->bottom());
   return (height);
 }
 
-// Set the destination pointer, cur x position, and width
+// Set the destination posize_ter, cur x position, and width
 // to that clipped by bounds.
-int set_ptr(unsigned char *( & dest), int & cur_x, int & w,
-	    Rect *bounds)
+size_t set_ptr(unsigned char *( & dest), size_t & cur_x, size_t & w, Rect *bounds)
 {
+  size_t left = static_cast<size_t>(bounds->left());
+  size_t right = static_cast<size_t>(bounds->right());
   if (w <= 0)
     return (0);
-  if (cur_x > bounds->right())
+  if (cur_x > right)
     return (0);
-  if (cur_x < bounds->left())
+  if (cur_x < left)
     {
-      dest += bounds->left() - cur_x;
-      w -= bounds->left() - cur_x;
-      cur_x = bounds->left();
+      dest += left - cur_x;
+      w -= left - cur_x;
+      cur_x = left;
     }
-  int dx = cur_x + w - 1;
-  if (dx > bounds->right())
+  size_t dx = cur_x + w - 1;
+  if (dx > right)
     {
-      dx = bounds->right();
+      dx = right;
       w = dx - cur_x + 1;
     }
   return(w);
 }
 
 // Like above, 'cept skip left clip check
-int rset_ptr(int & cur_x, int & w, Rect *bounds)
+size_t rset_ptr(size_t & cur_x, size_t & w, Rect *bounds)
 {
+  size_t right = static_cast<size_t>(bounds->right());
   if (w <= 0)
     return (0);
-  if (cur_x > bounds->right())
+  if (cur_x > right)
     return (0);
-  int dx = cur_x + w - 1;
-  if (dx > bounds->right())
+  size_t dx = cur_x + w - 1;
+  if (dx > right)
     {
-      dx = bounds->right();
+      dx = right;
       w = dx - cur_x + 1;
     }
   return(w);
 }
 
 
-void copy_row(unsigned char *src, int src_w,
+void copy_row(unsigned char *src, size_t src_w,
 	      unsigned char *dest,
-	      int min_x, int max_x,
+	      size_t min_x, size_t max_x,
 	      Rect *bounds, int trans_color)
 {
-  int cols_used = 0;
-  int cur_x;
-  int w;
+  size_t cols_used = 0;
+  size_t cur_x;
+  size_t w;
 
   dest += min_x;
   cur_x = min_x;
@@ -120,7 +121,7 @@ void copy_row(unsigned char *src, int src_w,
   if (set_ptr(dest,cur_x,w,bounds))
     {
       // If we were clipped on the left,
-      // move the source map pointer
+      // move the source map posize_ter
       if (cur_x > min_x)
 	{
 	  src += cur_x - min_x;
@@ -144,25 +145,28 @@ void copy_row(unsigned char *src, int src_w,
     }
 }
 
-void expand_row(unsigned char *src, int src_w,
-		unsigned char *dest, int min_x, int max_x,
-		int cols, int r, Rect *bounds, int trans_color)
+void expand_row(unsigned char *src, size_t src_w,
+		unsigned char *dest, size_t min_x, size_t max_x,
+		size_t cols, size_t r, Rect *bounds, int trans_color)
 {
   R_KEY_BEGIN(72)
-    int cur_x;
-  int q = src_w;
-  int d = 0;
-  int cols_used = 0;
-  int w,w2;
+    size_t cur_x;
+  size_t q = src_w;
+  size_t d = 0;
+  size_t cols_used = 0;
+  size_t w,w2;
   unsigned char *dst;
+
+  size_t left = static_cast<size_t>(bounds->left());
+  size_t right = static_cast<size_t>(bounds->right());
 
   if (cols <= 0)
     return;
-  if (max_x < bounds->left())
+  if (max_x < left)
     return;
-  if (max_x > bounds->right())
-    max_x = bounds->right();
-  if (min_x + (max_x - min_x) < bounds->left())
+  if (max_x > right)
+    max_x = right;
+  if (min_x + (max_x - min_x) < left)
     return;
 
   cur_x = min_x;
@@ -186,8 +190,8 @@ void expand_row(unsigned char *src, int src_w,
       if (rset_ptr(cur_x,w,bounds))
 	{
 	  dst = dest;
-	  int putw = w;
-	  int tmp = bounds->left() - cur_x;
+	  size_t putw = w;
+	  size_t tmp = left - cur_x;
 	  if (tmp <= 0)
 	    {
 	      if (trans_color == -1)
@@ -197,10 +201,10 @@ void expand_row(unsigned char *src, int src_w,
 	    }
 	  else
 	    {
-	      int cx = cur_x;
-	      for (int i=0;i<w;i++)
+	      size_t cx = cur_x;
+	      for (size_t i=0;i<w;i++)
 		{
-		  if (cx >= bounds->left())
+		  if (cx >= left)
 		    {
 		      if (trans_color == -1)
 			*dst = *src;
@@ -221,24 +225,27 @@ void expand_row(unsigned char *src, int src_w,
   R_KEY_END
     }
 
-void compress_row(unsigned char *src, int src_w,
-		  unsigned char *dest, int min_x, int max_x,
-		  int cols, int r, Rect *bounds, int trans_color)
+void compress_row(unsigned char *src, size_t src_w,
+		  unsigned char *dest, size_t min_x, size_t max_x,
+		  size_t cols, size_t r, Rect *bounds, int trans_color)
 {
   R_KEY_BEGIN(74)
-    int cur_x;
-  int cols_used = 0;
-  int q = (max_x - min_x) + 1;
-  int d = 0;
-  int w;
+    size_t cur_x;
+  size_t cols_used = 0;
+  size_t q = (max_x - min_x) + 1;
+  size_t d = 0;
+  size_t w;
+
+  size_t left = static_cast<size_t>(bounds->left());
+  size_t right = static_cast<size_t>(bounds->right());
 
   if (cols <= 0)
     return;
-  if (max_x < bounds->left())
+  if (max_x < left)
     return;
-  if (max_x > bounds->right())
-    max_x = bounds->right();
-  if (min_x + (max_x - min_x) < bounds->left())
+  if (max_x > right)
+    max_x = right;
+  if (min_x + (max_x - min_x) < left)
     return;
 
   cur_x = min_x;
@@ -246,7 +253,7 @@ void compress_row(unsigned char *src, int src_w,
 
   while ((cur_x <= max_x) && (cols_used <= src_w))
     {
-      if (cur_x >= bounds->left() && cur_x <= bounds->right())
+      if (cur_x >= left && cur_x <= right)
 	{
 	  if (trans_color == -1)
 	    *dest++ = *src;
@@ -271,31 +278,33 @@ void compress_row(unsigned char *src, int src_w,
   R_KEY_END
     }
 
-void expand_pixels(unsigned char *source, int source_width, int source_height,
-		   int dest_x, int dest_y, int dest_width,
-		   int dest_height, Rect *bounds, int trans_color)
+void expand_pixels(unsigned char *source, size_t source_width, size_t source_height,
+		   size_t dest_x, size_t dest_y, size_t dest_width,
+		   size_t dest_height, Rect *bounds, int trans_color)
 {
   R_KEY_BEGIN(75)
-    int cols;
-  int rows;
-  int rows_put;
-  int rows_used;
-  int cur_y;
-  int q;
-  int d;
-  int r;
-  int h;
+    size_t cols;
+  size_t rows;
+  size_t rows_put;
+  size_t rows_used;
+  size_t cur_y;
+  size_t q;
+  size_t d;
+  size_t r;
+  size_t h;
   unsigned char *bptr;
   unsigned char *buffer_ptr;
-  
+
+  size_t top = static_cast<size_t>(bounds->top());
+  size_t bottom = static_cast<size_t>(bounds->bottom());
+
   MYCHECK(source_height > 0);
   MYCHECK(source_width > 0);
 
   if (dest_height <= 0)
     return;
-  if (dest_y > bounds->bottom())
+  if (dest_y > bottom)
     return;
-
 
   rows = dest_height / source_height;
   // Compute vertical remainder
@@ -303,16 +312,15 @@ void expand_pixels(unsigned char *source, int source_width, int source_height,
   q = source_height;
   d = 0;
   // Clip to bottom
-  if (dest_y + (dest_height - 1) > bounds->bottom())
-    dest_height = bounds->bottom() - dest_y + 1;
-  if (dest_y + dest_height < bounds->top())
+  if (dest_y + (dest_height - 1) > bottom)
+    dest_height = bottom - dest_y + 1;
+  if (dest_y + dest_height < top)
     return;
 
   // Compute horizontal multiplier
   cols = dest_width / source_width;
   // Compute horizontal remainder
-  int cr = dest_width - (cols * source_width);
-
+  size_t cr = dest_width - (cols * source_width);
 
   rows_put = 0;
   rows_used = 0;
@@ -332,9 +340,9 @@ void expand_pixels(unsigned char *source, int source_width, int source_height,
 	  h++;
 	  d = d - q;
 	}
-      for (int i=0;i<h;i++)
+      for (size_t i=0;i<h;i++)
 	{
-	  if (cur_y >= bounds->top() && cur_y <= bounds->bottom())
+	  if (cur_y >= top && cur_y <= bottom)
 	    expand_row(source,
 		       source_width,
 		       bptr,
@@ -358,27 +366,30 @@ void expand_pixels(unsigned char *source, int source_width, int source_height,
   R_KEY_END
     }
 
-void compress_pixels(unsigned char *source, int source_width, int source_height,
-		     int dest_x, int dest_y, int dest_width,
-		     int dest_height, Rect *bounds, int trans_color)
+void compress_pixels(unsigned char *source, size_t source_width, size_t source_height,
+		     size_t dest_x, size_t dest_y, size_t dest_width,
+		     size_t dest_height, Rect *bounds, int trans_color)
 {
   R_KEY_BEGIN(76)
-    int cols;
-  int cr;
-  int rows;
-  int rows_put;
-  int rows_used;
-  int cur_y;
-  int r,q,d,h;
+    size_t cols;
+  size_t cr;
+  size_t rows;
+  size_t rows_put;
+  size_t rows_used;
+  size_t cur_y;
+  size_t r,q,d,h;
   unsigned char *bptr;
   unsigned char *buffer_ptr;
+
+  const size_t top = static_cast<size_t>(bounds->top());
+  const size_t bottom = static_cast<size_t>(bounds->bottom());
 
   MYCHECK(source_height > 0);
   MYCHECK(source_width > 0);
 
   if (dest_height <= 0)
     return;
-  if (dest_y > bounds->bottom())
+  if (dest_y > bottom)
     return;
 
   rows = source_height / dest_height;
@@ -388,9 +399,9 @@ void compress_pixels(unsigned char *source, int source_width, int source_height,
   d = 0;
 
   // Clip to bottom
-  if (dest_y + (dest_height - 1) > bounds->bottom())
-    dest_height = bounds->bottom() - dest_y + 1;
-  if (dest_y + dest_height < bounds->top())
+  if (dest_y + (dest_height - 1) > bottom)
+    dest_height = bottom - dest_y + 1;
+  if (dest_y + dest_height < top)
     return;
 
   // Compute horizontal multiplier & remainder
@@ -409,7 +420,7 @@ void compress_pixels(unsigned char *source, int source_width, int source_height,
 
   while ((rows_put < dest_height) && (rows_used < source_height))
     {
-      if (cur_y >= bounds->top() && cur_y <= bounds->bottom())
+      if (cur_y >= top && cur_y <= bottom)
 	compress_row(source,
 		     source_width,
 		     bptr,
@@ -438,11 +449,14 @@ void compress_pixels(unsigned char *source, int source_width, int source_height,
 	free_xbuff();
     }
 
-void scale_pixels(unsigned char *source, int source_width, int source_height,
-		  int dest_x, int dest_y, int dest_width,
-		  int dest_height, Rect *bounds,int trans_color)
+void scale_pixels(unsigned char *source, size_t source_width, size_t source_height,
+		  size_t dest_x, size_t dest_y, size_t dest_width,
+		  size_t dest_height, Rect *bounds,int trans_color)
 {
   R_KEY_BEGIN(88)
+
+  const size_t top = static_cast<size_t>(bounds->top());
+
     if (source_width < dest_width)
       expand_pixels(source,source_width,source_height,dest_x,dest_y,
 		    dest_width,dest_height,bounds,trans_color);
@@ -456,15 +470,15 @@ void scale_pixels(unsigned char *source, int source_width, int source_height,
 	  if (!buffer_ptr)
 		return;
 
-	int y = dest_y;
+	size_t y = dest_y;
 	if (set_h(dest_y,source_height,bounds))
 	  {
 	    if (dest_y > y)
 	      source += source_width * (dest_y - y);
 	    unsigned char *bptr = buffer_ptr + (SCREEN_PITCH * dest_y);
-	    for (int i=0;i<source_height;i++)
+	    for (size_t i=0;i<source_height;i++)
 	      {
-		if (dest_y >= bounds->top())
+		if (dest_y >= top)
 		  {
 		    copy_row(source,
 			     source_width,
@@ -484,24 +498,24 @@ void scale_pixels(unsigned char *source, int source_width, int source_height,
   R_KEY_END
     }
 
-void mask_expand_pixels(unsigned char *source, int source_width,
-			int source_height,
-			int dest_x, int dest_y, int dest_width,
-			int dest_height,
-			int mask_min_y, int mask_max_y,
-			int *mask_ledge, int *mask_redge,
+void mask_expand_pixels(unsigned char *source, size_t source_width,
+			size_t source_height,
+			size_t dest_x, size_t dest_y, size_t dest_width,
+			size_t dest_height,
+			size_t mask_min_y, size_t mask_max_y,
+			size_t *mask_ledge, size_t *mask_redge,
 			int trans_color)
 {
   R_KEY_BEGIN(375)
-    int cols;
-  int rows;
-  int rows_put;
-  int rows_used;
-  int cur_y;
-  int q;
-  int d;
-  int r;
-  int h;
+    size_t cols;
+  size_t rows;
+  size_t rows_put;
+  size_t rows_used;
+  size_t cur_y;
+  size_t q;
+  size_t d;
+  size_t r;
+  size_t h;
   unsigned char *bptr;
   unsigned char *buffer_ptr;
 
@@ -526,13 +540,13 @@ void mask_expand_pixels(unsigned char *source, int source_width,
   if (dest_y + dest_height < mask_min_y)
     return;
 
-  bounds.topLeft.y = mask_min_y;
-  bounds.botRight.y = mask_max_y;
+  bounds.topLeft.y = static_cast<int>(mask_min_y);
+  bounds.botRight.y = static_cast<int>(mask_max_y);
 
   // Compute horizontal multiplier
   cols = dest_width / source_width;
   // Compute horizontal remainder
-  int cr = dest_width - (cols * source_width);
+  size_t cr = dest_width - (cols * source_width);
 
 
   rows_put = 0;
@@ -554,12 +568,12 @@ void mask_expand_pixels(unsigned char *source, int source_width,
 	  h++;
 	  d = d - q;
 	}
-      for (int i=0;i<h;i++)
+      for (size_t i=0;i<h;i++)
 	{
 	  if (cur_y >= mask_min_y && cur_y <= mask_max_y)
 	    {
-	      bounds.topLeft.x = mask_ledge[cur_y];
-	      bounds.botRight.x = mask_redge[cur_y];
+	      bounds.topLeft.x = static_cast<int>(mask_ledge[cur_y]);
+	      bounds.botRight.x = static_cast<int>(mask_redge[cur_y]);
 	      expand_row(source,
 			 source_width,
 			 bptr,
@@ -584,24 +598,24 @@ void mask_expand_pixels(unsigned char *source, int source_width,
     }
 
 
-void mask_compress_pixels(unsigned char *source, int source_width,
-			  int source_height,
-			  int dest_x, int dest_y, int dest_width,
-			  int dest_height,
-			  int mask_min_y,
-			  int mask_max_y,
-			  int *mask_ledge,
-			  int *mask_redge,
+void mask_compress_pixels(unsigned char *source, size_t source_width,
+			  size_t source_height,
+			  size_t dest_x, size_t dest_y, size_t dest_width,
+			  size_t dest_height,
+			  size_t mask_min_y,
+			  size_t mask_max_y,
+			  size_t *mask_ledge,
+			  size_t *mask_redge,
 			  int trans_color)
 {
   R_KEY_BEGIN(376)
-    int cols;
-  int cr;
-  int rows;
-  int rows_put;
-  int rows_used;
-  int cur_y;
-  int r,q,d,h;
+    size_t cols;
+  size_t cr;
+  size_t rows;
+  size_t rows_put;
+  size_t rows_used;
+  size_t cur_y;
+  size_t r,q,d,h;
   unsigned char *bptr;
   unsigned char *buffer_ptr;
   Rect bounds;
@@ -614,8 +628,8 @@ void mask_compress_pixels(unsigned char *source, int source_width,
   if (dest_y > mask_max_y)
     return;
 
-  bounds.topLeft.y = mask_min_y;
-  bounds.botRight.y = mask_max_y;
+  bounds.topLeft.y = static_cast<int>(mask_min_y);
+  bounds.botRight.y = static_cast<int>(mask_max_y);
 
   rows = source_height / dest_height;
   // Compute vertical remainder
@@ -646,8 +660,8 @@ void mask_compress_pixels(unsigned char *source, int source_width,
     {
       if (cur_y >= mask_min_y && cur_y <= mask_max_y)
 	{
-	  bounds.topLeft.x = mask_ledge[cur_y];
-	  bounds.botRight.x = mask_redge[cur_y];
+	  bounds.topLeft.x = static_cast<int>(mask_ledge[cur_y]);
+	  bounds.botRight.x = static_cast<int>(mask_redge[cur_y]);
 	  compress_row(source,
 		       source_width,
 		       bptr,
@@ -677,11 +691,11 @@ void mask_compress_pixels(unsigned char *source, int source_width,
   R_KEY_END
     }
 
-void mask_scale_pixels(unsigned char *source, int source_width, int source_height,
-		       int dest_x, int dest_y, int dest_width,
-		       int dest_height,
-		       int mask_min_y, int mask_max_y,
-		       int *mask_ledge, int *mask_redge,
+void mask_scale_pixels(unsigned char *source, size_t source_width, size_t source_height,
+		       size_t dest_x, size_t dest_y, size_t dest_width,
+		       size_t dest_height,
+		       size_t mask_min_y, size_t mask_max_y,
+		       size_t *mask_ledge, size_t *mask_redge,
 		       int trans_color)
 {
   R_KEY_BEGIN(388)
@@ -697,10 +711,10 @@ void mask_scale_pixels(unsigned char *source, int source_width, int source_heigh
     else
       {
 	unsigned char *buffer_ptr;
-	int y = dest_y;
+	size_t y = dest_y;
 	Rect bounds;
-	bounds.topLeft.y = mask_min_y;
-	bounds.botRight.y = mask_max_y;
+	bounds.topLeft.y = static_cast<int>(mask_min_y);
+	bounds.botRight.y = static_cast<int>(mask_max_y);
 	  buffer_ptr = lock_xbuff();
 	if (!buffer_ptr)
 		return;
@@ -710,12 +724,12 @@ void mask_scale_pixels(unsigned char *source, int source_width, int source_heigh
 	    if (dest_y > y)
 	      source += source_width * (dest_y - y);
 	    unsigned char *bptr = buffer_ptr + (SCREEN_PITCH * dest_y);
-	    for (int i=0;i<source_height;i++)
+	    for (size_t i=0;i<source_height;i++)
 	      {
 		if (dest_y >= mask_min_y)
 		  {
-		    bounds.topLeft.x = mask_ledge[dest_y];
-		    bounds.botRight.x = mask_redge[dest_y];
+		    bounds.topLeft.x = static_cast<int>(mask_ledge[dest_y]);
+		    bounds.botRight.x = static_cast<int>(mask_redge[dest_y]);
 		    copy_row(source,
 			     source_width,
 			     bptr,

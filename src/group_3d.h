@@ -31,7 +31,7 @@
 class C_3DObject_Group : public C_3DObject_List
 {
 public:
-  int visible;
+  bool visible;
   bounding_cube bounds;
   static int min_pixel_width;
 
@@ -39,9 +39,9 @@ public:
   
   void addObject(C_3DObject_Base *);
   void addDrawList(DrawList &dlist, Port_3D &port);
-  int isVisible(Port_3D &port);
+  bool isVisible(Port_3D &port);
 
-  int getNObjects()
+  unsigned int getNObjects()
     {
       return (n_objects);
     }
@@ -55,8 +55,8 @@ public:
     }
 } ;
 
-int isVisible(Port_3D &port, bounding_cube &bounds);
-int isVisible(Port_3D &port, Port_3D &ref_port, bounding_cube &bounds);
+bool isVisible(Port_3D &port, bounding_cube &bounds);
+bool isVisible(Port_3D &port, Port_3D &ref_port, bounding_cube &bounds);
 
 #endif
 

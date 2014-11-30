@@ -44,11 +44,11 @@ public:
 	{
 		return target_flight;
 	}
-	int get_functioning(void)
+	bool get_functioning(void)
 	{
 		return functioning;
 	}
-	void set_functioning(int funcing)
+	void set_functioning(bool funcing)
 	{
 		functioning = funcing;
 		if (!functioning)
@@ -145,7 +145,7 @@ public:
 
 protected:
 	void GetWeaponLimits(sWeaponLimits &weaponLimits);
-	void Broadcast(int idx, int channel = commCHANNEL_AFFILIATION,
+	void Broadcast(unsigned int idx, int channel = commCHANNEL_AFFILIATION,
 						 int priority = commPRIORITY_STANDARD,
 						 void *extraInfo = NULL);
 	void GetRemoteControlInputs();
@@ -154,29 +154,29 @@ protected:
 	void CalcGunLeadPoint(sTargetGeometry &tg);
 	void Shoot();
 private:
-	sbrFlightModel	 sbrFlight;
-	Flight			 *flight;
-	Target			 *target;
+	sbrFlightModel	sbrFlight;
+	Flight		*flight;
+	Target		*target;
 	Pilot           *target_pilot;
 	Flight          *target_flight;
-	int             functioning;
+	bool            functioning;
 	Weapon_Instance *weapons;
 	Weapon_Instance *sel_weapon;
-	int				 sel_wpn;
-	int				 n_weaps;
+	int		sel_wpn;
+	int		n_weaps;
 	PilotMessage    message;
 	R_3DPoint       gun_point;
-	R_3DPoint		 gun_track_point;
-	R_3DPoint		 lead_track_point;
+	R_3DPoint	gun_track_point;
+	R_3DPoint	lead_track_point;
 	R_3DPoint       track_point;
 	int             nstores;
 	int             stores[sbrPIL_MAX_STORES];
 	Pilot_Params    *params;
-	int				 in_range;
-	Target			 *target_obj;
-	float				 t;
-	float				 time_to_target;
-	float				 new_damage;
+	int		in_range;
+	Target		*target_obj;
+	float		t;
+	float		time_to_target;
+	float		new_damage;
 
 	static float    gunsGunsSoundTime;
 

@@ -41,7 +41,7 @@ public:
   float elapsed_time;
   int effect_on;
   void do_effect(void ( *)(Palette_Effect &), float = 0.1f );
-  int is_done(float t, int reset );
+  bool is_done(float t, int reset );
   Palette_Effect()
     {
       effect_time = 0.1f;

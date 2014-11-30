@@ -84,7 +84,7 @@ public:
       return (TARGET_BASE_T);
     }
 
-  virtual int isHistory()
+  virtual bool isHistory()
     {
       return (hurt >= max_damage);
     }

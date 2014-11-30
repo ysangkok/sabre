@@ -47,9 +47,9 @@ public:
   C_PolyInfo *g_polyinfos;
   C_3DObject_Group *groups;
   C_3DPoly **polys;
-  int ngroups;
-  int n3dpolys;
-  int npolys;
+  unsigned int ngroups;
+  unsigned int n3dpolys;
+  unsigned int npolys;
   float scale;
  
   int ground_color,sky_color;
@@ -88,7 +88,7 @@ public:
   REAL_TYPE getGroundLevel(R_3DPoint &p);
 };
 
-C_3DPoly **resizePolyPtr(C_3DPoly **polys, int old_size, int amt);
+C_3DPoly **resizePolyPtr(C_3DPoly **polys, unsigned int old_size, int amt);
 
 extern Earth_Watch2 *the_earth;
 extern REAL_TYPE getGroundLevel(R_3DPoint &p);

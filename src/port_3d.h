@@ -138,7 +138,7 @@ public:
 	void write(std::ostream &os);
 
 
-	int IsVisible(int x, int y)
+	bool IsVisible(int x, int y)
 	{
 		return (is_visible(screen,x,y));
 	}

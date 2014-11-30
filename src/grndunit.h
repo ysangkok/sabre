@@ -79,7 +79,7 @@ public:
   Port_3D              ref_port;
 
   int view;
-  int hit_shape;
+  unsigned int hit_shape;
   float current_speed;
 
   Ground_Unit()
@@ -168,9 +168,9 @@ class Ground_Unit_Manager
 {
 public:
   Ground_Unit_Specs *specs;
-  int               nspecs;
+  unsigned int       nspecs;
   Ground_Unit        **units;
-  int               nunits;
+  unsigned int       nunits;
   Weapons_Manager    wm;
 
   Ground_Unit_Manager();

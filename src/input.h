@@ -32,7 +32,7 @@ class InputDevice
 {
 public:
   virtual ~InputDevice();
-  virtual int IsAvailable( void ) const = 0;
+  virtual bool IsAvailable( void ) const = 0;
   virtual void Update( void ) = 0;
 };
 
@@ -81,7 +81,7 @@ public:
 
   virtual ~Joystick();// { ljoy.close(); }
 
-  int IsAvailable() const
+  bool IsAvailable() const
     {
       return (ljoy.active);
     }
@@ -112,7 +112,7 @@ private:
 
 public:
   virtual void Update( void );
-  virtual int IsAvailable( void ) const { return ResetDriver(); }
+  virtual bool IsAvailable( void ) const { return ResetDriver(); }
   ~Mouse();
   void set_position(int x, int y);
 };

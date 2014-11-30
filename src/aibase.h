@@ -74,19 +74,20 @@ public:
 	}
 	uint32_t GetIdx()
 	{
-		return idx;
+		if (idx < 0) abort();
+		return static_cast<uint32_t>(idx);
 	}
 	void SetIdx(uint32_t ix)
 	{
-		this->idx = ix;
+		this->idx = static_cast<int32_t>(ix);
 	}
 	int GetIndex()
 	{
 		return index;
 	}
-	void SetIndex(int ix)
+	void SetIndex(unsigned int ix)
 	{
-		this->index = ix;
+		this->index = static_cast<int>(ix);
 	}
    int GetAttackerCount()
    {
@@ -99,7 +100,7 @@ public:
 		return attackList.GetCount() > 0;
 	}
 	void KillAttackList();
-	virtual int IsActive()	
+	virtual bool IsActive()	
 	{ 
 		return active;
 	}
@@ -109,9 +110,9 @@ public:
 	}
 	void SetSkillLevel(int level, int slot);
 	int GetSkillLevel(int slot);
-	virtual void SetManeuver(int mnvr, uint32_t flags = 0, sREAL d0 = 0.0,
+	virtual void SetManeuver(unsigned int mnvr, uint32_t flags = 0, sREAL d0 = 0.0,
 						 sREAL d1 = 0.0, sREAL d2 = 0.0);
-	virtual void SetManeuverX(int mnvr, uint32_t flags = 0, 
+	virtual void SetManeuverX(unsigned int mnvr, uint32_t flags = 0, 
 								  sREAL d0 = 0.0, sREAL d1 = 0.0, sREAL d2 = 0.0,
 								  sREAL d3 = 0.0, sREAL d4 = 0.0, sREAL d5 = 0.0);
 
@@ -139,11 +140,11 @@ protected:
 	/**************************************************************************
     * protected members                                                      *
     **************************************************************************/
-   uint32_t  idx;                       /* unique id                    */
+   int32_t  idx;                             /* unique id                    */
    int            index;                     /* ordinal value                */
    char           debug_str[aiB_DEBUG_MAX];  /* debugging string             */
    int            affiliation;               /* whose side we're on          */
-   int            active;                    /* active status                */
+   bool           active;                    /* active status                */
    char           handle[aiB_HANDLE_SIZE];   /* call sign                    */
    const char     *dbg;                      /* debug string                 */
    int            task;                      /* current task                 */
@@ -166,9 +167,9 @@ protected:
 
 	void					ExecManeuverStack(void);
 	virtual void		UpdateManeuver(sManeuverState &im);
-	sManeuverState		*PushManeuver(int mnvr, uint32_t flags = 0, sREAL d0 = 0.0,
+	sManeuverState		*PushManeuver(unsigned int mnvr, uint32_t flags = 0, sREAL d0 = 0.0,
 												sREAL d1 = 0.0, sREAL d2 = 0.0);
-	sManeuverState		*PushManeuverX(int mnvr, uint32_t flags = 0,
+	sManeuverState		*PushManeuverX(unsigned int mnvr, uint32_t flags = 0,
 												sREAL d0 = 0.0, sREAL d1 = 0.0, sREAL d2 = 0.0,
 												sREAL d3 = 0.0, sREAL d4 = 0.0, sREAL d5 = 0.0);
 	sManeuverState		*PopManeuver(void);

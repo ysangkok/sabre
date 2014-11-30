@@ -97,14 +97,14 @@ public:
   Weapon_Instance_List *wil;
 
   /* Index of shape receiving last hit */
-  int hit_shape;
+  unsigned int hit_shape;
   /* 
      Flags whether to hide the cockpit shape
      (For drawing from pilot's perspective)
      */
   int cpk_flg;
   /* if 1, indicates we were shotdown */
-  int bagged;
+  bool bagged;
  
   int ground_hits;
   int ground_kills;
@@ -150,7 +150,7 @@ public:
   R_3DPoint *get_hit_point();
   R_3DPoint *get_position();
   Vector_Q *get_velocity();
-  void calc_damage(int hit_shape, int damage);
+  void calc_damage(unsigned int hit_shape, int damage);
   int landing_report(Landing_Report &);
    void set_cpk_view(int flg)
     { cpk_flg = flg; }

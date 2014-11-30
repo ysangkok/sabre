@@ -78,22 +78,22 @@ Earth_Watch::~Earth_Watch()
     delete [] groups;
   if (polys)
     {
-      for (int i=0;i<n3dpolys;i++)
+      for (unsigned int i=0;i<n3dpolys;i++)
 	if (polys[i])
 	  delete polys[i];
       delete [] polys;
     }
 }
 
-C_3DPoly **resizePolyPtr(C_3DPoly **polys, int old_size, int amt)
+C_3DPoly **resizePolyPtr(C_3DPoly **polys, unsigned int old_size, int amt)
 {
-  int size = old_size + amt;
+  unsigned int size = static_cast<unsigned int>(static_cast<int>(old_size) + amt);
   C_3DPoly **result;
 
   result = new C_3DPoly *[size];
   MYCHECK(result != NULL);
   
-  for (int i=0;i<old_size;i++)
+  for (unsigned int i=0;i<old_size;i++)
     result[i] = polys[i];
 
   delete [] polys;
@@ -104,8 +104,8 @@ C_3DPoly **resizePolyPtr(C_3DPoly **polys, int old_size, int amt)
 void Earth_Watch::read(std::istream &is)
 {
   char c;
-  int i,j,idx;
-  int n;
+  unsigned int i,j,idx;
+  unsigned int n;
   R_3DPoint loc;
   REAL_TYPE dab_min;
   READ_TOKI('{',is,c)
@@ -152,14 +152,14 @@ void Earth_Watch::read(std::istream &is)
 	}
       else
 	{
-	  polys = resizePolyPtr(polys, n3dpolys, n);
+	  polys = resizePolyPtr(polys, n3dpolys, static_cast<int>(n));
 	  n3dpolys += n;
 	}
 	    
       for (j=0;j<n;j++)
 	{
 	  C_PolyInfo *an_info;
-	  int info_idx;
+	  unsigned int info_idx;
 	  R_3DPoint a_location;
 	  poly_params a_param;
 	  READ_TOKI('[',is,c)
@@ -260,7 +260,7 @@ void Earth_Watch::draw_horizon(Port_3D &port, int)
   fill_rect(port.screen,sky_color);
 
   int top_edge = 0 ; // port.screen.topLeft.y;
-  int bottom_edge = SCREEN_HEIGHT - 1 ; // port.screen.botRight.y;
+  int bottom_edge = static_cast<int>(SCREEN_HEIGHT) - 1 ; // port.screen.botRight.y;
   Point t1,t2;
   Port_3D tport;
   tport = port;
@@ -409,7 +409,7 @@ void Earth_Watch::draw_horizon_grade(Port_3D &port)
 void Earth_Watch::calc_texture_bounds()
 {
   REAL_TYPE t_w = 0.0, t_h = 0.0;
-  int i;
+  unsigned int i;
   if (map_man != NULL)
     {
       TextrMap &tmap = map_man->get_map(local_color_1);
@@ -476,7 +476,7 @@ void Earth_Watch::calc_texture_bounds(C_PolyInfo &ply, REAL_TYPE tw,
 
 void Earth_Watch::t_render_ground(Port_3D &port)
 {
-  int i;
+  unsigned int i;
   DrawList dlist;
   for (i=0;i<ngroups;i++)
     groups[i].addDrawList(dlist,port);
@@ -545,7 +545,7 @@ void Earth_Watch2::read(std::istream &is)
 	  ts >> loc;
 	  loc *= world_scale * scale;
 	  ts >> grp;
-	  MYCHECK(grp >= 0 && grp < ngroups);
+	  MYCHECK(grp >= 0 && static_cast<unsigned int>(grp) < ngroups);
 	  ts >> tmp;
 	  tmp += rsrv;
 	  tmap = map_man->get_map_ptr(tmp);
@@ -582,16 +582,16 @@ REAL_TYPE Earth_Watch2::getGroundLevel(R_3DPoint &tp)
   ggNormal = Vector(0,0,1);
   ggtpoly = NULL;
   tmp = tp;
-  for (int i=0;i<ngroups;i++)
+  for (unsigned int i=0;i<ngroups;i++)
     {
       if (
 	  ( groups[i].getNObjects() > 0 )
 	  &&  (XYBOUNDS(groups[i].bounds,tp))
           )
 	{
-	  for (int j = 0;j<groups[i].getNObjects();j++)
+	  for (unsigned int j = 0;j<groups[i].getNObjects();j++)
 	    {
-	      Terrain_Shape *ts = static_cast<Terrain_Shape *>(groups[i].getObject(j));
+	      Terrain_Shape *ts = static_cast<Terrain_Shape *>(groups[i].getObject(static_cast<int>(j)));
 	      if (ts && ts->getGroundLevel(tmp))
 		{
 		  result = tmp.z;

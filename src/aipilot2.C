@@ -77,7 +77,7 @@ void aiPilot::DoLevelRoll(sManeuverState &mv)
       mv.data0 *= _degree;
       mv.state = 1;
 
-    //[[clang::fallthrough]];
+    [[clang::fallthrough]];
     case 1:
       SETROLLPID(mv.data0,mv.data1);
       SETPITCHPID(levelAttitude.pitch);
@@ -107,7 +107,7 @@ void aiPilot::DoPitchedRoll(sManeuverState &mv)
 	mv.state = 1;
       }
 
-    //[[clang::fallthrough]];
+    [[clang::fallthrough]];
     case 1:
       {
 	sAttitude att;
@@ -329,7 +329,7 @@ void aiPilot::DoHardTurn(sManeuverState &mv)
       else
 	mv.state = 1;
 
-    //[[clang::fallthrough]];
+    [[clang::fallthrough]];
     case 1:
       {
 	ControlsOff();
@@ -638,7 +638,7 @@ void aiPilot::DoSplitS(sManeuverState &mv)
       SETCONTROL(gCtl,mv.data0);
       mv.state = 3;
 
-    //[[clang::fallthrough]];
+    [[clang::fallthrough]];
     case 3:
       {
 	sREAL curRoll;
@@ -889,7 +889,7 @@ void aiPilot::DoSnapRoll(sManeuverState &mv)
       mv.data3 = flightModel->GetRoll();
       mv.state = 1;
 
-    //[[clang::fallthrough]];
+    [[clang::fallthrough]];
     case 1:
       ControlsOff();
       if (mv.data2 > 0)
@@ -944,7 +944,7 @@ void aiPilot::DoZoom(sManeuverState &mv)
       mv.data1 *= _degree;
       mv.state = 1;
 
-    //[[clang::fallthrough]];
+    [[clang::fallthrough]];
     case 1:
       {
 	flightModel->SetEngineControlPer(1.0);

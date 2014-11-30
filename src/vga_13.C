@@ -79,16 +79,16 @@ static unsigned char *buffer_ptr;
 static unsigned char *screen_ptr;
 
 float         aspect_ratio    = 1.0;
-int           SCREEN_WIDTH    = 320; 
-int           SCREEN_PITCH    = 320;
-int           SCREEN_HEIGHT   = 200;
-int           MXSCREEN_WIDTH  = 320;
-int           MXSCREEN_HEIGHT = 200;
-int           MAX_X           = 319;
-int           MAX_Y           = 199;
-int           VGAMODE         = G320x200x256;
-const int           PALETTE_SIZE    = 768;
-const int           N_COLORS        = 256;
+unsigned int  SCREEN_WIDTH    = 320; 
+unsigned int  SCREEN_PITCH    = 320;
+unsigned int  SCREEN_HEIGHT   = 200;
+unsigned int  MXSCREEN_WIDTH  = 320;
+unsigned int  MXSCREEN_HEIGHT = 200;
+unsigned int  MAX_X           = 319;
+unsigned int  MAX_Y           = 199;
+unsigned int  VGAMODE         = G320x200x256;
+const unsigned int PALETTE_SIZE = 768;
+const unsigned int N_COLORS     = 256;
 
 extern int window_height, window_width;
 int           window_width      = 0;

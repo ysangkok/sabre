@@ -64,7 +64,7 @@ public:
 
 	sAirfield(const sairfield_info &);
 
-	sRunway	*GetRunway(int which);		
+	sRunway	*GetRunway(unsigned int which);		
 	
 	const sPoint &GetPosition()
 	{

@@ -56,8 +56,8 @@ protected:
 													/*  plane's body coords         */
 	sFlightModel	*flightModel;			/* flight model pointer         */
 	sPoint			worldPosition;			/* where am I in world          */
-	int				isDead;					/* 1 == dead                    */
-	int				isEjected;				/* 1 == ejected                 */
+	bool isDead;					/* 1 == dead                    */
+	bool isEjected;				/* 1 == ejected                 */
 	int				hasTarget;				/* 1 == has a target            */
 	sTarget			target;					/* current target               */
 	sWeaponLimits	weaponLimits;			/* current weapon information   */
@@ -122,7 +122,7 @@ public:
 	{
 		this->ownerIdx = ownIdx;
 	}
-	int IsDead()
+	bool IsDead()
 	{
 		return (isDead);
 	}
@@ -130,7 +130,7 @@ public:
 	{
 		isDead = death;
 	}
-	int IsEjected()
+	bool IsEjected()
 	{
 		return (isEjected);
 	}
@@ -138,7 +138,7 @@ public:
 	{
 		this->isEjected = ejected;
 	}
-	int IsActive()
+	bool IsActive()
 	{
 		return (!(IsDead() || IsEjected()));
 	}

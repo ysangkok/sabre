@@ -41,7 +41,7 @@ int simfileX::readint(std::istream &is, char tok0, char tok1)
   return (result);
 }
 
-int simfileX::readstr(std::istream &is, char *buff, int maxlen, char tok0, char tok1)
+int simfileX::readstr(std::istream &is, char *buff, unsigned int maxlen, char tok0, char tok1)
 {
   char c0,c1=0;
   int l;
@@ -80,7 +80,7 @@ int simfileX::readstr(std::istream &is, char *buff, int maxlen, char tok0, char 
   return (l);
 }
 
-int simfileX::isstringinput(char *buff)
+bool simfileX::isstringinput(char *buff)
 {
   char c;
   while ((c = *buff++) != '\0')
@@ -89,9 +89,7 @@ int simfileX::isstringinput(char *buff)
   return (0);
 }
 
-int simfileX::readinput(std::istream &is, char *buff, int maxlen, int &i, 
-			char tok0,
-			char tok1)
+int simfileX::readinput(std::istream &is, char *buff, unsigned int maxlen, int &i, char tok0, char tok1)
 {
   int result = INT_INPUT;
 
@@ -103,10 +101,7 @@ int simfileX::readinput(std::istream &is, char *buff, int maxlen, int &i,
   return (result);
 }
 
-int simfileX::readdictinput(std::istream &is, char *buff, int maxlen, int &val,
-			    dict *d, int d_cnt,
-			    char tok0,
-			    char tok1)
+int simfileX::readdictinput(std::istream &is, char *buff, unsigned int maxlen, int &val, dict *d, int d_cnt, char tok0, char tok1)
 {
   if (readinput(is,buff,maxlen,val,tok0,tok1) == INT_INPUT)
     return(INT_INPUT);

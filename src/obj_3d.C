@@ -606,7 +606,7 @@ int C_3DObject2::ouch(const R_3DPoint &p, float radius, int damage, Target *tg)
 
 R_3DPoint *C_3DObject2::get_hit_point()
 {
-  if (hit_shape >= 0 && static_cast<unsigned int>(hit_shape) < nshapes)
+  if (static_cast<unsigned int>(hit_shape) < nshapes)
     {
       C_Shape & cs = shapes[hit_shape];
       C_Poly & cp = cs.polys[RANDOM(cs.npolys)];

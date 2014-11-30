@@ -182,7 +182,7 @@ public:
   int read_file(char *);
   int write_file(char *);
   static Flight_Specs **g_specs;
-  static int nspecs;
+  static unsigned int nspecs;
   static Flight_Specs *getSpecs(char *model);
 };
 

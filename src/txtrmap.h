@@ -43,13 +43,13 @@ private:
 	unsigned char *bytes;
 public:
 	unsigned char *cbytes;
-	int32_t map_w;
-	int32_t map_h;
+	uint32_t map_w;
+	uint32_t map_h;
 	int trans_colr;
 	int delf;
 	char id[32];
-	long size;
-	long csize;
+	unsigned long size;
+	unsigned long csize;
 	long flags;
 	ColorMap *cmaps;
 	int      *mc;
@@ -69,7 +69,7 @@ public:
 		nm = 0;
 	}
 
-	TextrMap(unsigned char *bts, int mw, int mh, int tc, int del, int flgs = 0)
+	TextrMap(unsigned char *bts, unsigned int mw, unsigned int mh, int tc, int del, int flgs = 0)
 	{
 		bytes = bts;
 		cbytes = NULL;
@@ -135,14 +135,14 @@ public:
 	{
 		int result;
 		if (
-		(u > map_w - 1) ||
-		(v > map_h - 1) ||
 		(u < 0)         ||
-		(v < 0) 
+		(v < 0)         ||
+		(static_cast<unsigned int>(u) > map_w - 1) ||
+		(static_cast<unsigned int>(v) > map_h - 1)
 		)
 			result = fill_color;
 		else
-			result = *(bytes + (v * map_w) + u);
+			result = *(bytes + (static_cast<unsigned int>(v) * map_w) + static_cast<unsigned int>(u));
 		if (result == trans_colr)
 			result = fill_color;
 		else if (cmaps)

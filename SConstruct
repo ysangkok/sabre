@@ -1,13 +1,13 @@
 import os
 
-clang = 0
+clang = 1
 everything = 1
 do_vga = 0
 do_sdl = not do_vga
 memdebug = 0
 coverage = 0
 profile = 0
-opt = ["-O3"]
+opt = []
 
 warn = []
 #machine = ["-m32"]
@@ -16,7 +16,8 @@ machine = []
 if everything:
 	if clang:
 		warn += machine + ["-Weverything"]
-		warn += ["-Wno-old-style-cast", "-Wno-date-time"]
+		warn += ["-Wno-date-time"]
+		warn += ["-Wno-sign-conversion", "-Wno-old-style-cast", "-Wno-sign-compare"]
 	else:
 		warn += machine + ["-Wall", "-Wextra"]
 		warn += ["-Wno-attributes", "-Wno-unused-local-typedefs"]
@@ -32,7 +33,7 @@ if clang:
 	link_lto += lto + ["-B/usr/lib/gold-ld"]
 
 if everything:
-	warn += ["-Wno-variadic-macros", "-Wno-sign-conversion"]
+	warn += ["-Wno-variadic-macros"]
 	warn += ["-Werror"]
 
 # AddressSanitizer
@@ -77,7 +78,7 @@ if clang:
 	orgenv.Append(LINKFLAGS="-stdlib=libc++")
 	if everything:
 		common_flags = ["-Wno-c++11-long-long", "-Wno-float-equal", "-Wno-padded", "-Wno-format-nonliteral", "-Wno-disabled-macro-expansion", "-Wno-shift-sign-overflow"]
-		orgenv.Append(CXXFLAGS=common_flags + ["-Wno-c99-extensions", "-Wno-c++11-extensions", "-Wno-c++11-compat", "-Wno-c++11-extensions", "-Wno-c++98-compat-pedantic", "-Wno-exit-time-destructors", "-Wno-global-constructors"])
+		orgenv.Append(CXXFLAGS=common_flags + ["-Wno-c99-extensions", "-Wno-c++11-compat", "-Wno-c++11-extensions", "-Wno-c++98-compat-pedantic", "-Wno-exit-time-destructors", "-Wno-global-constructors"])
 		orgenv.Append(CFLAGS=common_flags)
 else:
 	orgenv.Append(CXXFLAGS=["-fdiagnostics-color=always"])

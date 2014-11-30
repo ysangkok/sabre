@@ -27,13 +27,13 @@ extern int TSTPS;
 
 enum { persp, linear, zshade, solid };
 
-int tr_rendpoly(R_3DPoint *poly, TxtPoint *txtr, int n, 
+int tr_rendpoly(R_3DPoint *poly, TxtPoint *txtr, unsigned int n, 
 	     Port_3D &port,  int fillcolor = -1, 
 	     TextrMap *tmap = NULL, TR_2DPoint *spoints = NULL);
-int tr_project_poly(TR_3DPoint *poly, int n,
+int tr_project_poly(TR_3DPoint *poly,unsigned  int n,
 		 Port_3D &port, int fillcolor = -1,
 		 TextrMap *tmap = NULL, TR_2DPoint *spoints = NULL);
-void tr_fill_convpoly(TR_2DPoint *points, int n, 
+void tr_fill_convpoly(TR_2DPoint *points,unsigned  int n, 
 		      TextrMap *tmap, int fillcolor = -1);
 extern REAL_TYPE zbuff_min;
 extern R2D_TYPE *zbuff;
@@ -48,7 +48,7 @@ inline int setzbuff(int x, int y, REAL_TYPE zval)
 {
   if (zval < 1.0)
     zval = 1.0;
-  R2D_TYPE *zptr = zbuff + (y * SCREEN_WIDTH) + x;
+  R2D_TYPE *zptr = zbuff + (y * static_cast<int>(SCREEN_WIDTH)) + x;
   R2D_TYPE zinv = R2D_TYPE((1 / zval) * zfact);
   if (zinv + zbias + ztrans > *zptr)
     {

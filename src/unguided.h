@@ -45,7 +45,7 @@ public:
   int damage;
   int view_color;
   float view_len;
-  int is_tracer;
+  bool is_tracer;
   Weapon_Specs *wspecs;
   Target *hit;
   Target *radius_hits[MAX_RADIUS_HITS];

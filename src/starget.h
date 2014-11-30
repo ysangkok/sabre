@@ -176,8 +176,8 @@ public:
 class sSurfaceTarget : public sObject
 {
 public:
-  int        index;
-  int        isStatic;
+  unsigned int        index;
+  bool       isStatic;
   sPoint     worldPoint;
   sPoint     alignPoint;
   sVector    worldDirection;

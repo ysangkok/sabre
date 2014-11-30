@@ -20,6 +20,7 @@
 #ifndef __sim_h
 #define __sim_h
 #include <stdlib.h>
+#include <random>
 
 extern float world_scale;
 extern float time_factor;
@@ -32,9 +33,12 @@ extern float player_hit_scaler;
 
 #define __cdecl 
 
-inline int RANDOM(int x) 
+static std::random_device generator;
+
+inline unsigned int RANDOM(unsigned int x) 
 {
-  return (rand() % (x));
+  std::uniform_int_distribution<unsigned int> distribution(0,x-1);
+  return distribution(generator);   
 }
 
 inline long coreleft()

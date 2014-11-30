@@ -32,8 +32,8 @@ LineTraveler::LineTraveler(Point a, Point b, int d)
 	 if (d <= 0)
 		  d = 1;
 	 delta = d;
-	 int dh = AbsInt((b.x - a.x)) / delta;
-	 int dv = AbsInt((b.y - a.y)) / delta;
+	 int dh = abs(b.x - a.x) / delta;
+	 int dv = abs(b.y - a.y) / delta;
 	 if (dh >= dv) {
 		  majorDelta = dh;
 		  minorDelta = dv;
@@ -72,8 +72,8 @@ LineTraveler::~LineTraveler() = default;
 void LineTraveler::NewDelta(int nDelta)
 {
 	 delta = nDelta;
-	 int dh = AbsInt((there.x - here.x)) / delta;
-	 int dv = AbsInt((there.y - here.y)) / delta;
+	 int dh = abs((there.x - here.x)) / delta;
+	 int dv = abs((there.y - here.y)) / delta;
 	 if (dh >= dv) {
 		  majorDelta = dh;
 		  minorDelta = dv;
