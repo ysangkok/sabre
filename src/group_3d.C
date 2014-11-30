@@ -207,7 +207,7 @@ inline int VVTEST(R_3DPoint &p0, R_3DPoint &p1, R_3DPoint &p2,
 	  if (zpoly_clip(ppoints,4,rclipped_points,&npoints,minz))
 	    {
 	      MYCHECK(npoints < 16);
-	      for (int i=0;i<npoints;i++)
+	      for (unsigned int i=0;i<npoints;i++)
 		port.port2screen(rclipped_points[i],&screen_points[i]);
 	      if (r_poly_clip(screen_points,clipped_points,npoints,
 			      &nxpoints,&port.screen))
@@ -228,7 +228,7 @@ inline int VVTEST(R_3DPoint &p0, R_3DPoint &p1, R_3DPoint &p2,
   return (result);
 }
 
-extern void r_frame_convpoly(R_2DPoint *points, int n);
+extern void r_frame_convpoly(R_2DPoint *points, unsigned int n);
 
 void VVSHOW(R_3DPoint &p0, R_3DPoint &p1, R_3DPoint &p2, 
 		  R_3DPoint &p3, Port_3D &port, REAL_TYPE minz)
@@ -262,7 +262,7 @@ void VVSHOW(R_3DPoint &p0, R_3DPoint &p1, R_3DPoint &p2,
 	  if (zpoly_clip(ppoints,4,rclipped_points,&npoints,minz))
 	    {
 	      MYCHECK(npoints < 16);
-	      for (int i=0;i<npoints;i++)
+	      for (unsigned int i=0;i<npoints;i++)
 		port.port2screen(rclipped_points[i],&screen_points[i]);
 	      if (r_poly_clip(screen_points,clipped_points,npoints,
 			      &nxpoints,&port.screen))

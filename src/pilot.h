@@ -33,7 +33,7 @@ class Pilot : public aiPilot
 {
 public:
 	Pilot( Flight *flt, Pilot_Params *,
-	 Weapon_Instance *, int nw, const char *, Target *);
+	 Weapon_Instance *, unsigned int nw, const char *, Target *);
 	
 	void init(void);
 	Pilot *get_target_pilot(void)
@@ -102,11 +102,11 @@ public:
 	{
 		return gun_point;
 	}
-	int get_in_range(void)
+	bool get_in_range(void)
 	{
 		return in_range;
 	}
-	int hasTargetPilot()
+	bool hasTargetPilot()
 	{
 		return (target_pilot != NULL);
 	}
@@ -163,16 +163,16 @@ private:
 	Weapon_Instance *weapons;
 	Weapon_Instance *sel_weapon;
 	int		sel_wpn;
-	int		n_weaps;
+	unsigned int	n_weaps;
 	PilotMessage    message;
 	R_3DPoint       gun_point;
 	R_3DPoint	gun_track_point;
 	R_3DPoint	lead_track_point;
 	R_3DPoint       track_point;
-	int             nstores;
+	unsigned int    nstores;
 	int             stores[sbrPIL_MAX_STORES];
 	Pilot_Params    *params;
-	int		in_range;
+	bool		in_range;
 	Target		*target_obj;
 	float		t;
 	float		time_to_target;

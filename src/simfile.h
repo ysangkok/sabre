@@ -33,6 +33,7 @@ int open_os(std::ofstream &, const char *);
 int open_libos(std::ofstream &, const char *);
 const char *build_libpath(const char *);
 int read_int(std::istream &);
+unsigned int read_uint(std::istream &);
 
 extern const char *current_path;
 extern const char *file_context;

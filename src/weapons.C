@@ -1031,13 +1031,13 @@ Weapon *Weapons_Manager::getWeapon(char *wep_id)
 /***************************************************
  * Weapon_Instance_List methods                    *
  ***************************************************/
-Weapon_Instance_List::Weapon_Instance_List(Weapon_Instance *wi, int n)
+Weapon_Instance_List::Weapon_Instance_List(Weapon_Instance *wi, unsigned int n)
     :n_weaps(n),
      sel_wpn(0),
      weapons(wi)
 {
   has_externs = 1;
-  for (int i=0;i<n_weaps;i++)
+  for (unsigned int i=0;i<n_weaps;i++)
     {
       if (weapons[i].hasExterns())
 	{

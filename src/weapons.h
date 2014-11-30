@@ -594,17 +594,17 @@ public:
 class Weapon_Instance_List
 {
 public:
-  int             n_weaps;
+  unsigned int    n_weaps;
   int             sel_wpn;
   Weapon_Instance *weapons;
-  int             has_externs;
+  bool            has_externs;
 
   Weapon_Instance_List()
     :weapons(NULL),
      has_externs(0)
     {}
 
-  Weapon_Instance_List(Weapon_Instance *wi, int n);
+  Weapon_Instance_List(Weapon_Instance *wi, unsigned int n);
 
   ~Weapon_Instance_List()
     {

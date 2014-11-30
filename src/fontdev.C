@@ -98,7 +98,7 @@ int fontdev::load( const char *fn )
    else
      dimy=8;
    unsigned char *p=buf, mask=0;
-   size_t i; int j;
+   size_t i; unsigned int j;
    for( i=0; i<scans; i++, p++ ) {
       mask|=*p;
    }
@@ -122,7 +122,7 @@ int fontdev::load( const char *fn )
    mindimx=dimx; mindimy=dimy;
    // expand font to row-major bitmap
    fbp=new unsigned char[8*16*256];
-   p=(unsigned char *)fbp;
+   p=static_cast<unsigned char *>(fbp);
    memset( p, 0, 8*16*256 );
    unsigned char endmask=0x80>>dimx;
    for( i=0; i<scans; i++ ) {
@@ -146,8 +146,8 @@ int fontdev::save( const char *fn )
    if( dimx!=mindimx||dimy!=mindimy )
      setcell( mindimx, mindimy );
    // there must be better way to do this loop!
-   unsigned char *p=(unsigned char *)fbp;
-   int i, j, k, count=0;
+   unsigned char *p=static_cast<unsigned char *>(fbp);
+   unsigned int i, j, k, count=0;
    for( j=0; j<256; j++ ) { // for each character
       for( i=0; i<dimy; i++ ) { // for each scan
 	 char c=0;
@@ -160,11 +160,11 @@ int fontdev::save( const char *fn )
       }
    }
 
-   int fill=4096-count;
+   unsigned int fill=4096-count;
    if( fill > 2047 )
      fill-=2048;
    if( fill )
-     while( fill-- )
+     while( --fill )
        fputc( 0, fp );
    
    fclose( fp );
@@ -173,7 +173,7 @@ int fontdev::save( const char *fn )
 
 void *fontdev::getfbp( unsigned int c )
 {
-   unsigned char *p=(unsigned char *)fbp;
+   unsigned char *p=static_cast<unsigned char *>(fbp);
    p+=c*dimx*dimy;
    return p;
 }
@@ -181,11 +181,11 @@ void *fontdev::getfbp( unsigned int c )
 void fontdev::calcmin( void )
 {
    // analyze width & height
-   int i, j, k, widthbuf[8], heightbuf[16];
+   unsigned int i, j, k, widthbuf[8], heightbuf[16];
    memset( widthbuf, 0, sizeof(widthbuf));
    memset( heightbuf, 0, sizeof(heightbuf));
    
-   unsigned char *p=(unsigned char *)fbp;
+   unsigned char *p=static_cast<unsigned char *>(fbp);
    for( j=0; j<256; j++ ) { // for each character
       for( i=0; i<dimy; i++ ) { // for each scan
 	 for( k=0; k<dimx; k++ ) { // for each bit
@@ -209,14 +209,14 @@ void fontdev::calcmin( void )
    mindimx=i;
 }
    
-int fontdev::setcell( int _dimx, int _dimy )
+bool fontdev::setcell( unsigned int _dimx, unsigned int _dimy )
 {
    if( dimx==_dimx && dimy==_dimy )
      return 0;
-   unsigned char *newfbp=new unsigned char[_dimx*_dimy*256], *p=(unsigned char *)fbp;
+   unsigned char *newfbp=new unsigned char[_dimx*_dimy*256], *p=static_cast<unsigned char *>(fbp);
    memset( newfbp, 0, _dimx*_dimy*256 );
    // there must be better way to do this loop!
-   int i, j, k;
+   unsigned int i, j, k;
    for( j=0; j<256; j++ ) { // for each character
       for( i=0; i<dimy; i++ ) { // for each scan
 	 for( k=0; k<dimx; k++ ) { // for each bit
@@ -232,14 +232,14 @@ int fontdev::setcell( int _dimx, int _dimy )
    return 0;
 }
 
-void fontdev::rotate( int what, int where )
+void fontdev::rotate( unsigned int what, int where )
 {
    unsigned char *hold, *p;
-   int i, j;
+   unsigned int i, j;
    switch( where ) {
     case up:
       hold=new unsigned char[dimx];
-      p=(unsigned char *)getfbp(what);
+      p=static_cast<unsigned char *>(getfbp(what));
       memcpy( hold, p, dimx );
       memcpy( p, p+dimx, (dimy-1)*dimx );
       memcpy( p+(dimy-1)*dimx, hold, dimx );
@@ -247,11 +247,11 @@ void fontdev::rotate( int what, int where )
       break;
     case right: 
       hold=new unsigned char[dimy];
-      p=(unsigned char *)getfbp(what);
+      p=static_cast<unsigned char *>(getfbp(what));
       for( i=0; i<dimy; i++ )
 	hold[i]=p[(i+1)*dimx-1];
       for( j=0; j<dimy; j++, p+=dimx ) {
-	 for( i=dimx-1; i>-1; i-- )
+	 for( i=dimx-1; --i;)
 	   p[i]=p[i-1];
 	 *p=hold[j];
       }
@@ -259,7 +259,7 @@ void fontdev::rotate( int what, int where )
       break;
     case left: 
       hold=new unsigned char[dimy];
-      p=(unsigned char *)getfbp(what);
+      p=static_cast<unsigned char *>(getfbp(what));
       for( i=0; i<dimy; i++ )
 	hold[i]=p[i*dimx];
       for( i=0; i<dimy; i++, p+=dimx ) {
@@ -270,7 +270,7 @@ void fontdev::rotate( int what, int where )
       break;
     case down: 
       hold=new unsigned char[dimx];
-      p=(unsigned char *)getfbp(what);
+      p=static_cast<unsigned char *>(getfbp(what));
       memcpy( hold, p+(dimy-1)*dimx, dimx );
       memcpy( p+dimx, p, (dimy-1)*dimx );
       memcpy( p, hold, dimx );

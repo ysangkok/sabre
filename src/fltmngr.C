@@ -746,11 +746,11 @@ void Flight_Manager::set_view_node(int vn)
   flight_nodes[view_node]->view_node = 0;
   flight_nodes[view_node]->stop_engine_sound();
   sound_set_affiliation(flight_nodes[view_node]->pilot->getAffiliation());
-  view_node = vn;
+  view_node = static_cast<unsigned int>(vn);
   flight_nodes[view_node]->view_node = 1;
 }
 
-bool Flight_Manager::select_next_target(int fr)
+bool Flight_Manager::select_next_target(unsigned int fr)
 {
   int i;
   bool foundit = 0;
@@ -758,7 +758,7 @@ bool Flight_Manager::select_next_target(int fr)
   for (i=ii+1;i<static_cast<int>(n_flights);i++)
     {
       if (
-	  (i != fr)
+	  (i != static_cast<int>(fr))
 	  && (flight_nodes[fr]->pilot->get_target_flight() !=
 	      flight_nodes[i]->flight)
 	  )
@@ -775,7 +775,7 @@ bool Flight_Manager::select_next_target(int fr)
       for (i=0;i<ii;i++)
 	{
 	  if (
-	      (i != fr)
+	      (i != static_cast<int>(fr))
 	      && (flight_nodes[fr]->pilot->get_target_flight() !=
 		  flight_nodes[i]->flight)
 	      )
@@ -841,7 +841,7 @@ void Flight_Manager::set_flight_view(Port_3D &vport)
   REAL_TYPE ang = half_pi * C(0.333);
   REAL_TYPE ang1 = one_fourth_pi;
 
-  if (view_node != v_4_node)
+  if (static_cast<int>(view_node) != v_4_node)
     {
       v_4_flag = 0;
       v_4_node = -1;
@@ -1063,7 +1063,7 @@ void Flight_Manager::set_flight_view(Port_3D &vport)
 	  vport.set_view(r1,r2);
 	  v_4_port = vport;
 	  v_4_flag = 1;
-	  v_4_node = view_node;
+	  v_4_node = static_cast<int>(view_node);
 	}
       else
 	{

@@ -39,6 +39,7 @@ public:
   int y;
   Point() { x = y = 0; }
   Point(int _x, int _y) : x(_x),y(_y) { }
+  Point(unsigned int _x, unsigned int _y) : x(static_cast<int>(_x)),y(static_cast<int>(_y)) { }
   friend inline Point operator +(const Point &a, const Point &b);
   friend inline Point operator -(const Point &a, const Point &b);
   friend inline bool operator ==(const Point &a, const Point &b);

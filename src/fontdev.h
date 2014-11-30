@@ -28,22 +28,22 @@
 
 class fontdev {
    unsigned char *fbp;
-   int dimx, dimy;
-   int mindimx, mindimy;
+   unsigned int dimx, dimy;
+   unsigned int mindimx, mindimy;
  public:
    fontdev();
    ~fontdev();
    int load( const char *fn );
    int save( const char *fn );
-   int getdimx( void ) { return dimx; }
-   int getdimy( void ) { return dimy; }
-   int getmindimx( void ) { return mindimx; }
-   int getmindimy( void ) { return mindimy; }
-   int setcell( int _dimx, int _dimy );
+   unsigned int getdimx( void ) { return dimx; }
+   unsigned int getdimy( void ) { return dimy; }
+   unsigned int getmindimx( void ) { return mindimx; }
+   unsigned int getmindimy( void ) { return mindimy; }
+   bool setcell( unsigned int _dimx, unsigned int _dimy );
    void calcmin( void );
    void *getfbp( unsigned int c );
    enum { up, right, left, down, turn_right, turn_left };
-   void rotate( int what, int where );
+   void rotate( unsigned int what, int where );
    void shift( int what, int where );
 };
 

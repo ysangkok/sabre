@@ -74,7 +74,7 @@ void Pilot::UpdateStatics(void)
 }
 
 Pilot::Pilot(Flight *flt, Pilot_Params *prms,
-				Weapon_Instance *wpns, int nwps,
+				Weapon_Instance *wpns, unsigned int nwps,
 				const char *hndl, Target *tobj)
   : aiPilot(&sbrFlight),
     sbrFlight(flt)

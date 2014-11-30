@@ -33,15 +33,15 @@ class Earth_Watch
 {
 public:
   R_3DPoint wh_center, wh_left, wh_right;
-  int h_x,h_y,h_x1,h_y1,h_x2,h_y2;
+  unsigned int h_x,h_y,h_x1,h_y1,h_x2,h_y2;
   float cos_ang, sin_ang;
   int negative_phi,negative_roll;
   REAL_TYPE unit_size;
   REAL_TYPE x_width,y_width;
   REAL_TYPE wh_distance;
   int local_max;
-  int all_sky;
-  int all_ground;
+  bool all_sky;
+  bool all_ground;
   TxtPoint tpoints1[4];
   TxtPoint tpoints2[4];
   C_PolyInfo *g_polyinfos;
@@ -57,8 +57,8 @@ public:
   int sky_grade_color,ground_grade_color;
   int grade_count;
   int grade_count2;
-  int ground_grade_flag;
-  int terrain_on;
+  bool ground_grade_flag;
+  bool terrain_on;
 
   Earth_Watch()
     :g_polyinfos(NULL),

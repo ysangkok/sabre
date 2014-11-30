@@ -17,7 +17,7 @@ if everything:
 	if clang:
 		warn += machine + ["-Weverything"]
 		warn += ["-Wno-date-time"]
-		warn += ["-Wno-sign-conversion", "-Wno-old-style-cast", "-Wno-sign-compare"]
+		#warn += ["-Wno-sign-conversion", "-Wno-old-style-cast", "-Wno-sign-compare"]
 	else:
 		warn += machine + ["-Wall", "-Wextra"]
 		warn += ["-Wno-attributes", "-Wno-unused-local-typedefs"]

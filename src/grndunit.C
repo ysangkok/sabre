@@ -131,7 +131,7 @@ Ground_Unit::~Ground_Unit()
 void Ground_Unit::copy(const Ground_Unit &gu)
 {
   specs = gu.specs;
-  ref_port = (Port_3D &) gu.ref_port;
+  ref_port = static_cast<const Port_3D &>(gu.ref_port);
   current_speed = gu.current_speed;
   view = gu.view;
   affiliation = gu.affiliation;
@@ -285,7 +285,7 @@ Ground_Unit_Manager::~Ground_Unit_Manager()
     delete [] specs;
   if (units)
     {
-      for (int i=0;i<nunits;i++)
+      for (unsigned int i=0;i<nunits;i++)
 	if (units[i] != NULL)
 	  delete units[i];
       delete [] units;
@@ -294,14 +294,14 @@ Ground_Unit_Manager::~Ground_Unit_Manager()
 
 void Ground_Unit_Manager::update(Unguided_Manager *um, Target_List &tl)
 {
-  for (int i=0;i<nunits;i++)
+  for (unsigned int i=0;i<nunits;i++)
     if (units[i])
       units[i]->update(um,tl);
 }
 
 void Ground_Unit_Manager::add_draw_list(DrawList &dl, Port_3D &port)
 {
-  for (int i=0;i<nunits;i++)
+  for (unsigned int i=0;i<nunits;i++)
     if (units[i])
       units[i]->add_draw_list(dl,port);
 }
@@ -323,21 +323,21 @@ void Ground_Unit_Manager::read_file(const char *path)
 void Ground_Unit_Manager::read(std::istream &is)
 {
   char c;
-  int gu_idx;
-  int gu_cnt;
-  nspecs = read_int(is);
-  nunits = read_int(is);
+  unsigned int gu_idx;
+  unsigned int gu_cnt;
+  nspecs = read_uint(is);
+  nunits = read_uint(is);
   specs = new Ground_Unit_Specs[nspecs];
   MYCHECK(specs != NULL);
   units = new Ground_Unit *[nunits];
   MYCHECK(units != NULL);
   gu_idx = 0;
-  for (int i=0;i<nspecs;i++)
+  for (unsigned int i=0;i<nspecs;i++)
     {
       READ_TOKI('{',is,c);
-      gu_cnt = read_int(is);
+      gu_cnt = read_uint(is);
       is >> specs[i];
-      for (int j=0;j<gu_cnt;j++)
+      for (unsigned int j=0;j<gu_cnt;j++)
 	{
 	  if (gu_idx > nunits - 1)
 	    return;
@@ -393,7 +393,7 @@ void Ground_Unit_Manager::write(std::ostream &)
 Ground_Unit_Specs *Ground_Unit_Manager::getSpecs(char *sid)
 {
   Ground_Unit_Specs *result = NULL;
-  for (int i=0;i<nspecs;i++)
+  for (unsigned int i=0;i<nspecs;i++)
     {
       if (!strcmp(specs[i].id,sid))
 	{
@@ -406,7 +406,7 @@ Ground_Unit_Specs *Ground_Unit_Manager::getSpecs(char *sid)
 
 void Ground_Unit_Manager::addTargetList(Target_List &tl)
 {
-  for (int i=0;i<nunits;i++)
+  for (unsigned int i=0;i<nunits;i++)
     if (units[i])
       tl.add_target(units[i]);
 }

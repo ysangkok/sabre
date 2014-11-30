@@ -176,6 +176,16 @@ int open_libos(std::ofstream &os, const char *path)
   return (os.good());
 }
 
+unsigned int read_uint(std::istream &is)
+{
+  char c;
+  unsigned int result = 0;
+  READ_TOKI('(',is,c);
+  is >> result;
+  READ_TOK(')',is,c);
+  return (result);
+}
+
 int read_int(std::istream &is)
 {
   char c;

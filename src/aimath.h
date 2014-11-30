@@ -37,49 +37,49 @@ extern float world_scale;
 
 inline sVector & Vector2sVector(const Vector &v, sVector &sv)
 {
-	sv.x = (sREAL) v.X;
-	sv.y = (sREAL) v.Y;
-	sv.z = (sREAL) v.Z;
+	sv.x = static_cast<sREAL>(v.X);
+	sv.y = static_cast<sREAL>(v.Y);
+	sv.z = static_cast<sREAL>(v.Z);
 
 	return sv;
 }
 
 inline Vector & sVector2Vector(const sVector &sv, Vector &v)
 {
-	v.X = (REAL_TYPE) sv.x;
-	v.Y = (REAL_TYPE) sv.y;
-	v.Z = (REAL_TYPE) sv.z;
+	v.X = static_cast<REAL_TYPE>(sv.x);
+	v.Y = static_cast<REAL_TYPE>(sv.y);
+	v.Z = static_cast<REAL_TYPE>(sv.z);
 
 	return v;
 }
 
 inline sPoint & R_3DPoint2sPoint(const R_3DPoint &r, sPoint &s)
 {
-	s.x = (sREAL) (r.x / world_scale);
-	s.y = (sREAL) (r.y / world_scale);
-	s.z = (sREAL) (r.z / world_scale);
+	s.x = static_cast<sREAL>(r.x / world_scale);
+	s.y = static_cast<sREAL>(r.y / world_scale);
+	s.z = static_cast<sREAL>(r.z / world_scale);
 	return s;
 }
 
 inline R_3DPoint & sPoint2R_3DPoint(const sPoint &s, R_3DPoint &r)
 {
-	r.x = ((REAL_TYPE) s.x * world_scale);
-	r.y = ((REAL_TYPE) s.y * world_scale);
-	r.z = ((REAL_TYPE) s.z * world_scale);
+	r.x = static_cast<REAL_TYPE>(s.x) * world_scale;
+	r.y = static_cast<REAL_TYPE>(s.y) * world_scale;
+	r.z = static_cast<REAL_TYPE>(s.z) * world_scale;
 	return r;
 }
 
 inline sREAL CvFrSabreAngle(REAL_TYPE sbrAng)
 {
-	if ((sREAL) sbrAng > Pi)
-		return (sREAL)sbrAng - _2Pi;
+	if (static_cast<sREAL>(sbrAng) > Pi)
+		return static_cast<sREAL>(sbrAng) - _2Pi;
 	else
-		return (sREAL) sbrAng;
+		return static_cast<sREAL>(sbrAng);
 }
 
 inline REAL_TYPE CvToSabreAngle(sREAL ang)
 {
-	return ((REAL_TYPE) ConvertAngle(ang));
+	return static_cast<REAL_TYPE>(ConvertAngle(ang));
 }
 
 inline void Port2sAttitude(const Port_3D &port, sAttitude &att)

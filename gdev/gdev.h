@@ -55,8 +55,8 @@ struct gevent_data {
 
 class gdev {
  protected:
-   int dimx, dimy, dimz;
-   int vdimx, vdimy, vx, vy;
+   unsigned int dimx, dimy, dimz;
+   unsigned int vdimx, vdimy, vx, vy;
    unsigned char *vbuf, *vbufend;
    enum { 
       fulldevice	=0x00000001,
@@ -71,8 +71,8 @@ class gdev {
    virtual int close( void );
    virtual int update( int partial=0, int x0=-1, int y0=-1, int x1=-1, int y1=-1 );
    
-           int getdimx( int flags=0 ) { return flags&fulldevice?dimx:vdimx; }
-           int getdimy( int flags=0 ) { return flags&fulldevice?dimy:vdimy; }
+           unsigned int getdimx( int flags=0 ) { return flags&fulldevice?dimx:vdimx; }
+           unsigned int getdimy( int flags=0 ) { return flags&fulldevice?dimy:vdimy; }
    void *getvbuf( int end=0 ) { return end?vbufend:vbuf; }
 
    virtual int clear( int c=0, int flags=1 );

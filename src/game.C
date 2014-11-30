@@ -179,7 +179,7 @@ void GameSession::setup()
 	if (ground_unit_file != NULL)
 		gm.read_file(ground_unit_file);
 	clist.get_targets(target_list);
-	for (int i=0;i<fm.n_flights;i++)
+	for (unsigned int i=0;i<fm.n_flights;i++)
 		target_list.add_target(fm.get_viewer(i));
 	gm.addTargetList(target_list);
 	pe = new Palette_Effect();
@@ -240,14 +240,14 @@ void GameSession::play()
 	clear_scr(0);
 }
 
-inline int GETSTATE(Pilot *pil, char *state, int n)
+inline int GETSTATE(Pilot *pil, char *state, unsigned int n)
 {
 	return(!memcmp(pil->get_dbg(),state,n));
 }
 
-inline int INTERESTING(Flight_Node &nde)
+inline unsigned int INTERESTING(Flight_Node &nde)
 {
-	int result = 0;
+	unsigned int result = 0;
 
 	const sManeuverState &mvs = nde.pilot->GetManeuverStackTop();
 	if (!nde.pilot->IsActive())
@@ -290,9 +290,9 @@ inline int INTERESTING(Flight_Node &nde)
 	return result;
 }
 
-inline int DECIDEVIEW(int , int )
+inline int DECIDEVIEW()
 {
-	int dec = RANDOM(3);
+	unsigned int dec = RANDOM(3);
 	switch (dec)
 	{
 		case 0:
@@ -305,10 +305,8 @@ inline int DECIDEVIEW(int , int )
 			return(fv_front);
 
 		default:
-			return(fv_track);
-
+			abort();
 	}
-
 }
 
 void GameSession::demo()
@@ -317,21 +315,22 @@ void GameSession::demo()
 	Flight *fc;
 	float view_time;
 	float maxv_time;
-	int flg;
-	int maxX,ix,ii,x;
+	bool flg;
+	unsigned int maxX,ix,x;
+	int ii;
 
 	clear_scr(0);
 	clear_zbuff();
 	zz = 0;
 
-	for (int i=0;i<fm.n_flights;i++)
+	for (unsigned int i=0;i<fm.n_flights;i++)
 	{
 		fc = fm.get_flight(i);
 		fc->controls.autopilot = 1;
 	}
 
 	view_time = 0;
-	maxv_time = C(((float) RANDOM(6)) + 3.0);
+	maxv_time = C(static_cast<float>(RANDOM(6)) + 3.0);
 	sResetElapsedTime();
 	get_time();
 	fm.start();
@@ -356,13 +355,13 @@ void GameSession::demo()
 			ii = -1;
 			if (view_time >= 2.0)
 			{
-				for (int i=0;i<fm.n_flights;i++)
+				for (unsigned int i=0;i<fm.n_flights;i++)
 				{
 					if ((x = INTERESTING(*fm.get_node(i))) != 0)
 					{
 						if (x > maxX)
 						{
-							ii = i;
+							ii = static_cast<int>(i);
 							maxX = x;
 						}
 					}
@@ -374,18 +373,18 @@ void GameSession::demo()
 				flg = 1;
 				view_time = 0.0;
 				fm.set_view_node(ii);
-				fc = fm.get_flight(ii);
-				fc->controls.view = (flight_view) DECIDEVIEW(maxX,ii);
+				fc = fm.get_flight(static_cast<unsigned int>(ii));
+				fc->controls.view = static_cast<flight_view>(DECIDEVIEW());
 			}
 
 			if (view_time >= maxv_time && !flg && ix == 0)
 			{
 				view_time = 0.0;
-				maxv_time = C(((float) RANDOM(6)) + 3.0);
-				int found_flight = 0;
-				for (int i=0;i<fm.n_flights;i++)
+				maxv_time = C(static_cast<float>(RANDOM(6)) + 3.0);
+				bool found_flight = 0;
+				for (unsigned int i=0;i<fm.n_flights;i++)
 				{
-					fm.set_view_node(fm.view_node + 1);
+					fm.set_view_node(static_cast<int>(fm.view_node + 1));
 					fc = fm.get_flight(fm.view_node);
 					if (!fc->state.crashed)
 					{
@@ -398,8 +397,7 @@ void GameSession::demo()
 				else
 				{
 					fc = fm.get_flight(fm.view_node);
-					fc->controls.view = (flight_view)
-					DECIDEVIEW(INTERESTING(*fm.get_node(fm.view_node)),fm.view_node);
+					fc->controls.view = static_cast<flight_view>(DECIDEVIEW());
 				}
 			}
 		}
@@ -463,7 +461,7 @@ Port_3D vport;
 DrawList dlist;
 DrawList dlist2;
 Pilot    *pilot;
-int pflg;
+bool pflg;
 Flight &fc = fm.get_view_flight();
 Flight_ZViewer &vwr = fm.get_view_viewer();
 
@@ -577,7 +575,7 @@ Flight_ZViewer &vwr = fm.get_view_viewer();
 		if (fc.controls.view == fv_front)
 		{
 			if (fm.view_node == 0 && fc.controls.cockpit && cpk != NULL)
-				cpk->draw((Flight &)fc);
+				cpk->draw(static_cast<Flight &>(fc));
 			if (fc.controls.hud_on)
 				hud.do_hud(fm.get_view_node());
 		}
@@ -587,7 +585,7 @@ Flight_ZViewer &vwr = fm.get_view_viewer();
 			 fc.controls.view == fv_padlock )
 				&& pilot->get_target_pilot() != NULL)
 		{
-			int x,y;
+			unsigned int x,y;
 			R_3DPoint w0 = pilot->get_target_pilot()->get_position();
 			vport.transform(w0,&x,&y);
 			if (!vport.over_flow)
@@ -649,7 +647,7 @@ inline void PRINTLN(std::ostream &os, const char *s, ...)
 
 void GameSession::printResults(std::ostream &os)
 {
-  int i;
+  unsigned int i;
   PRINTLN(os, "\nMission Debrief\n");
   PRINTLN(os, "Flight File: %s\n",flight_file);
   for (i=0;i<fm.n_flights;i++)
@@ -747,12 +745,12 @@ void /*_cdecl*/ GameSession::show_message(int bot, const char *str, ...)
   va_end(ap);
 
   int poly[10];
-  int l = (int) strlen(buf) * 6;
-  int y = bot ?  SCREEN_HEIGHT - 8 : 0;
-  int yd = bot ? SCREEN_HEIGHT - 1 : 7;
+  int l = static_cast<int>(strlen(buf)) * 6;
+  int y = bot ?  static_cast<int>(SCREEN_HEIGHT) - 8 : 0;
+  int yd = bot ? static_cast<int>(SCREEN_HEIGHT) - 1 : 7;
   if (l > 0)
     {
-      int x = (SCREEN_WIDTH / 2) - l / 2;
+      int x = static_cast<int>(SCREEN_WIDTH / 2) - l / 2;
       poly[0] = x - 1;
       poly[1] = y;
       poly[2] = x + l + 1;
@@ -762,7 +760,7 @@ void /*_cdecl*/ GameSession::show_message(int bot, const char *str, ...)
       poly[6] = x - 1;
       poly[7] = yd;
       rendply(poly,4,1,&cliprect);
-      g_font->font_sprintf(x,y,hud.hud_color,NORMAL,buf);
+      g_font->font_sprintf(static_cast<unsigned int>(x),static_cast<unsigned int>(y),hud.hud_color,NORMAL,buf);
     }
 }
 

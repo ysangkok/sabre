@@ -33,17 +33,17 @@ extern const char *build_libpath(const char *);
 
 SimFont::~SimFont() = default;
 
-void SimFont::put_string(char *str, int x, int y, int color)
+void SimFont::put_string(char *str, unsigned int x, unsigned int y, int color)
 {
   char c;
   while ((c = *str++) != '\0')
     {
-      put_char(c,x,y,color,option);
+      put_char(static_cast<unsigned char>(c),x,y,color,option);
       x += put_width;
     }
 }
 
-void SimFont::font_sprintf(int x, int y, int color, int opt, const char *format, ...)
+void SimFont::font_sprintf(unsigned int x, unsigned int y, int color, unsigned int opt, const char *format, ...)
 {
   char buff[120];
   va_list ap;
@@ -80,8 +80,7 @@ Font8x8::Font8x8(char *s)
   fclose(file);
 }
 
-void Font8x8::put_char(unsigned char c, int x, int y, int color,
-		       int dim)
+void Font8x8::put_char(unsigned char c, unsigned int x, unsigned int y, int color, unsigned int dim)
 {
   unsigned char *buffer_ptr;
   buffer_ptr = lock_xbuff();
@@ -89,27 +88,27 @@ void Font8x8::put_char(unsigned char c, int x, int y, int color,
 	return;
 
   dim = 8;
-  byte *byt_ptr = font[(unsigned int)c];
-  unsigned char *bf = (unsigned char *) buffer_ptr + (y * SCREEN_PITCH);
-  for (int i=0;i<dim;i++)
+  byte *byt_ptr = font[c];
+  unsigned char *bf = buffer_ptr + (y * SCREEN_PITCH);
+  for (unsigned int i=0;i<dim;i++)
     {
       unsigned char *bf1 = bf + x;
       unsigned char b = *byt_ptr;
-      for (int j=0;j<dim;j++)
+      for (unsigned int j=0;j<dim;j++)
 	{
-	  if (!is_visible(cliprect,x+j,y+i))
+	  if (!is_visible(cliprect,static_cast<int>(x+j),static_cast<int>(y+i)))
 	    goto label1;
 	  switch (option)
 	    {
 	    case NORMAL:
 	    default:
 	      if (b & 1)
-		*bf1 = (char) color;
+		*bf1 = static_cast<unsigned char>(color);
 	      break;
 
 	    case INVERSE:
 	      if (!(b & 1))
-		*bf1 = (char ) color;
+		*bf1 = static_cast<unsigned char>(color);
 	      break;
 
 	    }
@@ -143,19 +142,18 @@ ConsoleFont::~ConsoleFont()
 }
 
 /* from hello.C prtxy() */
-void ConsoleFont::put_char(unsigned char c, int x, int y, int color,
-			   int )
+void ConsoleFont::put_char(unsigned char c, unsigned int x, unsigned int y, int color, unsigned int )
 {
   unsigned char *dest = lock_xbuff() + x + y * SCREEN_PITCH;
-  unsigned char *src = (unsigned char *) fdev->getfbp(c);
-  int i,j;
-  int xx;
+  unsigned char *src = static_cast<unsigned char *>(fdev->getfbp(c));
+  unsigned int i,j;
+  unsigned int xx;
   for (j=0; j<height; j++, dest += (SCREEN_WIDTH - width) )
     {
       xx = x;
       for (i=0; i<width;i++,src++,dest++)
 	{
-	  if (*src && is_visible(cliprect,xx,y))
+	  if (*src && is_visible(cliprect,static_cast<int>(xx),static_cast<int>(y)))
 	    *dest = color & *src;
 	  xx++;
 	}
