@@ -126,7 +126,7 @@ void tr_init()
     free(zbuff);
 
   zbuff_size = SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(R2D_TYPE);
-  zbuff = (R2D_TYPE *) malloc(zbuff_size);
+  zbuff = static_cast<R2D_TYPE *>(malloc(zbuff_size));
   if (zbuff == NULL)
     error_jump("Unable to allocate %d bytes for zbuffer\n",
 	       zbuff_size);
@@ -394,8 +394,8 @@ void tr_frame_convpoly(TR_2DPoint *points, unsigned int n)
   int i;
   for (i=0;i<n;i++)
     {
-      *iptr = (int) points[i].x;
-      *(iptr + 1) = (int) points[i].y;
+      *iptr = static_cast<int>(points[i].x);
+      *(iptr + 1) = static_cast<int>(points[i].y);
       iptr += 2;
     }
   frame_convpoly(ipoints,n,10);
@@ -789,8 +789,8 @@ void tr_fill_convpoly_nc(TR_2DPoint *points, unsigned int n, TextrMap *tmap,
 
   tr_build_edge_array(points,n);
 
-  b_ptr = buffer_ptr + (((int)min_y) * SCREEN_PITCH);
-  z_ptr = zbuff + (((int)min_y) * SCREEN_WIDTH);
+  b_ptr = buffer_ptr + min_y * static_cast<int>(SCREEN_PITCH);
+  z_ptr = zbuff + min_y * static_cast<int>(SCREEN_WIDTH);
 
   zb = zbias + ztrans;
 
@@ -814,7 +814,7 @@ void tr_fill_convpoly_nc(TR_2DPoint *points, unsigned int n, TextrMap *tmap,
       ustp = (ur - uu) / stps;
       vstp = (vr - vv) / stps;
 
-      b_ptr2 = (unsigned char *) b_ptr + xl;
+      b_ptr2 = static_cast<unsigned char *>(b_ptr) + xl;
       z_ptr2 = z_ptr + xl;
 
       while (stps--)

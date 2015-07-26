@@ -46,8 +46,8 @@ Point point_rotate(Point p, REAL_TYPE cx, REAL_TYPE cy,
   ry = REAL_TYPE(p.y) - cy;
   rx1 = (rx * cos_ang) + (ry * sin_ang) + cx;
   ry1 = (((-rx) * sin_ang) + (ry * cos_ang))  + cy;
-  result.x = (int) (rx1);
-  result.y = (int) (ry1);
+  result.x = static_cast<int>(rx1);
+  result.y = static_cast<int>(ry1);
   return result;
 }
 
@@ -65,8 +65,8 @@ Point point_rotate(Point p, Point c, REAL_TYPE sin_ang, REAL_TYPE cos_ang)
   rx1 = (rx * cos_ang) + (ry * sin_ang) + cx;
   ry1 = (((-rx) * sin_ang) + (ry * cos_ang))  + cy;
 
-  result.x = (int) rx1;
-  result.y = (int) ( ry1);
+  result.x = static_cast<int>(rx1);
+  result.y = static_cast<int>(ry1);
   return result;
 }
 

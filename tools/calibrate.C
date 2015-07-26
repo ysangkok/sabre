@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
 extern char *build_libpath(const char *);
 #endif
 
-LinuxJoystick::LinuxJoystick(int which, int doCalibrate)
+LinuxJoystick::LinuxJoystick(int which, bool doCalibrate)
 {
   joy = which;
   fd = -1;

@@ -302,11 +302,11 @@ void r_fill_convpoly(R_2DPoint *points, unsigned int n, int colr)
     }
 
   r_build_edge_array(points,n);
- 
+
   buffer_ptr = lock_xbuff();
-  b_ptr = buffer_ptr + (((int)min_y) * SCREEN_PITCH);
-  
-  z_ptr = zbuff + (((int)min_y) * SCREEN_WIDTH);
+  b_ptr = buffer_ptr + min_y * static_cast<int>(SCREEN_PITCH);
+
+  z_ptr = zbuff + min_y * static_cast<int>(SCREEN_WIDTH);
 
   for (j = (int)min_y; j <= (int)max_y; j++)
     {
@@ -320,7 +320,7 @@ void r_fill_convpoly(R_2DPoint *points, unsigned int n, int colr)
 
       b_ptr2 = b_ptr + xl;
       z_ptr2 = z_ptr + xl;
-    
+
       while(stps--)
 	{
 	  if (zz + zbias + ztrans > *z_ptr2)
@@ -339,7 +339,7 @@ void r_fill_convpoly(R_2DPoint *points, unsigned int n, int colr)
     }
   free_xbuff();
 }
-                 
+
 void zline(const R_3DPoint &w0, const R_3DPoint &w1, int colr, Port_3D &port)
 {
   R_3DPoint p0,p1;
@@ -370,7 +370,7 @@ void rendzline(const R_2DPoint &s0, const R_2DPoint &s1, int colr)
   R2D_TYPE *zptr;
 
   zz = s0.z;
-  
+
   Point pp0((int)s0.x,(int)s0.y);
   Point pp1((int)s1.x,(int)s1.y);
   LineTraveler traveler(pp0,pp1,1);
@@ -378,7 +378,7 @@ void rendzline(const R_2DPoint &s0, const R_2DPoint &s1, int colr)
     d = R2D_TYPE(traveler.there.x) - R2D_TYPE(traveler.here.x);
   else
     d = R2D_TYPE(traveler.there.y) - R2D_TYPE(traveler.here.y);
-  
+
   if (d < 0)
     d = -d;
   d += 1;
@@ -386,7 +386,7 @@ void rendzline(const R_2DPoint &s0, const R_2DPoint &s1, int colr)
   d += eps;
 #endif
   zstp = (s1.z - s0.z) / d;
-  
+
   SETZBUFF
 
     while (traveler.here != traveler.there)

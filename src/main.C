@@ -128,7 +128,7 @@ int main(int argc, char *argv[])
   int m;
   printf("Sabre Fighter Plane Simulator Version %s %s\n",
 	 VERSION,REV_DATE);
-  for (i=1;i<argc;i++)
+  for (i=1;i<static_cast<unsigned int>(argc);i++)
     {
       if (!strcmp(argv[i],"-o"))
 	world_file = argv[++i];

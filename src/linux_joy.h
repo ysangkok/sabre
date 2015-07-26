@@ -45,7 +45,7 @@ public:
   int max_x,min_x;
   int max_y,min_y;
   int cor_x, cor_y;
-  int has_z, has_r;
+  bool has_z, has_r;
   int naxis;
 
   int lin[NUM_AXIS];
@@ -61,10 +61,10 @@ public:
 
   int fd;
   int joy;
-  int calibrated;
-  int active;
+  bool calibrated;
+  bool active;
 
-  LinuxJoystick(int which, int calibrate = 0);
+  LinuxJoystick(int which, bool calibrate = 0);
   ~LinuxJoystick()
     {
       close();

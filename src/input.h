@@ -41,7 +41,7 @@ class InputDevice_2D : public InputDevice
 public:
   float x, y;
   int  screenx, screeny;
-  int buttons;
+  int buttons; // linux/joystick.h has signed, SDL_GetMouseState has unsigned
 public:
   InputDevice_2D()
     {}
@@ -61,11 +61,11 @@ protected:
   float z,r;
 public:
   LinuxJoystick ljoy;
-  int HasZ()
+  bool HasZ()
     {
       return (ljoy.has_z);
     }
-  int HasR()
+  bool HasR()
     {
       return (ljoy.has_r);
     }

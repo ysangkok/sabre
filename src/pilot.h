@@ -117,7 +117,7 @@ public:
    void selWeapon(int );
 	void selectNextWeapon(int dir);
 	void set_target(Pilot *pl);
-	void update(int);
+	void update(bool);
 	void pause();
 	void start();
 	Target *get_target_obj(void)

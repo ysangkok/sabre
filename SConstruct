@@ -1,10 +1,10 @@
 import os
 
 clang = 1
-everything = 1
+everything = 0
 do_vga = 0
 do_sdl = not do_vga
-memdebug = 0
+memdebug = 1
 coverage = 0
 profile = 0
 opt = []
@@ -29,7 +29,7 @@ link_lto = []
 
 if not memdebug:
 	lto += ["-flto"]
-if clang:
+if clang and not memdebug:
 	link_lto += lto + ["-B/usr/lib/gold-ld"]
 
 if everything:
@@ -38,7 +38,10 @@ if everything:
 
 # AddressSanitizer
 if memdebug:
-	debug_profile_and_coverage = Split("-fsanitize=memory -fno-omit-frame-pointer -fsanitize-memory-track-origins") + Split("-fsanitize=undefined")
+        debug_profile_and_coverage = []
+	#debug_profile_and_coverage += Split("-fsanitize=memory -fsanitize-blacklist=blacklist.txt -fno-omit-frame-pointer -fsanitize-memory-track-origins")
+	#debug_profile_and_coverage += Split("-fsanitize=undefined")
+	link_lto += debug_profile_and_coverage
 else:
 # Profile
 	if profile:
@@ -59,9 +62,9 @@ if coverage:
 debug_profile_and_coverage += Split("-fPIC")
 
 orgenv = Environment(
-	CC="clang" if clang else "gcc", CFLAGS=lto + opt + warn + debug_profile_and_coverage + ([] if not everything else Split('-ansi -pedantic -std=c11')), CXX="clang++" if clang else "gcc", CXXFLAGS=lto + opt + warn + debug_profile_and_coverage + ["-std=c++11"] + ([] if not everything else Split('-pedantic')), LIBS=["m"], 
-	LINK="clang++" if clang else "g++", 
-	#CXXFLAGS="-nodefaultlibs -fno-exceptions -w", 
+	CC="clang" if clang else "gcc", CFLAGS=lto + opt + warn + debug_profile_and_coverage + ([] if not everything else Split('-ansi -pedantic -std=c11')), CXX="clang++" if clang else "gcc", CXXFLAGS=lto + opt + warn + debug_profile_and_coverage + ["-std=c++11"] + ([] if not everything else Split('-pedantic')), LIBS=["m"],
+	LINK="clang++" if clang else "g++",
+	#CXXFLAGS="-nodefaultlibs -fno-exceptions -w",
 	CPPDEFINES = {"VERSION":"\\\"0.2.4b\\\"","REV_DATE":"\\\"11/21/99\\\"","JSTICK_INSTALLED":"1"},
 	CPPPATH=(["gdev"] if do_vga else []) + ["src"]
 )

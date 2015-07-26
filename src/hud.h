@@ -50,7 +50,7 @@ public:
   int trg_x,trg_y;
   SimFont *the_font;
   Hud(SimFont *fnt, const char *path = NULL)
-    : 
+    :
     hud_color(4),
     hud_x(5),
     hud_y(0),

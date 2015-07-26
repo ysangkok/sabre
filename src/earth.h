@@ -33,7 +33,7 @@ class Earth_Watch
 {
 public:
   R_3DPoint wh_center, wh_left, wh_right;
-  unsigned int h_x,h_y,h_x1,h_y1,h_x2,h_y2;
+  int h_x,h_y,h_x1,h_y1,h_x2,h_y2;
   float cos_ang, sin_ang;
   int negative_phi,negative_roll;
   REAL_TYPE unit_size;
@@ -47,9 +47,9 @@ public:
   C_PolyInfo *g_polyinfos;
   C_3DObject_Group *groups;
   C_3DPoly **polys;
-  unsigned int ngroups;
-  unsigned int n3dpolys;
-  unsigned int npolys;
+  int ngroups;
+  int n3dpolys;
+  int npolys;
   float scale;
  
   int ground_color,sky_color;
@@ -88,7 +88,7 @@ public:
   REAL_TYPE getGroundLevel(R_3DPoint &p);
 };
 
-C_3DPoly **resizePolyPtr(C_3DPoly **polys, unsigned int old_size, int amt);
+C_3DPoly **resizePolyPtr(C_3DPoly **polys, int old_size, int amt);
 
 extern Earth_Watch2 *the_earth;
 extern REAL_TYPE getGroundLevel(R_3DPoint &p);

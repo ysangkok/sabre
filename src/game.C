@@ -179,7 +179,7 @@ void GameSession::setup()
 	if (ground_unit_file != NULL)
 		gm.read_file(ground_unit_file);
 	clist.get_targets(target_list);
-	for (unsigned int i=0;i<fm.n_flights;i++)
+	for (int i=0;i<fm.n_flights;i++)
 		target_list.add_target(fm.get_viewer(i));
 	gm.addTargetList(target_list);
 	pe = new Palette_Effect();
@@ -240,14 +240,14 @@ void GameSession::play()
 	clear_scr(0);
 }
 
-inline int GETSTATE(Pilot *pil, char *state, unsigned int n)
+inline int GETSTATE(Pilot *pil, char *state, int n)
 {
 	return(!memcmp(pil->get_dbg(),state,n));
 }
 
-inline unsigned int INTERESTING(Flight_Node &nde)
+inline int INTERESTING(Flight_Node &nde)
 {
-	unsigned int result = 0;
+	int result = 0;
 
 	const sManeuverState &mvs = nde.pilot->GetManeuverStackTop();
 	if (!nde.pilot->IsActive())
@@ -292,7 +292,7 @@ inline unsigned int INTERESTING(Flight_Node &nde)
 
 inline int DECIDEVIEW()
 {
-	unsigned int dec = RANDOM(3);
+	int dec = RANDOM(3);
 	switch (dec)
 	{
 		case 0:
@@ -316,14 +316,13 @@ void GameSession::demo()
 	float view_time;
 	float maxv_time;
 	bool flg;
-	unsigned int maxX,ix,x;
-	int ii;
+	int maxX,ix,ii,x;
 
 	clear_scr(0);
 	clear_zbuff();
 	zz = 0;
 
-	for (unsigned int i=0;i<fm.n_flights;i++)
+	for (int i=0;i<fm.n_flights;i++)
 	{
 		fc = fm.get_flight(i);
 		fc->controls.autopilot = 1;
@@ -355,13 +354,13 @@ void GameSession::demo()
 			ii = -1;
 			if (view_time >= 2.0)
 			{
-				for (unsigned int i=0;i<fm.n_flights;i++)
+				for (int i=0;i<fm.n_flights;i++)
 				{
 					if ((x = INTERESTING(*fm.get_node(i))) != 0)
 					{
 						if (x > maxX)
 						{
-							ii = static_cast<int>(i);
+							ii = i;
 							maxX = x;
 						}
 					}
@@ -373,7 +372,7 @@ void GameSession::demo()
 				flg = 1;
 				view_time = 0.0;
 				fm.set_view_node(ii);
-				fc = fm.get_flight(static_cast<unsigned int>(ii));
+				fc = fm.get_flight(ii);
 				fc->controls.view = static_cast<flight_view>(DECIDEVIEW());
 			}
 
@@ -381,10 +380,10 @@ void GameSession::demo()
 			{
 				view_time = 0.0;
 				maxv_time = C(static_cast<float>(RANDOM(6)) + 3.0);
-				bool found_flight = 0;
-				for (unsigned int i=0;i<fm.n_flights;i++)
+				int found_flight = 0;
+				for (int i=0;i<fm.n_flights;i++)
 				{
-					fm.set_view_node(static_cast<int>(fm.view_node + 1));
+					fm.set_view_node(fm.view_node + 1);
 					fc = fm.get_flight(fm.view_node);
 					if (!fc->state.crashed)
 					{
@@ -585,7 +584,7 @@ Flight_ZViewer &vwr = fm.get_view_viewer();
 			 fc.controls.view == fv_padlock )
 				&& pilot->get_target_pilot() != NULL)
 		{
-			unsigned int x,y;
+			int x,y;
 			R_3DPoint w0 = pilot->get_target_pilot()->get_position();
 			vport.transform(w0,&x,&y);
 			if (!vport.over_flow)
@@ -647,7 +646,7 @@ inline void PRINTLN(std::ostream &os, const char *s, ...)
 
 void GameSession::printResults(std::ostream &os)
 {
-  unsigned int i;
+  int i;
   PRINTLN(os, "\nMission Debrief\n");
   PRINTLN(os, "Flight File: %s\n",flight_file);
   for (i=0;i<fm.n_flights;i++)
@@ -746,11 +745,11 @@ void /*_cdecl*/ GameSession::show_message(int bot, const char *str, ...)
 
   int poly[10];
   int l = static_cast<int>(strlen(buf)) * 6;
-  int y = bot ?  static_cast<int>(SCREEN_HEIGHT) - 8 : 0;
-  int yd = bot ? static_cast<int>(SCREEN_HEIGHT) - 1 : 7;
+  int y = bot ?  SCREEN_HEIGHT - 8 : 0;
+  int yd = bot ? SCREEN_HEIGHT - 1 : 7;
   if (l > 0)
     {
-      int x = static_cast<int>(SCREEN_WIDTH / 2) - l / 2;
+      int x = (SCREEN_WIDTH / 2) - l / 2;
       poly[0] = x - 1;
       poly[1] = y;
       poly[2] = x + l + 1;
@@ -760,7 +759,7 @@ void /*_cdecl*/ GameSession::show_message(int bot, const char *str, ...)
       poly[6] = x - 1;
       poly[7] = yd;
       rendply(poly,4,1,&cliprect);
-      g_font->font_sprintf(static_cast<unsigned int>(x),static_cast<unsigned int>(y),hud.hud_color,NORMAL,buf);
+      g_font->font_sprintf(x,y,hud.hud_color,NORMAL,buf);
     }
 }
 

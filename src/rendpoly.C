@@ -109,7 +109,7 @@ int rend2(R_3DPoint *poly, unsigned int n, int color, Port_3D &port)
       cpoints[cn - 1] = cpoints[1];
       cpoints[cn - 2] = cpoints[0];
       for (unsigned int i=0;i<cn;i++)
-	ipoints[i] = (int)cpoints[i];
+	ipoints[i] = static_cast<int>(cpoints[i]);
       fill_convpoly(ipoints,clip_n + 1,color);
     }
   return cn;

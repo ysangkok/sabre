@@ -40,15 +40,15 @@ float MTimer::get_time()
   float d;
 #ifdef PORTABLE_TIMING
   gettimeofday( &t2, &dontcare );
-  d = (float)((t2.tv_sec-t1.tv_sec)+(t2.tv_usec-t1.tv_usec)*0.000001);
+  d = static_cast<float>((t2.tv_sec-t1.tv_sec)+(t2.tv_usec-t1.tv_usec)*0.000001);
   gettimeofday( &t1, &dontcare );
   return d;
 #endif  
 #ifdef CLOCK_TIMING
   t2 = clock();
-  d = (float) (t2 - t1);
+  d = static_cast<float>(t2 - t1);
   t1 = clock();
-  return (d / ((float)CLOCKS_PER_SEC));
+  return d / static_cast<float>(CLOCKS_PER_SEC);
 #endif  
 }
 
@@ -57,7 +57,7 @@ int MTimer::check_time()
 #ifdef PORTABLE_TIMING
   gettimeofday( &t2, &dontcare );
   /* rough figures but only checking here */
-  return (((t2.tv_sec<<20)+t2.tv_usec) > ((t1.tv_sec<<20)+t1.tv_usec)); 
+  return (((t2.tv_sec<<20)+t2.tv_usec) > ((t1.tv_sec<<20)+t1.tv_usec));
   /* must optimize this ! */
 #endif
 #ifdef CLOCK_TIMING

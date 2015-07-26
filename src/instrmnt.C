@@ -46,7 +46,7 @@
 #define ConvertToFix(a) (a)
 #define fix2f(a) (a)
 #define f2fix(a) (a)
-#define fix2s(a) ((int)(a))
+#define fix2s(a) (static_cast<int>(a))
 #endif
 #include "vmath.h"
 #include "txtrmap.h"
@@ -81,7 +81,7 @@ static unsigned char *b_ptr;
 void ArtHor::init()
 {
   int h_2;
-  height = (int) range;
+  height = static_cast<int>(range);
   h_2 = height / 2;
   s[0] = Point(x,y);
   s[1] = Point(x+width,y);
@@ -110,7 +110,7 @@ void ArtHor::underpaint(Flight &flight)
   if (port.look_from.z > port.look_at.z)
     dot = -dot;
   dot *= f2fix(scale);
-  sc_y = (int) (y + (height / 2) + dot);
+  sc_y = static_cast<int>(y + (height / 2) + dot);
   REAL_TYPE cx = x + (width / 2);
   REAL_TYPE cy = y + (height / 2);
   if (sc_y < y + 3)
@@ -161,7 +161,7 @@ void ArtHor::display(Flight &)
 }
 void Aileron_I::init()
 {
-  cx = x + (((int)range) / 2);
+  cx = x + (static_cast<int>(range) / 2);
 }
 void Aileron_I::display(Flight &flt)
 {
@@ -175,7 +175,7 @@ void Aileron_I::display(Flight &flt)
 
 void Elevator_I::init()
 {
-  cy = y + (((int)range) / 2);
+  cy = y + (static_cast<int>(range) / 2);
 }
 
 void Elevator_I::display(Flight &flt)
@@ -191,7 +191,7 @@ void Elevator_I::display(Flight &flt)
 
 void Rudder_I::init()
 {
-  cx =  x + (((int) range) / 2);
+  cx =  x + (static_cast<int>(range) / 2);
 }
 
 void Rudder_I::display(Flight &flt)
@@ -242,10 +242,10 @@ void Dial_Indicator::show_dial(float value)
   int d_x,d_y;
   angle = (6.2831853f * value) / range;
   angle -= 1.5707963;
-  fx = C((double)width * cos(angle));
-  fy = C((double)width * sin(angle));
-  d_x = (int)fx;
-  d_y = (int)fy;
+  fx = C(static_cast<double>(width) * cos(angle));
+  fy = C(static_cast<double>(width) * sin(angle));
+  d_x = static_cast<int>(fx);
+  d_y = static_cast<int>(fy);
   b_linedraw(x,y,x+d_x,y+d_y,color,NULL);
 }
 
@@ -275,10 +275,10 @@ void Compass::display(Flight &flt)
   float angle,fx,fy;
   int d_x,d_y;
   angle = flt.state.heading - 1.5707963f;
-  fx = C(((double)width) * cos(angle));
-  fy = C(((double)width) * sin(angle));
-  d_x = (int)fx;
-  d_y = (int)fy;
+  fx = C(static_cast<double>(width) * cos(angle));
+  fy = C(static_cast<double>(width) * sin(angle));
+  d_x = static_cast<int>(fx);
+  d_y = static_cast<int>(fy);
   b_linedraw(x,y,x+d_x,y+d_y,color,NULL);
 }
 

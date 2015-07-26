@@ -131,7 +131,7 @@ Ground_Unit::~Ground_Unit()
 void Ground_Unit::copy(const Ground_Unit &gu)
 {
   specs = gu.specs;
-  ref_port = static_cast<const Port_3D &>(gu.ref_port);
+  ref_port = const_cast<Port_3D&>(static_cast<const Port_3D &>(gu.ref_port));
   current_speed = gu.current_speed;
   view = gu.view;
   affiliation = gu.affiliation;

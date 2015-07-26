@@ -56,7 +56,7 @@ extern int point_cnt;
 extern void blit_buff();
 
 //static const REAL_TYPE z_min = (REAL_TYPE) -99999999.0;
-static const REAL_TYPE z_max = (REAL_TYPE)  99999999.0;
+static const REAL_TYPE z_max = static_cast<REAL_TYPE>(99999999.0);
 
 REAL_TYPE C_3DObject_Base::dab_min = 1000.0;
 
@@ -96,7 +96,7 @@ void C_3DObject_Base::calc_screen_bounds(Port_3D &port, R_3DPoint *p)
   p1.x += bounding_sphere;
   port.port2screen(*p,&scx1,&scy1);
   port.port2screen(p1,&scx2,&scy2);
-  max_sc = (REAL_TYPE) fabs(scx2 - scx1);
+  max_sc = static_cast<REAL_TYPE>(fabs(scx2 - scx1));
   /*
      if (frame_switch)
     {
@@ -493,7 +493,7 @@ REAL_TYPE C_3DObject2::draw_prep(Port_3D &port)
       ZMIN(bcube.max_x,bcube.min_y,bcube.max_z,port,z_order);
       ZMIN(bcube.max_x,bcube.max_y,bcube.min_z,port,z_order);
       ZMIN(bcube.max_x,bcube.max_y,bcube.max_z,port,z_order);
-      z_order = (REAL_TYPE) sqrt(z_order);
+      z_order = static_cast<REAL_TYPE>(sqrt(z_order));
     }
   return z_order;
 }

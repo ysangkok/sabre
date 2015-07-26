@@ -244,24 +244,24 @@ int KBHit::getch() {
 #ifdef HAVE_LIBSDL
   if (SDL_PollEvent(&event)) {
     unsigned char c;
-    c = (unsigned char) event.key.keysym.sym;
+    c = static_cast<unsigned char>(event.key.keysym.sym);
     c = sdl_to_standard[c];
     if (c==ESC) {
-      c = (unsigned char) event.key.keysym.sym;
+      c = static_cast<unsigned char>(event.key.keysym.sym);
       if (c=='[') {
-        c = (unsigned char) event.key.keysym.sym;
+        c = static_cast<unsigned char>(event.key.keysym.sym);
       } else {
         putchar(c);
         c = ESC;
       }
     }
     tcflush(0,TCIFLUSH);
-    kbdin = (int) c;
-    return ((int)c);
+    kbdin = static_cast<int>(c);
+    return kbdin;
   }
   kbdin = 0;
   return (0);
-#else  
+#else
   while (buffer->GetEvent (buffer, DFB_EVENT(&event)) == DFB_OK) {
     if (event.type == DIET_AXISMOTION || event.type == DIET_BUTTONPRESS || event.type == DIET_BUTTONRELEASE) {
       DeviceInfo *devices = NULL;

@@ -66,8 +66,8 @@ void Port_3D::read(std::istream &is)
   calc_angles();
   calc_look_at();
   calc_view_normal();
-  sin_roll = (REAL_TYPE) (sin(roll));
-  cos_roll = (REAL_TYPE) (cos(roll));
+  sin_roll = static_cast<REAL_TYPE>(sin(roll));
+  cos_roll = static_cast<REAL_TYPE>(cos(roll));
 }
 
 std::istream &operator >>(std::istream &is, Port_3D &port)
@@ -113,8 +113,8 @@ Port_3D::Port_3D()
   calc_angles();
   calc_look_at();
   calc_view_normal();
-  sin_roll = (REAL_TYPE) sin(roll);
-  cos_roll = (REAL_TYPE) cos(roll);
+  sin_roll = static_cast<REAL_TYPE>(sin(roll));
+  cos_roll = static_cast<REAL_TYPE>(cos(roll));
   z_min = 1.0;
   z_max = 160.0;
   r = 0.0;
@@ -163,8 +163,8 @@ Port_3D::Port_3D(S_3DPoint &sfrom, R_3DPoint &at, REAL_TYPE , REAL_TYPE p)
   calc_angles();
   calc_look_at();
   calc_view_normal();
-  sin_roll = (REAL_TYPE) sin(roll);
-  cos_roll = (REAL_TYPE) cos(roll);
+  sin_roll = static_cast<REAL_TYPE>(sin(roll));
+  cos_roll = static_cast<REAL_TYPE>(cos(roll));
   horizon = 100;
 }
 
@@ -192,8 +192,8 @@ void Port_3D::port2screen(R_3DPoint &port,
 	}
 	else
 	{
-		*screen_x = (int) (f_d1 + cx);
-		*screen_y = (int) ((f_d2 * -1.0) + cy);
+		*screen_x = static_cast<unsigned int>(f_d1 + cx);
+		*screen_y = static_cast<unsigned int>((f_d2 * -1.0) + cy);
 	}
 	R_KEY_END
 }
@@ -207,7 +207,7 @@ void Port_3D::port2screen(const TR_3DPoint &tr, TRF_2DPoint *rp)
   z = tr.r.z;
   if (z < 1.0)
 	  z = 1.0;
-	z_inv = (REAL_TYPE) (1.0 / z);
+	z_inv = static_cast<REAL_TYPE>(1.0 / z);
   rp->x = (fovx * tr.r.x * z_inv) + cx ;
   rp->y = -(fovy * tr.r.y * aspect_ratio * z_inv) + cy;
   rp->z = REAL_TYPE((z - 1.0) / z);
@@ -426,7 +426,7 @@ R_3DPoint p,d;
   // 'unproject' an screen-x value of -30 & 349 to get the
   // world coords of points on the horizon which will
   // meet/overlap the edge of the screen
-  REAL_TYPE c = (REAL_TYPE) cx;
+  REAL_TYPE c = static_cast<REAL_TYPE>(cx);
   p1.x = ((-(p1.z * (SCREEN_WIDTH + SCREEN_HEIGHT))) - (c * p1.z)) / fovx;
   port2world(p1,wh_left);
   p1.x = (((SCREEN_WIDTH + SCREEN_HEIGHT) *  p1.z) - (c * p1.z)) / fovx;

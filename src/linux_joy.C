@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
 extern char *build_libpath(const char *);
 #endif
 
-LinuxJoystick::LinuxJoystick(int which, int doCalibrate)
+LinuxJoystick::LinuxJoystick(int which, bool doCalibrate)
 {
   joy = which;
   fd = -1;
@@ -172,14 +172,14 @@ int LinuxJoystick::open()
 int LinuxJoystick::update()
 {
   struct JS_DATA_TYPE js_data;
-  
+
   if (read(fd, &js_data, JS_RETURN) > 0)
     {
       buttons = js_data.buttons;
       raw_x = js_data.x;
       raw_y = js_data.y;
-      cooked_x = -1.0f + (((float)raw_x) / ((float) (min_x + max_x - min_x)) * 2.0f );
-      cooked_y = -1.0f + (((float)raw_y) / ((float)(min_y + max_y - min_y)) * 2.0f );
+      cooked_x = -1.0f + static_cast<float>(raw_x) / static_cast<float>(min_x + max_x - min_x) * 2.0f;
+      cooked_y = -1.0f + static_cast<float>(raw_y) / static_cast<float>(min_y + max_y - min_y) * 2.0f;
       if (cooked_x < -1.0)
 	cooked_x = -1.0;
       if (cooked_x > 1.0)
@@ -187,14 +187,14 @@ int LinuxJoystick::update()
       if (cooked_y < -1.0)
 	cooked_y = -1.0;
       if (cooked_y > 1.0)
-	cooked_y = 1.0;	
- 
+	cooked_y = 1.0;
+
      if (symetrical[X_AXIS]) {
         cooked_x = reverse[X_AXIS]*shapeSym(X_AXIS,cooked_x);
       } else {
         cooked_x = reverse[X_AXIS]*shapeAsym(X_AXIS,cooked_x);
       }
- 
+
       if (symetrical[Y_AXIS]) {
         cooked_y = reverse[Y_AXIS]*shapeSym(Y_AXIS,cooked_y);
       } else {
@@ -390,7 +390,7 @@ void LinuxJoystick::calibrate()
   printf("\nSetting maximum values to %d,%d\n\n",max_x,max_y);
   printf("\nSetting minimum values to %d,%d\n\n",min_x,min_y);
   printf("Do you wish to set the dead zones (y/n) ");
-  c = (char) getchar();
+  c = static_cast<char>(getchar());
   printf("\n");
   if (c=='Y'||c=='y')
     {

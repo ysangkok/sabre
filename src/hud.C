@@ -64,10 +64,10 @@
 #include "aimath.h"
 
 extern float raw_time;
-#define NOSE_CHAR 128
-#define YOKE_CHAR (unsigned char) 136
-#define RUDDER_CENTER_CHAR (unsigned char) 139
-#define RUDDER_CHAR (unsigned char) 140
+constexpr auto NOSE_CHAR = 128;
+constexpr auto YOKE_CHAR = 136;
+constexpr auto RUDDER_CENTER_CHAR = 139;
+constexpr auto RUDDER_CHAR = 140;
 
 void Hud::read_file(const char *path)
 {
@@ -129,8 +129,8 @@ Pilot &pilot = *my_node.pilot;
 		// combat info
 	}
 
-	d1 = C(((float) my_flight.mods.battle_damage) / 
-		((float) my_flight.specs->max_damage) * 100.0);
+		d1 = C((static_cast<float>(my_flight.mods.battle_damage)) /
+		(static_cast<float>(my_flight.specs->max_damage)) * 100.0);
 	gns_x = 1;
 	gns_y = SCREEN_HEIGHT-8;
 
@@ -157,7 +157,7 @@ Pilot &pilot = *my_node.pilot;
 			else
 			{
 				const sManeuverState &mvs = pilot.GetManeuverStackTop();
-				pp = ((sManeuverState &)mvs).GetManeuverString(); 
+				pp = static_cast<sManeuverState>(mvs).GetManeuverString();
 			}
 		}
 		else
@@ -259,13 +259,13 @@ int  x;
 
 			flgs.high          ? 'H' : 'h',
 			flgs.low           ? 'L' : 'l',
-     
+
 			flgs.veryHigh      ? 'H' : 'h',
 			flgs.veryLow       ? 'L' : 'l',
 
 			flgs.forward			? 'F' : 'f',
 			flgs.rear				? 'R' : 'r',
-          
+
 			flgs.onNose        ? 'N' : 'n',
 			flgs.onTail        ? 'T' : 't',
 
@@ -348,11 +348,11 @@ int x2,y2;
 	the_font->put_char(NOSE_CHAR,x1-3,y1-4,look_at_color,8);
 	if (my_flight.controls.armed_w)
 		show_gunsight(pilot,port);
-	x2 = x1 - ((int) my_flight.controls.ailerons);
-	y2 = y1 + ((int) my_flight.controls.elevators);
+	x2 = x1 - static_cast<unsigned int>(my_flight.controls.ailerons);
+	y2 = y1 + static_cast<unsigned int>(my_flight.controls.elevators);
 	the_font->put_char(YOKE_CHAR,x2-3,y2-4,look_at_color,8);
 	the_font->put_char(RUDDER_CENTER_CHAR,x1-3,SCREEN_HEIGHT-3,hud_color,8);
-	x2 = x1 + ((int) my_flight.controls.rudder);
+	x2 = x1 + static_cast<unsigned int>(my_flight.controls.rudder);
 	the_font->put_char(RUDDER_CHAR,x2-3,SCREEN_HEIGHT-11,hud_color,8);
 	if (my_flight.controls.vect_on)
 		show_vector(my_flight,port);
@@ -373,9 +373,7 @@ Port_3D *fport = &my_flight.state.flight_port;
 		lf = fport->look_from + vr;
 		port.transform(lf,&x1,&y1);
 		if (!port.over_flow)
-			the_font->put_char((unsigned char)129,
-										x1-3,y1-4,vector_color,
-										8);
+			the_font->put_char(129, x1-3,y1-4,vector_color, 8);
 	}
 }
 
@@ -422,7 +420,7 @@ unsigned char c;
 			b_linedraw(x0,y0,x1,y1,hud_color,&port.screen);
 		}
 		if (flight.controls.view == fv_front)
-			show_target_guides(p,port,0);			
+			show_target_guides(p,port,0);
 	}
 }
 
@@ -466,8 +464,8 @@ int		 x,y,x1,y1,x2,y2;
 
 	if (p.z > 0)
 	{
-		x = sc_x;
-		y = sc_y;
+		x = static_cast<int>(sc_x);
+		y = static_cast<int>(sc_y);
 	}
 	else
 	{

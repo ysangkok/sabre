@@ -86,11 +86,11 @@ void Mouse::Update( void )
      float scx,scy;
      int SDL_x,SDL_y;
      SDL_PollEvent(NULL);
-     buttons = SDL_GetMouseState(&SDL_x, &SDL_y);
+     buttons = static_cast<int>(SDL_GetMouseState(&SDL_x, &SDL_y));
      screenx = SDL_x;
      screeny = SDL_y;
-     scx = (float) screenx;
-     scy = (float) screeny;
+     scx = static_cast<float>(screenx);
+     scy = static_cast<float>(screeny);
      x = scx / (MXSCREEN_WIDTH - 1);
      x -= 0.5;
      x *= 2.0;

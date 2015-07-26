@@ -24,7 +24,7 @@
 
 static kmp_t low_kmp[] =
 {
-	{ "NULL", (int) NULL },
+	{ "NULL", 0 },
 	{ "BEL", BEL },
 	{ "BS" , BS  },
 	{ "LF" , LF  },

@@ -95,7 +95,7 @@ public:
 	void copy(Port_3D &);
 	Port_3D(R_3DPoint &from, R_3DPoint &at, REAL_TYPE d, REAL_TYPE p = 0);
 	Port_3D(S_3DPoint &sfrom, R_3DPoint &at, REAL_TYPE d, REAL_TYPE p = 0);
-	void port2screen(R_3DPoint &port, unsigned int *screen_x, unsigned int *screen_y);
+	void port2screen(R_3DPoint &port, int *screen_x, int *screen_y);
 	inline void calc_rho();
 	inline void calc_angles();
 	inline void calc_look_at();
@@ -111,7 +111,7 @@ public:
 	void screen2port(float screen_x, float screen_y, R_3DPoint *port, int = 1);
 	inline void world2port(const R_3DPoint &world, R_3DPoint *port);
 	inline void port2world(const R_3DPoint &port, R_3DPoint *world);
-	inline void transform(const R_3DPoint &point, unsigned int *screen_x, unsigned int *screen_y);
+	inline void transform(const R_3DPoint &point, int *screen_x, int *screen_y);
 	void get_view_horizon(REAL_TYPE d, R_3DPoint *wh_left, 
 								 R_3DPoint *wh_center, R_3DPoint *wh_right,
 								 R_3DPoint * = NULL);
@@ -316,7 +316,8 @@ inline void Port_3D::port2world(const R_3DPoint &port, R_3DPoint *world)
 }
 
 // An all-in-1 call to transform/project a point to the screen
-inline void Port_3D::transform(const R_3DPoint &world, unsigned int *screen_x, unsigned int *screen_y)
+inline void Port_3D::transform(const R_3DPoint &world, int *screen_x,
+			       int *screen_y)
 {
   R_3DPoint port;
   world2port(world,&port);

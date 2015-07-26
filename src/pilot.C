@@ -162,7 +162,7 @@ void Pilot::pause(void)
 
 }
 
-void Pilot::update(int aiActive)
+void Pilot::update(bool aiActive)
 {
 	// Get elapsed time in microseconds
 	t = time_frame;
@@ -190,7 +190,7 @@ void Pilot::update(int aiActive)
 	{
 		aiPilot *pil = GetaiPilot(engageTarget.idx);
 		if (pil)
-			set_target((Pilot *)pil);
+			set_target(static_cast<Pilot *>(pil));
 	}
 
 	// Do some special tweaking based on task
@@ -200,7 +200,7 @@ void Pilot::update(int aiActive)
 		{
 			aiPilot *pil = GetaiPilot(formationTarget.idx);
 			if (pil != NULL)
-				set_target((Pilot *)pil);
+				set_target(static_cast<Pilot *>(pil));
 			if (!aiActive)
 				GetTargetGeometry(formationTarget.idx,formationTarget.geometry);
 			flight->controls.armed_w = 0;
@@ -238,7 +238,7 @@ void Pilot::update(int aiActive)
 			flight->controls.armed_w = 1;
 			aiPilot *pil = GetaiPilot(engageTarget.idx);
 			if (pil)
-				set_target((Pilot *)pil);
+				set_target(static_cast<Pilot *>(pil));
 		}
 		else
 			flight->controls.armed_w = 0;
@@ -281,7 +281,7 @@ int Pilot::damage_check()
 			if (flight->mods.battle_damage > new_damage)
 			{
 				new_damage = flight->mods.battle_damage;
-				float d1 = ((float)new_damage) / ((float)flight->specs->max_damage);
+				float d1 = static_cast<float>(new_damage) / static_cast<float>(flight->specs->max_damage);
 				if (target_obj->who_got_me != NULL && target_obj->who_got_me->getType() == GROUND_UNIT_T)
 				{
 					brdcst(sbrPRIORITY_REGULAR,getAffiliation(),"Taking flak: %3.0f%%%%",d1 * 100.0);
@@ -549,13 +549,13 @@ int affil;
 
 	case commWINGMAN_KILL:
 		{
-			aiPilot *targetPilot = (aiPilot *)extraInfo;
+			aiPilot *targetPilot = static_cast<aiPilot *>(extraInfo);
 			if (targetPilot)
 			{
 				brdcst(priorityValue,affil,"Kill on %s @ Angels %d",
 								targetPilot->GetModel(),
-								(int) ANGELS(targetPilot));
-				Flight *targetFlight = ((Pilot *)targetPilot)->get_flight();
+								static_cast<int>(ANGELS(targetPilot)));
+				Flight *targetFlight = (static_cast<Pilot *>(targetPilot))->get_flight();
 				sound_on(buildSoundId("kill",targetFlight),affil);
 			}
 		}
@@ -563,13 +563,13 @@ int affil;
 
 	case commWINGMAN_ENGAGING:
 		{
-			aiPilot *targetPilot = (aiPilot *)extraInfo;
+			aiPilot *targetPilot = static_cast<aiPilot *>(extraInfo);
 			if (targetPilot)
 			{
 				brdcst(priorityValue,affil,"Engaging %s @ Angels %d",
 								targetPilot->GetModel(),
-								(int) ANGELS(targetPilot));
-				Flight *targetFlight = ((Pilot *)targetPilot)->get_flight();
+								static_cast<int>(ANGELS(targetPilot)));
+				Flight *targetFlight = static_cast<Pilot *>(targetPilot)->get_flight();
 				sound_on(buildSoundId("engage",targetFlight),affil);
 			}
 		}
