@@ -79,16 +79,16 @@ static unsigned char *buffer_ptr;
 static unsigned char *screen_ptr;
 
 float         aspect_ratio    = 1.0;
-unsigned int  SCREEN_WIDTH    = 320; 
-unsigned int  SCREEN_PITCH    = 320;
-unsigned int  SCREEN_HEIGHT   = 200;
-unsigned int  MXSCREEN_WIDTH  = 320;
-unsigned int  MXSCREEN_HEIGHT = 200;
-unsigned int  MAX_X           = 319;
-unsigned int  MAX_Y           = 199;
-unsigned int  VGAMODE         = G320x200x256;
-const unsigned int PALETTE_SIZE = 768;
-const unsigned int N_COLORS     = 256;
+int           SCREEN_WIDTH    = 320; 
+int           SCREEN_PITCH    = 320;
+int           SCREEN_HEIGHT   = 200;
+int           MXSCREEN_WIDTH  = 320;
+int           MXSCREEN_HEIGHT = 200;
+int           MAX_X           = 319;
+int           MAX_Y           = 199;
+int           VGAMODE         = G320x200x256;
+const int           PALETTE_SIZE    = 768;
+const int           N_COLORS        = 256;
 
 extern int window_height, window_width;
 int           window_width      = 0;
@@ -193,7 +193,7 @@ void init_vga_13(void)
 //
 
 
-   xbuffer    = (unsigned char *) calloc(dimx*dimy, sizeof(char));
+   xbuffer    = static_cast<unsigned char *>(calloc(static_cast<size_t>(dimx*dimy), sizeof(char)));
    screen_ptr = xbuffer;
    buffer_ptr = xbuffer;
 #ifdef HAVE_LIBSDL
@@ -307,7 +307,7 @@ void blit_buff()
        unsigned char idx = screen_ptr[j*SCREEN_WIDTH + i];
        int r = colors[idx].r, g = colors[idx].g, b = colors[idx].b;
        //printf("%d %d %d %d\n", idx, r, g, b);
-       myBuf[j*SCREEN_WIDTH + i] = colors[idx].a << 24 | r << 16 | g << 8 | b << 0;
+       myBuf[j*SCREEN_WIDTH + i] = static_cast<Uint32>(colors[idx].a << 24 | r << 16 | g << 8 | b << 0);
      }
    }
    SDL_UpdateTexture(screen, NULL, myBuf, SCREEN_WIDTH * 4);
@@ -374,14 +374,14 @@ void fill_rect(Rect &r, int color)
 void putpixel(int x, int y, int color)
 {
   if (x < SCREEN_WIDTH && x >= 0 && y < SCREEN_HEIGHT && y >= 0)
-    *(buffer_ptr + (y * SCREEN_PITCH) + x) = (char ) color;
+    *(buffer_ptr + (y * SCREEN_PITCH) + x) = static_cast<unsigned char>(color);
 }
 
 void h_line(int x, int y, int len, int color)
 {
   unsigned char *bf = buffer_ptr + (y * SCREEN_PITCH) + x;
   while (len--)
-    *bf++ = (unsigned char) color;
+    *bf++ = static_cast<unsigned char>(color);
 }
 
 void v_line(int x, int y, int len, int color)
@@ -389,7 +389,7 @@ void v_line(int x, int y, int len, int color)
   unsigned char *bf = buffer_ptr + (y * SCREEN_PITCH) + x;
   while(len--)
     {
-      *bf = (unsigned char) color;
+      *bf = static_cast<unsigned char>(color);
       bf += SCREEN_PITCH;
     }
 }
@@ -411,9 +411,9 @@ void get_rgb_value(int color, char *red, char *green, char *blue)
 {
 assert(color < 256);
 // this gets a RGB tuple from the current palette
-*red   = colors[color].r;
-*green = colors[color].g;
-*blue  = colors[color].b;
+*red   = static_cast<char>(colors[color].r);
+*green = static_cast<char>(colors[color].g);
+*blue  = static_cast<char>(colors[color].b);
 }
 
 void set_palette(int startcolor, int endcolor, char *palette)
@@ -424,9 +424,9 @@ void set_palette(int startcolor, int endcolor, char *palette)
 // Gonna have to set cursor remap in here!
 for(int x=startcolor;x<endcolor;x++)
    {
-   colors[x].r = *(palette++);
-   colors[x].g = *(palette++);
-   colors[x].b = *(palette++);
+   colors[x].r = static_cast<unsigned char>(*(palette++));
+   colors[x].g = static_cast<unsigned char>(*(palette++));
+   colors[x].b = static_cast<unsigned char>(*(palette++));
    colors[x].a = 255;
    }
 #ifdef HAVE_LIBVGA
@@ -439,9 +439,9 @@ void get_palette(int startcolor, int endcolor, char *palette)
 // this gets a block of palette entries in one call.
 for(int x=startcolor;x<endcolor;x++)
    {
-   *(palette++) = colors[x].r;
-   *(palette++) = colors[x].g;
-   *(palette++) = colors[x].b;
+   *(palette++) = static_cast<char>(colors[x].r);
+   *(palette++) = static_cast<char>(colors[x].g);
+   *(palette++) = static_cast<char>(colors[x].b);
    }
 }
 
@@ -499,7 +499,7 @@ void b_linedraw(int x1, int y1, int x2, int y2, int color, Rect *bounds)
       x2 = points[2];
       y2 = points[3];
     }
-  mline(x1,y1,x2,y2,(char) color);
+  mline(x1,y1,x2,y2,static_cast<char>(color));
 }
 
 void mline(int x0, int y0, int x1, int y1, char color)

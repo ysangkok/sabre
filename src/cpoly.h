@@ -26,25 +26,25 @@
  * Classes for handling polygons, shapes and     *
  * some basic object definitions                 *
  *************************************************/
-#ifndef __cpoly_h
-#define __cpoly_h
+#ifndef CPOLY_H
+#define CPOLY_H
 
-#ifndef __vmath_h
+#ifndef VMATH_H
 #include "vmath.h"
 #endif
 
-#ifndef __port_3d_h
+#ifndef PORT_3D_H
 #include "port_3d.h"
 #endif
 
 #include "target.h"
 
 
-#ifndef __rendpoly_h
+#ifndef RENDPOLY_H
 #include "rendpoly.h"
 #endif
 
-#ifndef __rndrpoly_h
+#ifndef RNDRPOLY_H
 #include "rndrpoly.h"
 #endif
 
@@ -97,7 +97,7 @@ class poly_params
 {
 public:
   int color;
-  unsigned long flags;
+  long flags;
   int color_range;
   int tmap;
 
@@ -109,7 +109,7 @@ public:
     {}
 
   poly_params(int a_color,
-	      unsigned long a_flag,
+	      long a_flag,
 	      int a_color_range,
 	      int a_tmap)
     : color(a_color),
@@ -168,16 +168,16 @@ inline std::ostream &operator <<(std::ostream &os, poly_params &ps)
 class shape_params
 {
 public:
-  unsigned long flags;
+  long flags;
   poly_params *p_params;
-  unsigned int n_params;
+  int n_params;
 
   shape_params()
     : p_params(NULL),
     n_params(0)
     {}
 
-  shape_params(unsigned int n, unsigned long flgs, poly_params *pr)
+  shape_params(int n, long flgs, poly_params *pr)
     : flags(flgs),
     p_params(pr),
     n_params(n)
@@ -227,7 +227,7 @@ inline std::ostream & operator <<(std::ostream &os, shape_params &sp)
 class C_PolyInfo
 {
 public:
-  unsigned int npoints;
+  int npoints;
   R_3DPoint *lpoints;
   TxtPoint  *tpoints;
   bool delete_flag;
@@ -240,7 +240,7 @@ public:
     delete_flag(0)
     {}
 
-  C_PolyInfo(unsigned int np, R_3DPoint *pnts, TxtPoint *tpnts = NULL)
+  C_PolyInfo(int np, R_3DPoint *pnts, TxtPoint *tpnts = NULL)
     :npoints(np),
     lpoints(pnts),
     tpoints(tpnts),
@@ -291,7 +291,7 @@ inline std::ostream &operator <<(std::ostream &os, C_PolyInfo &cp)
 class C_ShapeInfo
 {
 public:
-  unsigned int npolys;
+  int npolys;
   C_PolyInfo *polyinfos;
   bool delete_flag;
   bounding_cube bcube;
@@ -303,7 +303,7 @@ public:
     delete_flag(0)
     {}
 
-  C_ShapeInfo(unsigned int np, C_PolyInfo *ip)
+  C_ShapeInfo(int np, C_PolyInfo *ip)
     :npolys(np),
     polyinfos(ip),
     delete_flag(0)
@@ -354,7 +354,7 @@ class C_3DObjectInfo
 {
 public:
   C_ShapeInfo *shapes;
-  unsigned int nshapes;
+  int nshapes;
   shape_params *dflt_params;
   bounding_cube bcube;
   char *path;
@@ -402,7 +402,7 @@ class C_Poly
 public:
   int color,base_color;
   int tmap;
-  unsigned long flags;
+  long flags;
   int color_range;
   int visible;
   REAL_TYPE scale;
@@ -442,9 +442,9 @@ public:
 class C_Shape
 {
 public:
-  unsigned int npolys;
+  int npolys;
   int visible;
-  unsigned long flags;
+  long flags;
   REAL_TYPE maxlen;
   C_Poly *polys;
   C_ShapeInfo *info_ptr;

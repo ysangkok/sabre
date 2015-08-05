@@ -23,8 +23,8 @@
  * Date   : April, 1998                          *
  * Author : Dan Hammer                           *
  *************************************************/
-#ifndef __runway_h
-#define __runway_h
+#ifndef RUNWAY_H
+#define RUNWAY_H
 
 typedef struct srunway_info_struct
 {

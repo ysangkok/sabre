@@ -29,7 +29,7 @@
 #include "grafix.h"
 #include "transblt.h"
 
-void trans_table::build_runs(unsigned char *img, unsigned int r, unsigned int w)
+void trans_table::build_runs(unsigned char *img, int r, int w)
 {
   int i,j, rn;
   unsigned char *img_ptr;
@@ -42,7 +42,7 @@ void trans_table::build_runs(unsigned char *img, unsigned int r, unsigned int w)
     {
       img_ptr = trans_image + (image_width * i);
       rn = 0;
-      if ((int)(*img_ptr++) == trans_color )
+      if (static_cast<int>(*img_ptr++) == trans_color )
 	runs[i][rn].type = TRANSP_TYPE;
       else
 	runs[i][rn].type = NTRANSP_TYPE;
@@ -50,7 +50,7 @@ void trans_table::build_runs(unsigned char *img, unsigned int r, unsigned int w)
 //      cur_type = runs[i][rn].type;
       for (j = 1; j < image_width; j++)
 	{
-	  if ((int)(*img_ptr++) == trans_color )
+	  if (static_cast<int>(*img_ptr++) == trans_color )
 	    cur_type = TRANSP_TYPE;
 	  else
 	    cur_type = NTRANSP_TYPE;
@@ -71,7 +71,7 @@ void trans_table::build_runs(unsigned char *img, unsigned int r, unsigned int w)
     }
 }
 
-void trans_table::trans_blit(unsigned char *dst, unsigned int x, unsigned int y,
+void trans_table::trans_blit(unsigned char *dst, int x, int y,
 			     Rect *r, bool fast_flag)
 {
   unsigned char *dst_ptr,*dst_ptr1;
@@ -88,7 +88,7 @@ void trans_table::trans_blit(unsigned char *dst, unsigned int x, unsigned int y,
 	  if (runs[i][0].type == NTRANSP_TYPE &&
 	      runs[i][1].type == RUN_END)
 	    {
-	      memcpy(dst_ptr,src_ptr,(image_rows - i) * SCREEN_PITCH);
+	      memcpy(dst_ptr,src_ptr,static_cast<size_t>((image_rows - i) * SCREEN_PITCH));
 	      return;
 	    }
 	}
@@ -96,7 +96,7 @@ void trans_table::trans_blit(unsigned char *dst, unsigned int x, unsigned int y,
       while (runs[i][j].type != RUN_END)
 	{
 	  if (runs[i][j].type == NTRANSP_TYPE)
-	    memcpy(dst_ptr1,src_ptr,runs[i][j].len);
+	    memcpy(dst_ptr1,src_ptr,static_cast<size_t>(runs[i][j].len));
 	  src_ptr += runs[i][j].len;
 	  dst_ptr1 += runs[i][j].len;
 	  j++;

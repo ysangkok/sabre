@@ -23,24 +23,24 @@
  * Author : Dan Hammer                           *
  * Low level graphics routines header.           *
  *************************************************/
-#ifndef __vga_13_h
-#define __vga_13_h
+#ifndef VGA_13_H
+#define VGA_13_H
 
 #include "grafix.h"
 
 class SimFont;
 
 extern float aspect_ratio;               /* correction for y / x pixel ratio   */
-extern unsigned int   VGAMODE;                    /* 320x200x8, etc                     */
-extern unsigned int   SCREEN_WIDTH;               /* logical width of rendering screen  */
-extern unsigned int   SCREEN_HEIGHT;              /* logical height of rendering screen */
-extern unsigned int   MXSCREEN_WIDTH;             /* width of video screen              */
-extern unsigned int   MXSCREEN_HEIGHT;            /* height of video screen             */
-extern unsigned int   SCREEN_PITCH;               /* actual byte width of screen        */
-extern unsigned int   MAX_X;                      /* usually SCREEN_WIDTH - 1           */
-extern unsigned int   MAX_Y;                      /* usually SCREEN_HEIGHT - 1          */
-extern const unsigned int   N_COLORS;                   /* 256 for now                        */
-extern const unsigned int   PALETTE_SIZE;               /* 256 * 3                            */
+extern int   VGAMODE;                    /* 320x200x8, etc                     */
+extern int   SCREEN_WIDTH;               /* logical width of rendering screen  */
+extern int   SCREEN_HEIGHT;              /* logical height of rendering screen */
+extern int   MXSCREEN_WIDTH;             /* width of video screen              */
+extern int   MXSCREEN_HEIGHT;            /* height of video screen             */
+extern int   SCREEN_PITCH;               /* actual byte width of screen        */
+extern int   MAX_X;                      /* usually SCREEN_WIDTH - 1           */
+extern int   MAX_Y;                      /* usually SCREEN_HEIGHT - 1          */
+extern const int   N_COLORS;                   /* 256 for now                        */
+extern const int   PALETTE_SIZE;               /* 256 * 3                            */
 
 extern SimFont      *g_font;
 extern Rect         cliprect;
@@ -78,7 +78,7 @@ void vga13_begin_scene();
 void vga13_end_scene();
 
 #ifndef __grafix_h
-struct Rect;
+class Rect;
 #endif
 
 void b_linedraw(int x1, int y1, int x2, int y2, int color, Rect *bounds);

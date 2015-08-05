@@ -228,7 +228,7 @@ void Hud::do_hud_stuff(int x, int y, Flight &my_flight)
 		hud_stuff[3] = 'B';
 	else
 		hud_stuff[3] = ' ';
-	if ((bool) my_flight.controls.flaps)
+	if (static_cast<bool>(my_flight.controls.flaps))
 	{
 		hud_stuff[4] = 'F';
 		the_font->font_sprintf(x,y,hud_color,NORMAL,"%s %02.0f %03.0f%%",hud_stuff,
@@ -326,10 +326,10 @@ char range_str[32];
 		sprintf(range_str," %05.2f",tg.range);
 	the_font->font_sprintf(x,y,hud_color,NORMAL,
 									"%06.2f",
-									tg.angleOff / _PI * 180);
+									tg.angleOff / SABRE_PI * 180);
 	the_font->font_sprintf(x,y+7,hud_color,NORMAL,
 									"%06.2f",
-									tg.aspect / _PI * 180);
+									tg.aspect / SABRE_PI * 180);
 
 	the_font->font_sprintf(x,y+14,hud_color,NORMAL,
 									"%s",
@@ -348,11 +348,11 @@ int x2,y2;
 	the_font->put_char(NOSE_CHAR,x1-3,y1-4,look_at_color,8);
 	if (my_flight.controls.armed_w)
 		show_gunsight(pilot,port);
-	x2 = x1 - static_cast<unsigned int>(my_flight.controls.ailerons);
-	y2 = y1 + static_cast<unsigned int>(my_flight.controls.elevators);
+	x2 = x1 - static_cast<int>(my_flight.controls.ailerons);
+	y2 = y1 + static_cast<int>(my_flight.controls.elevators);
 	the_font->put_char(YOKE_CHAR,x2-3,y2-4,look_at_color,8);
 	the_font->put_char(RUDDER_CENTER_CHAR,x1-3,SCREEN_HEIGHT-3,hud_color,8);
-	x2 = x1 + static_cast<unsigned int>(my_flight.controls.rudder);
+	x2 = x1 + static_cast<int>(my_flight.controls.rudder);
 	the_font->put_char(RUDDER_CHAR,x2-3,SCREEN_HEIGHT-11,hud_color,8);
 	if (my_flight.controls.vect_on)
 		show_vector(my_flight,port);
@@ -444,7 +444,7 @@ R_3DPoint p1;
 			break;
 		}
 		port.port2screen(p1,&x2,&y2);
-		the_font->put_char((unsigned char)130,x2-3,y2-4,hud_color,8);
+		the_font->put_char(static_cast<unsigned char>(130),x2-3,y2-4,hud_color,8);
 	}
 }
 

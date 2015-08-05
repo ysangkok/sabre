@@ -20,10 +20,10 @@
 /*************************************************************
  * pen.h                                                     *
  *************************************************************/
-#ifndef __pen_h
-#define __pen_h
+#ifndef PEN_H
+#define PEN_H
 
-#ifndef __grafix_h
+#ifndef GRAFIX_H
 #include "grafix.h"
 #endif
 

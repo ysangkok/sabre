@@ -23,8 +23,8 @@
  * Date   : March, 1997                          *
  * Author : Dan Hammer                           *
  *************************************************/
-#ifndef __unguided_h
-#define __unguided_h
+#ifndef UNGUIDED_H
+#define UNGUIDED_H
 
 #include "target.h"
 #include "viewobj.h"
@@ -325,7 +325,7 @@ public:
 
   Smokey *smokeys[MAX_SMOKES];
   int new_smoke(R_3DPoint &p,
-		unsigned int n_smokes,
+		int n_smokes,
 		float init_size,
 		float d_size,
 		float d_len,
@@ -333,7 +333,7 @@ public:
 		float max_time,
 		int has_flame,
 		float flame_time_max,
-		unsigned int n_flames,
+		int n_flames,
 		const char *smokmap_id,
 		const char *firemap_id);
 

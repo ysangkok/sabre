@@ -1,5 +1,5 @@
-#ifndef __aipildef_h
-#define __aipildef_h
+#ifndef AIPILDEF_H
+#define AIPILDEF_H
 
 /* ground collision defaults */
 #define aiPILOT_GCOL_SECS               C(10.0)

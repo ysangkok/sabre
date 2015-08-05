@@ -20,8 +20,8 @@
 /************************************************************
  * brsnline.h                                               *
  ************************************************************/
-#ifndef __brsnline_h
-#define __brsnline_h
+#ifndef BRSNLINE_H
+#define BRSNLINE_H
 
 /*
  Bresenham Line class

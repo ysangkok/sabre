@@ -230,27 +230,27 @@ void Earth_Watch::draw_horizon(Port_3D &port, int)
   all_sky = all_ground = 0;
 
 
-  if ((port.slook_from.phi < _2PI) &&
-      (port.slook_from.phi > _PI))
+  if ((port.slook_from.phi < SABRE_2PI) &&
+      (port.slook_from.phi > SABRE_PI))
     negative_phi = 1;
 
 
-  if ((port.roll > _PI2) &&
-      (port.roll < _PI34))
+  if ((port.roll > SABRE_PI2) &&
+      (port.roll < SABRE_PI34))
     negative_roll = 1;
 
   // Check for values of phi near 0,2pi & pi -- these are
   // situtations in which we are either pointing straight up or down
   if ((port.slook_from.phi < phi_fudge) ||
-      (port.slook_from.phi > (_2PI - phi_fudge)))
+      (port.slook_from.phi > (SABRE_2PI - phi_fudge)))
     {
       // phi near 0 -- we're looking straight down
       fill_rect(port.screen,ground_color);
       all_ground = 1;
       return;
     }
-  else if ((port.slook_from.phi > (_PI - phi_fudge)) &&
-	   (port.slook_from.phi < (_PI + phi_fudge)))
+  else if ((port.slook_from.phi > (SABRE_PI - phi_fudge)) &&
+	   (port.slook_from.phi < (SABRE_PI + phi_fudge)))
     {
       fill_rect(port.screen,sky_color);
       all_sky = 1;

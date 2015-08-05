@@ -26,8 +26,8 @@
  *          Additional programming by            *
  *          Pierre de Mouveaux                   *
  *************************************************/
-#ifndef __linux_joy_h
-#define __linux_joy_h
+#ifndef LINUX_JOY_H
+#define LINUX_JOY_H
 
 class LinuxJoystick
 {

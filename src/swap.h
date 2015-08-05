@@ -1,23 +1,23 @@
 #include <inttypes.h>
+#include <endian.h>
 
-static inline uint16_t ltohs(uint16_t x)
+static int16_t ltohs(int16_t x);
+static inline int16_t ltohs(int16_t x)
 {
-    /* This is compile-time optimised with at least -O1 or -Os */
-    uint32_t const dummy = 0x12345678;
-    if(*(uint8_t const *)&dummy == 0x12)
-        return (uint16_t) ((x >> 8) | (x << 8));
-    else
-        return x;
+#ifdef __cplusplus
+	return static_cast<int16_t>(htole16(static_cast<uint16_t>(x)));
+#else
+	return htole16(x);
+#endif
 }
 
-static inline uint32_t ltohl(uint32_t x)
+static int32_t ltohl(int32_t x);
+static inline int32_t ltohl(int32_t x)
 {
-    /* This is compile-time optimised with at least -O1 or -Os */
-    uint32_t const dummy = 0x12345678;
-    if(*(uint8_t const *)&dummy == 0x12)
-        return (x >> 24) | ((x >> 8) & 0x0000ff00)
-                | ((x << 8) & 0x00ff0000) | (x << 24);
-    else
-        return x;
+#ifdef __cplusplus
+	return static_cast<int32_t>(htole32(static_cast<uint32_t>(x)));
+#else
+	return htole32(x);
+#endif
 }
 

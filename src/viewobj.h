@@ -20,8 +20,8 @@
 /**************************************************************
  * viewobj.h                                                  *
  **************************************************************/
-#ifndef __viewobj_h
-#define __viewobj_h
+#ifndef VIEWOBJ_H
+#define VIEWOBJ_H
 
 
 #define projectile_color 70
@@ -63,7 +63,7 @@ public:
   float world_len;
   float world_width;
   TR_2DPoint spoints[16];
-  unsigned int npoints;
+  int npoints;
 
   virtual class_types class_type()
     { return Bitmap_View_t; }
@@ -131,7 +131,7 @@ public:
   R_3DPoint points[4];
   R_3DPoint points1[4];
   R_2DPoint spoints[16];
-  unsigned int npoints;
+  int npoints;
   C_PolyInfo p_info[2];
   C_ShapeInfo info;
 

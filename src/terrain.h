@@ -24,8 +24,8 @@
  * Date   : June, 1997                           *
  * Author : Dan Hammer                           *
   *************************************************/
-#ifndef __terrain_h
-#define __terrain_h
+#ifndef TERRAIN_H
+#define TERRAIN_H
 
 #include "cpoly.h"
 #include "obj_3d.h"
@@ -61,14 +61,14 @@ public:
   R_3DPoint     points[NTP_POINTS];
   TxtPoint      tpoints[NTP_POINTS];
   TR_3DPoint    port_points[NTP_MAXPTS];
-  unsigned int  np;
+  int  np;
   TR_2DPoint	screen_points_nc[NTP_MAXPTS];
   TR_2DPoint    screen_points[NTP_MAXPTS];
 #ifdef USES_DDRAW
   TRF_2DPoint	screen_points_ncf[NTP_MAXPTS];
   TRF_2DPoint   screen_pointsf[NTP_MAXPTS];
 #endif
-  unsigned int  sp;
+  int  sp;
   LineEquat     eqs[NTP_POINTS];
   REAL_TYPE     plane_constant;
   Vector        surface_normal;

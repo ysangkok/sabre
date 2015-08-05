@@ -22,8 +22,8 @@
  * Date   : December, 1998                       *
  * Author : Dan Hammer                           *
  *************************************************/
-#ifndef __sbrkeys_h
-#define __sbrkeys_h
+#ifndef SBRKEYS_H
+#define SBRKEYS_H
 
 #include "pc_keys.h"
 

@@ -72,7 +72,7 @@ extern int rz_which_line;
  * z-buffered flat colored poly rendering                    *
  *************************************************************/
 
-int rendzpoly(R_3DPoint *poly, unsigned int n, int color, 
+int rendzpoly(R_3DPoint *poly, int n, int color, 
 	      Port_3D &port, R_2DPoint *spoints)
 {
   R_3DPoint ppoly[RENDMAX];
@@ -81,7 +81,7 @@ int rendzpoly(R_3DPoint *poly, unsigned int n, int color,
 
   int zclipit = 0;
   int nvis = 0;
-  unsigned int i,np;
+  int i,np;
   REAL_TYPE zmin = 1.0;
 
   for (i=0;i<n;i++)
@@ -113,14 +113,14 @@ int rendzpoly(R_3DPoint *poly, unsigned int n, int color,
   return (project_zpoly(polyptr, np,color, port, spoints));
 }
 
-int project_zpoly(R_3DPoint *poly, unsigned int n, int color,
+int project_zpoly(R_3DPoint *poly, int n, int color,
 		 Port_3D &port, R_2DPoint *spoints)
 {
   R_2DPoint scpoints[RENDMAX];
   R_2DPoint cpoints[RENDMAX];
   R_2DPoint *pnts;
-  unsigned int i;
-  unsigned int clip_n = 0;
+  int i;
+  int clip_n = 0;
 
   if (n > 0 && n < RENDMAX)
     {
@@ -218,8 +218,8 @@ inline void r_set_edge(R2D_TYPE x, int y, R2D_TYPE z)
     }
 }
 
-void r_build_edge_array(R_2DPoint *points, unsigned int n);
-void r_build_edge_array(R_2DPoint *points, unsigned int n)
+void r_build_edge_array(R_2DPoint *points, int n);
+void r_build_edge_array(R_2DPoint *points, int n)
 {
   int i;
   R_2DPoint *p0,*p1;
@@ -264,8 +264,8 @@ extern int frame_switch;
 extern int frame_color;
 extern void frame_convpoly(int *, int, int);
 
-void r_frame_convpoly(R_2DPoint *points, unsigned int n);
-void r_frame_convpoly(R_2DPoint *points, unsigned int n)
+void r_frame_convpoly(R_2DPoint *points, int n);
+void r_frame_convpoly(R_2DPoint *points, int n)
 {
   if (n >= RENDMAX)
     return;
@@ -274,14 +274,14 @@ void r_frame_convpoly(R_2DPoint *points, unsigned int n)
   int i;
   for (i=0;i<n;i++)
     {
-      *iptr = (int) points[i].x;
-      *(iptr + 1) = (int) points[i].y;
+      *iptr = points[i].x;
+      *(iptr + 1) = points[i].y;
       iptr += 2;
     }
   frame_convpoly(ipoints,n,frame_color);
 }
 
-void r_fill_convpoly(R_2DPoint *points, unsigned int n, int colr)
+void r_fill_convpoly(R_2DPoint *points, int n, int colr)
 {
   int j,stps;
   unsigned char *b_ptr;
@@ -308,10 +308,10 @@ void r_fill_convpoly(R_2DPoint *points, unsigned int n, int colr)
 
   z_ptr = zbuff + min_y * static_cast<int>(SCREEN_WIDTH);
 
-  for (j = (int)min_y; j <= (int)max_y; j++)
+  for (j = min_y; j <= max_y; j++)
     {
-      int xl = (int) tr_l_edge[j].x;
-      stps = (int) ((tr_r_edge[j].x - xl) + 1) ;
+      int xl = tr_l_edge[j].x;
+      stps = tr_r_edge[j].x - xl + 1;
 
       zz = tr_l_edge[j].z;
       zr = tr_r_edge[j].z;
@@ -325,7 +325,7 @@ void r_fill_convpoly(R_2DPoint *points, unsigned int n, int colr)
 	{
 	  if (zz + zbias + ztrans > *z_ptr2)
 	    {
-	      *b_ptr2 = (char) colr;
+	      *b_ptr2 = static_cast<unsigned char>(colr);
 	      *z_ptr2 = zz + zbias + ztrans;
 	    }
 	  zz += zstp;
@@ -371,8 +371,8 @@ void rendzline(const R_2DPoint &s0, const R_2DPoint &s1, int colr)
 
   zz = s0.z;
 
-  Point pp0((int)s0.x,(int)s0.y);
-  Point pp1((int)s1.x,(int)s1.y);
+  Point pp0(s0.x,s0.y);
+  Point pp1(s1.x,s1.y);
   LineTraveler traveler(pp0,pp1,1);
   if (traveler.majAct)
     d = R2D_TYPE(traveler.there.x) - R2D_TYPE(traveler.here.x);

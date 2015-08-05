@@ -20,8 +20,8 @@
 /*****************************************************
  * waypoint.h                                        *
  *****************************************************/
-#ifndef __waypoint_h
-#define __waypoint_h
+#ifndef WAYPOINT_H
+#define WAYPOINT_H
 
 enum waypoint_modes 
 {

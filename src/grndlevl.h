@@ -23,8 +23,8 @@
  * Date   : March, 1997                          *
  * Author : Dan Hammer                           *
  *************************************************/
-#ifndef __grndlevl_h
-#define __grndlevl_h
+#ifndef GRNDLEVL_H
+#define GRNDLEVL_H
 
 REAL_TYPE getGroundLevel(R_3DPoint &p);
 extern Vector ggNormal;

@@ -66,7 +66,7 @@ bool C_3DObject_Group::isVisible(Port_3D &port)
 
 void C_3DObject_Group::addDrawList(DrawList &dlist, Port_3D &port)
 {
-  unsigned int i;
+  int i;
   if ((n_objects > 0) && isVisible(port))
     {
       for (i = 0; i<n_objects;i++)
@@ -182,8 +182,8 @@ inline int VVTEST(R_3DPoint &p0, R_3DPoint &p1, R_3DPoint &p2,
   R_3DPoint rclipped_points[16];
   R_2DPoint screen_points[16];
   R_2DPoint clipped_points[32];
-  unsigned int       npoints;
-  unsigned int       nxpoints;
+  int       npoints;
+  int       nxpoints;
   bool result = 1;
   int zclp = 0;
   if (p0.z < minz)
@@ -207,7 +207,7 @@ inline int VVTEST(R_3DPoint &p0, R_3DPoint &p1, R_3DPoint &p2,
 	  if (zpoly_clip(ppoints,4,rclipped_points,&npoints,minz))
 	    {
 	      MYCHECK(npoints < 16);
-	      for (unsigned int i=0;i<npoints;i++)
+	      for (int i=0;i<npoints;i++)
 		port.port2screen(rclipped_points[i],&screen_points[i]);
 	      if (r_poly_clip(screen_points,clipped_points,npoints,
 			      &nxpoints,&port.screen))
@@ -228,7 +228,7 @@ inline int VVTEST(R_3DPoint &p0, R_3DPoint &p1, R_3DPoint &p2,
   return (result);
 }
 
-extern void r_frame_convpoly(R_2DPoint *points, unsigned int n);
+extern void r_frame_convpoly(R_2DPoint *points, int n);
 
 void VVSHOW(R_3DPoint &p0, R_3DPoint &p1, R_3DPoint &p2, 
 		  R_3DPoint &p3, Port_3D &port, REAL_TYPE minz)
@@ -237,8 +237,8 @@ void VVSHOW(R_3DPoint &p0, R_3DPoint &p1, R_3DPoint &p2,
   R_3DPoint rclipped_points[16];
   R_2DPoint screen_points[16];
   R_2DPoint clipped_points[32];
-  unsigned int       npoints;
-  unsigned int       nxpoints;
+  int       npoints;
+  int       nxpoints;
 
   int zclp = 0;
   if (p0.z < minz)
@@ -262,7 +262,7 @@ void VVSHOW(R_3DPoint &p0, R_3DPoint &p1, R_3DPoint &p2,
 	  if (zpoly_clip(ppoints,4,rclipped_points,&npoints,minz))
 	    {
 	      MYCHECK(npoints < 16);
-	      for (unsigned int i=0;i<npoints;i++)
+	      for (int i=0;i<npoints;i++)
 		port.port2screen(rclipped_points[i],&screen_points[i]);
 	      if (r_poly_clip(screen_points,clipped_points,npoints,
 			      &nxpoints,&port.screen))

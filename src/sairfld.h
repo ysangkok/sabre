@@ -23,8 +23,8 @@
  * Date   : April, 1998                          *
  * Author : Dan Hammer                           *
  *************************************************/
-#ifndef __sairfld_h
-#define __sairfld_h
+#ifndef SAIRFLD_H
+#define SAIRFLD_H
 
 #include "srunway.h"
 #include "sarray.h"
@@ -64,7 +64,7 @@ public:
 
 	sAirfield(const sairfield_info &);
 
-	sRunway	*GetRunway(unsigned int which);		
+	sRunway	*GetRunway(int which);		
 	
 	const sPoint &GetPosition()
 	{

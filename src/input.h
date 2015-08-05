@@ -23,8 +23,8 @@
  * Date   : March, 1997                          *
  * Author : Dan Hammer                           *
  *************************************************/
-#ifndef __input_h
-#define __input_h
+#ifndef INPUT_H
+#define INPUT_H
 
 #include "linux_joy.h"
 

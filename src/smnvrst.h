@@ -24,8 +24,8 @@
  * Author : Dan Hammer                           *
  * Object for maneuver stack                     *
  *************************************************/
-#ifndef __smnvrst_h
-#define __smnvrst_h
+#ifndef SMNVRST_H
+#define SMNVRST_H
 
 #include <stdint.h>
 
@@ -92,7 +92,7 @@ enum {
 	enum { LEFT, RIGHT };
 
 	static const char *maneuver2string[];
-	static const char *Maneuver2String(unsigned int);
+	static const char *Maneuver2String(int);
 };
 
 #define IMNVR_DIRBIT   0x01
@@ -103,12 +103,12 @@ enum {
 #define IMNVR_LEFT     0x00
 #define IMNVR_RIGHT    0x01
 
-#define IMNVR_DIR(a) ((int)((a) & IMNVR_DIRBIT))
+#define IMNVR_DIR(a) (static_cast<int>((a) & IMNVR_DIRBIT))
 
 class sManeuverState
 {
 public:
-	unsigned int maneuver;
+	int maneuver;
 	int state;
 	bool done;
 	int  stackLevel;
@@ -131,7 +131,7 @@ public:
 	}
 
 	friend void SETMANEUVER(sManeuverState &ms,
-								   unsigned int maneuve,
+								   int maneuve,
 								   int stackLeve,
 								   uint32_t flgs = 0,
 								   sREAL d0 = 0.0,
@@ -149,7 +149,7 @@ public:
 	}
 
 	friend void SETMANEUVERX(sManeuverState &ms,
-								   unsigned int maneuve,
+								   int maneuve,
 								   int stackLvl,
 								   uint32_t flgs = 0,
 								   sREAL e0 = 0.0,

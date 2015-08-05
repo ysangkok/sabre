@@ -52,7 +52,7 @@ aiFlite::aiFlite()
   viewPilot = 0;
   isPlayerFlite = 0;
   playerPilotWingPos = -1;
-  idx = -1;
+  idx = static_cast<uint32_t>(-1);
   affiliation = -1;
   id[0] = 0;
   activeCount = 1;
@@ -64,7 +64,7 @@ aiFlite::aiFlite()
   playerCommandMode = 0;
 }
 
-aiFlite::aiFlite(unsigned int mx, int owns, const char *i)
+aiFlite::aiFlite(int mx, bool owns, const char *i)
   :pilots(mx,owns),
    waypoints(1,1),
    freePilots(mx,0)
@@ -74,7 +74,7 @@ aiFlite::aiFlite(unsigned int mx, int owns, const char *i)
   viewPilot = 0;
   isPlayerFlite = 0;
   playerPilotWingPos = -1;
-  idx = -1;
+  idx = static_cast<uint32_t>(-1);
   affiliation = -1;
   SetId(i);
   activeCount = 1;
@@ -92,8 +92,8 @@ aiFlite::aiFlite(unsigned int mx, int owns, const char *i)
 
 void aiFlite::Init()
 {
-  unsigned int i;
-  unsigned int formationIndex;
+  int i;
+  uint32_t formationIndex;
   sPoint	 leaderPosition;
   sAttitude leaderAttitude;
 
@@ -110,7 +110,7 @@ void aiFlite::Init()
       if (pil->IsPlayer())
 	{
 	  SetAsPlayerFlite(1);
-	  playerPilotWingPos = static_cast<int>(i);
+	  playerPilotWingPos = i;
 	}
       if (pil->IsActive())
 	activeCount++;
@@ -139,7 +139,7 @@ void aiFlite::Init()
       if (curWaypoint->task == swpTAKEOFF)
 	{
 	  const char *fieldId = curWaypoint->GetFieldId();
-	  unsigned int runwayNo = curWaypoint->GetRunwayNo();
+	  int runwayNo = curWaypoint->GetRunwayNo();
 	  sAirfield *airfield = sAirfield::GetsAirfield(fieldId);
 	  if (airfield)
 	    {
@@ -170,7 +170,7 @@ void aiFlite::Init()
 	  sPoint    formPoint;
 	  sVector   formVect;
 
-	  aiPilot *pil = GetPilot(static_cast<int>(i));
+	  aiPilot *pil = GetPilot(i);
 	  if (pil == leader)
 	    continue;
 	  pil->GetPositionAndAttitude(pos,att);
@@ -179,7 +179,7 @@ void aiFlite::Init()
 					   wPos++,
 					   formVect);
 	  formVect *= pil->GetFormationWingLen();
-	  aiPilot::BodyPoint2WorldPoint(formationIndex,static_cast<const sPoint &>(formVect),
+	  aiPilot::BodyPoint2WorldPoint(static_cast<int>(formationIndex),static_cast<const sPoint &>(formVect), // first cast can't fail on x64 cause it (uint32_t) is cast into a wider type (int)
 					formPoint);
 	  pil->SetPositionAndAttitude(formPoint,leaderAttitude);
 	}
@@ -195,7 +195,7 @@ void aiFlite::InitFormation(sWaypoint *wp)
     {
     case swpTAKEOFF:
       {
-	for (unsigned int i=0;i<GetCount();i++)
+	for (int i=0;i<GetCount();i++)
 	  {
 	    aiPilot *pil = GetPilot(i);
 	    if (pil->IsActive())
@@ -208,7 +208,7 @@ void aiFlite::InitFormation(sWaypoint *wp)
 
     case swpLAND:
       {
-	for (unsigned int i=0;i<GetCount();i++)
+	for (int i=0;i<GetCount();i++)
 	  {
 	    aiPilot *pil = GetPilot(i);
 	    if (pil->IsActive())
@@ -221,12 +221,12 @@ void aiFlite::InitFormation(sWaypoint *wp)
 
     case swpMANEUVER:
       {
-	for (unsigned int i=0;i<GetCount();i++)
+	for (int i=0;i<GetCount();i++)
 	  {
 	    aiPilot *pil = GetPilot(i);
 	    if (pil->IsActive())
 	      pil->SetManeuver(wp->GetManeuverType(),
-			       wp->GetManeuverFlags(),
+			       static_cast<uint32_t>(wp->GetManeuverFlags()),
 			       wp->GetManeuverData0(),
 			       wp->GetManeuverData1(),
 			       wp->GetManeuverData2());
@@ -246,7 +246,7 @@ void aiFlite::InitFormation(sWaypoint *wp)
 	else
 	  leader->SetNavigatePoint(wp);
 	leader->markedAsFree = 0;
-	for (unsigned int i=0;i<GetCount();i++)
+	for (int i=0;i<GetCount();i++)
 	  {
 	    if (i != leaderIndex)
 	      {
@@ -271,7 +271,7 @@ void aiFlite::InitFormation(sWaypoint *wp)
 
 int aiFlite::AssignEngageTarget(aiPilot *pil, aiFlite *targetFlite)
 {
-  unsigned int i;
+  int i;
   int result = 0;
 
   for (i=0;i<targetFlite->GetCount();i++)
@@ -291,7 +291,7 @@ int aiFlite::AssignEngageTarget(aiPilot *pil, aiFlite *targetFlite)
 
 void aiFlite::KillAttackers()
 {
-  for (unsigned int i=0;i<GetCount();i++)
+  for (int i=0;i<GetCount();i++)
     {
       aiPilot *pil = GetPilot(i);
       pil->KillAttackList();
@@ -300,7 +300,7 @@ void aiFlite::KillAttackers()
 
 void aiFlite::Update(double)
 {
-  unsigned int i;
+  int i;
   sAttitude att;
   aiPilot *newLeader;
   int foundPlayer = 0;
@@ -317,7 +317,7 @@ void aiFlite::Update(double)
       if (pil->IsPlayer())
 	{
 	  foundPlayer = 1;
-	  playerPilotWingPos = static_cast<int>(i);
+	  playerPilotWingPos = i;
 	}
     }
 
@@ -429,7 +429,7 @@ void aiFlite::SetAsPlayerFlite(bool isPlayer)
 
 void aiFlite::DistributeAttackers()
 {
-  unsigned int i;
+  int i;
 
   freePilots.Flush();
   for (i=0;i<GetCount();i++)
@@ -441,7 +441,7 @@ void aiFlite::DistributeAttackers()
 
   if (attackerCount > 0 && freePilots.Count() > 0)
     {
-      unsigned int j = 0;
+      int j = 0;
       for (i=0;i<GetCount();i++)
 	{
 	  if (j >= freePilots.Count())
@@ -463,7 +463,7 @@ void aiFlite::DistributeAttackers()
 
 void aiFlite::Destroy()
 {
-  unsigned int i;
+  int i;
   KillAttackers();
   for (i=0;i<GetFliteCount();i++)
     {
@@ -495,7 +495,7 @@ void aiFlite::DoEngageUpdate()
     {
       if (newTargetDelayTime <= 0.0)
 	{
-	  for (unsigned int i=0;i<GetCount();i++)
+	  for (int i=0;i<GetCount();i++)
 	    {
 	      aiPilot *pil = GetPilot(i);
 	      if (pil->IsActive() &&
@@ -509,7 +509,7 @@ void aiFlite::DoEngageUpdate()
   else
     {
       mode = aiF_NAVIGATE;
-      for (unsigned int i=0;i<GetCount();i++)
+      for (int i=0;i<GetCount();i++)
 	{
 	  aiPilot *pil = GetPilot(i);
 	  pil->Disengage();
@@ -520,7 +520,7 @@ void aiFlite::DoEngageUpdate()
 
 void aiFlite::HandleDelayedTargets(aiFlite *engageFlite)
 {
-  unsigned int i;
+  int i;
 
   for (i=0;i<GetCount();i++)
     {
@@ -581,7 +581,7 @@ void aiFlite::KillEngageFlite(aiFlite *engageFlite)
   if (engageFlite->GetIdx() == engageFliteIdx)
     {
       mode = aiF_NAVIGATE;
-      for (unsigned int i=0;i<GetCount();i++)
+      for (int i=0;i<GetCount();i++)
 	{
 	  aiPilot *pil = GetPilot(i);
 	  pil->Disengage();
@@ -630,7 +630,7 @@ void aiFlite::DoStrikeUpdate()
       sREAL     d;
       if (leader->IsBombing())
 	{
-	  for (unsigned int i=0;i<GetCount();i++)
+	  for (int i=0;i<GetCount();i++)
 	    {
 	      aiPilot *pil = GetPilot(i);
 	      if (pil != leader && pil->IsActive())
@@ -652,7 +652,7 @@ void aiFlite::DoTakeOffUpdate()
 {
   if (curWaypoint != NULL &&	sGetElapsedTime() < curWaypoint->time)
     {
-      for (unsigned int i=0;i<GetCount();i++)
+      for (int i=0;i<GetCount();i++)
 	GetPilot(i)->SetClearForTakeoff(0);
       return;
     }
@@ -667,7 +667,7 @@ void aiFlite::DoTakeOffUpdate()
   if (nextPilot >= GetCount())
     {
       int nextWaypoint = 1;
-      for (unsigned int i=0;i<GetCount();i++)
+      for (int i=0;i<GetCount();i++)
 	{
 	  aiPilot *pil = GetPilot(i);
 	  if (pil->IsActive() && pil->GetAltitudeFPS() < curWaypoint->altitude - 200.0)
@@ -688,7 +688,7 @@ void aiFlite::DoLandUpdate()
 {
   if (curWaypoint != NULL &&	sGetElapsedTime() < curWaypoint->time)
     {
-      for (unsigned int i=0;i<GetCount();i++)
+      for (int i=0;i<GetCount();i++)
 	GetPilot(i)->SetClearForLanding(0);
       return;
     }
@@ -744,7 +744,7 @@ void aiFlite::DoTargetsWaypoint()
 	broadcastPilot = damagerPilot;
       else if (damagerFlite)
 	{
-	  for (unsigned int i=0;i<damagerFlite->GetCount();i++)
+	  for (int i=0;i<damagerFlite->GetCount();i++)
 	    {
 	      aiPilot *pil = damagerFlite->GetPilot(i);
 	      if (pil && !pil->IsPlayer() && pil->IsActive())
@@ -782,7 +782,7 @@ void aiFlite::DoTargetsWaypoint()
 	case aiF_TARGETMODE_EVADE:
 	  {
 	    mode = aiF_TARGETS;
-	    for (unsigned int i =0;i<GetCount();i++)
+	    for (int i =0;i<GetCount();i++)
 	      {
 		aiPilot *pil = GetPilot(i);
 		if (pil->IsActive())
@@ -816,7 +816,7 @@ void aiFlite::DoCapWaypoint()
    return;
    */
 
-  unsigned int i;
+  int i;
   for (i=0;i<GetFliteCount();i++)
     {
       aiFlite *flite = GetFliteByIndex(i);
@@ -881,7 +881,7 @@ void aiFlite::DoStrikeWaypoint()
 	{
         case swpLEVEL_BOMB:
         default:
-	  leader->SetSurfaceTarget(curWaypoint->iTaskModifier[0],
+	  leader->SetSurfaceTarget(static_cast<uint32_t>(curWaypoint->iTaskModifier[0]),
 				   aiPilot::LEVEL_BOMB,
 				   &curWaypoint->to);
 	  break;
@@ -898,7 +898,7 @@ void aiFlite::DoEngagePlayerWaypoint()
       if (tg.range * tg.range <= visualEngagementRadius)
 	{
 	  mode = aiF_ENGAGE_PLAYER;
-	  for (unsigned int i=0;i<GetCount();i++)
+	  for (int i=0;i<GetCount();i++)
 	    {
 	      aiPilot *pil = GetPilot(i);
 	      if (pil->IsActive())
@@ -908,22 +908,12 @@ void aiFlite::DoEngagePlayerWaypoint()
     }
 }
 
-aiPilot *aiFlite::GetPilot(unsigned int idx)
-{
-  aiPilot *result = NULL;
-  if (idx < n)
-    {
-      result = static_cast<aiPilot *>(pilots[idx]);
-    }
-  return (result);
-}
-
 aiPilot *aiFlite::GetPilot(int idx)
 {
   aiPilot *result = NULL;
-  if (idx >= 0 && static_cast<unsigned int>(idx) < n)
+  if (idx >= 0 && idx < n)
     {
-      result = static_cast<aiPilot *>(pilots[static_cast<unsigned int>(idx)]);
+      result = static_cast<aiPilot *>(pilots[idx]);
     }
   return (result);
 }
@@ -933,7 +923,7 @@ aiPilot *aiFlite::GetPlayerWingman()
   aiPilot *result = NULL;
   if (IsPlayerFlite())
     {
-      for (unsigned int i=0;i<GetCount();i++)
+      for (int i=0;i<GetCount();i++)
 	{
 	  aiPilot *pil = GetPilot(i);
 	  if (!pil->IsPlayer() && pil->IsActive())
@@ -946,7 +936,7 @@ aiPilot *aiFlite::GetPlayerWingman()
   return (result);
 }
 
-unsigned int aiFlite::Add(aiPilot *newPilot)
+int aiFlite::Add(aiPilot *newPilot)
 {
   if (n < max)
     {   
@@ -968,16 +958,16 @@ void aiFlite::AddPlayerPilot(aiPilot *playerPilot)
       playerPilot->Init();
       isPlayerFlite = 1;
       pilots.Add(playerPilot);
-      playerPilotWingPos = static_cast<int>(n);
+      playerPilotWingPos = n;
       n++;
     }
 }
 
-void aiFlite::SetWaypoints(const sWaypoint *wps, unsigned int nn)
+void aiFlite::SetWaypoints(const sWaypoint *wps, int nn)
 {
   waypoints.Destroy();
   waypoints.Create(nn,1);
-  for (unsigned int i=0;i<nn;i++)
+  for (int i=0;i<nn;i++)
     {
       sWaypoint *wp = new sWaypoint(wps[i]);
       waypoints.Add(wp);
@@ -987,11 +977,11 @@ void aiFlite::SetWaypoints(const sWaypoint *wps, unsigned int nn)
     }
 }
 
-void aiFlite::SetWaypoints(const swaypoint_info *winfo, unsigned int nn)
+void aiFlite::SetWaypoints(const swaypoint_info *winfo, int nn)
 {
   waypoints.Destroy();
   waypoints.Create(nn,1);
-  for (unsigned int i=0;i<nn;i++)
+  for (int i=0;i<nn;i++)
     {
       sWaypoint *wp = new sWaypoint(winfo[i]);
       waypoints.Add(wp);
@@ -1001,9 +991,9 @@ void aiFlite::SetWaypoints(const swaypoint_info *winfo, unsigned int nn)
     }
 }
 
-sWaypoint *aiFlite::GetWaypoint(unsigned int idx)
+sWaypoint *aiFlite::GetWaypoint(int idx)
 {
-  if (/*idx >= 0 && */idx < waypoints.Count())
+  if (idx >= 0 && idx < waypoints.Count())
     return (static_cast<sWaypoint *>(waypoints[idx]));
   else
     return (NULL);
@@ -1019,11 +1009,13 @@ sWaypoint *aiFlite::GetNextWaypoint()
 
 sWaypoint *aiFlite::GetPreviousWaypoint()
 {
-  if (wpidx > 0) wpidx--;
+  wpidx--;
+  if (wpidx < 0)
+    wpidx = 0;
   return (GetWaypoint(wpidx));
 }
 
-unsigned int aiFlite::IncViewPilot()
+int aiFlite::IncViewPilot()
 {	
   if (!IsActive())
     return (0);
@@ -1033,10 +1025,10 @@ unsigned int aiFlite::IncViewPilot()
   return (viewPilot);
 }
 
-void aiFlite::SetManeuver(unsigned int maneuver, uint32_t flags, sREAL d0,
+void aiFlite::SetManeuver(int maneuver, uint32_t flags, sREAL d0,
 			  sREAL d1, sREAL d2)
 {
-  for (unsigned int i=0;i<GetCount();i++)
+  for (int i=0;i<GetCount();i++)
     {
       aiPilot *pil = GetPilot(i);
       pil->SetManeuver(maneuver,flags,d0,d1,d2);
@@ -1045,12 +1037,12 @@ void aiFlite::SetManeuver(unsigned int maneuver, uint32_t flags, sREAL d0,
   mode = aiF_MANEUVER;
 }
 
-void aiFlite::SetFormationWaypoint(sWaypoint *wp, unsigned int leaderIdx)
+void aiFlite::SetFormationWaypoint(sWaypoint *wp, int leaderIdx)
 {
   uint32_t targetIdx;
   SetWaypoints(wp,1);
-  //if (leaderIndex < 0)
-  //  leaderIndex = 0;
+  if (leaderIndex < 0)
+    leaderIndex = 0;
   if (leaderIndex > GetCount() - 1)
     leaderIndex = GetCount() - 1;
   this->leaderIndex = leaderIdx;
@@ -1058,7 +1050,7 @@ void aiFlite::SetFormationWaypoint(sWaypoint *wp, unsigned int leaderIdx)
   targetIdx = ldr->GetIdx();
   ldr->SetNavigatePoint(GetWaypoint(0));
   int wingPos = 1;
-  for (unsigned int i=0;i<GetCount();i++)
+  for (int i=0;i<GetCount();i++)
     {
       if (i != leaderIndex)
 	{
@@ -1080,7 +1072,7 @@ aiPilot *aiFlite::GetLeader()
     }
 }
 
-aiPilot *aiFlite::GetNextActivePilot(unsigned int  & start)
+aiPilot *aiFlite::GetNextActivePilot(int  & start)
 {
   aiPilot *result = NULL;
   if (start > GetCount() - 1)
@@ -1088,7 +1080,7 @@ aiPilot *aiFlite::GetNextActivePilot(unsigned int  & start)
   if (IsActive())
     {
       /* avoid endless loop */
-      unsigned int check = 0;
+      int check = 0;
       aiPilot *pil = GetPilot(start);
       while (!pil->IsActive())
 	{
@@ -1114,8 +1106,8 @@ void aiFlite::EngageFlite(aiFlite *flite)
     return;
   engageFliteIdx = flite->GetIdx();
   mode = aiF_ENGAGE;
-  unsigned int ii = 0;
-  for (unsigned int i = 0;i<GetCount();i++)
+  int ii = 0;
+  for (int i = 0;i<GetCount();i++)
     {
       aiPilot *pil = GetPilot(i);
       if (pil->IsActive() && !pil->IsPlayer())
@@ -1141,7 +1133,7 @@ void aiFlite::EngageNearestFlite()
   sREAL	minDistance = visualEngagementRadius + static_cast<sREAL>(100.0);
   int foundOne = 0;
 
-  for (unsigned int i=0;i<GetFliteCount();i++)
+  for (int i=0;i<GetFliteCount();i++)
     {
       aiFlite *flite = GetFliteByIndex(i);
       if (flite != NULL && flite->GetAffiliation() != GetAffiliation() 
@@ -1177,7 +1169,7 @@ void aiFlite::EngageNearestFlite()
 
 void aiFlite::FormUp()
 {
-  for (unsigned int i=0;i<GetCount();i++)
+  for (int i=0;i<GetCount();i++)
     {
       aiPilot *pil = GetPilot(i);
       pil->Disengage();
@@ -1199,7 +1191,7 @@ void aiFlite::ProtectPlayer()
 	      aiPilot::TextMessageToPlayer("No Wingmen");
 	      return;
 	    }
-	  unsigned int pilIndex = 0;
+	  int pilIndex = 0;
 	  sAttacker *attkr = aiPilot::playerPilot->GetFirstAttacker();
 	  if (!attkr)
 	    wingmanPilot->Broadcast(commWINGMAN_NOBODY_ATTACK);
@@ -1218,7 +1210,7 @@ void aiFlite::ProtectPlayer()
 	}
       else
 	{
-	  unsigned int pilIndex = 0;
+	  int pilIndex = 0;
 	  sAttacker *attkr = aiPilot::playerPilot->GetFirstAttacker();
 	  while (attkr)
 	    {
@@ -1328,7 +1320,7 @@ void aiFlite::AddaiFlite(aiFlite *flite)
 aiFlite *aiFlite::GetaiFlite(uint32_t idx)
 {
   aiFlite *result = NULL;
-  for (unsigned int i=0;i<aiFlites.Count();i++)
+  for (int i=0;i<aiFlites.Count();i++)
     {
       aiFlite *flite = static_cast<aiFlite *>(aiFlites[i]);
       if (flite != NULL && flite->GetIdx() == idx)
@@ -1343,7 +1335,7 @@ aiFlite *aiFlite::GetaiFlite(uint32_t idx)
 aiFlite *aiFlite::GetaiFlite(char *id)
 {
   aiFlite *result = NULL;
-  for (unsigned int i=0;i<GetFliteCount();i++)
+  for (int i=0;i<GetFliteCount();i++)
     {
       aiFlite *fl = GetFliteByIndex(i);
       if (fl && !strcmp(id,fl->GetId()))
@@ -1355,18 +1347,10 @@ aiFlite *aiFlite::GetaiFlite(char *id)
   return result;
 }
 
-aiFlite *aiFlite::GetFliteByIndex(unsigned int i)
-{
-  if (i < aiFlites.Count())
-    return static_cast<aiFlite *>(aiFlites[i]);
-  else
-    return NULL;
-}
-
 aiFlite *aiFlite::GetFliteByIndex(int i)
 {
-  if (i >= 0 && static_cast<unsigned int>(i) < aiFlites.Count())
-    return static_cast<aiFlite *>(aiFlites[static_cast<unsigned int>(i)]);
+  if (i >= 0 && i < aiFlites.Count())
+    return static_cast<aiFlite *>(aiFlites[i]);
   else
     return NULL;
 }
@@ -1376,7 +1360,7 @@ aiFlite *aiFlite::GetPlayerFlite()
   return playerFlite;
 }
 
-unsigned int aiFlite::GetFliteCount()
+int aiFlite::GetFliteCount()
 {
   return aiFlites.Count();
 }
@@ -1389,7 +1373,7 @@ void aiFlite::FlushaiFlites()
 
 void aiFlite::RemoveaiFlite(aiFlite *flite)
 {
-  for (unsigned int i=0;i<aiFlites.Count();i++)
+  for (int i=0;i<aiFlites.Count();i++)
     {
       aiFlite *fflite = static_cast<aiFlite *>(aiFlites[i]);
       if (fflite != NULL && fflite == flite)
@@ -1399,7 +1383,7 @@ void aiFlite::RemoveaiFlite(aiFlite *flite)
 
 void aiFlite::aiFlitesUpdate(double timeFrame)
 {
-  for (unsigned int i=0;i<aiFlites.Count();i++)
+  for (int i=0;i<aiFlites.Count();i++)
     {
       aiFlite *flite = static_cast<aiFlite *>(aiFlites[i]);
       if (flite != NULL)

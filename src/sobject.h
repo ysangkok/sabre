@@ -24,10 +24,8 @@
  * Author : Dan Hammer                           *
  * Base class for use with containers            *
  *************************************************/
-#ifndef __sobject_h
-#define __sobject_h
-
-#define __cdecl
+#ifndef SOBJECT_H
+#define SOBJECT_H
 
 #ifdef __cplusplus
 

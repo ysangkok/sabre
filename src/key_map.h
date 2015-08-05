@@ -17,8 +17,8 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-#ifndef __key_map_h
-#define __key_map_h
+#ifndef KEY_MAP_H
+#define KEY_MAP_H
 typedef struct kmp_str
 {
 	const char *str;

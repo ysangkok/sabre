@@ -24,8 +24,8 @@
  * Date   : March, 1997                          *
  * Author : Dan Hammer                           *
  *************************************************/
-#ifndef __obj_3d_h
-#define __obj_3d_h
+#ifndef OBJ_3D_H
+#define OBJ_3D_H
 
 #include "cpoly.h"
 
@@ -103,7 +103,7 @@ class C_3DObject_List
 {
 public:
   C_3DObject_Base *objects[MAX_OBJECTS];
-  unsigned int n_objects;
+  int n_objects;
   int object_idx;
   C_3DObject_List()
   { n_objects = 0; object_idx = -1; }
@@ -123,7 +123,7 @@ class C_3DInfoManager
 {
 public:
   C_3DObjectInfo *infos;
-  unsigned int ninfos;
+  int ninfos;
   char *path;
 
   C_3DInfoManager()
@@ -166,7 +166,7 @@ std::ostream &operator <<(std::ostream &os, C_3DInfoManager &cm)
 class C_3DObject2 : public C_3DObject_Base, public Target
 {
 public:
-  unsigned int             nshapes;
+  int             nshapes;
   C_Shape         *shapes;
   bounding_cube   *bcubes;
   R_3DPoint       world_origin;
@@ -175,7 +175,7 @@ public:
   C_3DInfoManager *im;
   C_3DObjectInfo  *ci;
   char            obj_id[16];
-  unsigned int    hit_shape;
+  int             hit_shape;
   R_3DPoint       hit_point;
   bool            txtr_flag;
 
@@ -261,7 +261,7 @@ public:
   C_3DObject2           *objects;
   C_3DInfoManager       *im;
   C_3DObject_Group      *groups;
-  unsigned int n_shapes,n_objects,n_groups;
+  int n_shapes,n_objects,n_groups;
 
   C_DrawList2(C_3DInfoManager *im2)
     : objects(NULL),

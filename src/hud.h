@@ -20,8 +20,8 @@
 /**********************************************
  * hud.h                                      *
  **********************************************/
-#ifndef __hud_h
-#define __hud_h
+#ifndef HUD_H
+#define HUD_H
 
 #include "starget.h"
 

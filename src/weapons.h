@@ -20,8 +20,8 @@
 /*********************************************************
  * weapons.h                                             *
  *********************************************************/
-#ifndef __weapons_h
-#define __weapons_h
+#ifndef WEAPONS_H
+#define WEAPONS_H
 
 #include <string.h>
 #include "fltlite.h"
@@ -355,7 +355,7 @@ class Weapon
 public:
   Weapon_Specs    *w_specs;
   Weapon_Instance *wep_i;
-  unsigned int    n;
+  int             n;
   R_3DPoint       *positions;
   Vector          *vectors;
   R_3DPoint       aim_position;
@@ -376,7 +376,7 @@ public:
   virtual REAL_TYPE calc_htime(Flight &host_flight, R_3DPoint &p);
   virtual REAL_TYPE calc_hvtime(Flight &host_flight, R_3DPoint &);
   virtual void get_launch_params(Launch_Params &lp);
-  virtual unsigned int getMaxRounds()
+  virtual int getMaxRounds()
     {
       return (n);
     }
@@ -408,7 +408,7 @@ public:
   friend std::istream &operator >>(std::istream &is, Guns &gp);
   int update(Flight &host_flight, Unguided_Manager *um, 
 	     Weapon_Instance *, Target *);
-  unsigned int getMaxRounds();
+  int getMaxRounds();
 };
 
 class Bombs : public Weapon
@@ -471,7 +471,7 @@ class Weapon_Instance
 {
 public:
   REAL_TYPE elapsed_time;
-  unsigned int rounds_remaining;
+  int rounds_remaining;
   int launch_idx;
   int rounds_per_launch;
   int flags;
@@ -594,7 +594,7 @@ public:
 class Weapon_Instance_List
 {
 public:
-  unsigned int    n_weaps;
+  int             n_weaps;
   int             sel_wpn;
   Weapon_Instance *weapons;
   bool            has_externs;
@@ -604,7 +604,7 @@ public:
      has_externs(0)
     {}
 
-  Weapon_Instance_List(Weapon_Instance *wi, unsigned int n);
+  Weapon_Instance_List(Weapon_Instance *wi, int n);
 
   ~Weapon_Instance_List()
     {
@@ -651,8 +651,8 @@ public:
   void read(std::istream &);
   Weapon_List *get_list(int n);
   Weapon_List *get_list(char *);
-  Weapon_Instance *build_instance_list(unsigned int n, unsigned int *cnt, char *id = NULL);
-  Weapon_Instance_List *build_instance_list(unsigned int n);
+  Weapon_Instance *build_instance_list(int n, int *cnt, char *id = NULL);
+  Weapon_Instance_List *build_instance_list(int n);
   Weapon_Specs *getSpecs(char *);
   Weapon *getWeapon(char *);
 

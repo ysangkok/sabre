@@ -19,8 +19,8 @@
 // Mon Dec 22 15:58:37 EET 1997 (proff@alf.melmac)
 // created file fontdev.h
 
-#ifndef __fontdev_h
-#define __fontdev_h
+#ifndef FONTDEV_H
+#define FONTDEV_H
 
 #ifdef HAVE_LIBVGA
 #include "gdev.h" // we will need this later on
@@ -28,22 +28,22 @@
 
 class fontdev {
    unsigned char *fbp;
-   unsigned int dimx, dimy;
-   unsigned int mindimx, mindimy;
+   int dimx, dimy;
+   int mindimx, mindimy;
  public:
    fontdev();
    ~fontdev();
    int load( const char *fn );
    int save( const char *fn );
-   unsigned int getdimx( void ) { return dimx; }
-   unsigned int getdimy( void ) { return dimy; }
-   unsigned int getmindimx( void ) { return mindimx; }
-   unsigned int getmindimy( void ) { return mindimy; }
-   bool setcell( unsigned int _dimx, unsigned int _dimy );
+   int getdimx( void ) { return dimx; }
+   int getdimy( void ) { return dimy; }
+   int getmindimx( void ) { return mindimx; }
+   int getmindimy( void ) { return mindimy; }
+   bool setcell( int _dimx, int _dimy );
    void calcmin( void );
    void *getfbp( unsigned int c );
    enum { up, right, left, down, turn_right, turn_left };
-   void rotate( unsigned int what, int where );
+   void rotate( int what, int where );
    void shift( int what, int where );
 };
 

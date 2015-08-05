@@ -1,7 +1,7 @@
 import os
 
 clang = 1
-everything = 0
+everything = 1
 do_vga = 0
 do_sdl = not do_vga
 memdebug = 1
@@ -62,7 +62,7 @@ if coverage:
 debug_profile_and_coverage += Split("-fPIC")
 
 orgenv = Environment(
-	CC="clang" if clang else "gcc", CFLAGS=lto + opt + warn + debug_profile_and_coverage + ([] if not everything else Split('-ansi -pedantic -std=c11')), CXX="clang++" if clang else "gcc", CXXFLAGS=lto + opt + warn + debug_profile_and_coverage + ["-std=c++11"] + ([] if not everything else Split('-pedantic')), LIBS=["m"],
+	CC="clang" if clang else "gcc", CFLAGS=lto + opt + warn + debug_profile_and_coverage + ([] if not everything else Split('-ansi -pedantic -std=gnu11')), CXX="clang++" if clang else "gcc", CXXFLAGS=lto + opt + warn + debug_profile_and_coverage + ["-std=c++11"] + ([] if not everything else Split('-pedantic')), LIBS=["m"],
 	LINK="clang++" if clang else "g++",
 	#CXXFLAGS="-nodefaultlibs -fno-exceptions -w",
 	CPPDEFINES = {"VERSION":"\\\"0.2.4b\\\"","REV_DATE":"\\\"11/21/99\\\"","JSTICK_INSTALLED":"1"},

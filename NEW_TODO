@@ -1,4 +1,6 @@
-- fix svgalib 64-bit build
+- fix XXX, TODO, FIXME
+- fix screenshot
+- document as far as possible
 - removed unused functions (gcov) / make test suite
 - C++'ize (instead of C-style arrays), unique_ptr,shared_ptr
 - rewrite in rust

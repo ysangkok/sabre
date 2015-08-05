@@ -51,7 +51,7 @@ sPlaneCaps *sPlaneCaps::GetsPlaneCaps(const char *model)
     sPlaneCaps *result = NULL;
     for (int i=0;i<sPlaneCapsArray.Count();i++)
     {
-      sPlaneCaps *PlaneCaps = (sPlaneCaps *)sPlaneCapsArray[i];
+      sPlaneCaps *PlaneCaps = static_cast<sPlaneCaps *>(sPlaneCapsArray[i]);
       if (!strcmp(PlaneCaps->model,model))
       {
         result = PlaneCaps;

@@ -356,12 +356,12 @@ void loadpcx(char * filename)
     error_exit(1,"Couldn't Open %s",filename);
   fseek(infile,0L,SEEK_SET);
   if (!fread(&pcxhead,sizeof(pcx_header),1,infile)) abort();
-  pcxhead.xmin = (short) ltohs((unsigned short) pcxhead.xmin);
-  pcxhead.xmax = (short) ltohs((unsigned short) pcxhead.xmax);
-  pcxhead.ymin = (short) ltohs((unsigned short) pcxhead.ymin);
-  pcxhead.ymax = (short) ltohs((unsigned short) pcxhead.ymax);
-  pcxhead.hres = (short) ltohs((unsigned short) pcxhead.hres);
-  pcxhead.vres = (short) ltohs((unsigned short) pcxhead.vres);
+  pcxhead.xmin = ltohs(pcxhead.xmin);
+  pcxhead.xmax = ltohs(pcxhead.xmax);
+  pcxhead.ymin = ltohs(pcxhead.ymin);
+  pcxhead.ymax = ltohs(pcxhead.ymax);
+  pcxhead.hres = ltohs(pcxhead.hres);
+  pcxhead.vres = ltohs(pcxhead.vres);
   image.xsize = (unsigned) (pcxhead.xmax-pcxhead.xmin + 1);
   image.ysize = (unsigned) (pcxhead.ymax-pcxhead.ymin + 1);
   fprintf(stderr,"xsize: %d, ysize %d\n",

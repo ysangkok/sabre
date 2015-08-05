@@ -29,8 +29,8 @@
  * etc), or indirectly (by setting control       *
  * inputs).                                      *
  *************************************************/
-#ifndef __sfltmdl_h
-#define __sfltmdl_h
+#ifndef SFLTMDL_H
+#define SFLTMDL_H
 #ifdef __cplusplus
 #include <stdio.h>
 

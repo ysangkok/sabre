@@ -25,8 +25,8 @@
  * Author : Dan Hammer                           *
  *                                               *
  *************************************************/
-#ifndef __grndunit_h
-#define __grndunit_h
+#ifndef GRNDUNIT_H
+#define GRNDUNIT_H
 
 #include "target.h"
 #include "zview.h"
@@ -79,7 +79,7 @@ public:
   Port_3D              ref_port;
 
   int view;
-  unsigned int hit_shape;
+  int hit_shape;
   float current_speed;
 
   Ground_Unit()
@@ -168,9 +168,9 @@ class Ground_Unit_Manager
 {
 public:
   Ground_Unit_Specs *specs;
-  unsigned int       nspecs;
+  int               nspecs;
   Ground_Unit        **units;
-  unsigned int       nunits;
+  int               nunits;
   Weapons_Manager    wm;
 
   Ground_Unit_Manager();

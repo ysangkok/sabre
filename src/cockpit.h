@@ -24,28 +24,28 @@
  * Date   : March, 1997                          *
  * Author : Dan Hammer                           *
  *************************************************/
-#ifndef __cockpit_h
-#define __cockpit_h
+#ifndef COCKPIT_H
+#define COCKPIT_H
 
 class Instrument_Panel;
 class trans_table;
 
-extern unsigned int cockpit_x,cockpit_y,y_clip;
+extern int cockpit_x,cockpit_y,y_clip;
 
 class Cockpit
 {
 public:
   unsigned char *cbytes;
-  unsigned int x_size,y_size;
+  int x_size,y_size;
   int trans_color;
   Instrument_Panel *ipanel;
   trans_table *t_table;
-  unsigned int cockpit_y,cockpit_x;
-  unsigned int y_clip;
+  int cockpit_y,cockpit_x;
+  int y_clip;
 
   Cockpit(unsigned char *byts,
-	  unsigned int xs,
-	  unsigned int ys,
+	  int xs,
+	  int ys,
 	  int tclr,
 	  char *ipath);
   

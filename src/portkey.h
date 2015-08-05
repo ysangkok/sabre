@@ -17,8 +17,8 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-#ifndef __portkey_h
-#define __portkey_h
+#ifndef PORTKEY_H
+#define PORTKEY_H
 
 int port_key(Port_3D &);
 void show_port_vars(Port_3D &, Port_3D & , SimFont *);

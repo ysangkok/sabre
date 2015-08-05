@@ -24,8 +24,8 @@
  * Author : Dan Hammer                           *
  * Attacker list                                 *
  *************************************************/
-#ifndef __iattkr_h
-#define __iattkr_h
+#ifndef IATTKR_H
+#define IATTKR_H
 
 #ifdef __cplusplus
 

@@ -26,8 +26,8 @@
  * A class for defining and rendering an object  *
  * level depth sort.                             *
  *************************************************/
-#ifndef __zview_h
-#define __zview_h
+#ifndef ZVIEW_H
+#define ZVIEW_H
 
 #define MAX_ZSHAPES 16
 #define MAX_ZNODES  20
@@ -59,8 +59,8 @@ public:
   C_Oriented_Shape *reference_shape;
   C_Oriented_Shape *shapes;
   shape_params *s_params;
-  unsigned int n_reference;
-  unsigned int n_shapes;
+  int n_reference;
+  int n_shapes;
   C_Oriented_Shape *cur_shapes;
   C_Oriented_Shape *cur_reference;
   Port_3D *cur_port;
@@ -85,7 +85,7 @@ public:
   void setId(const char *);
 
   static Z_Node_Manager **g_zmanagers;
-  static unsigned int nzmanagers;
+  static int nzmanagers;
   static Z_Node_Manager *getZNode(const char *);
 };
 
@@ -100,8 +100,8 @@ public:
   C_Oriented_Shape *shapes;
   virtual void draw_minimal(Port_3D &port);
   virtual void draw_partial(Port_3D &port);
-  unsigned int nshapes;
-  unsigned int nreference;
+  int nshapes;
+  int nreference;
   // distance abstraction levels
   enum distance_abstraction_type { da_full, da_partial, da_minimal };
   // current level

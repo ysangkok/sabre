@@ -20,13 +20,13 @@
 /*************************************************************
  * grafix.h                                                  *
  *************************************************************/
-#ifndef __grafix_h
-#define __grafix_h
+#ifndef GRAFIX_H
+#define GRAFIX_H
 
 #include <utility>
 #include <cstdlib>
 
-#ifndef __defs_h
+#ifndef DEFS_H
 #include "defs.h"
 #endif
 

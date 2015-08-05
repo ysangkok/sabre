@@ -17,8 +17,8 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-#ifndef __clstypes_h
-#define __clstypes_h
+#ifndef CLSTYPES_H
+#define CLSTYPES_H
 
 enum class_types { C_3DObject_Base_t, C_3DObject_t, Flight_ZViewer_t,
 			   Projectile_View_t, Bitmap_View_t, Debris_View_t,

@@ -24,8 +24,8 @@
  * Author : Dan Hammer                           *
  * Convert from and to "ai" structures           *
  *************************************************/
-#ifndef __aimath_h
-#define __aimath_h
+#ifndef AIMATH_H
+#define AIMATH_H
 
 
 #ifdef __cplusplus

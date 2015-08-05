@@ -24,8 +24,8 @@
  * Author : Dan Hammer                           *
  * aiPilot class definition                      *
  *************************************************/
-#ifndef __aipilot_h
-#define __aipilot_h
+#ifndef AIPILOT_H
+#define AIPILOT_H
 
 /* enum for skills */
 enum	{ 
@@ -161,7 +161,7 @@ public:
 	{
 		return (hasGunners);
 	}
-	unsigned int HasNGunners()
+	int HasNGunners()
 	{
 		return (gunners.Count());
 	}
@@ -253,7 +253,7 @@ public:
 
 	void SetGunnersTarget(uint32_t targetIdx, sREAL threatValue = ITARGET_MIN_THREAT_VALUE);
 	void SetGunnersTarget(sAttacker *attkr);
-	void SetGunnerTarget(unsigned int whichGunner, uint32_t targetIdx, sREAL threatValue = ITARGET_MIN_THREAT_VALUE);
+	void SetGunnerTarget(int whichGunner, uint32_t targetIdx, sREAL threatValue = ITARGET_MIN_THREAT_VALUE);
 	void ClearGunnersTarget();
 
 	void BodyVector2WorldVector(const sVector &body, sVector &world)
@@ -315,16 +315,16 @@ public:
 	static void AddaiPilot(aiPilot *pilot);
 	static aiPilot *GetaiPilot(uint32_t idx);
 	static aiPilot *GetaiPilot(const char *handle);
-	static unsigned int GetPilotCount();
+	static int GetPilotCount();
 	static void aiPilotUpdateCallback(int, void *);
 	static void FlushaiPilots();
 	static void RemoveaiPilot(aiPilot *pil);
-	static aiPilot *GetPilotByIndex(unsigned int i);
+	static aiPilot *GetPilotByIndex(int i);
 	static void __cdecl TextMessageToPlayer(const char *, ...);
-	static void BodyVector2WorldVector(unsigned int idx, const sVector &body, sVector &world);
-	static void WorldVector2BodyVector(unsigned int idx, const sVector &world, sVector &body);
-	static void BodyPoint2WorldPoint(unsigned int idx, const sPoint &body, sPoint &world);
-	static void WorldPoint2BodyPoint(unsigned int idx, const sPoint &world, sPoint &body);
+	static void BodyVector2WorldVector(int idx, const sVector &body, sVector &world);
+	static void WorldVector2BodyVector(int idx, const sVector &world, sVector &body);
+	static void BodyPoint2WorldPoint(int idx, const sPoint &body, sPoint &world);
+	static void WorldPoint2BodyPoint(int idx, const sPoint &world, sPoint &body);
 	
 	static void SetOwnership(int owns)
 	{
@@ -590,7 +590,8 @@ protected:
    void GetSurfaceTargetGeometry(sSurfaceTarget &st);
    void CalcAlignPoint(sSurfaceTarget &st);
    virtual void GetWeaponLimits(sWeaponLimits &weaponLimits) = 0;
-   void GetFormationPoint(int wingPos, int formationType, unsigned int leaderIdx, sPoint &offset);
+   void GetFormationPoint(int wingPos, int formationType, 
+                   int leaderIdx, sPoint &offset);
    void ClearTargetPilot();
    void SetTargetPilot(uint32_t targetIdx);
    int EvalThreatFromPlayer();
@@ -602,7 +603,7 @@ protected:
    sREAL Point2Roll(const sPoint &rollPosition);
    sREAL CalcClosureSpeed(const sTargetGeometry &, int flg = 0);
    /* communication */
-   virtual void Broadcast(unsigned int idx, int channel = commCHANNEL_AFFILIATION,
+   virtual void Broadcast(int idx, int channel = commCHANNEL_AFFILIATION,
                           int priority = commPRIORITY_STANDARD,
                           void *extraInfo = NULL) = 0;
 
@@ -621,7 +622,7 @@ protected:
     */
    virtual void BuildGunners() =0;
    void AddGunner(aiGunner *newGunner);
-   aiGunner *GetGunner(unsigned int whichGunner);
+   aiGunner *GetGunner(int whichGunner);
    void UpdateGunners();
 
    /* attacker list */

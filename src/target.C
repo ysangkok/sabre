@@ -47,7 +47,7 @@ int calc_radial_damage(const R_3DPoint &r1, float radius, int damage,
     {
       /* woops! */
       // dmg = (int) (((float)damage) * d / rad_sq);
-      dmg = (int) (((float)damage) * (1.0 - (d / rad_sq)));
+      dmg = static_cast<int>(static_cast<float>(damage) * (1.0 - (d / rad_sq)));
       result = 1;
     }
   return (result);

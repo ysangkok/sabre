@@ -20,11 +20,11 @@
 /************************************************************
  * traveler.h                                               *
  ************************************************************/
-#ifndef __traveler_h
-#define __traveler_h
+#ifndef TRAVELER_H
+#define TRAVELER_H
 
-#ifndef __grafix_h
-#include __grafix_h
+#ifndef GRAFIX_H
+#include "grafix.h"
 #endif
 
 class LineTraveler

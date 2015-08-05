@@ -23,11 +23,11 @@
  * Date   : April, 1998                          *
  * Author : Dan Hammer                           *
  * Pilot caps class                              *
- * Overrides default values for various AI pilot *                                              
- * members.                                      *                                              
+ * Overrides default values for various AI pilot *
+ * members.                                      *
  *************************************************/
-#ifndef __spilcaps_h
-#define __spilcaps_h
+#ifndef SPILCAPS_H
+#define SPILCAPS_H
 
 #include "smath.h"
 

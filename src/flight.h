@@ -20,8 +20,8 @@
 /*************************************************************
  * flight.h                                                  *
  *************************************************************/
-#ifndef __flight_h
-#define __flight_h
+#ifndef FLIGHT_H
+#define FLIGHT_H
 
 #include "dvmath.h"
 #include "fltobj.h"

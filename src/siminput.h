@@ -20,8 +20,8 @@
 /******************************************************
  * siminput.h                                         *
  ******************************************************/
-#ifndef __siminput_h
-#define __siminput_h
+#ifndef SIMINPUT_H
+#define SIMINPUT_H
 
 #include "sbrvkeys.h"
 

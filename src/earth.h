@@ -24,8 +24,8 @@
  * Date   : March, 1997                          *
  * Author : Dan Hammer                           *
  *************************************************/
-#ifndef __earth_h
-#define __earth_h
+#ifndef EARTH_H
+#define EARTH_H
 
 #include "terrain.h"
 

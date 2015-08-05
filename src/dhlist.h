@@ -24,8 +24,8 @@
  * Author : Dan Hammer                           *
  * Linked list implementation in C               *
  *************************************************/
-#ifndef __dhlist_h
-#define __dhlist_h
+#ifndef DHLIST_H
+#define DHLIST_H
 
 typedef void delete_object_function(void *);
 typedef int compare_object_function(void *, void *);

@@ -24,8 +24,8 @@
  * Author : Dan Hammer                           *
  * Tactic definitions                            *
  *************************************************/
-#ifndef __stact_h
-#define __stact_h
+#ifndef STACT_H
+#define STACT_H
 
 #define SPT_RQ_CONE             C(Pi_4)
 #define SPT_FQ_CONE             C(Pi_4)

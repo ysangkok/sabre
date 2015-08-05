@@ -25,8 +25,8 @@
  * Author : Dan Hammer                           *
  *************************************************/
 
-#ifndef __scnedit_h
-#define __scnedit_h
+#ifndef SCNEDIT_H
+#define SCNEDIT_H
 
 class SceneEdit
 {

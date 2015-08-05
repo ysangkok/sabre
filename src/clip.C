@@ -215,9 +215,9 @@ enum sides { left, top, right, bottom };
 static Rect *bounds;
 
 static int clip_polys[3][MAX_CLIP];
-static unsigned int clip_counts[3];
+static int clip_counts[3];
 
-inline int inside(unsigned int side, int *pt)
+inline int inside(int side, int *pt)
 {
 	if (side == left)
 		return (*pt >= bounds->topLeft.x);
@@ -231,7 +231,7 @@ inline int inside(unsigned int side, int *pt)
 }
 
 // Calculate the intersection between first & second for the side
-inline void intersect(int *first, int *second, int *result, unsigned int side)
+inline void intersect(int *first, int *second, int *result, int side)
 {
 REAL_TYPE x0,y0,x1,y1,xR,yR,m;
 x0 = REAL_TYPE(first[0]);
@@ -266,16 +266,17 @@ y1 = REAL_TYPE(second[1]);
 	result[1] = static_cast<int>(yR);
 }
 
-unsigned int poly_clip(int *in_poly, int *clipped_poly, unsigned int n, unsigned int *n_out, Rect *bnds)
+int poly_clip(int *in_poly, int *clipped_poly, int n,
+	      int *n_out, Rect *bnds)
 {
 int *out_ptr;
-unsigned int *out_n = NULL;
+int *out_n = NULL;
 int *in_ptr;
-unsigned int in_n;
+int in_n;
 
 	bounds = bnds;
 	// do for all four sides of bounds rectangle
-	for (unsigned int side = 0; side < 4; side++)
+	for (int side = 0; side < 4; side++)
 	{
 		if (side < 3)
 		{
@@ -300,7 +301,7 @@ unsigned int in_n;
 		int *s = &in_ptr[(in_n*2)-2];
 		int *p = in_ptr;
 		*out_n = 0;
-		for (unsigned int j = 0; j < in_n; j++)
+		for (int j = 0; j < in_n; j++)
 		{
 			if (inside(side,p))
 			{
@@ -340,9 +341,9 @@ unsigned int in_n;
  * floating-point 2-D clip version              *
  ************************************************/
 static float f_clip_polys[3][MAX_CLIP];
-static unsigned int f_clip_counts[3];
+static int f_clip_counts[3];
 
-inline bool f_inside(unsigned int side, float *pt)
+inline int f_inside(int side, float *pt)
 {
 	if (side == left)
 		return (*pt >= static_cast<float>(bounds->topLeft.x));
@@ -356,7 +357,7 @@ inline bool f_inside(unsigned int side, float *pt)
 }
 
 // Calculate the intersection between first & second for the side
-inline void f_intersect(float *first, float *second, float *result, unsigned int side)
+inline void f_intersect(float *first, float *second, float *result, int side)
 {
 float x0,y0,x1,y1,xR,yR,m;
 
@@ -391,16 +392,17 @@ float x0,y0,x1,y1,xR,yR,m;
 	result[1] = yR;
 }
 
-unsigned int f_poly_clip(float *in_poly, float *clipped_poly, unsigned int n, unsigned int *n_out, Rect *bnds)
+int f_poly_clip(float *in_poly, float *clipped_poly, int n,
+		int *n_out, Rect *bnds)
 {
 float *out_ptr;
-unsigned int *out_n = NULL;
+int *out_n = NULL;
 float *in_ptr;
-unsigned int in_n;
+int in_n;
 
 	bounds = bnds;
 	// do for all four sides of bounds rectangle
-	for (unsigned int side = 0; side < 4; side++)
+	for (int side = 0; side < 4; side++)
 	{
 		if (side < 3)
 		{
@@ -425,7 +427,7 @@ unsigned int in_n;
 		float *s = &in_ptr[(in_n*2)-2];
 		float *p = in_ptr;
 		*out_n = 0;
-		for (unsigned int j = 0; j < in_n; j++)
+		for (int j = 0; j < in_n; j++)
 		{
 			if (f_inside(side,p))
 			{
@@ -464,11 +466,11 @@ unsigned int in_n;
  * 2D point with z_buffer clipping             *
  ***********************************************/
 static R_2DPoint r_clip_polys[3][MAX_CLIP];
-static unsigned int r_clip_counts[3];
+static int r_clip_counts[3];
 static R2D_TYPE min_x,max_x;
 static R2D_TYPE min_y,max_y;
 
-inline int r_inside(unsigned int side, R_2DPoint *pt)
+inline int r_inside(int side, R_2DPoint *pt)
 {
 	if (side == left)
 		return (pt->x >= min_x);
@@ -482,7 +484,8 @@ inline int r_inside(unsigned int side, R_2DPoint *pt)
 }
 
 // Calculate the intersection between first & second for the side
-inline void r_intersect(R_2DPoint *first, R_2DPoint *second, R_2DPoint *result, unsigned int side)
+inline void r_intersect(R_2DPoint *first, R_2DPoint *second,
+								R_2DPoint *result, int side)
 {
 REAL_TYPE t;
 REAL_TYPE x0,x1,y0,y1,z0,z1;
@@ -527,12 +530,13 @@ REAL_TYPE x0,x1,y0,y1,z0,z1;
 	}
 }
 
-unsigned int r_poly_clip(R_2DPoint *in_poly, R_2DPoint *clipped_poly, unsigned int n, unsigned int *n_out, Rect *bnds)
+int r_poly_clip(R_2DPoint *in_poly, R_2DPoint *clipped_poly, int n,
+						int *n_out, Rect *bnds)
 {
 R_2DPoint *out_ptr;
-unsigned int *out_n = NULL;
+int *out_n = NULL;
 R_2DPoint *in_ptr;
-unsigned int in_n;
+int in_n;
 
 	bounds = bnds;
 	min_x = R2D_TYPE(bnds->topLeft.x);
@@ -541,7 +545,7 @@ unsigned int in_n;
 	max_y = R2D_TYPE(bnds->botRight.y);
 
 	// do for all four sides of bounds rectangle
-	for (unsigned int side = 0; side < 4; side++)
+	for (int side = 0; side < 4; side++)
 	{
 		if (side < 3)
 		{
@@ -567,7 +571,7 @@ unsigned int in_n;
 		R_2DPoint *s = &in_ptr[in_n-1];
 		R_2DPoint *p = in_ptr;
 		*out_n = 0;
-		for (unsigned int j = 0; j < in_n; j++)
+		for (int j = 0; j < in_n; j++)
 		{
 			if (r_inside(side,p))
 			{
@@ -605,9 +609,9 @@ unsigned int in_n;
  * 2D point with texture/z_buffer info clipping *
  ***********************************************/
 static TR_2DPoint tr_clip_polys[3][MAX_CLIP];
-static unsigned int tr_clip_counts[3];
+static int tr_clip_counts[3];
 
-inline int tr_inside(unsigned int side, TR_2DPoint *pt)
+inline int tr_inside(int side, TR_2DPoint *pt)
 {
 	if (side == left)
 		return (pt->x >= min_x);
@@ -621,7 +625,8 @@ inline int tr_inside(unsigned int side, TR_2DPoint *pt)
 }
 
 // Calculate the intersection between first & second for the side
-inline void tr_intersect(TR_2DPoint *first, TR_2DPoint *second, TR_2DPoint *result, unsigned int side)
+inline void tr_intersect(TR_2DPoint *first, TR_2DPoint *second,
+		  TR_2DPoint *result, int side)
 {
 REAL_TYPE t;
 REAL_TYPE x0,x1,y0,y1,z0,z1;
@@ -677,12 +682,13 @@ REAL_TYPE u0,u1,v0,v1;
 	}
 }
 
-unsigned int tr_poly_clip(TR_2DPoint *in_poly, TR_2DPoint *clipped_poly, unsigned int n, unsigned int *n_out, Rect *bnds)
+int tr_poly_clip(TR_2DPoint *in_poly, TR_2DPoint *clipped_poly, int n,
+					  int *n_out, Rect *bnds)
 {
 TR_2DPoint *out_ptr;
-unsigned int *out_n = NULL;
+int *out_n = NULL;
 TR_2DPoint *in_ptr;
-unsigned int in_n;
+int in_n;
 
 	bounds = bnds;
 	min_x = R2D_TYPE(bnds->topLeft.x);
@@ -691,7 +697,7 @@ unsigned int in_n;
 	max_y = R2D_TYPE(bnds->botRight.y);
 
 	// do for all four sides of bounds rectangle
-	for (unsigned int side = 0; side < 4; side++)
+	for (int side = 0; side < 4; side++)
 	{
 		if (side < 3)
 		{
@@ -717,7 +723,7 @@ unsigned int in_n;
 		TR_2DPoint *s = &in_ptr[in_n-1];
 		TR_2DPoint *p = in_ptr;
 		*out_n = 0;
-		for (unsigned int j = 0; j < in_n; j++)
+		for (int j = 0; j < in_n; j++)
 		{
 			if (tr_inside(side,p))
 			{
@@ -755,10 +761,11 @@ unsigned int in_n;
  * 2DF point with texture/z_buffer info clipping *
  ***********************************************/
 static TRF_2DPoint trf_clip_polys[3][MAX_CLIP];
-static unsigned int trf_clip_counts[3];
-static REAL_TYPE trf_min_x,trf_max_x, trf_min_y,trf_max_y;
+static int trf_clip_counts[3];
+static REAL_TYPE trf_min_x,trf_max_x,
+					  trf_min_y,trf_max_y;
 
-inline int trf_inside(unsigned int side, TRF_2DPoint *pt)
+inline int trf_inside(int side, TRF_2DPoint *pt)
 {
 	if (side == left)
 		return (pt->x >= trf_min_x);
@@ -772,7 +779,8 @@ inline int trf_inside(unsigned int side, TRF_2DPoint *pt)
 }
 
 // Calculate the intersection between first & second for the side
-inline void trf_intersect(TRF_2DPoint *first, TRF_2DPoint *second, TRF_2DPoint *result, unsigned int side)
+inline void trf_intersect(TRF_2DPoint *first, TRF_2DPoint *second,
+		  TRF_2DPoint *result, int side)
 {
 REAL_TYPE t;
 REAL_TYPE x0,x1,y0,y1,z0,z1;
@@ -835,12 +843,13 @@ REAL_TYPE w0,w1;
 	}
 }
 
-unsigned int trf_poly_clip(TRF_2DPoint *in_poly, TRF_2DPoint *clipped_poly, unsigned int n, unsigned int *n_out, Rect *bnds)
+int trf_poly_clip(TRF_2DPoint *in_poly, TRF_2DPoint *clipped_poly, int n,
+					  int *n_out, Rect *bnds)
 {
 TRF_2DPoint *out_ptr;
-unsigned int *out_n = NULL;
+int *out_n = NULL;
 TRF_2DPoint *in_ptr;
-unsigned int in_n;
+int in_n;
 
 	bounds = bnds;
 	trf_min_x = bnds->topLeft.x;
@@ -849,7 +858,7 @@ unsigned int in_n;
 	trf_max_y = bnds->botRight.y;
 
 	// do for all four sides of bounds rectangle
-	for (unsigned int side = 0; side < 4; side++)
+	for (int side = 0; side < 4; side++)
 	{
 		if (side < 3)
 		{
@@ -875,7 +884,7 @@ unsigned int in_n;
 		TRF_2DPoint *s = &in_ptr[in_n-1];
 		TRF_2DPoint *p = in_ptr;
 		*out_n = 0;
-		for (unsigned int j = 0; j < in_n; j++)
+		for (int j = 0; j < in_n; j++)
 		{
 			if (trf_inside(side,p))
 			{
@@ -911,7 +920,8 @@ unsigned int in_n;
 /*******************************************************
  * clipping in 3 dimensions                            *
  *******************************************************/
-inline bool inside_3D(R_3DPoint *pt, bounding_plane plane, bounding_cube *cube)
+inline int inside_3D(R_3DPoint *pt, bounding_plane plane,
+							bounding_cube *cube)
 {
   if (plane == pz_min)
     return (pt->z >= cube->min_z);
@@ -928,7 +938,9 @@ inline bool inside_3D(R_3DPoint *pt, bounding_plane plane, bounding_cube *cube)
   return -1;
 }
 
-inline void intersect_3D(R_3DPoint *first, R_3DPoint *second, R_3DPoint *result, bounding_plane plane, bounding_cube *cube)
+inline void intersect_3D(R_3DPoint *first, R_3DPoint *second,
+								R_3DPoint *result, bounding_plane plane,
+								bounding_cube *cube)
 {
 REAL_TYPE x0,y0,z0,x1,y1,z1,t;
 
@@ -977,13 +989,15 @@ REAL_TYPE x0,y0,z0,x1,y1,z1,t;
 	}
 }
 
-unsigned int poly_clip_3D(R_3DPoint *in_poly, unsigned int in_count, R_3DPoint *out_poly, unsigned int *out_count, bounding_cube *cube, bounding_plane plane )
+int poly_clip_3D(R_3DPoint *in_poly, int in_count,
+						R_3DPoint *out_poly, int *out_count,
+						bounding_cube *cube, bounding_plane plane )
 {
 R_3DPoint *s = &in_poly[in_count-1];
 R_3DPoint *p = in_poly;
 
 	*out_count = 0;
-	for (unsigned int j = 0; j < in_count; j++)
+	for (int j = 0; j < in_count; j++)
 	{
 		if (inside_3D(p,plane,cube))
 		{
@@ -1016,13 +1030,15 @@ R_3DPoint *p = in_poly;
 }
 
 
-unsigned int poly_clip_3D(R_3DPoint *in_poly, unsigned int in_count, R_3DPoint *out_poly, unsigned int *out_count, bounding_cube *b_cube)
+int poly_clip_3D(R_3DPoint *in_poly, int in_count,
+						R_3DPoint *out_poly, int *out_count,
+						bounding_cube *b_cube)
 {
 R_3DPoint clip_polys3[5][MAX_CLIP];
-unsigned int clip_counts3[5];
-unsigned int plane;
+int clip_counts3[5];
+int plane;
 R_3DPoint *i_poly,*o_poly;
-unsigned int i_count, *o_count;
+int i_count, *o_count;
 
 	for (plane = px_min; plane <= pz_max; plane++)
 	{
@@ -1077,13 +1093,15 @@ REAL_TYPE u1,u2,v1,v2;
 	result->e.i = tr1->e.i;
 }
 
-unsigned int zpoly_clip(TR_3DPoint *in_poly, unsigned int in_count, TR_3DPoint *out_poly, unsigned int *out_count, REAL_TYPE z_min)
+int zpoly_clip(TR_3DPoint *in_poly, int in_count,
+					TR_3DPoint *out_poly, int *out_count,
+					REAL_TYPE z_min)
 {
 TR_3DPoint *s = &in_poly[in_count-1];
 TR_3DPoint *p = in_poly;
 
 	*out_count = 0;
-	for (unsigned int j = 0; j < in_count; j++)
+	for (int j = 0; j < in_count; j++)
 	{
 		if (p->r.z >= z_min)
 		{
@@ -1130,13 +1148,15 @@ REAL_TYPE t;
 	result->x = r1->x + (t * (r2->x - r1->x));
 }
 
-unsigned int zpoly_clip(R_3DPoint *in_poly, unsigned int in_count, R_3DPoint *out_poly, unsigned int *out_count, REAL_TYPE z_min)
+int zpoly_clip(R_3DPoint *in_poly, int in_count,
+					R_3DPoint *out_poly, int *out_count,
+					REAL_TYPE z_min)
 {
 R_3DPoint *s = &in_poly[in_count-1];
 R_3DPoint *p = in_poly;
 
   *out_count = 0;
-  for (unsigned int j = 0; j < in_count; j++)
+  for (int j = 0; j < in_count; j++)
     {
       if (p->z >= z_min)
 	{
@@ -1169,7 +1189,7 @@ R_3DPoint *p = in_poly;
 }
 
 /* clip a 3D line against a minimum z value */
-unsigned int zline_clip(R_3DPoint &p0, R_3DPoint &p1, REAL_TYPE min_z)
+int zline_clip(R_3DPoint &p0, R_3DPoint &p1, REAL_TYPE min_z)
 {
   R_3DPoint tmp;
   bool accept;

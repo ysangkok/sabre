@@ -178,8 +178,8 @@ int LinuxJoystick::update()
       buttons = js_data.buttons;
       raw_x = js_data.x;
       raw_y = js_data.y;
-      cooked_x = -1.0f + (((float)raw_x) / ((float) (min_x + max_x - min_x)) * 2.0f );
-      cooked_y = -1.0f + (((float)raw_y) / ((float)(min_y + max_y - min_y)) * 2.0f );
+      cooked_x = -1.0f + (static_cast<float>(raw_x) / (static_cast<float>(min_x + max_x - min_x)) * 2.0f );
+      cooked_y = -1.0f + (static_cast<float>(raw_y) / (static_cast<float>(min_y + max_y - min_y)) * 2.0f );
       if (cooked_x < -1.0)
 	cooked_x = -1.0;
       if (cooked_x > 1.0)
@@ -390,7 +390,7 @@ void LinuxJoystick::calibrate()
   printf("\nSetting maximum values to %d,%d\n\n",max_x,max_y);
   printf("\nSetting minimum values to %d,%d\n\n",min_x,min_y);
   printf("Do you wish to set the dead zones (y/n) ");
-  c = (char) getchar();
+  c = static_cast<char>(getchar());
   printf("\n");
   if (c=='Y'||c=='y')
     {

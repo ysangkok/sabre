@@ -73,12 +73,12 @@ C_Oriented_Poly::~C_Oriented_Poly()
  ***************************************************/
 void C_Oriented_Poly::create_points(Port_3D &ref_port)
 {
-  unsigned int npoints = p_info->npoints;
+  int npoints = p_info->npoints;
   if (wpoints != NULL)
     delete [] wpoints;
   wpoints = new R_3DPoint[npoints];
   MYCHECK(wpoints != NULL);
-  for (unsigned int i =0;i<npoints;i++)
+  for (int i =0;i<npoints;i++)
     {
       R_3DPoint p = p_info->lpoints[i];
       p *= co_scaler;
@@ -228,7 +228,7 @@ std::ostream &operator <<(std::ostream &os, C_Oriented_Shape &cs)
 {
   os << '{' << '\n';
   os << cs.npolys << '\n';
-  for (unsigned int i=0;i<cs.npolys;i++)
+  for (int i=0;i<cs.npolys;i++)
     os << cs.o_polys[i] << '\n';
   os << '}' << '\n';
   return os;
@@ -251,7 +251,7 @@ int C_Oriented_Shape::create(C_ShapeInfo *ptr)
   o_polys = new C_Oriented_Poly[npolys];
   if (o_polys != NULL)
     {
-      for (unsigned int i=0;i<npolys;i++)
+      for (int i=0;i<npolys;i++)
 	{
 	  if (!o_polys[i].create(&info_ptr->polyinfos[i]))
 	    {
@@ -279,7 +279,7 @@ C_Oriented_Shape::~C_Oriented_Shape()
 
 std::istream &operator >>(std::istream &is, C_Oriented_Shape &cs)
 {
-  for (unsigned int i=0;i<cs.npolys;i++)
+  for (int i=0;i<cs.npolys;i++)
     is >> cs.o_polys[i];
   return is;
 }
@@ -287,7 +287,7 @@ std::istream &operator >>(std::istream &is, C_Oriented_Shape &cs)
 void C_Oriented_Shape::set_params(shape_params *prms)
 {
   flags = prms->flags;
-  for (unsigned int i=0;i<npolys;i++)
+  for (int i=0;i<npolys;i++)
     o_polys[i].set_params(&prms->p_params[i]);
 }
 
@@ -295,7 +295,7 @@ void C_Oriented_Shape::set_world_points(Port_3D &rf_port)
 {
   ref_port = &rf_port;
   maxlen = 0;
-  unsigned int i;
+  int i;
   visible = 1;
   for (i = 0; i <npolys;i++)
     {
@@ -320,7 +320,7 @@ void C_Oriented_Shape::set_world_points(Port_3D &rf_port)
 
 void C_Oriented_Shape::set_visible(Port_3D &theport)
 {
-  unsigned int i;
+  int i;
 
   if (frame_switch)
     {
@@ -347,7 +347,7 @@ void C_Oriented_Shape::set_visible(Port_3D &theport)
 
 void C_Oriented_Shape::set_poly_icolor(Vector &light)
 {
-  for (unsigned int i=0;i<npolys;i++)
+  for (int i=0;i<npolys;i++)
     {
       // do it "inline"
       C_Oriented_Poly &co = o_polys[i];
@@ -371,7 +371,7 @@ void C_Oriented_Shape::set_poly_icolor(Vector &light)
 void C_Oriented_Shape::render_shadow(Port_3D &port, Vector &light)
 {
   MYCHECK(ref_port != NULL);
-  for (unsigned int i=0;i<npolys;i++)
+  for (int i=0;i<npolys;i++)
     {
       if (O_CheckPlaneEquation(light,o_polys[i].surface_normal,
 			       o_polys[i].plane_constant))
@@ -382,7 +382,7 @@ void C_Oriented_Shape::render_shadow(Port_3D &port, Vector &light)
 
 void C_Oriented_Shape::draw(Port_3D &port, R_3DPoint &)
 {
-  unsigned int i;
+  int i;
   if (!visible)
     return;
   MYCHECK(ref_port != NULL);
@@ -400,13 +400,13 @@ void C_Oriented_Shape::draw(Port_3D &port, R_3DPoint &)
 
 void C_Oriented_Shape::create_points(Port_3D &ref_por)
 {
-  for (unsigned int i=0;i<npolys;i++)
+  for (int i=0;i<npolys;i++)
     o_polys[i].create_points(ref_por);
 }
 
 void C_Oriented_Shape::delete_points()
 {
-  for (unsigned int i=0;i<npolys;i++)
+  for (int i=0;i<npolys;i++)
     {
       if (o_polys[i].wpoints != NULL)
 	delete [] o_polys[i].wpoints;
@@ -416,6 +416,6 @@ void C_Oriented_Shape::delete_points()
 
 void C_Oriented_Shape::set_poly_color(int n, int color)
 {
-  if (n >= 0 && static_cast<unsigned int>(n) < npolys)
+  if (n >= 0 && n < npolys)
     o_polys[n].color = color;
 }

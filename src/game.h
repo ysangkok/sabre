@@ -24,8 +24,8 @@
  * Date   : March, 1997                          *
  * Author : Dan Hammer                           *
  *************************************************/
-#ifndef __game_h
-#define __game_h
+#ifndef GAME_H
+#define GAME_H
 
 class GameSession
 {

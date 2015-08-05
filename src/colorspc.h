@@ -21,8 +21,8 @@
  * colorspc.h
  **********************************************************/
 
-#ifndef __colorspc_h
-#define __colorspc_h
+#ifndef COLORSPC_H
+#define COLORSPC_H
 
 extern void set_rgb_value(int, char, char, char);
 extern void get_rgb_value(int, char *, char *, char *);

@@ -24,8 +24,8 @@
  * Author : Dan Hammer                           *
  * Targeting thingees                            *
  *************************************************/
-#ifndef __starget_h
-#define __starget_h
+#ifndef STARGET_H
+#define STARGET_H
 
 #include <cstdint>
 #include "sobject.h"

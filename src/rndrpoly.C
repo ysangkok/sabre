@@ -125,8 +125,8 @@ void tr_init()
   if (zbuff != NULL)
     free(zbuff);
 
-  zbuff_size = SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(R2D_TYPE);
-  zbuff = static_cast<R2D_TYPE *>(malloc(zbuff_size));
+  zbuff_size = static_cast<int>(static_cast<unsigned long>(SCREEN_WIDTH * SCREEN_HEIGHT) * sizeof(R2D_TYPE)); // XXX why is this necessary (inner cast)
+  zbuff = static_cast<R2D_TYPE *>(malloc(static_cast<size_t>(zbuff_size)));
   if (zbuff == NULL)
     error_jump("Unable to allocate %d bytes for zbuffer\n",
 	       zbuff_size);
@@ -142,7 +142,7 @@ void clear_zbuff()
 {
   if (zbuff)
     {
-      memset(zbuff,'\0',zbuff_size);
+      memset(zbuff,'\0',static_cast<size_t>(zbuff_size));
       zbff_flag = 1;
     }
   ztrans = R2D_TYPE(0);
@@ -152,7 +152,7 @@ void clear_zbuff()
  * z-buffered texture-mapped poly rendering                      *
  *****************************************************************/
 
-int tr_rendpoly(R_3DPoint *poly, TxtPoint *txtr, unsigned int n, 
+int tr_rendpoly(R_3DPoint *poly, TxtPoint *txtr, int n, 
 		Port_3D &port, int fillcolor, 
 		TextrMap *tmap, TR_2DPoint *spoints)
 {
@@ -162,7 +162,7 @@ int tr_rendpoly(R_3DPoint *poly, TxtPoint *txtr, unsigned int n,
 
   bool zclipit = 0;
   int nvis = 0;
-  unsigned int i,np;
+  int i,np;
   REAL_TYPE zmin = 1.0;
   for (i=0;i<n;i++)
     {
@@ -196,15 +196,15 @@ int tr_rendpoly(R_3DPoint *poly, TxtPoint *txtr, unsigned int n,
  * If spoints is not null, don't render the poly, just return  *
  * the converted points screen points if there are some        *
  ***************************************************************/
-int tr_project_poly(TR_3DPoint *poly, unsigned int n,
+int tr_project_poly(TR_3DPoint *poly, int n,
 		    Port_3D &port, int fillcolor, 
 		    TextrMap *tmap, TR_2DPoint *spoints )
 {
   TR_2DPoint scpoints[RENDMAX];
   TR_2DPoint cpoints[RENDMAX];
   TR_2DPoint *pnts;
-  unsigned int i;
-  unsigned int clip_n = 0;
+  int i;
+  int clip_n = 0;
 
   if (n > 0 && n < RENDMAX)
     {
@@ -310,8 +310,8 @@ inline void tr_set_edge(R2D_TYPE x, R2D_TYPE y, R2D_TYPE z, R2D_TYPE u, R2D_TYPE
 
 void rendzline(const R_2DPoint &, const R_2DPoint &, int);
 
-void tr_build_edge_array(TR_2DPoint *points, unsigned int n);
-void tr_build_edge_array(TR_2DPoint *points, unsigned int n)
+void tr_build_edge_array(TR_2DPoint *points, int n);
+void tr_build_edge_array(TR_2DPoint *points, int n)
 {
   int i;
   TR_2DPoint *p0,*p1;
@@ -384,8 +384,8 @@ void tr_build_edge_array(TR_2DPoint *points, unsigned int n)
 extern int frame_switch;
 extern void frame_convpoly(int *, int, int);
 
-void tr_frame_convpoly(TR_2DPoint *points, unsigned int n);
-void tr_frame_convpoly(TR_2DPoint *points, unsigned int n)
+void tr_frame_convpoly(TR_2DPoint *points, int n);
+void tr_frame_convpoly(TR_2DPoint *points, int n)
 {
   if (n >= RENDMAX)
     return;
@@ -405,22 +405,22 @@ void tr_frame_convpoly(TR_2DPoint *points, unsigned int n)
  * Texture mapping routines                                   *
  **************************************************************/
 /* No perspective correction */
-void tr_fill_convpoly_nc(TR_2DPoint *points, unsigned int n, TextrMap *tmap, 
+void tr_fill_convpoly_nc(TR_2DPoint *points, int n, TextrMap *tmap, 
 			 int fillcolor);
 /* <n> pixels perspective corrected */
-void tr_fill_convpoly_sc(TR_2DPoint *points, unsigned int n, TextrMap *tmap, 
+void tr_fill_convpoly_sc(TR_2DPoint *points, int n, TextrMap *tmap, 
 			 int fillcolor);
 /* all pixels perspective corrected */
-void tr_fill_convpoly_c(TR_2DPoint *points, unsigned int n, TextrMap *tmap, 
+void tr_fill_convpoly_c(TR_2DPoint *points, int n, TextrMap *tmap, 
 			int fillcolor);
 
 static unsigned char *buffer_ptr;
 
-void tr_fill_convpoly(TR_2DPoint *points, unsigned int n, TextrMap *tmap, 
+void tr_fill_convpoly(TR_2DPoint *points, int n, TextrMap *tmap, 
 		      int fillcolor)
 {
 #ifdef USES_DDRAW
-  extern void wvgad3_rndrpoly(TR_2DPoint *points, unsigned int n, TextrMap *tmap, 
+  extern void wvgad3_rndrpoly(TR_2DPoint *points, int n, TextrMap *tmap, 
 			      int fillcolor);
   wvgad3_rndrpoly(points,n-1,tmap,fillcolor);
   return;
@@ -443,7 +443,7 @@ void tr_fill_convpoly(TR_2DPoint *points, unsigned int n, TextrMap *tmap,
 /****************************************************************
  * All pixels perspective-corrected by dividing by z-value      *
  ****************************************************************/
-void tr_fill_convpoly_c(TR_2DPoint *points, unsigned int n, TextrMap *tmap, 
+void tr_fill_convpoly_c(TR_2DPoint *points, int n, TextrMap *tmap, 
 			int fillcolor)
 {
   int j,stps;
@@ -477,16 +477,16 @@ void tr_fill_convpoly_c(TR_2DPoint *points, unsigned int n, TextrMap *tmap,
 
   tr_build_edge_array(points,n);
 
-  b_ptr = buffer_ptr + (((int)min_y) * SCREEN_PITCH);
-  z_ptr = zbuff + (((int)min_y) * SCREEN_WIDTH);
+  b_ptr = buffer_ptr + min_y * SCREEN_PITCH;
+  z_ptr = zbuff + min_y * SCREEN_WIDTH;
 
   zb = zbias + ztrans;
 
   // Do for each row 
-  for (j = (int) min_y; j <= (int)max_y; j++)
+  for (j = min_y; j <= max_y; j++)
     {
-      xl = (int) tr_l_edge[j].x;
-      stps = (int) ((tr_r_edge[j].x - xl) + 1) ;
+      xl = tr_l_edge[j].x;
+      stps = tr_r_edge[j].x - xl + 1;
       zz = tr_l_edge[j].z;
       zr = tr_r_edge[j].z;
       uu = tr_l_edge[j].u;
@@ -497,7 +497,7 @@ void tr_fill_convpoly_c(TR_2DPoint *points, unsigned int n, TextrMap *tmap,
       ustp = (ur - uu) / stps;
       vstp = (vr - vv) / stps;
 
-      b_ptr2 = (unsigned char *) b_ptr + xl;
+      b_ptr2 = static_cast<unsigned char *>(b_ptr) + xl;
       z_ptr2 = z_ptr + xl;
 
       // Do for each column
@@ -506,8 +506,8 @@ void tr_fill_convpoly_c(TR_2DPoint *points, unsigned int n, TextrMap *tmap,
 	  zt = zz + zb;
 	  if (zt > *z_ptr2)
 	    {
-	      u = (int) (uu / zz );
-	      v = (int) (vv / zz );
+	      u = uu / zz ;
+	      v = vv / zz ;
 	      if (u > tw_1)
 		u = tw_1;
 	      else if (u < 0)
@@ -516,7 +516,7 @@ void tr_fill_convpoly_c(TR_2DPoint *points, unsigned int n, TextrMap *tmap,
 		v = th_1;
 	      else if (v < 0)
 		v = 0;
-	      clr = (char) tmap->getColorMap(*(tbytes + v * tw + u));
+	      clr = static_cast<unsigned char>(tmap->getColorMap(*(tbytes + v * tw + u)));
 	      if (tflag)
 		{
 		  if (clr != trans_color)
@@ -526,7 +526,7 @@ void tr_fill_convpoly_c(TR_2DPoint *points, unsigned int n, TextrMap *tmap,
 		    }
 		  else if (fillcolor != -1)
 		    {
-		      *b_ptr2 = (char )fillcolor;
+		      *b_ptr2 = static_cast<unsigned char>(fillcolor);
 		      *z_ptr2 = zt;
 		    }
 		}
@@ -554,7 +554,7 @@ void tr_fill_convpoly_c(TR_2DPoint *points, unsigned int n, TextrMap *tmap,
 /****************************************************************
  * correct <n> pixels for perspective, interpolate between      *
  ****************************************************************/
-void tr_fill_convpoly_sc(TR_2DPoint *points, unsigned int n, TextrMap *tmap, 
+void tr_fill_convpoly_sc(TR_2DPoint *points, int n, TextrMap *tmap, 
 			 int fillcolor)
 {
   int j,stps,stpsi,stpsu;
@@ -593,15 +593,15 @@ void tr_fill_convpoly_sc(TR_2DPoint *points, unsigned int n, TextrMap *tmap,
 
   tr_build_edge_array(points,n);
 
-  b_ptr = buffer_ptr + (((int)min_y) * SCREEN_PITCH);
-  z_ptr = zbuff + (((int)min_y) * SCREEN_WIDTH);
+  b_ptr = buffer_ptr + min_y * SCREEN_PITCH;
+  z_ptr = zbuff + min_y * SCREEN_WIDTH;
 
   zb = zbias + ztrans;
 
-  for (j = (int) min_y; j <= (int)max_y; j++)
+  for (j = min_y; j <= max_y; j++)
     {
-      xl = (int) tr_l_edge[j].x;
-      stps = (int) ((tr_r_edge[j].x - xl) + 1) ;
+      xl = tr_l_edge[j].x;
+      stps = tr_r_edge[j].x - xl + 1;
 
       stpsu = (stps / rz_steps);
 
@@ -619,7 +619,7 @@ void tr_fill_convpoly_sc(TR_2DPoint *points, unsigned int n, TextrMap *tmap,
 	  vstp = (vr - vv) / stpsu;
 	}
 
-      b_ptr2 = (unsigned char *) b_ptr + xl;
+      b_ptr2 = static_cast<unsigned char *>(b_ptr) + xl;
       z_ptr2 = z_ptr + xl;
 
       while (stpsu--)
@@ -656,7 +656,7 @@ void tr_fill_convpoly_sc(TR_2DPoint *points, unsigned int n, TextrMap *tmap,
 		  else if (v < 0)
 		    v = 0;
 
-		  clr = (char) tmap->getColorMap(*(tbytes + v * tw + u));
+		  clr = static_cast<unsigned char>(tmap->getColorMap(*(tbytes + v * tw + u)));
 		  if (tflag)
 		    {
 		      if (clr != trans_color)
@@ -666,7 +666,7 @@ void tr_fill_convpoly_sc(TR_2DPoint *points, unsigned int n, TextrMap *tmap,
 			}
 		      else if (fillcolor != -1)
 			{
-			  *b_ptr2 = (char )fillcolor;
+			  *b_ptr2 = static_cast<unsigned char>(fillcolor);
 			  *z_ptr2 = zt;
 			}
 		    }
@@ -715,7 +715,7 @@ void tr_fill_convpoly_sc(TR_2DPoint *points, unsigned int n, TextrMap *tmap,
 		    v = th_1;
 		  else if (v < 0)
 		    v = 0;
-		  clr = (char) tmap->getColorMap(*(tbytes + v * tw + u));
+		  clr = static_cast<unsigned char>(tmap->getColorMap(*(tbytes + v * tw + u)));
 		  if (tflag)
 		    {
 		      if (clr != trans_color)
@@ -725,7 +725,7 @@ void tr_fill_convpoly_sc(TR_2DPoint *points, unsigned int n, TextrMap *tmap,
 			}
 		      else if (fillcolor != -1)
 			{
-			  *b_ptr2 = (char )fillcolor;
+			  *b_ptr2 = static_cast<unsigned char>(fillcolor);
 			  *z_ptr2 = zt;
 			}
 		    }
@@ -753,7 +753,7 @@ void tr_fill_convpoly_sc(TR_2DPoint *points, unsigned int n, TextrMap *tmap,
 /****************************************************************
  * no perspective correction                                    *
  ****************************************************************/
-void tr_fill_convpoly_nc(TR_2DPoint *points, unsigned int n, TextrMap *tmap,
+void tr_fill_convpoly_nc(TR_2DPoint *points, int n, TextrMap *tmap,
 			 int fillcolor)
 {
   int j,stps;
@@ -789,15 +789,15 @@ void tr_fill_convpoly_nc(TR_2DPoint *points, unsigned int n, TextrMap *tmap,
 
   tr_build_edge_array(points,n);
 
-  b_ptr = buffer_ptr + min_y * static_cast<int>(SCREEN_PITCH);
-  z_ptr = zbuff + min_y * static_cast<int>(SCREEN_WIDTH);
+  b_ptr = buffer_ptr + min_y * SCREEN_PITCH;
+  z_ptr = zbuff + min_y * SCREEN_WIDTH;
 
   zb = zbias + ztrans;
 
-  for (j = (int) min_y; j <= (int)max_y; j++)
+  for (j = min_y; j <= max_y; j++)
     {
-      xl = (int) tr_l_edge[j].x;
-      stps = (int) ((tr_r_edge[j].x - xl) + 1) ;
+      xl = tr_l_edge[j].x;
+      stps = tr_r_edge[j].x - xl + 1;
       zz = tr_l_edge[j].z;
       zr = tr_r_edge[j].z;
       uu = tr_l_edge[j].u;
@@ -833,7 +833,7 @@ void tr_fill_convpoly_nc(TR_2DPoint *points, unsigned int n, TextrMap *tmap,
 	      else if (v < 0)
 		v = 0;
 
-	      clr = (char) tmap->getColorMap(*(tbytes + (v * tw) + u));
+	      clr = static_cast<unsigned char>(tmap->getColorMap(*(tbytes + (v * tw) + u)));
 	      if (tflag)
 		{
 		  if (clr != trans_color)
@@ -843,7 +843,7 @@ void tr_fill_convpoly_nc(TR_2DPoint *points, unsigned int n, TextrMap *tmap,
 		    }
 		  else if (fillcolor != -1)
 		    {
-		      *b_ptr2 = (char )fillcolor;
+		      *b_ptr2 = static_cast<unsigned char>(fillcolor);
 		      *z_ptr2 = zt;
 		    }
 		}

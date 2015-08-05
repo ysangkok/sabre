@@ -17,8 +17,8 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-#ifndef __simfile_h
-#define __simfile_h
+#ifndef SIMFILE_H
+#define SIMFILE_H
 #include "sim.h"
 #include "simerr.h"
 #include <iostream>

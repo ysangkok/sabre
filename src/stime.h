@@ -23,8 +23,8 @@
  * Date   : April, 1998                          *
  * Author : Dan Hammer                           *
  *************************************************/
-#ifndef __stime_h
-#define __stime_h
+#ifndef STIME_H
+#define STIME_H
 /*
  *	Current time frame & elapsed time, in seconds
  */

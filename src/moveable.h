@@ -20,8 +20,8 @@
 /***********************************************************
  * moveable.h                                              *
  ***********************************************************/
-#ifndef __moveable_h
-#define __moveable_h
+#ifndef MOVEABLE_H
+#define MOVEABLE_H
 #ifndef __cpoly_h
 #include "cpoly.h"
 #endif

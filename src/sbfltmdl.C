@@ -127,12 +127,12 @@ void sbrFlightModel::SetAttitude(const sAttitude &attitude)
 
 sREAL sbrFlightModel::GetPitchRate()
 {
-	return (sREAL) -STATE.pitch_rate;
+	return -STATE.pitch_rate;
 }
 
 void sbrFlightModel::SetPitchRate(sREAL pitchRate)
 {
-	STATE.pitch_rate = (REAL_TYPE) pitchRate;
+	STATE.pitch_rate = pitchRate;
 }
 
 sREAL sbrFlightModel::GetPitch()
@@ -150,12 +150,12 @@ sAttitude attitude = att;
 
 sREAL sbrFlightModel::GetRollRate()
 {
-	return (sREAL) STATE.roll_rate;
+	return STATE.roll_rate;
 }
 
 void sbrFlightModel::SetRollRate(sREAL rollRate)
 {
-	STATE.roll_rate = (REAL_TYPE) rollRate;		
+	STATE.roll_rate = rollRate;
 }
 
 sREAL sbrFlightModel::GetRoll()
@@ -175,12 +175,12 @@ sAttitude attitude = att;
 
 sREAL sbrFlightModel::GetYawRate()
 {
-	return (sREAL) -STATE.yaw_rate;
+	return -STATE.yaw_rate;
 }
 
 void sbrFlightModel::SetYawRate(sREAL yawRate)
 {
-	STATE.yaw_rate = (REAL_TYPE) yawRate;
+	STATE.yaw_rate = yawRate;
 }
 
 sREAL sbrFlightModel::GetYaw()
@@ -198,7 +198,7 @@ sAttitude attitude = att;
 
 sREAL sbrFlightModel::GetAOA()
 {
-	return (sREAL) STATE.angle_of_attack;
+	return STATE.angle_of_attack;
 }
 
 sREAL sbrFlightModel::GetAOARate()
@@ -211,27 +211,27 @@ sREAL sbrFlightModel::GetAOARate()
 
 void sbrFlightModel::SetAOA(sREAL AOA)
 {
-	STATE.angle_of_attack = (REAL_TYPE) AOA;
+	STATE.angle_of_attack = AOA;
 }
 
 sREAL sbrFlightModel::GetLift()
 {
-	return (sREAL) FORCES.lift.magnitude;
+	return FORCES.lift.magnitude;
 }
 
 void sbrFlightModel::SetLift(sREAL lift)
 {
-	FORCES.lift.magnitude = (REAL_TYPE) lift;
+	FORCES.lift.magnitude = lift;
 }
 
 sREAL sbrFlightModel::GetAirSpeedFPS()
 {
-	return (sREAL) STATE.z_vel;
+	return STATE.z_vel;
 }
 
 sREAL sbrFlightModel::GetAirSpeedMPH()
 {
-	return sFPS2MPH((sREAL) STATE.z_vel);
+	return sFPS2MPH(STATE.z_vel);
 }
 
 void sbrFlightModel::GetVelocity(sVector &vel)
@@ -256,7 +256,7 @@ void sbrFlightModel::SetVelocity(__attribute__((unused)) const sVector &vel)
 
 sREAL sbrFlightModel::GetPitchControlPer()
 {
-	return (sREAL) (CONTROLS.elevators / CONTROLS.elevator_max);
+	return (CONTROLS.elevators / CONTROLS.elevator_max);
 }
 
 void sbrFlightModel::SetPitchControlPer(sREAL per)
@@ -265,7 +265,7 @@ void sbrFlightModel::SetPitchControlPer(sREAL per)
 		per = 1.0;
 	if (per < -1.0)
 		per = -1.0;
-	CONTROLS.elevators = ((float)per) * CONTROLS.elevator_max;
+	CONTROLS.elevators = static_cast<float>(per) * CONTROLS.elevator_max;
 }
 
 void sbrFlightModel::IncPitchControlPer(sREAL inc)
@@ -273,18 +273,18 @@ void sbrFlightModel::IncPitchControlPer(sREAL inc)
 	SetPitchControlPer(GetPitchControlPer() + inc);
 }
 
-sREAL sbrFlightModel::GetRollControlPer() 
+sREAL sbrFlightModel::GetRollControlPer()
 {
-	return (sREAL) (CONTROLS.ailerons / CONTROLS.aileron_max);
+	return CONTROLS.ailerons / CONTROLS.aileron_max;
 }
 
-void sbrFlightModel::SetRollControlPer(sREAL per) 
+void sbrFlightModel::SetRollControlPer(sREAL per)
 {
 	if (per > 1.0)
 		per = 1.0;
 	if (per < -1.0)
 		per = -1.0;
-	CONTROLS.ailerons = ((float)per) * CONTROLS.aileron_max;
+	CONTROLS.ailerons = static_cast<float>(per) * CONTROLS.aileron_max;
 }
 
 void sbrFlightModel::IncRollControlPer(sREAL inc)
@@ -294,7 +294,7 @@ void sbrFlightModel::IncRollControlPer(sREAL inc)
 
 sREAL sbrFlightModel::GetYawControlPer()
 {
-	return (sREAL) (CONTROLS.rudder / CONTROLS.rudder_max);
+	return CONTROLS.rudder / CONTROLS.rudder_max;
 }
 
 void sbrFlightModel::SetYawControlPer(sREAL per)
@@ -303,7 +303,7 @@ void sbrFlightModel::SetYawControlPer(sREAL per)
 		per = 1.0;
 	if (per < -1.0)
 		per = -1.0;
-	CONTROLS.rudder = ((float)per) * CONTROLS.rudder_max;
+	CONTROLS.rudder = per * CONTROLS.rudder_max;
 }
 
 void sbrFlightModel::IncYawControlPer(sREAL inc)
@@ -322,7 +322,7 @@ void sbrFlightModel::SetEngineControlPer(sREAL per)
 		per = 1.0;
 	if (per < 0.0)
 		per = 0.0;
-	CONTROLS.throttle = C(((float)per) * 100.0);
+	CONTROLS.throttle = C(per * 100.0);
 }
 
 void sbrFlightModel::IncEngineControlPer(sREAL inc)
@@ -332,52 +332,52 @@ void sbrFlightModel::IncEngineControlPer(sREAL inc)
 
 sREAL sbrFlightModel::GetLoad()
 {
-	return (sREAL) STATE.load;
+	return STATE.load;
 }
 
 sREAL sbrFlightModel::GetLoadRate()
 {
-	return (sREAL) STATE.d_load;
+	return STATE.d_load;
 }
 
 sREAL sbrFlightModel::GetAltitudeFPS()
 {
-	return (sREAL) (FLIGHT_PORT.look_from.z / world_scale);	
+	return FLIGHT_PORT.look_from.z / world_scale;
 }
 
 sREAL sbrFlightModel::GetBestClimbSpeedFPS()
 {
-	return (sREAL) SPECS->corner_speed;
+	return SPECS->corner_speed;
 }
 
 sREAL sbrFlightModel::GetStallSpeedFPS()
 {
-	return (sREAL) SPECS->lspeed;
+	return SPECS->lspeed;
 }
 
 sREAL sbrFlightModel::GetMaxSpeedFPS()
 {
-	return (sREAL) SPECS->max_speed;
+	return SPECS->max_speed;
 }
 
 sREAL sbrFlightModel::GetCornerSpeedFPS()
 {
-	return (sREAL) SPECS->corner_speed;
+	return SPECS->corner_speed;
 }
 
 sREAL sbrFlightModel::GetThrust()
 {
-	return (sREAL) FORCES.thrust.magnitude;
+	return FORCES.thrust.magnitude;
 }
 
 sREAL sbrFlightModel::GetDrag()
 {
-	return (sREAL) FORCES.drag.magnitude;
+	return FORCES.drag.magnitude;
 }
 
 sREAL sbrFlightModel::GetWeight()
 {
-	return (sREAL) STATE.weight;
+	return STATE.weight;
 }
 
 void sbrFlightModel::SetWEP(__attribute__((unused)) int wep)
@@ -404,7 +404,7 @@ sREAL sbrFlightModel::GetTurnRate()
 
 sREAL sbrFlightModel::GetHeightAGL()
 {
-	return (sREAL) (STATE.agl / world_scale);
+	return STATE.agl / world_scale;
 }
 
 int sbrFlightModel::GetEngineCount()
@@ -422,22 +422,22 @@ sREAL sbrFlightModel::GetGroundHeight(const sPoint &s0)
 R_3DPoint p0;
 
 	sPoint2R_3DPoint(s0,p0);
-	return (sREAL) (getGroundLevel(p0) / world_scale);
+	return getGroundLevel(p0) / world_scale;
 }
 
 sREAL sbrFlightModel::GetPitchAccel()
 {
-	return (sREAL) STATE.d_pitch_rate;
+	return STATE.d_pitch_rate;
 }
 
 sREAL sbrFlightModel::GetYawAccel()
 {
-	return (sREAL) STATE.d_yaw_rate;
+	return STATE.d_yaw_rate;
 }
 
 sREAL sbrFlightModel::GetRollAccel()
 {
-	return (sREAL) STATE.d_roll_rate;
+	return STATE.d_roll_rate;
 }
 
 void sbrFlightModel::SetFlaps(sREAL per)
@@ -447,7 +447,7 @@ void sbrFlightModel::SetFlaps(sREAL per)
 	if (per < 0.0)
 		per = 0.0;
 
-	CONTROLS.flaps = (REAL_TYPE) (per * CONTROLS.flaps_max);
+	CONTROLS.flaps = per * CONTROLS.flaps_max;
 }
 
 void sbrFlightModel::SetSpeedBreaks(sREAL per)

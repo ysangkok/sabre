@@ -98,7 +98,7 @@ int fontdev::load( const char *fn )
    else
      dimy=8;
    unsigned char *p=buf, mask=0;
-   size_t i; unsigned int j;
+   size_t i; int j;
    for( i=0; i<scans; i++, p++ ) {
       mask|=*p;
    }
@@ -147,7 +147,7 @@ int fontdev::save( const char *fn )
      setcell( mindimx, mindimy );
    // there must be better way to do this loop!
    unsigned char *p=static_cast<unsigned char *>(fbp);
-   unsigned int i, j, k, count=0;
+   int i, j, k, count=0;
    for( j=0; j<256; j++ ) { // for each character
       for( i=0; i<dimy; i++ ) { // for each scan
 	 char c=0;
@@ -160,7 +160,7 @@ int fontdev::save( const char *fn )
       }
    }
 
-   unsigned int fill=4096-count;
+   int fill=4096-count;
    if( fill > 2047 )
      fill-=2048;
    if( fill )
@@ -174,14 +174,14 @@ int fontdev::save( const char *fn )
 void *fontdev::getfbp( unsigned int c )
 {
    unsigned char *p=static_cast<unsigned char *>(fbp);
-   p+=c*dimx*dimy;
+   p+=c*static_cast<unsigned int>(dimx*dimy);
    return p;
 }
 
 void fontdev::calcmin( void )
 {
    // analyze width & height
-   unsigned int i, j, k, widthbuf[8], heightbuf[16];
+   int i, j, k, widthbuf[8], heightbuf[16];
    memset( widthbuf, 0, sizeof(widthbuf));
    memset( heightbuf, 0, sizeof(heightbuf));
    
@@ -209,14 +209,14 @@ void fontdev::calcmin( void )
    mindimx=i;
 }
    
-bool fontdev::setcell( unsigned int _dimx, unsigned int _dimy )
+bool fontdev::setcell( int _dimx, int _dimy )
 {
    if( dimx==_dimx && dimy==_dimy )
      return 0;
    unsigned char *newfbp=new unsigned char[_dimx*_dimy*256], *p=static_cast<unsigned char *>(fbp);
-   memset( newfbp, 0, _dimx*_dimy*256 );
+   memset( newfbp, 0, static_cast<size_t>(_dimx*_dimy*256) );
    // there must be better way to do this loop!
-   unsigned int i, j, k;
+   int i, j, k;
    for( j=0; j<256; j++ ) { // for each character
       for( i=0; i<dimy; i++ ) { // for each scan
 	 for( k=0; k<dimx; k++ ) { // for each bit
@@ -224,7 +224,7 @@ bool fontdev::setcell( unsigned int _dimx, unsigned int _dimy )
 	 }
       }      
    }
-   memcpy( fbp, newfbp, _dimx*_dimy*256 );
+   memcpy( fbp, newfbp, static_cast<size_t>(_dimx*_dimy*256) );
    delete[] newfbp;
    dimx=_dimx;
    dimy=_dimy;
@@ -232,22 +232,22 @@ bool fontdev::setcell( unsigned int _dimx, unsigned int _dimy )
    return 0;
 }
 
-void fontdev::rotate( unsigned int what, int where )
+void fontdev::rotate( int what, int where )
 {
    unsigned char *hold, *p;
-   unsigned int i, j;
+   int i, j;
    switch( where ) {
     case up:
       hold=new unsigned char[dimx];
-      p=static_cast<unsigned char *>(getfbp(what));
-      memcpy( hold, p, dimx );
-      memcpy( p, p+dimx, (dimy-1)*dimx );
-      memcpy( p+(dimy-1)*dimx, hold, dimx );
+      p=static_cast<unsigned char *>(getfbp(static_cast<unsigned int>(what)));
+      memcpy( hold, p, static_cast<size_t>(dimx) );
+      memcpy( p, p+dimx, static_cast<size_t>((dimy-1)*dimx) );
+      memcpy( p+(dimy-1)*dimx, hold, static_cast<size_t>(dimx) );
       delete[] hold;
       break;
     case right: 
       hold=new unsigned char[dimy];
-      p=static_cast<unsigned char *>(getfbp(what));
+      p=static_cast<unsigned char *>(getfbp(static_cast<unsigned int>(what)));
       for( i=0; i<dimy; i++ )
 	hold[i]=p[(i+1)*dimx-1];
       for( j=0; j<dimy; j++, p+=dimx ) {
@@ -259,26 +259,26 @@ void fontdev::rotate( unsigned int what, int where )
       break;
     case left: 
       hold=new unsigned char[dimy];
-      p=static_cast<unsigned char *>(getfbp(what));
+      p=static_cast<unsigned char *>(getfbp(static_cast<unsigned int>(what)));
       for( i=0; i<dimy; i++ )
 	hold[i]=p[i*dimx];
       for( i=0; i<dimy; i++, p+=dimx ) {
-	 memcpy( p, p+1, dimx-1 );
+	 memcpy( p, p+1, static_cast<unsigned int>(dimx-1) );
 	 p[dimx-1]=hold[i];
       }
       delete[] hold;
       break;
     case down: 
       hold=new unsigned char[dimx];
-      p=static_cast<unsigned char *>(getfbp(what));
-      memcpy( hold, p+(dimy-1)*dimx, dimx );
-      memcpy( p+dimx, p, (dimy-1)*dimx );
-      memcpy( p, hold, dimx );
+      p=static_cast<unsigned char *>(getfbp(static_cast<unsigned int>(what)));
+      memcpy( hold, p+(dimy-1)*dimx, static_cast<size_t>(dimx) );
+      memcpy( p+dimx, p, static_cast<size_t>((dimy-1)*dimx) );
+      memcpy( p, hold, static_cast<size_t>(dimx) );
       delete[] hold;
       break;
     case turn_right: 
       hold=new unsigned char[dimx*dimy];
-      memset( hold, 0, dimx*dimy );
+      memset( hold, 0, static_cast<size_t>(dimx*dimy) );
       for( j=0; j<16; j++ ) {
 	 if( j >= dimy )
 	   break;

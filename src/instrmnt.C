@@ -119,12 +119,12 @@ void ArtHor::underpaint(Flight &flight)
     sc_y = y + height - 3;
   s[2].y = sc_y;
   s[3].y = sc_y;
-  if ((bool) port.roll)
-    ang = _2PI - port.roll;
+  if (static_cast<bool>(port.roll))
+    ang = SABRE_2PI - port.roll;
   else
     ang = 0;
   if (flight.state.negative_phi)
-    ang = limit_angle(ang + _PI);
+    ang = limit_angle(ang + SABRE_PI);
   sin_ang = sSIN(ang);
   cos_ang = sCOS(ang);
   for (int i=0;i<5;i++)
@@ -132,8 +132,8 @@ void ArtHor::underpaint(Flight &flight)
       s1[i] = point_rotate(s[i],cx,cy,sin_ang,cos_ang);
       g1[i] = point_rotate(g[i],cx,cy,sin_ang,cos_ang);
     }
-  fill_convpoly((int *)g1,5,color+1);
-  fill_convpoly((int *)s1,5,color);
+  fill_convpoly(reinterpret_cast<int *>(g1),5,color+1);
+  fill_convpoly(reinterpret_cast<int *>(s1),5,color);
 }
 
 void ArtHor::display(Flight &)

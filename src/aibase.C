@@ -168,7 +168,7 @@ char nbuff[16];
 }
 
 // Push a maneuver on to the stack
-sManeuverState *aiBase::PushManeuver(unsigned int mnvr, uint32_t flags, sREAL d0,
+sManeuverState *aiBase::PushManeuver(int mnvr, uint32_t flags, sREAL d0,
 												sREAL d1, sREAL d2)
 {
 	if (mnvrStackPtr < aiB_MNVR_MAX - 1)
@@ -187,7 +187,7 @@ sManeuverState *aiBase::PushManeuver(unsigned int mnvr, uint32_t flags, sREAL d0
 		return (NULL);
 }
 
-sManeuverState *aiBase::PushManeuverX(unsigned int mnvr, uint32_t flags,
+sManeuverState *aiBase::PushManeuverX(int mnvr, uint32_t flags,
 													sREAL d0, sREAL d1, sREAL d2,
 													sREAL d3, sREAL d4, sREAL d5)
 {
@@ -242,7 +242,7 @@ void aiBase::ClearManeuverStack()
 
 // Set a maneuver. This clears the stack
 // and makes the maneuver the current one
-void aiBase::SetManeuver(unsigned int mnvr, uint32_t flags, sREAL d0, sREAL d1, sREAL d2)
+void aiBase::SetManeuver(int mnvr, uint32_t flags, sREAL d0, sREAL d1, sREAL d2)
 {
 	if (mnvr >= 1 && mnvr < sManeuver::LAST)
 	{
@@ -256,7 +256,7 @@ void aiBase::SetManeuver(unsigned int mnvr, uint32_t flags, sREAL d0, sREAL d1, 
 			mnvr);
 }
 
-void aiBase::SetManeuverX(unsigned int mnvr, uint32_t flags, 
+void aiBase::SetManeuverX(int mnvr, uint32_t flags, 
 									sREAL d0, sREAL d1, sREAL d2,
 									sREAL d3, sREAL d4, sREAL d5)
 {

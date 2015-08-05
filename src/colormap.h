@@ -24,8 +24,8 @@
  * Date   : July, 1997                           *
  * Author : Dan Hammer                           *
  *************************************************/
-#ifndef __colormap_h
-#define __colormap_h
+#ifndef COLORMAP_H
+#define COLORMAP_H
 
 class ColorMap
 {

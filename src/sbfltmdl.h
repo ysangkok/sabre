@@ -25,8 +25,8 @@
  * Wrap our Sabre flight model inside an         *
  * sFlightModel so AI can access it.             *
  *************************************************/
-#ifndef __sbfltmdl_h
-#define __sbfltmdl_h
+#ifndef SBFLTMDL_H
+#define SBFLTMDL_H
 
 #ifdef __cplusplus
 #include "simerr.h"

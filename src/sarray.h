@@ -23,8 +23,8 @@
  * Date   : April, 1998                          *
  * Author : Dan Hammer                           *
  *************************************************/
-#ifndef __sarray_h
-#define __sarray_h
+#ifndef SARRAY_H
+#define SARRAY_H
 
 #ifdef __cplusplus
 #include <stdio.h>
@@ -33,11 +33,11 @@
 class sObjectArray : public sObject
 {
   sObject **objs;       // pointers to objects
-  unsigned int size;    // size of array (max) 
-  unsigned int n;       // how many assigned so far
-  bool    owns;         // do we delete objects on Destroy()
+  int     size;         // size of array (max) 
+  int     n;            // how many assigned so far
+  int     owns;         // do we delete objects on Destroy()
 public:
-  void Create(unsigned int size, bool owns = true);
+  void Create(int size, bool owns = true);
   void Destroy();
   void Flush();
 
@@ -54,7 +54,7 @@ public:
     return (sOBJECT_ARRAY_T);
   }
 
-  sObjectArray(unsigned int siz, bool own = true)
+  sObjectArray(int siz, bool own = true)
   {
     n = 0;
     objs = NULL;
@@ -63,20 +63,20 @@ public:
 
   ~sObjectArray();
 
-  sObject * operator[](unsigned int idx) const;
+  sObject * operator[](int idx) const;
 
-  unsigned int Count() const
+  int Count() const
   {
     return (n);
   }
 
-  unsigned int Size() const
+  int Size() const
   {
     return (size);
   }
 
-  unsigned int Add(sObject *obj);
-  unsigned int Append(sObject *obj);
+  int Add(sObject *obj);
+  int Append(sObject *obj);
 
   bool Owns() const
   {
@@ -88,7 +88,7 @@ public:
 	this->owns = own;
   }
 
-  unsigned int Remove(unsigned int idx);
+  int Remove(int idx);
 };
 
 #endif

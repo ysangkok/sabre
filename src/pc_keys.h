@@ -17,8 +17,8 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-#ifndef __pc_keys_h
-#define __pc_keys_h
+#ifndef PC_KEYS_H
+#define PC_KEYS_H
 enum AUXKEYS {
   S_TAB = 15,
   A_Q, A_W, A_E, A_R, A_T, A_Y, A_U, A_I, A_O, A_P,

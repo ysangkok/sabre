@@ -17,8 +17,8 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-#ifndef __simmath_h
-#define __simmath_h
+#ifndef SIMMATH_H
+#define SIMMATH_H
 
 #include "vmath.h"
 

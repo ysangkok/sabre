@@ -34,6 +34,7 @@
 #include <limits.h>
 #include <values.h>
 #include <string.h>
+#include <endian.h>
 #include "swap.h"
 #include "defs.h"
 #include "grafix.h"
@@ -113,7 +114,7 @@ char c = ' ';
 		for (int i=0;i<nbytes;i++)
 		{
 			is >> ii;
-			bytes[i] = (unsigned char) ii;
+			bytes[i] = static_cast<unsigned char>(ii);
 		}
 	}
 
@@ -167,22 +168,22 @@ std::ofstream os;
 
 	if (bytes != NULL)
 	{
-		tgtsize = (uint32_t) map_w * map_h;
+		tgtsize = static_cast<uint32_t>(map_w * map_h);
 		srcsize = tgtsize;
 		tgt = new char[tgtsize];
-		if ((n = memcompress(tgt,tgtsize,(char *)bytes,srcsize)) != 0)
+		if ((n = memcompress(tgt,tgtsize,reinterpret_cast<char *>(bytes),srcsize)) != 0)
 		{
 			fname = new char[strlen(id) + 10];
 			sprintf(fname,"tzp/%s.tzp",id);
 			if (open_libos(os,fname))
 			{
 				uint32_t tmp;
-				tmp = ltohl(map_w);
-				os.write((char *)&tmp,sizeof(tmp));
-				tmp = ltohl(map_h);
-				os.write((char *)&tmp,sizeof(tmp));
-				tmp = ltohl(n);
-				os.write((char *)&tmp,sizeof(tmp));
+				tmp = htole32(static_cast<uint32_t>(map_w));
+				os.write(reinterpret_cast<char *>(&tmp),sizeof(tmp));
+				tmp = htole32(static_cast<uint32_t>(map_h));
+				os.write(reinterpret_cast<char *>(&tmp),sizeof(tmp));
+				tmp = htole32(static_cast<uint32_t>(n));
+				os.write(reinterpret_cast<char *>(&tmp),sizeof(tmp));
 				os.write(tgt,n);
 			}
 			delete [] fname;
@@ -216,12 +217,12 @@ char              *fname;
 		if (!fread(&map_h,sizeof(map_h),1,f)) abort();
 		map_h = ltohl(map_h);
 		if (!fread(&n,sizeof(n),1,f)) abort();
-		n = ltohl(n);
+		n = htole32(n);
 		size = map_w * map_h;
 		csize = n;
 		cbytes = new unsigned char[csize];
 		MYCHECK(cbytes != NULL);
-		nread = (int) fread(cbytes,1,csize,f);
+		nread = static_cast<int>(fread(cbytes,1,static_cast<size_t>(csize),f));
 		if (ferror(f))
 		{
 			error_jump("TextrMap: error reading from file %s %d bytes\n",
@@ -316,25 +317,23 @@ int TextrMap_Manager::add_map(TextrMap &tm)
 
 void TextrMap_Manager::read(std::istream &is)
 {
-unsigned int n;
+int n;
 
 	if (tmaps == NULL)
 	{
-		unsigned int sn_maps;
-		is >> sn_maps;
-		n_maps = sn_maps;
+		is >> n_maps;
 		if (n_maps <= 0)
 			return;
 		tmaps = new TextrMap[static_cast<unsigned int>(n_maps)];
 		MYCHECK(tmaps != NULL);
-		for (unsigned int i=0;i<n_maps;i++)
+		for (int i=0;i<n_maps;i++)
 			is >> tmaps[i];
 			nxt = n_maps - 1;
 	}
 	else
 	{
 		is >> n;
-		for (unsigned int i=0;i<n;i++)
+		for (int i=0;i<n;i++)
 		{
 			TextrMap tmp;
 			if (nxt < n_maps - 1)
@@ -364,7 +363,7 @@ void TextrMap_Manager::read_file(const char *path)
 void TextrMap_Manager::write(std::ostream &os)
 {
   os << nxt << '\n';
-  for (unsigned int i=0;i<nxt;i++)
+  for (int i=0;i<nxt;i++)
     os << tmaps[i] << '\n';
 }
 
@@ -386,7 +385,7 @@ void TextrMap_Manager::write_file(const char *path)
 TextrMap *TextrMap_Manager::get_map_ptr(const char *id)
 {
 	TextrMap *result = NULL;
-	for (unsigned int i=0;i<n_maps;i++)
+	for (int i=0;i<n_maps;i++)
 	{
 		if (!strcmp(id,tmaps[i].id))
 		{

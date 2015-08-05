@@ -17,8 +17,8 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-#ifndef __sim_h
-#define __sim_h
+#ifndef SIM_H
+#define SIM_H
 #include <stdlib.h>
 #include <random>
 
@@ -31,14 +31,13 @@ extern float player_hit_scaler;
 
 #include "rtkey.h"
 
-#define __cdecl 
-
 static std::random_device generator;
 
-inline unsigned int RANDOM(unsigned int x) 
+template <typename T>
+inline T RANDOM(T x)
 {
-  std::uniform_int_distribution<unsigned int> distribution(0,x-1);
-  return distribution(generator);   
+  std::uniform_int_distribution<T> distribution(0,x-1);
+  return distribution(generator);
 }
 
 inline long coreleft()

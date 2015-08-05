@@ -20,8 +20,8 @@
 /*******************************************************
  * font8x8.h                                           *
  *******************************************************/
-#ifndef __font8x8_h
-#define __font8x8_h
+#ifndef FONT8X8_H
+#define FONT8X8_H
 
 #include "defs.h"
 
@@ -38,11 +38,11 @@ class fontdev;
 class SimFont
 {
 public:
-  unsigned int width;
-  unsigned int height;
-  unsigned int option;
-  unsigned int put_width;
-  unsigned int put_height;
+  int width;
+  int height;
+  int option;
+  int put_width;
+  int put_height;
 
   SimFont()
     {
@@ -51,15 +51,16 @@ public:
 
   virtual ~SimFont();
 
-  void set_option(unsigned int opt)
+  void set_option(int opt)
     {
       option = opt;
     }
 
-  virtual void put_char(unsigned char c, unsigned int x, unsigned int y, int color, unsigned int dim = 0) = 0;
+  virtual void put_char(unsigned char c, int x, int y, int color,
+			int dim = 0) = 0;
 
-  void put_string(char *str, unsigned int x, unsigned int y, int color);
-  void font_sprintf(unsigned int x, unsigned int y, int color, unsigned int opt, const char *format, ...);
+  void put_string(char *str, int x, int y, int color);
+  void font_sprintf(int x, int y, int color, int opt, const char *format, ...);
 };
 
 class Font8x8 : public SimFont
@@ -69,7 +70,8 @@ public:
   int  font_dim;
   byte font[256][8];
   Font8x8(char *);
-  virtual void put_char(unsigned char c, unsigned int x, unsigned int y, int color, unsigned int dim = 0);
+  virtual void put_char(unsigned char c, int x, int y, int color,
+			int dim = 0);
   
 };
 
@@ -94,7 +96,8 @@ public:
   
   ConsoleFont(const char *);
   virtual ~ConsoleFont();
-  void put_char(unsigned char c, unsigned int x, unsigned int y, int color, unsigned int dim = 0);
+  void put_char(unsigned char c, int x, int y, int color,
+		int dim = 0);
 };
 
 #endif

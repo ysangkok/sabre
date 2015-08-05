@@ -17,8 +17,8 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-#ifndef __globals_h
-#define __globals_h
+#ifndef GLOBALS_H
+#define GLOBALS_H
 
 extern int sound_avail;
 extern Mouse mouse;
@@ -39,8 +39,8 @@ extern int no_crash;
 extern int routine_key;
 extern int select_next;
 extern Vector world_light_source;
-extern unsigned int cockpit_y;
-extern unsigned int cockpit_x;
+extern int cockpit_y;
+extern int cockpit_x;
 extern int p_dbg;
 extern Pilot *mon_pilot;
 extern int mouse_throttle;

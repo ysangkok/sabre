@@ -24,8 +24,8 @@
  * Date   : March, 1997                          *
  * Author : Dan Hammer                           *
  *************************************************/
-#ifndef __group_3d_h
-#define __group_3d_h
+#ifndef GROUP_3D_H
+#define GROUP_3D_H
 
 
 class C_3DObject_Group : public C_3DObject_List
@@ -41,14 +41,14 @@ public:
   void addDrawList(DrawList &dlist, Port_3D &port);
   bool isVisible(Port_3D &port);
 
-  unsigned int getNObjects()
+  int getNObjects()
     {
       return (n_objects);
     }
 
   C_3DObject_Base *getObject(int n)
     {
-      if (n >= 0 && static_cast<unsigned int>(n) < n_objects)
+      if (n >= 0 && n < n_objects)
 	return (objects[n]);
       else
 	return (NULL);

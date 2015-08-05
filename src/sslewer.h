@@ -25,8 +25,8 @@
  * base class for anything that can move and     *
  * and rotate in a 3-D world                     *
  *************************************************/
-#ifndef __sslewer_h
-#define __sslewer_h
+#ifndef SSLEWER_H
+#define SSLEWER_H
 
 #ifdef __cplusplus
 #include "smath.h"

@@ -23,10 +23,10 @@
  * Date   : March, 1997                          *
  * Author : Dan Hammer                           *
  *************************************************/
-#ifndef __txtrmap_h
-#define __txtrmap_h
+#ifndef TXTRMAP_H
+#define TXTRMAP_H
 
-#ifndef __colormap_h
+#ifndef COLORMAP_H
 #include "colormap.h"
 #endif
 
@@ -43,13 +43,13 @@ private:
 	unsigned char *bytes;
 public:
 	unsigned char *cbytes;
-	uint32_t map_w;
-	uint32_t map_h;
+	int32_t map_w;
+	int32_t map_h;
 	int trans_colr;
 	int delf;
 	char id[32];
-	unsigned long size;
-	unsigned long csize;
+	long size;
+	long csize;
 	long flags;
 	ColorMap *cmaps;
 	int      *mc;
@@ -69,7 +69,7 @@ public:
 		nm = 0;
 	}
 
-	TextrMap(unsigned char *bts, unsigned int mw, unsigned int mh, int tc, int del, int flgs = 0)
+	TextrMap(unsigned char *bts, int mw, int mh, int tc, int del, int flgs = 0)
 	{
 		bytes = bts;
 		cbytes = NULL;
@@ -135,14 +135,14 @@ public:
 	{
 		int result;
 		if (
+		(u > map_w - 1) ||
+		(v > map_h - 1) ||
 		(u < 0)         ||
-		(v < 0)         ||
-		(static_cast<unsigned int>(u) > map_w - 1) ||
-		(static_cast<unsigned int>(v) > map_h - 1)
+		(v < 0) 
 		)
 			result = fill_color;
 		else
-			result = *(bytes + (static_cast<unsigned int>(v) * map_w) + static_cast<unsigned int>(u));
+			result = *(bytes + (v * map_w) + u);
 		if (result == trans_colr)
 			result = fill_color;
 		else if (cmaps)
@@ -156,8 +156,8 @@ extern TextrMap nullmap;
 class TextrMap_Manager
 {
 public:
-	unsigned int n_maps;
-	unsigned int nxt;
+	int n_maps;
+	int nxt;
 	static int reserved;
 
 	TextrMap *tmaps;
@@ -189,7 +189,7 @@ public:
 
 	TextrMap &get_map(int n)
 	{
-		if (tmaps != NULL && n >= 0 && static_cast<unsigned int>(n) < n_maps)
+		if (tmaps != NULL && n >= 0 && n < n_maps)
 			return (tmaps[n]);
 		else
 			return (nullmap);
@@ -197,7 +197,7 @@ public:
 
 	TextrMap *get_map_ptr(int n)
 	{
-		if (tmaps != NULL && n >= 0 && static_cast<unsigned int>(n) < n_maps)
+		if (tmaps != NULL && n >= 0 && n < n_maps)
 			return (& tmaps[n]);
 		else
 			return (NULL);

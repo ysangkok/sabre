@@ -81,8 +81,8 @@ KBHit::KBHit()
   tcgetattr(0,&oldios);
   newios = oldios;
 
-  newios.c_lflag &= ~(ICANON | ECHO);
-  newios.c_iflag &= ~(ISTRIP | IGNCR | ICRNL | INLCR | IXOFF | IXON);
+  newios.c_lflag &= static_cast<unsigned>(~(ICANON | ECHO));
+  newios.c_iflag &= static_cast<unsigned>(~(ISTRIP | IGNCR | ICRNL | INLCR | IXOFF | IXON));
   newios.c_cc[VMIN] = 0;    /* Making these 0 seems to have the */
   newios.c_cc[VTIME] = 0;    /* desired effect. */
 

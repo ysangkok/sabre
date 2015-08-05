@@ -69,7 +69,7 @@ int FlightInput::UpdateFlightInput(FlightInput &fi,
 				   Flight_Manager &fm)
 {
   int result = 1;
-  Flight &the_flight = (Flight &) *node.flight;
+  Flight &the_flight = static_cast<Flight &>(*node.flight);
   if (!fi.update(the_flight,kbdin))
     result = SwitchOnKey(kbdin,node,fm);
   kbdin_lock = 0;
@@ -83,7 +83,7 @@ int FlightInput::SwitchOnKey(int, Flight_Node &node, Flight_Manager &fm)
   if (kbdin == FI_EXIT_FLIGHT)
     return 0;
 
-  Flight &flt = (Flight &) *node.flight;
+  Flight &flt = static_cast<Flight &>(*node.flight);
 
   switch (kbdin)
     {
@@ -629,8 +629,8 @@ void FlightInput::yoke_joystick(Flight &flt)
   m_x = y_joy->GetX();
   m_x = -m_x;
   m_y = y_joy->GetY();
-  e = (int) (m_y * 30.0);
-  a = (int) (m_x * 30.0);
+  e = static_cast<float>(static_cast<int>(m_y * 30.0));
+  a = static_cast<float>(static_cast<int>(m_x * 30.0));
   flt.controls.ailerons = a;
   if (e + flt.controls.trim > 30)
     e = 30 - flt.controls.trim;
@@ -645,7 +645,7 @@ void FlightInput::yoke_joystick(Flight &flt)
 /* interpret joystick button */
 void FlightInput::do_joystick_button(int bt, Flight &flt)
 {
-  switch ((int) bt)
+  switch (static_cast<int>(bt))
     {
     case FI_TRIGGER_BUTTON:
       flt.controls.bang_bang = 1;

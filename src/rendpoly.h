@@ -17,8 +17,8 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-#ifndef __rendpoly_h
-#define __rendpoly_h
+#ifndef RENDPOLY_H
+#define RENDPOLY_H
 
 #define RENDMAX 30
 #include "grafix.h"
@@ -26,14 +26,15 @@
 #include "convpoly.h"
 #include "port_3d.h"
 
-int rendpoly(R_3DPoint *poly, unsigned int n, int color, Port_3D &port, bool zclip = 1);
-int project_poly(R_3DPoint *poly, unsigned int n, int color, Port_3D &port);
+int rendpoly(R_3DPoint *poly, int n, int color, Port_3D &port, bool zclip = true);
+int project_poly(R_3DPoint *poly, int n, int color,
+		 Port_3D &port);
 
-inline void rendply(int *poly, unsigned int n, int color, Rect *bounds)
+inline void rendply(int *poly, int n, int color, Rect *bounds)
 {
   int clipped_points[MAX_CLIP];
-  unsigned int cn;
-  unsigned int clip_n;
+  int cn;
+  int clip_n;
   if (poly_clip(poly,clipped_points,n,&clip_n,bounds))
     {
       cn = (clip_n + 1) * 2;

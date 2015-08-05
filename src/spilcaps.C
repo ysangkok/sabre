@@ -51,7 +51,7 @@ sPilotCaps *sPilotCaps::GetsPilotCaps(const char *capsId)
     sPilotCaps *result = NULL;
     for (int i=0;i<sPilotCapsArray.Count();i++)
     {
-      sPilotCaps *pilotCaps = (sPilotCaps *)sPilotCapsArray[i];
+      sPilotCaps *pilotCaps = static_cast<sPilotCaps *>(sPilotCapsArray[i]);
       if (!strcmp(pilotCaps->capsId,capsId))
       {
         result = pilotCaps;

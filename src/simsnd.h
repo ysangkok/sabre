@@ -20,8 +20,8 @@
 /***********************************************************
  * simsnd.h                                                *
  ***********************************************************/
-#ifndef __simsnd_h
-#define __simsnd_h
+#ifndef SIMSND_H
+#define SIMSND_H
 
 #include "vmath.h"
 

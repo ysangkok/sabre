@@ -36,7 +36,7 @@
 #include "vga_13.h"
 
 
-static void BuildEdgeArray(int *l_points, unsigned int l_npoints);
+static void BuildEdgeArray(int *l_points, int l_npoints);
 
 
 
@@ -59,26 +59,26 @@ const int frame_color = 10;
 
 inline void SET_EDGE_BOUNDS(int x, int y)
 {
-  if (y >= 0 && y <= static_cast<int>(SCREEN_HEIGHT - 1))
+  if (((y) >= 0 ) && ((y) <=  (SCREEN_HEIGHT - 1)))
     {
       int x_u = (x);
       int y_u = (y);
-      if (x_u < 0)
-	x_u = 0; 
-      else if (x_u > static_cast<int>(SCREEN_WIDTH - 1))
-	x_u = static_cast<int>(SCREEN_WIDTH - 1);
+      if ((x_u) < 0)
+	(x_u) = 0; 
+      else if ((x_u)> (SCREEN_WIDTH - 1))
+	(x_u) = (SCREEN_WIDTH - 1); 
       if ((y_u) < min_Y)
-	min_Y = y_u;
+	min_Y = (y_u);
       if ((y_u) > max_Y)
-	max_Y = y_u;
+	max_Y = (y_u);
       if ((x_u) < min_X)
-	min_X = x_u;
+	min_X = (x_u);
       if ((x_u) > max_X)
-	max_X = x_u;
-      if (l_edge[y_u] > x)
-	l_edge[y_u] = x;
-      if (r_edge[y_u] < x)
-	r_edge[y_u] = (x);
+	max_X = (x_u);
+      if (l_edge[(y_u)] > (x))
+	l_edge[(y_u)] = (x);
+      if (r_edge[(y_u)] < (x))
+	r_edge[(y_u)] = (x);
     }
 }
 
@@ -94,20 +94,19 @@ void init_edge_bounds()
   r_edge = new int[SCREEN_HEIGHT];
   MYCHECK(r_edge != NULL);
 
-  bnds.botRight.x = static_cast<int>(MAX_X);
-  bnds.botRight.y = static_cast<int>(MAX_Y);
+  bnds.botRight.x = MAX_X;
+  bnds.botRight.y = MAX_Y;
 
-  for (unsigned int i=0;i<SCREEN_HEIGHT;i++)
+  for (int i=0;i<SCREEN_HEIGHT;i++)
     {
       l_edge[i] = HIGH_VALUE;
       r_edge[i] = LOW_VALUE;
     }
 }
 
-void BuildEdgeArray(int *l_points, unsigned int l_npoints)
+void BuildEdgeArray(int *l_points, int l_npoints)
 {
-	unsigned int i;
-	int yOld;
+	int i, yOld;
 	int *p;
 
 	bad_poly = 0;
@@ -172,9 +171,9 @@ void BuildEdgeArray(int *l_points, unsigned int l_npoints)
 }
 
 
-void frame_convpoly(int *l_points, unsigned int l_npoints, int colr)
+void frame_convpoly(int *l_points, int l_npoints, int colr)
 {
-	unsigned int i;
+	int i;
 	int *p;
 
 	if (colr == -1)
@@ -188,7 +187,7 @@ void frame_convpoly(int *l_points, unsigned int l_npoints, int colr)
 }
 
 
-void fill_convpoly(int *points, unsigned int nPoints, int colr)
+void fill_convpoly(int *points, int nPoints, int colr)
 {
 	int j;
 	unsigned char  *b_ptr;
@@ -210,10 +209,11 @@ void fill_convpoly(int *points, unsigned int nPoints, int colr)
 	buffer_ptr = lock_xbuff();
 	if (!buffer_ptr)
 		return;
-	b_ptr = buffer_ptr + (static_cast<unsigned int>(min_Y) * SCREEN_PITCH);
+	b_ptr = buffer_ptr + min_Y * SCREEN_PITCH;
 	for (j = min_Y; j <= max_Y; j++)
 	{
-		memset(b_ptr+l_edge[j],colr, static_cast<size_t>(r_edge[j] - l_edge[j] + 1));
+		memset(b_ptr+l_edge[j],colr,
+			static_cast<size_t>(r_edge[j] - l_edge[j] + 1));
 		r_edge[j] = LOW_VALUE;
 		l_edge[j] = HIGH_VALUE;
 		b_ptr += SCREEN_PITCH;

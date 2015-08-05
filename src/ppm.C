@@ -59,7 +59,7 @@ void buffer2ppm()
       for (int i=0;i<SCREEN_WIDTH*SCREEN_HEIGHT;i++)
 	{
 	  get_rgb_value(*pptr++,&r,&g,&b);
-	  sprintf(buff, "%3d %3d %3d ", (int)r,(int)g,(int)b);
+	  sprintf(buff, "%3d %3d %3d ", static_cast<int>(r),static_cast<int>(g),static_cast<int>(b));
 	  os << buff;
 	  tk++;
 	  if (tk == 4)

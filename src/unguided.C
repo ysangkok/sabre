@@ -130,7 +130,7 @@ void BlastMap::init()
     view = new Bitmap_View(map,&position,bm_sizex,bm_sizey);
   if (view)
     {
-      ((Bitmap_View *)view)->loc = position;
+      static_cast<Bitmap_View *>(view)->loc = position;
       TMoveable::init();
       active = 1;
     }
@@ -147,7 +147,7 @@ void BlastMap::update()
     {
       initflag = 0;
       if (view)
-	((Bitmap_View *)view)->setMap(map);
+	static_cast<Bitmap_View *>(view)->setMap(map);
     }
 }
 
@@ -178,7 +178,7 @@ void DustUp::init()
     }
   if (view)
     {
-      ((Bitmap_View *)view)->loc = position;
+      static_cast<Bitmap_View *>(view)->loc = position;
       max_time = dustup_time;
       TMoveable::init();
     }
@@ -234,7 +234,7 @@ void Projectile::create_view()
     }
   view = new Projectile_View(this,view_color);
   if (view)
-    ((Projectile_View *)view)->v_len = view_len;
+    static_cast<Projectile_View *>(view)->v_len = view_len;
 }
 
 void Projectile::activate(Launch_Params &lp)
@@ -246,7 +246,7 @@ void Projectile::activate(Launch_Params &lp)
   wspecs = lp.specs;
   if (lp.specs->wep_type == gun_t ||
       lp.specs->wep_type == cannon_t)
-    view_color = ((Gun_Specs *)lp.specs)->tracer_color;
+    view_color = static_cast<Gun_Specs *>(lp.specs)->tracer_color;
   else
     view_color = 15;
   fuse_type = lp.fuse_type;
@@ -278,7 +278,7 @@ void Projectile::activate(Launch_Params &lp)
   flt->start();
   if (wspecs->wep_type == rocket_t)
     {
-      smk = new Rocket_Trail((Rocket_Specs *)wspecs);
+      smk = new Rocket_Trail(static_cast<Rocket_Specs *>(wspecs));
       MYCHECK(smk != NULL);
       smk->activate(flt);
     }
@@ -447,14 +447,14 @@ void Debris::init()
 
 void Debris::create_view()
 {
-  float len = ((float)(RANDOM(debris_width)+1)) * world_scale;
-  float wid = ((float)(RANDOM(debris_len)+1)) * world_scale;
+  float len = static_cast<float>(RANDOM(static_cast<unsigned int>(debris_width+1))) * world_scale;
+  float wid = static_cast<float>(RANDOM(static_cast<unsigned int>(debris_len+1))) * world_scale;
   view = new Debris_View(flt,len,wid);
   //	view = NULL;
   if (view != NULL)
     {
       int col = RANDOM(13) + GRAY_COLORS;
-      ((Debris_View *)view)->color = col;
+      static_cast<Debris_View *>(view)->color = col;
     }
   else
     active = 0;
@@ -783,13 +783,13 @@ void Unguided_Manager::initUnguided()
 }
 
 Unguided_Manager::Unguided_Manager()
-  : m_rounds(MAX_ROUNDS,(Moveable **) rounds),
-    m_flak(MAX_FLAK,(Moveable **) flak),
-    m_blasts(MAX_BLASTS,(Moveable **) blasts),
-    m_dustups(MAX_DUSTUPS,(Moveable **) dustups),
-    m_debris(MAX_DEBRIS,(Moveable **) debris),
-    m_smokes(MAX_SMOKES,(Moveable **) smokeys),
-    m_strails(MAX_STRAILS,(Moveable **) smoke_trails)
+  : m_rounds(MAX_ROUNDS,reinterpret_cast<Moveable **>(rounds)),
+    m_flak(MAX_FLAK,reinterpret_cast<Moveable **>(flak)),
+    m_blasts(MAX_BLASTS,reinterpret_cast<Moveable **>(blasts)),
+    m_dustups(MAX_DUSTUPS,reinterpret_cast<Moveable **>(dustups)),
+    m_debris(MAX_DEBRIS,reinterpret_cast<Moveable **>(debris)),
+    m_smokes(MAX_SMOKES,reinterpret_cast<Moveable **>(smokeys)),
+    m_strails(MAX_STRAILS,reinterpret_cast<Moveable **>(smoke_trails))
 {
   int i;
   nrounds = MAX_ROUNDS;
@@ -954,7 +954,7 @@ int Unguided_Manager::update()
 }
 
 int Unguided_Manager::new_smoke(R_3DPoint &p,
-		unsigned int n_smokes,
+		int n_smokes,
 		float init_size,
 		float d_size,
 		float d_len,
@@ -962,7 +962,7 @@ int Unguided_Manager::new_smoke(R_3DPoint &p,
 		float max_time,
 		int has_flame,
 		float flame_time_max,
-		unsigned int n_flames,
+		int n_flames,
 		const char *smokemap_id,
 		const char *firemap_id)
 {
@@ -1091,8 +1091,7 @@ void Unguided_Manager::boom(R_3DPoint &origin, int )
   float blast_size;
   int nn;
   
-  create_debris(origin,RANDOM(20) + 10, RANDOM(20) + 10,
-		RANDOM(2) + 2, NULL);
+  create_debris(origin, RANDOM(20) + 10, RANDOM(20) + 10, RANDOM(2) + 2, NULL);
   for (int j=0;j<32;j++)
     {
       int zz = RANDOM(vsize);
@@ -1135,10 +1134,9 @@ void Unguided_Manager::handle_hit(Target *hit, Projectile *p)
 	case C_3DOBJECT_T:
 	case GROUND_UNIT_T:
 		hit_point = p->l_position;
-		create_debris(hit_point,RANDOM(20) + 10, RANDOM(20) + 10,
-		RANDOM(2) + 1, NULL);
+		create_debris(hit_point,RANDOM(20) + 10, RANDOM(20) + 10, RANDOM(2) + 1, NULL);
 		dustup_size = C(12.0 * world_scale);
-		dustup_time = (float) RANDOM(6) + 3;
+		dustup_time = static_cast<float>(RANDOM(6) + 3);
 		new_dustup(hit_point);
 
 		if (hit->isHistory())
@@ -1153,7 +1151,7 @@ void Unguided_Manager::handle_hit(Target *hit, Projectile *p)
 				new_flak(hit_point,v);
 			}
 
-			blast_size = ((float)hit->max_damage)  * 100.0f;
+			blast_size = static_cast<float>(hit->max_damage) * 100.0f;
 			if (blast_size > 200)
 				blast_size = 200;
 			blast_size *= world_scale;
@@ -1184,7 +1182,7 @@ void Unguided_Manager::handle_hit(Target *hit, Projectile *p)
 
 	case FLIGHT_ZVIEW_T:
 		{
-			Flight_ZViewer *fvwr = (Flight_ZViewer *) hit;
+			Flight_ZViewer *fvwr = static_cast<Flight_ZViewer *>(hit);
 			dustup_size = 15.0f * world_scale;
 
 			hit_point = *(fvwr->get_hit_point());
@@ -1197,9 +1195,7 @@ void Unguided_Manager::handle_hit(Target *hit, Projectile *p)
 			}
 			if (RANDOM(2) == 1)
 			{
-				create_debris(hit_point,RANDOM(5) + 3, RANDOM(5) + 3, 
-				RANDOM(2) + 1,
-				vq);
+				create_debris(hit_point, RANDOM(5) + 3, RANDOM(5) + 3, RANDOM(2) + 1, vq);
 			}
 
 			if (fvwr->isHistory())
@@ -1245,7 +1241,7 @@ void Unguided_Manager::create_debris(R_3DPoint &p, int , int ,
 	  v = Vector(vtable[x][0],vtable[x][1],
 			      vtable[x][2]);
 	  v.Normalize();
-	  v *= (((float)RANDOM(15)) + 1.0f) * world_scale;
+	  v *= (static_cast<float>(RANDOM(15)) + 1.0f) * world_scale;
 	  v = v + vq->direction.to_vector();
 	  debris_specs.init_speed = vq->magnitude;
 	  m_debris.activate(p,v);

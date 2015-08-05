@@ -24,8 +24,8 @@
  * Author : Dan Hammer                           *
  * formation flying data                         *
  *************************************************/
-#ifndef __sfrmnt_h
-#define __sfrmnt_h
+#ifndef SFRMNT_H
+#define SFRMNT_H
 
 enum	{	
 			sfWEDGE, sfVIC, sfECHELON_R, sfECHELON_L,

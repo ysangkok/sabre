@@ -70,7 +70,7 @@ const char *sManeuver::maneuver2string[] =
 	"LAST"
 };
 
-const char *sManeuver::Maneuver2String(unsigned int mn)
+const char *sManeuver::Maneuver2String(int mn)
 {
 	if (mn > LAST)
 		mn = LAST;

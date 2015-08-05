@@ -44,7 +44,7 @@ void sVector2sAttitude(const sVector &vect, sAttitude &att)
 {
   att.roll = 0.0;
   sREAL d;
-  att.yaw = (sREAL) atan2(-vect.x,vect.y+eps);
+  att.yaw = static_cast<sREAL>(atan2(-vect.x,vect.y+eps));
   d = sSQRT((vect.x*vect.x)+(vect.y*vect.y));
   att.pitch = C(atan2(vect.z,d+eps));
 }
@@ -53,7 +53,7 @@ sREAL sRandPer()
 {
   int d;
   d = rand();
-  return ( ((sREAL)d) / ((sREAL)RAND_MAX) );
+  return static_cast<sREAL>(d) / RAND_MAX;
 }
 
 int sRand(int min, int max)
@@ -67,11 +67,11 @@ int sRand(int min, int max)
       min = max;
       max = swap;
     }
-  sREAL rmin = (sREAL) min;
-  sREAL rmax = (sREAL) max + 1;
+  sREAL rmin = static_cast<sREAL>(min);
+  sREAL rmax = static_cast<sREAL>(max) + 1;
   sREAL v = sRandPer();
   sREAL i = rmin + ((rmax - rmin) * v);
-  result = (int) i;
+  result = static_cast<int>(i);
   if (result < min)
     result = min;
   if (result > max)

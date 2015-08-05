@@ -25,8 +25,8 @@
  * Various and sundry math classes and functions *
  * for new AI                                    *
  *************************************************/
-#ifndef __smath_h
-#define __smath_h
+#ifndef SMATH_H
+#define SMATH_H
 
 #include <math.h>
 

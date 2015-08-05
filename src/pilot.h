@@ -18,8 +18,8 @@
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifndef __pilot_h
-#define __pilot_h
+#ifndef PILOT_H
+#define PILOT_H
 
 #include "aipilot.h"
 #include "sbfltmdl.h"
@@ -33,7 +33,7 @@ class Pilot : public aiPilot
 {
 public:
 	Pilot( Flight *flt, Pilot_Params *,
-	 Weapon_Instance *, unsigned int nw, const char *, Target *);
+	 Weapon_Instance *, int nw, const char *, Target *);
 	
 	void init(void);
 	Pilot *get_target_pilot(void)
@@ -145,7 +145,7 @@ public:
 
 protected:
 	void GetWeaponLimits(sWeaponLimits &weaponLimits);
-	void Broadcast(unsigned int idx, int channel = commCHANNEL_AFFILIATION,
+	void Broadcast(int idx, int channel = commCHANNEL_AFFILIATION,
 						 int priority = commPRIORITY_STANDARD,
 						 void *extraInfo = NULL);
 	void GetRemoteControlInputs();
@@ -163,13 +163,13 @@ private:
 	Weapon_Instance *weapons;
 	Weapon_Instance *sel_weapon;
 	int		sel_wpn;
-	unsigned int	n_weaps;
+	int				 n_weaps;
 	PilotMessage    message;
 	R_3DPoint       gun_point;
 	R_3DPoint	gun_track_point;
 	R_3DPoint	lead_track_point;
 	R_3DPoint       track_point;
-	unsigned int    nstores;
+	int             nstores;
 	int             stores[sbrPIL_MAX_STORES];
 	Pilot_Params    *params;
 	bool		in_range;

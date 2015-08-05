@@ -26,7 +26,7 @@
  *************************************************/
 #include "sarray.h"
 
-void sObjectArray::Create(unsigned int siz, bool own)
+void sObjectArray::Create(int siz, bool own)
 {
   if (objs)
     Destroy();
@@ -78,7 +78,7 @@ void sObjectArray::Flush()
   n = 0;
 }
 
-unsigned int sObjectArray::Add(sObject *obj)
+int sObjectArray::Add(sObject *obj)
 {
   int result = -1;
   /*
@@ -102,7 +102,7 @@ unsigned int sObjectArray::Add(sObject *obj)
   return result;
 }
 
-unsigned int sObjectArray::Append(sObject *obj)
+int sObjectArray::Append(sObject *obj)
 {
   int result = -1;
   if (n < size)
@@ -113,7 +113,7 @@ unsigned int sObjectArray::Append(sObject *obj)
   return result;
 }
 
-unsigned int sObjectArray::Remove(unsigned int idx)
+int sObjectArray::Remove(int idx)
 {
   int result = -1;
   if (idx < n)
@@ -129,7 +129,7 @@ unsigned int sObjectArray::Remove(unsigned int idx)
   return result;
 }
 
-sObject *sObjectArray::operator [](unsigned int idx) const
+sObject *sObjectArray::operator [](int idx) const
 {
   if (idx < n)
     return (objs[idx]);

@@ -24,8 +24,8 @@
  * Author : Dan Hammer                           *
  * AI "communications"                           *
  *************************************************/
-#ifndef __aicomm_h
-#define __aicomm_h
+#ifndef AICOMM_H
+#define AICOMM_H
 
 // aiPilot broadcast enums
 

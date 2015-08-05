@@ -424,17 +424,17 @@ int sound_calc_distant_vol(const R_3DPoint &origin, REAL_TYPE maxDistSq)
   if (distSq < maxDistSq)
     {
       f = distSq / maxDistSq;
-      result = (int) (100 - (100.0 * f));
+      result = static_cast<int>(100 - (100.0 * f));
     }
   return result;
 }
 
-void sound_set_lock(int lock)
+void sound_set_lock(int lock) // TODO bool
 {
   soundLock = lock;
 }
 
-void sound_set_active(int active)
+void sound_set_active(int active) // TODO bool
 {
   if (!active && soundActive)
     sound_off_all();

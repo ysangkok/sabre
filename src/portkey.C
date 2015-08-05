@@ -172,5 +172,5 @@ void show_port_vars(Port_3D &port, Port_3D &show_port , SimFont *the_font)
 			 port.roll,
 			 1.0 / time_frame);
   show_port.transform(port.look_at,&x1,&y1);
-  the_font->put_char((unsigned char)128,x1-4,y1-4,4,8);
+  the_font->put_char(static_cast<unsigned char>(128),x1-4,y1-4,4,8);
 }

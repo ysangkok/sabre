@@ -24,8 +24,8 @@
  * Author : Dan Hammer                           *
  * AI flight model control class                 *
  *************************************************/
-#ifndef __scntrl_h
-#define __scntrl_h
+#ifndef SCNTRL_H
+#define SCNTRL_H
 
 #ifdef __cplusplus /* don't let "C" compiler see this */
 

@@ -183,7 +183,7 @@ int Flight_ZViewer::ouch(const R_3DPoint &p1, const R_3DPoint &p2, int damage, T
 	  else if (hit_scaler > 1.0)
 	    {
 	      result = 1;
-	      hit_shape = RANDOM(right_wing+1);
+	      hit_shape = RANDOM(static_cast<unsigned>(right_wing)+1);
 	    }
 	  if (result)
 	    {
@@ -293,20 +293,20 @@ int Flight_ZViewer::landing_report(Landing_Report &lr)
 		}
 
 		// bad pitch?
-		if (flt->state.landing_pitch < _PI2 - 0.8 ||
-		flt->state.landing_pitch > _PI2 + 0.8)
+		if (flt->state.landing_pitch < SABRE_PI2 - 0.8 ||
+		flt->state.landing_pitch > SABRE_PI2 + 0.8)
 		{
 			lr.phi = 1;
 			lr.phi_value = flt->state.landing_pitch;
-			lr.score -= static_cast<int> (fabs(_PI2 - flt->state.landing_pitch) * 20);
+			lr.score -= static_cast<int> (fabs(SABRE_PI2 - flt->state.landing_pitch) * 20);
 		}
 
 		// bad roll?
-		if (flt->state.landing_roll > 0.4 && flt->state.landing_roll < _2PI - 0.4)
+		if (flt->state.landing_roll > 0.4 && flt->state.landing_roll < SABRE_2PI - 0.4)
 		{
 			lr.roll = 1;
 			lr.roll_value = flt->state.landing_roll;
-			lr.score -= static_cast<int> (fabs(_PI - flt->state.landing_roll) * 20);
+			lr.score -= static_cast<int> (fabs(SABRE_PI - flt->state.landing_roll) * 20);
 		}
 
 		if (lr.score < 0)
@@ -356,7 +356,7 @@ void Flight_ZViewer::calc_damage(unsigned int hit_shp, int damage)
 	case left_hstab:
 	case right_hstab:
 	case cpit:
-	  choice = RANDOM(4);
+	  choice = RANDOM(4u);
 	  switch (choice)
 	    {
 	    case 0:
@@ -400,8 +400,8 @@ void Flight_ZViewer::calc_damage(unsigned int hit_shp, int damage)
 R_3DPoint *Flight_ZViewer::get_hit_point()
 {
   C_ShapeInfo &si = z_manager->shape_info[hit_shape];
-  C_PolyInfo &p = si.polyinfos[RANDOM(si.npolys)];
-  R_3DPoint &hp = p.lpoints[RANDOM(p.npoints)];
+  C_PolyInfo &p = si.polyinfos[static_cast<unsigned int>(RANDOM(static_cast<unsigned int>(si.npolys)))];
+  R_3DPoint &hp = p.lpoints[static_cast<unsigned int>(RANDOM(static_cast<unsigned int>(p.npoints)))];
   reference_port->port2world(hp,&hitpoint);
   return (&hitpoint);
 }

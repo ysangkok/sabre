@@ -22,8 +22,8 @@
  * a lighter flight class for projectiles, etc               *
  * tastes good, less filling                                 *
  *************************************************************/
-#ifndef __fltlite_h
-#define __fltlite_h
+#ifndef FLTLITE_H
+#define FLTLITE_H
 
 #include "dvmath.h"
 

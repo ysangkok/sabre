@@ -24,8 +24,8 @@
  * Author : Dan Hammer                           *
  * aiGunner class definition                     *
  *************************************************/
-#ifndef __aigunner_h
-#define __aigunner_h
+#ifndef AIGUNNER_H
+#define AIGUNNER_H
 
 #define aiGUN_PITCH_RATE      (static_cast<sREAL>(_degree * 20.0))
 #define aiGUN_YAW_RATE        (static_cast<sREAL>(_degree * 20.0))

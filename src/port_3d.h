@@ -28,8 +28,8 @@
  * going between the world, the viewpoint, and   *
  * the screen.                                   *
  *************************************************/
-#ifndef __port_3d_h
-#define __port_3d_h
+#ifndef PORT_3D_H
+#define PORT_3D_H
 
 #include "vga_13.h"
 #include "grafix.h"
@@ -47,26 +47,26 @@ extern const float _degree;
 extern const float _minute;
 extern const float _second;
 
-#define _PI  pi
-#define _PI2 half_pi
-#define _PI4 one_fourth_pi
-#define _2PI two_pi
-#define _PI34 three_fourth_pi
-#define _DEGREE _degree
-#define _MINUTE _minute
-#define _SECOND _second
+#define SABRE_PI  pi
+#define SABRE_PI2 half_pi
+#define SABRE_PI4 one_fourth_pi
+#define SABRE_2PI two_pi
+#define SABRE_PI34 three_fourth_pi
+#define SABRE_DEGREE _degree
+#define SABRE_MINUTE _minute
+#define SABRE_SECOND _second
 
 inline REAL_TYPE limit_angle(REAL_TYPE angle)
 {
-  if (fabs(angle) >= _2PI)
+  if (fabs(angle) >= SABRE_2PI)
     {
-      REAL_TYPE m = static_cast<REAL_TYPE>(fmod(angle,_2PI));
+      REAL_TYPE m = static_cast<REAL_TYPE>(fmod(angle,SABRE_2PI));
       if (angle < 0)
 	m = -m;
       angle = m;
     }
   if (angle < 0)
-    angle = _2PI + angle;
+    angle = SABRE_2PI + angle;
   return angle;
 }
 

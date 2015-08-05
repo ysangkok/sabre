@@ -74,7 +74,7 @@ void Pilot::UpdateStatics(void)
 }
 
 Pilot::Pilot(Flight *flt, Pilot_Params *prms,
-				Weapon_Instance *wpns, unsigned int nwps,
+				Weapon_Instance *wpns, int nwps,
 				const char *hndl, Target *tobj)
   : aiPilot(&sbrFlight),
     sbrFlight(flt)
@@ -510,7 +510,7 @@ void Pilot::Shoot()
 	}
 }
 
-void Pilot::Broadcast(unsigned int idx, int channel, int priority, void *extraInfo)
+void Pilot::Broadcast(int idx, int channel, int priority, void *extraInfo)
 {
 int priorityValue;
 int affil;

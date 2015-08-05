@@ -23,8 +23,8 @@
  * Date   : April, 1998                          *
  * Author : Dan Hammer                           *
  *************************************************/
-#ifndef __swaypnt_h
-#define __swaypnt_h
+#ifndef SWAYPNT_H
+#define SWAYPNT_H
 
 typedef struct tag_swaypoint_info
 {
@@ -34,7 +34,7 @@ typedef struct tag_swaypoint_info
 	float		speed;
 	float		altitude;
 	int		task;
-	unsigned int	i_task_modifier[3];
+	int		i_task_modifier[3];
 	float		d_task_modifier[3];
 	char		c_task_modifier[32];
 	int		formation_type;
@@ -84,16 +84,16 @@ class sWaypoint : public sObject
 {
 public:
 	sPoint		to;
-	sREAL		speed;
-	sREAL		altitude;
-	int		task;
-	unsigned int	iTaskModifier[3];
-	sREAL		dTaskModifier[3];
-	char		cTaskModifier[32];
-	unsigned int	idx;
-	int		formationType;
+	sREAL			speed;
+	sREAL			altitude;
+	int			task;
+	int         iTaskModifier[3];
+	sREAL			dTaskModifier[3];
+   char			cTaskModifier[32];
+	int			idx;
+	int			formationType;
 	double		time;
-	sWaypoint	*next;
+	sWaypoint   *next;
 
 	sWaypoint()
 	{
@@ -166,15 +166,15 @@ public:
 		return cTaskModifier;
 	}
 
-	unsigned int GetRunwayNo()
+	int GetRunwayNo()
 	{
 		return iTaskModifier[0];
 	}
-	unsigned int GetManeuverType()
+	int GetManeuverType()
 	{
 		return iTaskModifier[0];
 	}
-	unsigned int GetManeuverFlags()
+	int GetManeuverFlags()
 	{
 		return iTaskModifier[1];
 	}

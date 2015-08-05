@@ -219,8 +219,8 @@ int Ground_Unit::ouch(const R_3DPoint &w0, float radius,
 R_3DPoint *Ground_Unit::get_hit_point()
 {
   C_ShapeInfo &si = z_manager->shape_info[hit_shape];
-  C_PolyInfo &p = si.polyinfos[RANDOM(si.npolys)];
-  R_3DPoint &hp = p.lpoints[RANDOM(p.npoints)];
+  C_PolyInfo &p = si.polyinfos[RANDOM(static_cast<unsigned int>(si.npolys))];
+  R_3DPoint &hp = p.lpoints[RANDOM(static_cast<unsigned int>(p.npoints))];
   ref_port.port2world(hp,&hitpoint);
   return (&hitpoint);
 }
@@ -285,7 +285,7 @@ Ground_Unit_Manager::~Ground_Unit_Manager()
     delete [] specs;
   if (units)
     {
-      for (unsigned int i=0;i<nunits;i++)
+      for (int i=0;i<nunits;i++)
 	if (units[i] != NULL)
 	  delete units[i];
       delete [] units;
@@ -294,14 +294,14 @@ Ground_Unit_Manager::~Ground_Unit_Manager()
 
 void Ground_Unit_Manager::update(Unguided_Manager *um, Target_List &tl)
 {
-  for (unsigned int i=0;i<nunits;i++)
+  for (int i=0;i<nunits;i++)
     if (units[i])
       units[i]->update(um,tl);
 }
 
 void Ground_Unit_Manager::add_draw_list(DrawList &dl, Port_3D &port)
 {
-  for (unsigned int i=0;i<nunits;i++)
+  for (int i=0;i<nunits;i++)
     if (units[i])
       units[i]->add_draw_list(dl,port);
 }
@@ -323,21 +323,21 @@ void Ground_Unit_Manager::read_file(const char *path)
 void Ground_Unit_Manager::read(std::istream &is)
 {
   char c;
-  unsigned int gu_idx;
-  unsigned int gu_cnt;
-  nspecs = read_uint(is);
-  nunits = read_uint(is);
+  int gu_idx;
+  int gu_cnt;
+  nspecs = read_int(is);
+  nunits = read_int(is);
   specs = new Ground_Unit_Specs[nspecs];
   MYCHECK(specs != NULL);
   units = new Ground_Unit *[nunits];
   MYCHECK(units != NULL);
   gu_idx = 0;
-  for (unsigned int i=0;i<nspecs;i++)
+  for (int i=0;i<nspecs;i++)
     {
       READ_TOKI('{',is,c);
-      gu_cnt = read_uint(is);
+      gu_cnt = read_int(is);
       is >> specs[i];
-      for (unsigned int j=0;j<gu_cnt;j++)
+      for (int j=0;j<gu_cnt;j++)
 	{
 	  if (gu_idx > nunits - 1)
 	    return;
@@ -393,7 +393,7 @@ void Ground_Unit_Manager::write(std::ostream &)
 Ground_Unit_Specs *Ground_Unit_Manager::getSpecs(char *sid)
 {
   Ground_Unit_Specs *result = NULL;
-  for (unsigned int i=0;i<nspecs;i++)
+  for (int i=0;i<nspecs;i++)
     {
       if (!strcmp(specs[i].id,sid))
 	{
@@ -406,7 +406,7 @@ Ground_Unit_Specs *Ground_Unit_Manager::getSpecs(char *sid)
 
 void Ground_Unit_Manager::addTargetList(Target_List &tl)
 {
-  for (unsigned int i=0;i<nunits;i++)
+  for (int i=0;i<nunits;i++)
     if (units[i])
       tl.add_target(units[i]);
 }

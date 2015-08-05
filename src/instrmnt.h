@@ -24,10 +24,10 @@
  * Date   : March, 1997                          *
  * Author : Dan Hammer                           *
  *************************************************/
-#ifndef __instrument_h
-#define __instrument_h
+#ifndef INSTRUMENT_H
+#define INSTRUMENT_H
 
-extern unsigned int cockpit_y, cockpit_x;
+extern int cockpit_y, cockpit_x;
 class TextrMap;
 class Indicator
 {

@@ -46,12 +46,12 @@ FILE *simlog = stdout;
 const char *build_libpath(const char *filename)
 {
   static char tmppath[200];
-  int l = (int) strlen(filename);
-  int l2 = (int) strlen(lib_path);
+  int l = static_cast<int>(strlen(filename));
+  int l2 = static_cast<int>(strlen(lib_path));
   if ((l + l2 + 2) > 200)
     error_jump("Can't build path, length too long: %s %s",lib_path,filename);
   sprintf(tmppath,"%s/%s",lib_path,filename);
-  l = (int) strlen(tmppath);
+  l = static_cast<int>(strlen(tmppath));
   if (tmppath[l-1] == '\n' || tmppath[l-1]=='\r')
     tmppath[l-1] = 0;
   return(tmppath);
@@ -129,16 +129,16 @@ int get_line(std::istream &is, char *buff, int size)
 	{
 	  if (buff[0] != '*' && buff[0] != '\x0')
 	    {
-	      l = (int) strlen(buff);
+	      l = static_cast<int>(strlen(buff));
 	      if (buff[l-1] == '\n')
 		buff[l-1] = 0;
-	      l = (int) strlen(buff);
+	      l = static_cast<int>(strlen(buff));
 	      if (buff[l-1] == '\r')
 		{
 		  buff[l-1] = 0;
 		  sim_printf("warning: %s contains DOS cr/lf\n");
 		}
-	      return (int) (strlen(buff));
+	      return static_cast<int>(strlen(buff));
 	    }
 	}
     }

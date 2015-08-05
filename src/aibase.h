@@ -26,8 +26,8 @@
  * Defines skill levels, maneuver stack and      *
  * attacker list behavior.                       *
  *************************************************/
-#ifndef __aibase_h
-#define __aibase_h
+#ifndef AIBASE_H
+#define AIBASE_H
 
 #ifdef __cplusplus
 #include <cstdint>
@@ -74,20 +74,19 @@ public:
 	}
 	uint32_t GetIdx()
 	{
-		if (idx < 0) abort();
-		return static_cast<uint32_t>(idx);
+		return idx;
 	}
 	void SetIdx(uint32_t ix)
 	{
-		this->idx = static_cast<int32_t>(ix);
+		this->idx = ix;
 	}
 	int GetIndex()
 	{
 		return index;
 	}
-	void SetIndex(unsigned int ix)
+	void SetIndex(int ix)
 	{
-		this->index = static_cast<int>(ix);
+		this->index = ix;
 	}
    int GetAttackerCount()
    {
@@ -110,9 +109,9 @@ public:
 	}
 	void SetSkillLevel(int level, int slot);
 	int GetSkillLevel(int slot);
-	virtual void SetManeuver(unsigned int mnvr, uint32_t flags = 0, sREAL d0 = 0.0,
+	virtual void SetManeuver(int mnvr, uint32_t flags = 0, sREAL d0 = 0.0,
 						 sREAL d1 = 0.0, sREAL d2 = 0.0);
-	virtual void SetManeuverX(unsigned int mnvr, uint32_t flags = 0, 
+	virtual void SetManeuverX(int mnvr, uint32_t flags = 0, 
 								  sREAL d0 = 0.0, sREAL d1 = 0.0, sREAL d2 = 0.0,
 								  sREAL d3 = 0.0, sREAL d4 = 0.0, sREAL d5 = 0.0);
 
@@ -140,7 +139,7 @@ protected:
 	/**************************************************************************
     * protected members                                                      *
     **************************************************************************/
-   int32_t  idx;                             /* unique id                    */
+   uint32_t       idx;                       /* unique id                    */
    int            index;                     /* ordinal value                */
    char           debug_str[aiB_DEBUG_MAX];  /* debugging string             */
    int            affiliation;               /* whose side we're on          */
@@ -167,9 +166,9 @@ protected:
 
 	void					ExecManeuverStack(void);
 	virtual void		UpdateManeuver(sManeuverState &im);
-	sManeuverState		*PushManeuver(unsigned int mnvr, uint32_t flags = 0, sREAL d0 = 0.0,
+	sManeuverState		*PushManeuver(int mnvr, uint32_t flags = 0, sREAL d0 = 0.0,
 												sREAL d1 = 0.0, sREAL d2 = 0.0);
-	sManeuverState		*PushManeuverX(unsigned int mnvr, uint32_t flags = 0,
+	sManeuverState		*PushManeuverX(int mnvr, uint32_t flags = 0,
 												sREAL d0 = 0.0, sREAL d1 = 0.0, sREAL d2 = 0.0,
 												sREAL d3 = 0.0, sREAL d4 = 0.0, sREAL d5 = 0.0);
 	sManeuverState		*PopManeuver(void);

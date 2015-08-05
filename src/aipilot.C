@@ -1702,7 +1702,7 @@ int			i;
 		sPoint   pos;
 		sAttitude att;
 		GetFormationPoint(wingPos,formationType,
-							formationTarget.idx,
+							static_cast<int>(formationTarget.idx),
 							tg.formationPoint);
 		flightModel->GetPositionAndAttitude(pos,att);
 		sVector v0 = tg.formationPoint - pos;
@@ -1920,7 +1920,7 @@ sREAL aiPilot::GetNavigationDistance()
 /*
  * Determine guiding point for formation flying
  */
-void aiPilot::GetFormationPoint(int wngPos, int frmationType, unsigned int leaderIndex, sPoint &pnt)
+void aiPilot::GetFormationPoint(int wngPos, int frmationType, int leaderIndex, sPoint &pnt)
 {
 	sVector offset;
 	sFormationData::GetWingmanVector(frmationType,wngPos,offset);
@@ -2020,7 +2020,7 @@ void aiPilot::DeleteAttacker(aiPilot *pil)
 		playerInAttackList = 0;
 	if (HasGunners())
 	{
-		for (unsigned int i=0;i<gunners.Count();i++)
+		for (int i=0;i<gunners.Count();i++)
 		{
 			aiGunner *gunner = GetGunner(i);
 			if (gunner->HasTarget() &&
@@ -2178,7 +2178,7 @@ void aiPilot::AddGunner(aiGunner *newGunner)
 	hasGunners = 1;
 }
 
-aiGunner *aiPilot::GetGunner(unsigned int whichGunner)
+aiGunner *aiPilot::GetGunner(int whichGunner)
 {
 	if (hasGunners && whichGunner < gunners.Count())
 		return static_cast<aiGunner *>(gunners[whichGunner]);
@@ -2189,25 +2189,25 @@ aiGunner *aiPilot::GetGunner(unsigned int whichGunner)
 void aiPilot::UpdateGunners()
 {
 	if (HasGunners())
-		for (unsigned int i=0;i<gunners.Count();i++)
+		for (int i=0;i<gunners.Count();i++)
 			GetGunner(i)->Update(timeFrame);
 }
 
 void aiPilot::SetGunnersTarget(uint32_t targetIdx, sREAL threatValue)
 {
 	if (HasGunners())
-		for (unsigned int i=0;i<gunners.Count();i++)
+		for (int i=0;i<gunners.Count();i++)
 			SetGunnerTarget(i,targetIdx,threatValue);
 }
 
 void aiPilot::SetGunnersTarget(sAttacker *attkr)
 {
 	if (HasGunners())
-		for (unsigned int i=0;i<gunners.Count();i++)
+		for (int i=0;i<gunners.Count();i++)
 			SetGunnerTarget(i,attkr->GetIdx(),attkr->GetThreatValue());
 }
 
-void aiPilot::SetGunnerTarget(unsigned int whichGunner, uint32_t targetIdx, sREAL targetThreatValue)
+void aiPilot::SetGunnerTarget(int whichGunner, uint32_t targetIdx, sREAL targetThreatValue)
 {
 	aiGunner *gunner = GetGunner(whichGunner);
 	if (gunner->HasTarget() &&
@@ -2221,7 +2221,7 @@ void aiPilot::ClearGunnersTarget()
 {
 	if (HasGunners())
 	{
-		for (unsigned int i=0;i<gunners.Count();i++)
+		for (int i=0;i<gunners.Count();i++)
 		{
 			aiGunner *gunner = GetGunner(i);
 			gunner->UnsetTarget();
@@ -2238,7 +2238,7 @@ void aiPilot::DistributeAttackers()
 	attkr = attackList.GetFirstAttacker();
 	while (attkr)
 	{
-		for (unsigned int i=0;i<gunners.Count();i++)
+		for (int i=0;i<gunners.Count();i++)
 		{
 			aiGunner *gunner = GetGunner(i);
 			gunner->SetTarget(attkr->GetIdx());
@@ -2510,7 +2510,7 @@ aiPilot *aiPilot::cashedPilot = NULL;
 /* Add a pilot to the global array */
 void aiPilot::AddaiPilot(aiPilot *pilot)
 {
-	unsigned int index;
+	int index;
 	index = aiPilots.Add(pilot);
 	pilot->SetIdx(nextIdx++);
 	pilot->SetIndex(index);
@@ -2529,7 +2529,7 @@ aiPilot *aiPilot::GetaiPilot(uint32_t idx)
 		result = cashedPilot;
 	else
 	{
-		unsigned int i = idx;
+		int i = static_cast<int>(idx); //safe cast from uint_32t
 		if (i < GetPilotCount())
 		{
 			aiPilot *pil = static_cast<aiPilot *>(aiPilots[i]);
@@ -2539,7 +2539,7 @@ aiPilot *aiPilot::GetaiPilot(uint32_t idx)
 	}
 	if (result == NULL)
 	{
-		for (unsigned int i=0;i<GetPilotCount();i++)
+		for (int i=0;i<GetPilotCount();i++)
 		{
 			aiPilot *pil = static_cast<aiPilot *>(aiPilots[i]);
 			if (pil != NULL && pil->GetIdx() == idx)
@@ -2561,7 +2561,7 @@ aiPilot *aiPilot::GetaiPilot(uint32_t idx)
 aiPilot *aiPilot::GetaiPilot(const char *handle)
 {
 	aiPilot *result =NULL;
-	for (unsigned int i=0;i<GetPilotCount();i++)
+	for (int i=0;i<GetPilotCount();i++)
 	{
 		aiPilot *pil = GetPilotByIndex(i);
 		if (pil && !strcmp(handle,pil->GetHandle()))
@@ -2573,7 +2573,7 @@ aiPilot *aiPilot::GetaiPilot(const char *handle)
 	return (result);
 }
 
-unsigned int aiPilot::GetPilotCount()
+int aiPilot::GetPilotCount()
 {
 	return (aiPilots.Count());
 }
@@ -2588,7 +2588,7 @@ void aiPilot::FlushaiPilots()
 
 void aiPilot::RemoveaiPilot(aiPilot *pil)
 {
-	for (unsigned int i=0;i<aiPilots.Count();i++)
+	for (int i=0;i<aiPilots.Count();i++)
 	{
 		aiPilot *ppil = static_cast<aiPilot *>(aiPilots[i]);
 		if (ppil != NULL && ppil == pil)
@@ -2598,7 +2598,7 @@ void aiPilot::RemoveaiPilot(aiPilot *pil)
 		cashedPilot = NULL;
 }
 
-aiPilot *aiPilot::GetPilotByIndex(unsigned int i)
+aiPilot *aiPilot::GetPilotByIndex(int i)
 {
 	if (i < aiPilots.Count())
 		return static_cast<aiPilot *>(aiPilots[i]);
@@ -2606,36 +2606,36 @@ aiPilot *aiPilot::GetPilotByIndex(unsigned int i)
 		return NULL;
 }
 
-void aiPilot::BodyVector2WorldVector(unsigned int idx, const sVector &body, sVector &world)
+void aiPilot::BodyVector2WorldVector(int idx, const sVector &body, sVector &world)
 {
-aiPilot *pilot = GetaiPilot(idx);
+aiPilot *pilot = GetaiPilot(static_cast<uint32_t>(idx));
 
 	if (pilot)
 		pilot->BodyVector2WorldVector(body,world);
 }
 
-void aiPilot::WorldVector2BodyVector(unsigned int idx, const sVector &world, sVector &body)
+void aiPilot::WorldVector2BodyVector(int idx, const sVector &world, sVector &body)
 {
-aiPilot *pilot = GetaiPilot(idx);
+aiPilot *pilot = GetaiPilot(static_cast<uint32_t>(idx));
 
 	if (pilot)
 		pilot->WorldVector2BodyVector(world,body);
 
 }
 
-void aiPilot::BodyPoint2WorldPoint(unsigned int idx, const sPoint &body, sPoint &world)
+void aiPilot::BodyPoint2WorldPoint(int idx, const sPoint &body, sPoint &world)
 {
-aiPilot *pilot = GetaiPilot(idx);
+aiPilot *pilot = GetaiPilot(static_cast<uint32_t>(idx));
 
 	if (pilot)
 		pilot->BodyPoint2WorldPoint(body,world);
 
 }
 
-void aiPilot::WorldPoint2BodyPoint(unsigned int idx, const sPoint &world, sPoint &body)
+void aiPilot::WorldPoint2BodyPoint(int idx, const sPoint &world, sPoint &body)
 {
-aiPilot *pilot = GetaiPilot(idx);
-	
+aiPilot *pilot = GetaiPilot(static_cast<uint32_t>(idx));
+
 	if (pilot)
 		pilot->WorldPoint2BodyPoint(world,body);
 }

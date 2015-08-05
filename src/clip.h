@@ -24,8 +24,8 @@
  * Date   : March, 1997                          *
  * Author : Dan Hammer                           *
  *************************************************/
-#ifndef __clip_h
-#define __clip_h
+#ifndef CLIP_H
+#define CLIP_H
 
 #include "grafix.h"
 #include "vmath.h"
@@ -35,11 +35,19 @@ int ch_clip(int *, Rect *bounds);
 int ch_zclip(R_2DPoint &, R_2DPoint &, Rect *bounds);
 
 #define MAX_CLIP 30
-unsigned int poly_clip(int *poly, int *clipped_poly, unsigned int n, unsigned int *n_out, Rect *bounds);
-unsigned int f_poly_clip(float *in_poly, float *clipped_poly, unsigned int n, unsigned int *n_out, Rect *bnds);
-unsigned int r_poly_clip(R_2DPoint *in_poly, R_2DPoint *clipped_poly, unsigned int n, unsigned int *nout, Rect *bnd); 
-unsigned int tr_poly_clip(TR_2DPoint *in_poly, TR_2DPoint *clipped_poly, unsigned int n, unsigned int *nout, Rect *bnd); 
-unsigned int trf_poly_clip(TRF_2DPoint *in_poly, TRF_2DPoint *clipped_poly, unsigned int n, unsigned int *nout, Rect *bnd);
+int poly_clip(int *poly, int *clipped_poly, int n,
+	      int *n_out, Rect *bounds);
+int f_poly_clip(float *in_poly, float *clipped_poly, int n,
+		int *n_out, Rect *bnds);
+
+int r_poly_clip(R_2DPoint *in_poly, R_2DPoint *clipped_poly, int n,
+		 int *nout, Rect *bnd);
+
+int tr_poly_clip(TR_2DPoint *in_poly, TR_2DPoint *clipped_poly, int n,
+		 int *nout, Rect *bnd);
+
+int trf_poly_clip(TRF_2DPoint *in_poly, TRF_2DPoint *clipped_poly, int n,
+		 int *nout, Rect *bnd);
 
 class bounding_cube
 {
@@ -126,9 +134,21 @@ bool inbounds(const R_3DPoint &p1, const R_3DPoint &p2, const bounding_cube &b_c
 enum bounding_plane { px_min, px_max, py_min,
 			      py_max, pz_min, pz_max };
 
-unsigned int poly_clip_3D(R_3DPoint *in_poly, unsigned int in_count, R_3DPoint *out_poly,  unsigned int *out_count, bounding_cube *b_cube, bounding_plane plane );
-unsigned int poly_clip_3D(R_3DPoint *in_poly, unsigned int in_count, R_3DPoint *out_poly,  unsigned int *out_count, bounding_cube *b_cube);
-unsigned int zpoly_clip(R_3DPoint *in_poly,   unsigned int in_count, R_3DPoint *out_poly,  unsigned int *out_count, REAL_TYPE min_z);
-unsigned int zpoly_clip(TR_3DPoint *in_poly,  unsigned int in_count, TR_3DPoint *out_poly, unsigned int *out_count, REAL_TYPE min_z);
-unsigned int zline_clip(R_3DPoint &p0, R_3DPoint &p1, REAL_TYPE min_z);
+int poly_clip_3D(R_3DPoint *in_poly, int in_count,
+		 R_3DPoint *out_poly, int *out_count,
+		 bounding_cube *b_cube, bounding_plane plane );
+
+int poly_clip_3D(R_3DPoint *in_poly, int in_count,
+		 R_3DPoint *out_poly, int *out_count,
+		 bounding_cube *b_cube);
+
+int zpoly_clip(R_3DPoint *in_poly, int in_count,
+	       R_3DPoint *out_poly, int *out_count,
+	       REAL_TYPE min_z);
+
+int zpoly_clip(TR_3DPoint *in_poly, int in_count,
+	       TR_3DPoint *out_poly, int *out_count,
+	       REAL_TYPE min_z);
+
+int zline_clip(R_3DPoint &p0, R_3DPoint &p1, REAL_TYPE min_z);
 #endif

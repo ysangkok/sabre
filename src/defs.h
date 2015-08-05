@@ -17,8 +17,8 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-#ifndef __defs_h
-#define __defs_h
+#ifndef DEFS_H
+#define DEFS_H
 
 #include <stdint.h>
 

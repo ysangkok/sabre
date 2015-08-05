@@ -39,8 +39,8 @@
  * making them proportional to the square of the *
  * the base speed over the current speed         *
  *************************************************/
-#ifndef __spid_h
-#define __spid_h
+#ifndef SPID_H
+#define SPID_H
 
 #include "smath.h"
 

@@ -70,7 +70,7 @@ void sSlewer::BodyPoint2WorldPoint(const sPoint &body, sPoint &world)
   sPoint position;
   sVector worldVector;
   GetPosition(position);
-  BodyVector2WorldVector((const sVector &)body,worldVector);
+  BodyVector2WorldVector(static_cast<const sVector &>(body),worldVector);
   world = position + worldVector;
 }
 
@@ -83,7 +83,7 @@ void sSlewer::WorldPoint2BodyPoint(const sPoint &world, sPoint &body)
   GetPosition(position);
   worldVector = world - position;
   WorldVector2BodyVector(worldVector,bodyVector);
-  body = (sPoint &) bodyVector;
+  body = static_cast<sPoint &>(bodyVector);
 }
 
 void sSlewer::BuildDirectionNormal()

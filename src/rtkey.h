@@ -17,8 +17,8 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-#ifndef __rtkey_h
-#define __rtkey_h
+#ifndef RTKEY_H
+#define RTKEY_H
 
 extern int routine_key;
 

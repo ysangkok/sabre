@@ -284,12 +284,12 @@ void TPoly::draw(Port_3D &, TextrMap *tmap)
 void TPoly::draw(Port_3D &port, int base_color, int color_range)
 {
   int color;
-  float d = ((float) color_range) * intensity;
-  d += ((float) base_color);
-  color = (int) d;
-  
+  float d = static_cast<float>(color_range) * intensity;
+  d += static_cast<float>(base_color);
+  color = static_cast<int>(d);
+
   rendzpoly(points,3,color,port);
-  
+ 
 }
 
 extern int frame_switch;

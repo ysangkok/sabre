@@ -79,8 +79,8 @@ static int no_d = 0;
 extern REAL_TYPE getGroundLevel(R_3DPoint &);
 
 REAL_TYPE Flight::rot_acc_max = 24.0;
-REAL_TYPE Flight::rot_rate_max = _PI34;
-REAL_TYPE Flight::rot_max = _PI2 * C(0.4);
+REAL_TYPE Flight::rot_rate_max = SABRE_PI34;
+REAL_TYPE Flight::rot_max = SABRE_PI2 * C(0.4);
 
 Flight::~Flight() = default;
 
@@ -187,11 +187,11 @@ void Flight::calcState(float t)
   // Set inverted flag
   state.negative_phi = 0;
   state.negative_roll = 0;
-  if ((state.flight_port.slook_from.phi < _2PI) &&
-      (state.flight_port.slook_from.phi > _PI))
+  if ((state.flight_port.slook_from.phi < SABRE_2PI) &&
+      (state.flight_port.slook_from.phi > SABRE_PI))
     state.negative_phi = 1;
-  if ((state.flight_port.roll > _PI2) &&
-      (state.flight_port.roll < _PI34))
+  if ((state.flight_port.roll > SABRE_PI2) &&
+      (state.flight_port.roll < SABRE_PI34))
     state.negative_roll = 1;
   if (state.negative_roll)
     {
@@ -473,11 +473,11 @@ void Flight::calcRotations(float )
 
      float roll; 
      if (state.negative_roll) 
-       roll = state.flight_port.roll - _PI;
+       roll = state.flight_port.roll - SABRE_PI;
      else 
        roll = state.flight_port.roll;
-     if (roll > _PI)
-       roll = -(_2PI-roll);
+     if (roll > SABRE_PI)
+       roll = -(SABRE_2PI-roll);
      float sign = (roll>=0.0)?1.0:-1.0;
      torque = 0.0;
      if ( (roll < .2) &&  (roll > -.2)){
@@ -675,7 +675,7 @@ float prate,yrate,rrate;
 	if (state.on_ground)
 	{
 		if (state.negative_phi)
-			state.flight_port.set_roll(_PI);
+			state.flight_port.set_roll(SABRE_PI);
 		else
 			state.flight_port.set_roll(0);
 		state.roll_rate = 0.0;

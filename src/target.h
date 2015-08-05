@@ -25,8 +25,8 @@
  * Author : Dan Hammer                           *
  * Base class for anything that can be targeted  *
  *************************************************/
-#ifndef __target_h
-#define __target_h
+#ifndef TARGET_H
+#define TARGET_H
 
 #include "vmath.h"
 #include "clip.h"

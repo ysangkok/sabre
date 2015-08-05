@@ -124,8 +124,8 @@ REAL_TYPE Bitmap_View::draw_prep(Port_3D &port)
 	  p2.x += world_width;
 	  p2.y += world_len;
 	  port.port2screen(p2,&x2,&y2);
-	  if (fabs( ((float)sc_x) - x2 ) < 1.0)
-	    visible_flag = 0;
+	  if (fabs(static_cast<float>(sc_x) - x2) < 1.0)
+	    visible_flag = 0; //TODO bool
 	  else
 	    visible_flag = 1;
 	}

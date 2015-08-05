@@ -370,7 +370,7 @@ REAL_TYPE Weapon::calc_htime(Flight &hf, R_3DPoint &p)
   float init_speed = w_specs->flt_specs.init_speed;
   Vector v = Vector(p - host_flight->state.flight_port.look_from);
   v.Z = 0.0;
-  float d = (float) sqrt(v.X * v.X + v.Y * v.Y);
+  float d = static_cast<float>(sqrt(v.X * v.X + v.Y * v.Y));
   d /= world_scale;
   result = d / init_speed;
   R_KEY_END
@@ -403,11 +403,11 @@ REAL_TYPE Weapon::calc_hvtime(Flight &host_flit, R_3DPoint &p)
  *****************************************************/
 std::istream & operator >>(std::istream &is, Guns &gp)
 {
-  ((Weapon &)gp).read(is);
+  static_cast<Weapon &>(gp).read(is);
   return is;
 }
 
-unsigned int Guns::getMaxRounds()
+int Guns::getMaxRounds()
 {
   if (gun_specs)
     return (gun_specs->max_rounds);
@@ -447,7 +447,7 @@ int Guns::update(Flight &hf, Unguided_Manager *um, Weapon_Instance *wi,
  ********************************************************/
 std::istream & operator >>(std::istream &is, Bombs &b)
 {
-  ((Weapon &)b).read(is);
+  static_cast<Weapon &>(b).read(is);
   return is;
 }
 
@@ -482,7 +482,7 @@ int Bombs::update(Flight &hf, Unguided_Manager *um, Weapon_Instance *wi,
  ********************************************************/
 std::istream & operator >>(std::istream &is, Rockets &r)
 {
-  ((Weapon &)r).read(is);
+  static_cast<Weapon &>(r).read(is);
   return is;
 }
 
@@ -518,7 +518,7 @@ int Rockets::update(Flight &hf, Unguided_Manager *um,
  ********************************************************/
 std::istream & operator >>(std::istream &is, Missiles &r)
 {
-  ((Weapon &)r).read(is);
+  static_cast<Weapon &>(r).read(is);
   return is;
 }
 
@@ -553,7 +553,7 @@ int Missiles::update(Flight &hf, Unguided_Manager *um,
  ********************************************************/
 std::istream & operator >>(std::istream &is, FuelTanks &r)
 {
-  ((Weapon &)r).read(is);
+  static_cast<Weapon &>(r).read(is);
   return is;
 }
 
@@ -743,7 +743,7 @@ Weapons_Manager::Weapons_Manager()
 
 Weapons_Manager::~Weapons_Manager()
 {
-  unsigned int i;
+  int i;
   if (wep_specs)
     {
       for (i=0;i<nspecs;i++)
@@ -756,7 +756,7 @@ Weapons_Manager::~Weapons_Manager()
     delete [] lists;
 }
 
-Weapon_Instance *Weapons_Manager::build_instance_list(unsigned int n, unsigned int *cnt, char *id)
+Weapon_Instance *Weapons_Manager::build_instance_list(int n, int *cnt, char *id)
 {
   Weapon_Instance *result = NULL;
   Weapon_List *wl;
@@ -768,7 +768,7 @@ Weapon_Instance *Weapons_Manager::build_instance_list(unsigned int n, unsigned i
     {
       result = new Weapon_Instance[wl->n];
       MYCHECK(result != NULL);
-      for (unsigned int i=0;i<wl->n;i++)
+      for (int i=0;i<wl->n;i++)
 	{
 	  MYCHECK(wl->weapons[i] != NULL);
 	  result[i].set_weapon(wl->weapons[i]);
@@ -780,9 +780,9 @@ Weapon_Instance *Weapons_Manager::build_instance_list(unsigned int n, unsigned i
   return result;
 }
 
-Weapon_Instance_List *Weapons_Manager::build_instance_list(unsigned int n)
+Weapon_Instance_List *Weapons_Manager::build_instance_list(int n)
 {
-  unsigned int cnt;
+  int cnt;
   Weapon_Instance *wi = build_instance_list(n,&cnt);
   return (new Weapon_Instance_List(wi,cnt));
 }
@@ -846,43 +846,43 @@ void Weapons_Manager::read(std::istream &is)
   for (i=0;i<nspecs;i++)
     {
       simfileX::readdictinput(is,buff,sizeof(buff),wep_type,wptypes,NWPTYPES);
-      MYCHECK(wep_type >= ((int)gun_t) && wep_type <= ((int)cannon_t));
+      MYCHECK(wep_type >= (gun_t) && wep_type <= (cannon_t));
  
       switch (wep_type)
 	{
 	case bomb_t:
 	  wep_specs[i] = new Bomb_Specs();
-	  is >> *((Bomb_Specs *)wep_specs[i]);
+	  is >> *(static_cast<Bomb_Specs *>(wep_specs[i]));
 	  wep_specs[i]->wep_type = bomb_t;
 	  break;
 
 	case cannon_t:
 	  wep_specs[i] = new Cannon_Specs();
-	  is >> *((Cannon_Specs *)wep_specs[i]);
+	  is >> *static_cast<Cannon_Specs *>(wep_specs[i]);
 	  wep_specs[i]->wep_type = cannon_t;
 	  break;
 
 	case rocket_t:
 	  wep_specs[i] = new Rocket_Specs();
-	  is >> *((Rocket_Specs *)wep_specs[i]);
+	  is >> *static_cast<Rocket_Specs *>(wep_specs[i]);
 	  wep_specs[i]->wep_type = rocket_t;
 	  break;
 
 	case missile_t:
 	  wep_specs[i] = new Missile_Specs();
-	  is >> *((Bomb_Specs *)wep_specs[i]);
+	  is >> *static_cast<Bomb_Specs *>(wep_specs[i]);
 	  wep_specs[i]->wep_type = missile_t;
 	  break;
 
 	case gun_t:
 	  wep_specs[i] = new Gun_Specs();
-	  is >> *((Gun_Specs *)wep_specs[i]);
+	  is >> *static_cast<Gun_Specs *>(wep_specs[i]);
 	  wep_specs[i]->wep_type = gun_t;
 	  break;
 
 	case fueltank_t:
 	  wep_specs[i] = new FuelTank_Specs();
-	  is >> *((Bomb_Specs *)wep_specs[i]);
+	  is >> *static_cast<Bomb_Specs *>(wep_specs[i]);
 	  wep_specs[i]->wep_type = fueltank_t;
 	  break;
 	}
@@ -913,7 +913,7 @@ void Weapons_Manager::read(std::istream &is)
 	case gun_t:
 	case cannon_t:
 	  {
-	    Guns *gg = new Guns((Gun_Specs *) wsp);
+	    Guns *gg = new Guns(static_cast<Gun_Specs *>(wsp));
 	    MYCHECK(gg != NULL);
 	    is >> *gg;
 	    master_list->add_weapon(gg);
@@ -922,7 +922,7 @@ void Weapons_Manager::read(std::istream &is)
 	
 	case bomb_t:
 	  {
-	    Bombs *bb = new Bombs((Bomb_Specs *) wsp);
+	    Bombs *bb = new Bombs(static_cast<Bomb_Specs *>(wsp));
 	    MYCHECK(bb != NULL);
 	    is >> *bb;
 	    master_list->add_weapon(bb);
@@ -931,7 +931,7 @@ void Weapons_Manager::read(std::istream &is)
 	
 	case rocket_t:
 	  {
-	    Rockets *rr = new Rockets((Rocket_Specs *)wsp);
+	    Rockets *rr = new Rockets(static_cast<Rocket_Specs *>(wsp));
 	    MYCHECK(rr != NULL);
 	    is >> *rr;
 	    master_list->add_weapon(rr);
@@ -940,7 +940,7 @@ void Weapons_Manager::read(std::istream &is)
 
 	case missile_t:
 	  {
-	    Missiles *mm = new Missiles((Missile_Specs *)wsp);
+	    Missiles *mm = new Missiles(static_cast<Missile_Specs *>(wsp));
 	    MYCHECK(mm != NULL);
 	    is >> *mm;
 	    master_list->add_weapon(mm);
@@ -949,7 +949,7 @@ void Weapons_Manager::read(std::istream &is)
 
 	case fueltank_t:
 	  {
-	    FuelTanks *ft = new FuelTanks((FuelTank_Specs *)wsp);
+	    FuelTanks *ft = new FuelTanks(static_cast<FuelTank_Specs *>(wsp));
 	    MYCHECK(ft != NULL);
 	    is >> *ft;
 	    master_list->add_weapon(ft);
@@ -1031,13 +1031,13 @@ Weapon *Weapons_Manager::getWeapon(char *wep_id)
 /***************************************************
  * Weapon_Instance_List methods                    *
  ***************************************************/
-Weapon_Instance_List::Weapon_Instance_List(Weapon_Instance *wi, unsigned int n)
+Weapon_Instance_List::Weapon_Instance_List(Weapon_Instance *wi, int n)
     :n_weaps(n),
      sel_wpn(0),
      weapons(wi)
 {
   has_externs = 1;
-  for (unsigned int i=0;i<n_weaps;i++)
+  for (int i=0;i<n_weaps;i++)
     {
       if (weapons[i].hasExterns())
 	{

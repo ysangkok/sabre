@@ -17,8 +17,8 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-#ifndef __vmath_h
-#define __vmath_h
+#ifndef VMATH_H
+#define VMATH_H
 
 #include <math.h>
 #include <iostream>

@@ -87,7 +87,7 @@ void C_PolyInfo::read(std::istream &is)
     }
   bcube.flg = 0;
   point_cnt = 0;
-  for (unsigned int i=0;i <npoints;i++)
+  for (int i=0;i <npoints;i++)
     {
       set_context();
       if (!txtflag)
@@ -117,7 +117,7 @@ void C_PolyInfo::write(std::ostream &os)
       printf("lpoints is NULL!\n");
       return;
     }
-  for (unsigned int i=0; i<npoints;i++)
+  for (int i=0; i<npoints;i++)
     {
       if (!txtflg)
 	{
@@ -141,7 +141,7 @@ void C_PolyInfo::copy(const C_PolyInfo &ci)
   if (lpoints && delete_flag)
     delete [] lpoints;
   lpoints = new R_3DPoint[npoints];
-  for (unsigned int i=0;i<npoints;i++)
+  for (int i=0;i<npoints;i++)
     lpoints[i] = ci.lpoints[i];
   if (tpoints && delete_flag)
     delete [] tpoints;
@@ -149,7 +149,7 @@ void C_PolyInfo::copy(const C_PolyInfo &ci)
   if (ci.tpoints != NULL)
     {
       tpoints = new TxtPoint[npoints];
-      for (unsigned int i=0;i<npoints;i++)
+      for (int i=0;i<npoints;i++)
 	tpoints[i] = ci.tpoints[i];
     }
   bcube = ci.bcube;
@@ -161,7 +161,7 @@ C_PolyInfo &C_PolyInfo::operator *=(REAL_TYPE scaler)
   if (lpoints != NULL)
     {
       bcube.flg = 0;
-      for (unsigned int i=0;i<npoints;i++)
+      for (int i=0;i<npoints;i++)
 	{
 	  lpoints[i] *= scaler;
 	  bcube.set(lpoints[i]);
@@ -175,7 +175,7 @@ C_PolyInfo &C_PolyInfo::operator +=(const R_3DPoint &p)
   if (lpoints != NULL)
     {
       bcube.flg = 0;
-      for (unsigned int i=0;i<npoints;i++)
+      for (int i=0;i<npoints;i++)
 	{
 	  lpoints[i] += p;
 	  bcube.set(lpoints[i]);
@@ -195,7 +195,7 @@ void C_ShapeInfo::read(std::istream &is)
   MYCHECK(polyinfos != NULL);
   bcube.flg = 0;
   poly_cnt = 0;
-  for (unsigned int i=0;i<npolys;i++)
+  for (int i=0;i<npolys;i++)
     {
       is >> polyinfos[i];
       bcube.set(polyinfos[i].bcube);
@@ -210,7 +210,7 @@ void C_ShapeInfo::write(std::ostream &os)
 {
   os << "{\n";
   os << npolys <<  "\n";
-  for (unsigned int i=0;i<npolys;i++)
+  for (int i=0;i<npolys;i++)
     os << polyinfos[i] ;
   os << "}\n";
 }
@@ -222,7 +222,7 @@ void C_ShapeInfo::copy(const C_ShapeInfo &cs)
     delete [] polyinfos;
   npolys = cs.npolys;
   polyinfos = new C_PolyInfo[npolys];
-  for (unsigned int i=0;i<npolys;i++)
+  for (int i=0;i<npolys;i++)
     polyinfos[i] = cs.polyinfos[i];
   bcube = cs.bcube;
   delete_flag = 1;
@@ -233,7 +233,7 @@ void C_ShapeInfo::add(const C_PolyInfo &p)
   C_PolyInfo *tmp;
  
   tmp = new C_PolyInfo[npolys + 1];
-  for (unsigned int i=0;i<npolys;i++)
+  for (int i=0;i<npolys;i++)
     tmp[i] = polyinfos[i];
   if (delete_flag)
     delete [] polyinfos;
@@ -249,7 +249,7 @@ C_ShapeInfo &C_ShapeInfo::operator *=(REAL_TYPE scaler)
   if (polyinfos != NULL)
     {
       bcube.flg = 0;
-      for (unsigned int i=0;i<npolys;i++)
+      for (int i=0;i<npolys;i++)
 	{
 	  polyinfos[i] *= scaler;
 	  bcube.set(polyinfos[i].bcube);
@@ -263,7 +263,7 @@ C_ShapeInfo &C_ShapeInfo::operator +=(const R_3DPoint &p)
   if (polyinfos != NULL)
     {
       bcube.flg = 0;
-      for (unsigned int i=0;i<npolys;i++)
+      for (int i=0;i<npolys;i++)
 	{
 	  polyinfos[i] += p;
 	  bcube.set(polyinfos[i].bcube);
@@ -297,7 +297,7 @@ void shape_params::read(std::istream &is)
     
   unsigned int read_n_params;
     is >> flags >> read_n_params;
-  n_params = read_n_params;
+  n_params = static_cast<int>(read_n_params);
   p_params = new poly_params[static_cast<unsigned int>(n_params)];
   MYCHECK(p_params != NULL);
 
@@ -305,11 +305,11 @@ void shape_params::read(std::istream &is)
     {
       poly_params tmp;
       is >> tmp;
-      for (unsigned int i=0;i<n_params;i++)
+      for (int i=0;i<n_params;i++)
 	p_params[i] = tmp;
     }
   else
-    for (unsigned int i=0;i<n_params;i++)
+    for (int i=0;i<n_params;i++)
 	is >> p_params[i];
     READ_TOK(']',is,c)
 }
@@ -320,7 +320,7 @@ void shape_params::write(std::ostream &os)
     {
       flags &= ~(static_cast<unsigned long>(CPY_PARAMS));
       int copy = 1;
-      for (unsigned int i=1;i<n_params;i++)
+      for (int i=1;i<n_params;i++)
 	{
 	  if (! (p_params[i] == p_params[0]))
 	    {
@@ -330,12 +330,12 @@ void shape_params::write(std::ostream &os)
 	}
       if (copy)
 	flags |= CPY_PARAMS;
-      os << "[\n" << flags << ' ' << static_cast<unsigned int>(n_params) << '\n';
+      os << "[\n" << flags << ' ' << n_params << '\n';
       if (flags & CPY_PARAMS)
 	os << p_params[0] << '\n';
       else
 	{
-	  for (unsigned int i=0;i<n_params;i++)
+	  for (int i=0;i<n_params;i++)
 	    os << p_params[i] << '\n';
 	}
       os << "]\n";
@@ -349,7 +349,7 @@ void shape_params::copy(const shape_params &sp)
   if (p_params)
     delete [] p_params;
   p_params = new poly_params[static_cast<unsigned int>(n_params)];
-  for (unsigned int i=0;i<n_params;i++)
+  for (int i=0;i<n_params;i++)
     p_params[i] = sp.p_params[i];
 }
 
@@ -358,7 +358,7 @@ void shape_params::add(const poly_params &pm)
   if (p_params != NULL)
     {
       poly_params *tmp = new poly_params[static_cast<unsigned int>(n_params + 1)];
-      for (unsigned int i=0;i<n_params;i++)
+      for (int i=0;i<n_params;i++)
 	tmp[i] = p_params[i];
       delete [] p_params;
       p_params = tmp;
@@ -410,7 +410,7 @@ void C_3DObjectInfo::read(std::istream &is)
   dflt_params = new shape_params[nshapes];
   MYCHECK(dflt_params != NULL);
   
-  for (unsigned int i=0;i<nshapes;i++)
+  for (int i=0;i<nshapes;i++)
     {
       READ_TOKI('{',is,c)
 	is >> shapes[i];
@@ -429,7 +429,7 @@ void C_3DObjectInfo::write(std::ostream &os)
       os << "{\n";
       os << id << '\n';
       os << nshapes;
-      for (unsigned int i=0;i<nshapes;i++)
+      for (int i=0;i<nshapes;i++)
 	{
 	  os << shapes[i] << '\n';
 	  os << dflt_params[i] << '\n';
@@ -507,7 +507,7 @@ void C_Poly::set_world_points(R_3DPoint &location)
   if (wpoints == NULL)
     wpoints = new R_3DPoint[p_info->npoints];
   MYCHECK(wpoints != NULL);
-  for (unsigned int i = 0;i < p_info->npoints; i++)
+  for (int i = 0;i < p_info->npoints; i++)
     {
       R_3DPoint p = p_info->lpoints[i];
       if (scale != 1.0)
@@ -522,7 +522,7 @@ void C_Poly::set_world_points(R_3DPoint &location)
 
 void C_Poly::getWorldPoint(R_3DPoint &wp, int i, R_3DPoint &location)
 {
-  if (i >= 0 && static_cast<unsigned int>(i) < p_info->npoints)
+  if (i >= 0 && i < p_info->npoints)
     {
       wp = p_info->lpoints[i];
       wp *= scale;
@@ -535,7 +535,7 @@ void C_Poly::getBounds(bounding_cube & bcube)
   if (wpoints != NULL)
     {
       bcube.reset();
-      for (unsigned int i=0;i<p_info->npoints;i++)
+      for (int i=0;i<p_info->npoints;i++)
 	bcube.set(wpoints[i]);
     }
 }
@@ -665,7 +665,7 @@ void C_Poly::set_shadow(REAL_TYPE z_value, Vector &light_source)
   if (!wpoints)
     return;
   //  z_value = shadow_level;
-  unsigned int npoints = p_info->npoints;
+  int npoints = p_info->npoints;
   zpoints = new R_3DPoint[npoints];
   if (zpoints != NULL)
     {
@@ -674,7 +674,7 @@ void C_Poly::set_shadow(REAL_TYPE z_value, Vector &light_source)
       ly = light_source.Y;
       lz = light_source.Z;
       z = z_value;
-      for (unsigned int i=0;i<npoints;i++)
+      for (int i=0;i<npoints;i++)
 	{
 	  z = getGroundLevel(wpoints[i]) + shadow_level;
 	  float wx,wy,wz;
@@ -721,7 +721,7 @@ int C_Shape::create(C_ShapeInfo *ptr)
   polys = new C_Poly[npolys];
   if (polys != NULL)
     {
-      for (unsigned int i=0;i<npolys;i++)
+      for (int i=0;i<npolys;i++)
 	{
 	  if (!polys[i].create(&info_ptr->polyinfos[i]))
 	    {
@@ -744,7 +744,7 @@ int C_Shape::create(C_ShapeInfo *ptr)
 void C_Shape::set_params(shape_params *prms)
 {
   flags = prms->flags;
-  for (unsigned int i=0;i<npolys;i++)
+  for (int i=0;i<npolys;i++)
     polys[i].set_params(&prms->p_params[i]);
 }
 
@@ -760,12 +760,12 @@ std::istream & operator >>(std::istream &is, C_Shape &cs)
   if (cs.flags & CPY_PARAMS)
     {
       is >> cs.polys[0];
-      for (unsigned int i=1;i<cs.npolys;i++)
+      for (int i=1;i<cs.npolys;i++)
 	cs.polys[i].set_params(cs.polys[0]);
     }
   else
     {
-      for (unsigned int i=0;i < cs.npolys;i++)
+      for (int i=0;i < cs.npolys;i++)
 	is >> cs.polys[i];
     }
   return is;
@@ -773,7 +773,7 @@ std::istream & operator >>(std::istream &is, C_Shape &cs)
 
 void C_Shape::set_visible(Port_3D &theport)
 {
-  unsigned int i;
+  int i;
   visible = 0;
   for (i = 0; i<npolys;i++)
     {
@@ -791,13 +791,13 @@ void C_Shape::set_visible(Port_3D &theport)
 
 void C_Shape::set_poly_color(int n, int color)
 {
-  if (n >= 0 && static_cast<unsigned int>(n) < npolys)
+  if (n >= 0 && n < npolys)
     polys[n].color = color;
 }
 
 void C_Shape::set_poly_icolor(Vector & light)
 {
-  for (unsigned int i = 0; i < npolys; i++)
+  for (int i = 0; i < npolys; i++)
     polys[i].set_poly_icolor(light);
 }
 
@@ -806,7 +806,7 @@ void C_Shape::set_world_location(R_3DPoint &loc)
 {
   maxlen = 0;
   location = loc;
-  for (unsigned int i =0;i<npolys;i++)
+  for (int i =0;i<npolys;i++)
     {
       if (!memopt)
 	polys[i].set_world_points(loc);
@@ -816,7 +816,7 @@ void C_Shape::set_world_location(R_3DPoint &loc)
 
 void C_Shape::set_scale(REAL_TYPE scl)
 {
-  for (unsigned int i=0;i<npolys;i++)
+  for (int i=0;i<npolys;i++)
     polys[i].set_scale(scl);
 }
 
@@ -824,7 +824,7 @@ void C_Shape::set_shadow(REAL_TYPE z, Vector &light)
 {
   shadow_z = z;
   light_source = light;
-  for (unsigned int i =0;i<npolys;i++)
+  for (int i =0;i<npolys;i++)
     {
       polys[i].shadow_flag = 0;
       if (polys[i].flags & SHADOW)
@@ -840,7 +840,7 @@ void C_Shape::draw_shadow(Port_3D &port )
 {
   if (!visible || !(flags & SHADOW))
     return;
-  for(unsigned int i=0;i<npolys;i++)
+  for(int i=0;i<npolys;i++)
     if (polys[i].shadow_flag)
       {
 	if (polys[i].wpoints == NULL)
@@ -856,7 +856,7 @@ void C_Shape::draw_shadow(Port_3D &port )
 
 void C_Shape::draw(Port_3D &port, R_3DPoint &loc)
 {
-  unsigned int i;
+  int i;
   if (!visible)
     return;
   location = loc;
@@ -889,7 +889,7 @@ void C_Shape::getBounds(bounding_cube &bcube)
 {
   bounding_cube work;
   bcube.reset();
-  for (unsigned int i=0;i<npolys;i++)
+  for (int i=0;i<npolys;i++)
     {
       if (polys[i].wpoints == NULL)
 	polys[i].set_world_points(location);

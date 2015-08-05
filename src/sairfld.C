@@ -70,10 +70,10 @@ sAirfield::sAirfield(const sairfield_info &airf_info)
 	}
 }
 
-sRunway *sAirfield::GetRunway(unsigned int which)
+sRunway *sAirfield::GetRunway(int which)
 {
 	if (which < runways.Count())
-		return (sRunway *) runways[which];
+		return static_cast<sRunway *>(runways[which]);
 	else
 		return NULL;
 }
@@ -101,7 +101,7 @@ sAirfield *sAirfield::GetsAirfield(const char *airFieldId)
 
 	for (int i=0;i<airfields.Count();i++)
 	{
-		sAirfield *airfield = (sAirfield *)airfields[i];
+		sAirfield *airfield = static_cast<sAirfield *>(airfields[i]);
 		if (airfield)
 		{
 			if (strcmp(airfield->id,airFieldId) == 0)

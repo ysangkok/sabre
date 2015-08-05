@@ -35,7 +35,7 @@ class trans_table
 {
 public:
   unsigned char *trans_image;
-  unsigned int image_rows, image_width;
+  int image_rows, image_width;
   int trans_color;
   int ntrans_row;
   run runs[200][MAX_RUNS + 2];
@@ -46,9 +46,9 @@ public:
     trans_color(0)
     { }
 
-  void build_runs(unsigned char *img, unsigned int r, unsigned int w);
+  void build_runs(unsigned char *img, int r, int w);
   void trans_blit(unsigned char *dst,
-		  unsigned int x, unsigned int y, Rect *bnds = NULL,
+		  int x, int y, Rect *bnds = NULL,
 		  bool fast_flag = 0);
 };
 

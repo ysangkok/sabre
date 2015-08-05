@@ -29,7 +29,7 @@ Palette_256::Palette_256()
 {
   save_palette = new char[PALETTE_SIZE];
   MYCHECK(save_palette != NULL);
-  get_palette(0,256,(char *)save_palette);
+  get_palette(0,256,static_cast<char *>(save_palette));
   tmp_palette = NULL;
 }
 
@@ -53,9 +53,9 @@ void Palette_Effect::do_effect(void (  *funct) (Palette_Effect &),
   if (tmp_palette != NULL)
     delete [] tmp_palette;
   tmp_palette = new char[PALETTE_SIZE];
-  memcpy(tmp_palette,save_palette,PALETTE_SIZE);
+  memcpy(tmp_palette,save_palette,static_cast<size_t>(PALETTE_SIZE));
   (*funct)(*this);
-  set_palette(0,256,(char *)tmp_palette);
+  set_palette(0,256,static_cast<char *>(tmp_palette));
   delete [] tmp_palette;
   tmp_palette = NULL;
   effect_on = 1;
@@ -71,7 +71,7 @@ bool Palette_Effect::is_done(float t, int reset)
       effect_on = 0;
     }
   if (result && reset)
-    set_palette(0,256,(char *)save_palette);
+    set_palette(0,256,static_cast<char *>(save_palette));
   return result;
 }
 

@@ -23,8 +23,8 @@
  * Date   : April, 1998                          *
  * Author : Dan Hammer                           *
  *************************************************/
-#ifndef __sweapon_h
-#define __sweapon_h
+#ifndef SWEAPON_H
+#define SWEAPON_H
 
 #define swDEFAULT_CONE_PITCH        (static_cast<sREAL>(_degree * 1.0))
 #define swDEFAULT_CONE_YAW          (static_cast<sREAL>(_degree * 1.0))

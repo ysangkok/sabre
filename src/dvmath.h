@@ -21,8 +21,8 @@
  * Floating point equivalents of the vector classes                *
  *******************************************************************/
 
-#ifndef __dvmath_h
-#define __dvmath_h
+#ifndef DVMATH_H
+#define DVMATH_H
 
 /*
 ** Vector Definitions

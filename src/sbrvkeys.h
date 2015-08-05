@@ -23,8 +23,8 @@
  * Author : Dan Hammer                           *
  * Virtual key codes                             *
  *************************************************/
-#ifndef __sbrvkeys_h
-#define __sbrvkeys_h
+#ifndef SBRVKEYS_H
+#define SBRVKEYS_H
 // Define universal key codes
 enum 
 {

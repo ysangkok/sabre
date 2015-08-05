@@ -17,8 +17,8 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-#ifndef __kbdhit_h
-#define __kbdhit_h
+#ifndef KBDHIT_H
+#define KBDHIT_H
 
 #include <sys/time.h>
 #include <sys/types.h>

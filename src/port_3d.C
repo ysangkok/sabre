@@ -192,8 +192,8 @@ void Port_3D::port2screen(R_3DPoint &port,
 	}
 	else
 	{
-		*screen_x = static_cast<unsigned int>(f_d1 + cx);
-		*screen_y = static_cast<unsigned int>((f_d2 * -1.0) + cy);
+		*screen_x = static_cast<int>(f_d1 + cx);
+		*screen_y = static_cast<int>((f_d2 * -1.0) + cy);
 	}
 	R_KEY_END
 }
@@ -347,10 +347,10 @@ void Port_3D::rotate(REAL_TYPE pitch, REAL_TYPE rol, REAL_TYPE yaw)
   // Get roll needed to match world
   rr = C(-atan(rollPoint.x / (rollPoint.y+eps)));
   if (rollPoint.y < 0.0)
-    rr -= _PI;
+    rr -= SABRE_PI;
   if (rr < 0.0)
-    rr = _2PI + rr;
-	
+    rr = SABRE_2PI + rr;
+
   this->roll = limit_angle(rr + rol);
   sin_roll = C(sin(this->roll));
   cos_roll = C(cos(this->roll));
@@ -453,9 +453,9 @@ float sc_x,sc_y;
     {
       result = C(-atan(p.x / (p.y + eps)));
       if (p.y < 0.0)
-			result -= _PI;
+			result -= SABRE_PI;
       if (result < 0.0)
-	result = _2PI + result;
+	result = SABRE_2PI + result;
     }
   return (result);
 }
@@ -477,9 +477,9 @@ Port_3D vport;
 	}
       result = C(-atan(p->x / (p->y + eps)));
       if (p->y < 0.0)
-	result -= _PI;
+	result -= SABRE_PI;
       if (result < 0.0)
-	result = _2PI + result;
+	result = SABRE_2PI + result;
     }
   return (result);
 }

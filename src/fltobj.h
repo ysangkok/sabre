@@ -25,8 +25,8 @@
  * Some support classes for the flight modeling  *
  * Originally in flight.h                        *
  *************************************************/
-#ifndef __fltobj_h
-#define __fltobj_h
+#ifndef FLTOBJ_H
+#define FLTOBJ_H
 
 #include "dvmath.h"
 #include "spid.h"
@@ -182,7 +182,7 @@ public:
   int read_file(char *);
   int write_file(char *);
   static Flight_Specs **g_specs;
-  static unsigned int nspecs;
+  static int nspecs;
   static Flight_Specs *getSpecs(char *model);
 };
 

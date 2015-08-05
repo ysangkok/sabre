@@ -29,10 +29,10 @@
  * To draw them, you need a "reference port"     *
  * which transforms them into world coordinants. *
  *************************************************/
-#ifndef __copoly_h
-#define __copoly_h
+#ifndef COPOLY_H
+#define COPOLY_H
 
-#ifndef __cpoly_h
+#ifndef CPOLY_H
 #include "cpoly.h"
 #endif
 

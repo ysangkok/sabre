@@ -17,8 +17,8 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-#ifndef __simerr_h
-#define __simerr_h
+#ifndef SIMERR_H
+#define SIMERR_H
 
 void error_jump(const char *, ... );
 #undef MYCHECK

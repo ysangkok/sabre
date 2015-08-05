@@ -23,8 +23,8 @@
  * Date   : April, 1998                          *
  * Author : Dan Hammer                           *
  *************************************************/
-#ifndef __aiflite_h
-#define __aiflite_h
+#ifndef AIFLITE_H
+#define AIFLITE_H
 
 enum  { aiF_TARGETMODE_NOACTION, aiF_TARGETMODE_EVADE, aiF_TARGETMODE_ENGAGE };
 
@@ -46,7 +46,7 @@ public:
   };
    
   aiFlite();
-  aiFlite(unsigned int max, int owns = 1, const char *id = NULL);
+  aiFlite(int max, bool owns = true, const char *id = NULL);
    
   virtual ~aiFlite()
     {}
@@ -60,13 +60,12 @@ public:
   virtual void Update(double time_frame);
   virtual void Destroy();
 
-  unsigned int Add(aiPilot *);
+  int Add(aiPilot *);
   void AddPlayerPilot(aiPilot *);
-  aiPilot *GetPilot(unsigned int idx = 0);
   aiPilot *GetPilot(int idx = 0);
-  void SetWaypoints(const sWaypoint *wps, unsigned int nn);
-  void SetWaypoints(const swaypoint_info *winfo, unsigned int nn);
-  sWaypoint *GetWaypoint(unsigned int idx);
+  void SetWaypoints(const sWaypoint *wps, int nn);
+  void SetWaypoints(const swaypoint_info *winfo, int nn);
+  sWaypoint *GetWaypoint(int idx);
   sWaypoint *GetNextWaypoint();
   sWaypoint *GetPreviousWaypoint();
   void InitFormation(sWaypoint *wp);
@@ -85,7 +84,7 @@ public:
   void DoTakeOffUpdate();
   void DoLandUpdate();
 
-  unsigned int GetCount()
+  int GetCount()
     {
       return (n);
     }
@@ -97,21 +96,21 @@ public:
     {
       return (playerPilotWingPos);
     }
-  unsigned int IncViewPilot();
-  unsigned int GetViewIndex()
+  int IncViewPilot();
+  int GetViewIndex()
     {
       return (viewPilot);
     }
 
-  void SetFormationWaypoint(sWaypoint *wp, unsigned int leadPilot = 0);
-  void SetManeuver(unsigned int maneuver, uint32_t flags, sREAL d0, sREAL d1,
+  void SetFormationWaypoint(sWaypoint *wp, int leadPilot = 0);
+  void SetManeuver(int maneuver, uint32_t flags, sREAL d0, sREAL d1,
 		   sREAL d2);
    
   void EngageFlite(aiFlite *);
   int AssignEngageTarget(aiPilot *pil, aiFlite *targetFlite);
   void DoWaypoints();
   aiPilot *GetLeader();
-  aiPilot *GetNextActivePilot(unsigned int & start);
+  aiPilot *GetNextActivePilot(int & start);
    
   const sPoint &GetPosition()
     {
@@ -125,7 +124,7 @@ public:
     {
       return GetHandle();
     }
-  unsigned int NWaypoints()
+  int NWaypoints()
     {
       return waypoints.Count();
     }
@@ -148,7 +147,7 @@ public:
   void KillAttackers();
   void KillEngageFlite(aiFlite *engageFlite);
 
-  void SetTargetMode(unsigned int mod)
+  void SetTargetMode(int mod)
     {
       if (mod >= aiF_TARGETMODE_NOACTION && mod <= aiF_TARGETMODE_ENGAGE)
 	targetMode = mod;
@@ -165,10 +164,10 @@ public:
       this->newTargetDelayTime = newTargetDelayTim;
     }
 
-  void SetDamage(int, unsigned int shooterIndex)
+  void SetDamage(int, int shooterIndex)
     {
-      damageFlag = 1;
-      damagerIdx = shooterIndex;
+      damageFlag = true;
+      damagerIdx = static_cast<uint32_t>(shooterIndex);
     }
 
   aiPilot *GetPlayerWingman();
@@ -195,29 +194,29 @@ protected:
   int            curTask;                /* current task                       */
   int            mode;                   /* current mode                       */
   sObjectArray   pilots;                 /* array of pilots                    */
-  unsigned int   n;                      /* how many pilots/flight modls       */
-  unsigned int   max;                    /* max pilots/flight models           */
+  int            n;                      /* how many pilots/flight modls       */
+  int            max;                    /* max pilots/flight models           */
   sObjectArray   waypoints;              /* array of waypoints                 */
-  unsigned int   wpidx;                  /* index into                         */
+  int            wpidx;                  /* index into                         */
   sWaypoint      *curWaypoint;           /* current waypoint                   */
-  unsigned int   viewPilot;              /* pilot providing debug viewpoint    */
+  int            viewPilot;              /* pilot providing debug viewpoint    */
   bool           isPlayerFlite;          /* true if player is in this flite    */
   int            playerPilotWingPos;     /* player's wing position             */
   uint32_t       engageFliteIdx;         /* idx of flite engaged with          */
   uint32_t       interceptFliteIdx;      /* idx of flite intercepting          */
   char           id[9];                  /* char id                            */
   aiPilot        *leader;                /* flite leader pilot                 */
-  unsigned int   leaderIndex;            /* index of                           */
+  int            leaderIndex;            /* index of                           */
   int            activeCount;            /* how many pilots active             */
   sPoint         position;               /* current position                   */
   sREAL          visualEngagementRadius; /* max distance for visual engagement */
   sREAL          newTargetDelayTime;     /* delay for assigning pilots targets */
   int            attackerCount;          /* how many attackers                 */
   sObjectArray   freePilots;             /* working free pilot list            */
-  unsigned int   targetMode;             /* mode for acting as target-practice */
+  int            targetMode;             /* mode for acting as target-practice */
   bool           damageFlag;             /* true if any pilots hit by enemy fire*/
   uint32_t       damagerIdx;             /* idx of pilot causing above damage  */
-  unsigned int   nextPilot;              /* next pilot to takeoff,land         */
+  int            nextPilot;              /* next pilot to takeoff,land         */
   int            playerCommandMode;      /* if 1 & player is leader, player    */
   /*    commands flite                  */
 
@@ -236,13 +235,12 @@ public:
   static void AddaiFlite(aiFlite *flite);
   static aiFlite *GetaiFlite(uint32_t idx);
   static aiFlite *GetaiFlite(char *id);
-  static unsigned int GetFliteCount();
+  static int GetFliteCount();
   static void FlushaiFlites();
   static void RemoveaiFlite(aiFlite *flite);
   static aiFlite *GetPlayerFlite();
   static aiFlite *GetFliteByIndex(int i);
-  static aiFlite *GetFliteByIndex(unsigned int i);
-  static void SetOwnership(int owns)
+  static void SetOwnership(bool owns)
     {
       aiFlites.SetOwnership(owns);
     }

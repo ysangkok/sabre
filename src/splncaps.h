@@ -24,8 +24,8 @@
  * Author : Dan Hammer                           *
  * Plane capabilities                            *
  *************************************************/
-#ifndef __splncaps_h
-#define __splncaps_h
+#ifndef SPLNCAPS_H
+#define SPLNCAPS_H
 
 #include "sobject.h"
 #include "sarray.h"

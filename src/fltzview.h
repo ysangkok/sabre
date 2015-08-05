@@ -24,8 +24,8 @@
  * Date   : March, 1997                          *
  * Author : Dan Hammer                           *
  *************************************************/
-#ifndef __fltzview_h
-#define __fltzview_h
+#ifndef FLTZVIEW_H
+#define FLTZVIEW_H
 
 #include "target.h"
 #include "zview.h"

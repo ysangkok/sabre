@@ -242,7 +242,7 @@ void GameSession::play()
 
 inline int GETSTATE(Pilot *pil, char *state, int n)
 {
-	return(!memcmp(pil->get_dbg(),state,n));
+	return(!memcmp(pil->get_dbg(),state,static_cast<size_t>(n)));
 }
 
 inline int INTERESTING(Flight_Node &nde)
@@ -292,7 +292,7 @@ inline int INTERESTING(Flight_Node &nde)
 
 inline int DECIDEVIEW()
 {
-	int dec = RANDOM(3);
+	unsigned int dec = RANDOM(3u);
 	switch (dec)
 	{
 		case 0:
@@ -703,12 +703,12 @@ void GameSession::printResult(Flight_Node &fn, std::ostream &os)
 	      if (fn.lr.phi)
 		{
 		  PRINTLN(os," * Pitch : %3.2f degrees\n",
-			  (_PI2 - fn.lr.phi_value) / _PI * 180);
+			  (SABRE_PI2 - fn.lr.phi_value) / SABRE_PI * 180);
 		}
 	      if (fn.lr.roll)
 		{
 		  PRINTLN(os," * Roll : %3.2f degrees\n",
-			  (fn.lr.roll_value) / _PI * 180);
+			  (fn.lr.roll_value) / SABRE_PI * 180);
 		}
 	    }
 	}

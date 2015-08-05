@@ -38,15 +38,15 @@
 // callbacks from dhlist
 void sAttackerList::DeleteSAttacker(void *v)
 {
-  sAttacker *attkr = (sAttacker *) v;
+  sAttacker *attkr = static_cast<sAttacker *>(v);
   delete attkr;
 }
 
 // callback for find
 int sAttackerList::CompareSAttacker(void *v0, void *v1)
 {
-  sAttacker *attkr0 = (sAttacker *) v0;
-  sAttacker *attkr1 = (sAttacker *) v1;
+  sAttacker *attkr0 = static_cast<sAttacker *>(v0);
+  sAttacker *attkr1 = static_cast<sAttacker *>(v1);
   if (attkr0->IsEqual(*attkr1))
     return (1);
   else
@@ -56,9 +56,9 @@ int sAttackerList::CompareSAttacker(void *v0, void *v1)
 // callback for sort
 int sAttackerList::CompareSAttackerThreat(void *v0, void *v1)
 {
-  sAttacker *attkr0 = (sAttacker *) v0;
-  sAttacker *attkr1 = (sAttacker *) v1;
-  return (attkr0->GetThreatValue() > attkr1->GetThreatValue());  
+  sAttacker *attkr0 = static_cast<sAttacker *>(v0);
+  sAttacker *attkr1 = static_cast<sAttacker *>(v1);
+  return (attkr0->GetThreatValue() > attkr1->GetThreatValue());
 }
 
 /*
@@ -106,7 +106,7 @@ sAttacker *sAttackerList::GetFirstAttacker()
   void *v;
   dhlist_start_iterator(&attacker_list);
   v = dhlist_next_object(&attacker_list);
-  return ((sAttacker *)v);
+  return static_cast<sAttacker *>(v);
 }
 
 /*
@@ -116,7 +116,7 @@ sAttacker *sAttackerList::GetNextAttacker()
 {
   void *v;
   v = dhlist_next_object(&attacker_list);
-  return ((sAttacker *)v);
+  return static_cast<sAttacker *>(v);
 }
 
 

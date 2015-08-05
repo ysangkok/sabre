@@ -20,8 +20,8 @@
 /************************************************************
  * ddaline.h                                                *
  ************************************************************/
-#ifndef __ddaline_h
-#define __ddaline_h
+#ifndef DDALINE_H
+#define DDALINE_H
 
 /*
  Line drawing class
