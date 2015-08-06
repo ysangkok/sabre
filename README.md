@@ -38,19 +38,22 @@ RUNNING Sabre
 Because svgalib uses direct port access, running Sabre as
 any user other than root will require you, as user root,
 to 'setuid' on the Sabre binary: 
-# chmod a+s src/sabre
+
+    chmod a+s src/sabre
 Additionally, the use of svgalib requires that you be
 in a "console screen", rather than an X-Window environment.
 To get to a console screen while in fvwm, key <ctl><alt><f2> 
 (or <f3>, etc).
 
 For a quick test of whether Sabre works for you or not:
-# ./fly
+
+    ./fly
 should have you flying over the mountains and valleys of Korea
 in your North American SabreJet, armed and ready for action. 
 
 For a more comprehensive view:
-# ./RunSabre
+
+    ./RunSabre
 will offer you a snappy menu-driven front-end to the game,
 in which you can try out various missions, set video mode
 and window size, view demos, and browse documentation. 
