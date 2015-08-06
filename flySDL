@@ -1,5 +1,0 @@
-#! /bin/bash
-# Just fly! SDL version
-./sdlsrc/sabresdl -flt fly.flt  $1 $2 $3 $4 $5
-# least for me this is needed
-stty sane

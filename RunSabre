@@ -24,12 +24,15 @@
 # 04/10/98 Version 0.2.3 patch
 # 01/01/99 Version 0.2.4
 # 1999 Miscellanous changes by Milan Zamazal <pdm@debian.org>
+
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
 banner="$(/usr/games/sabre --print-banner)"
 DLG=/usr/bin/dialog
 FOO=$(mktemp -t sabre.XXXXXX) || exit 1
 LOG=$(mktemp -t sabre.XXXXXX) || exit 1
 LOADLOG=$(mktemp -t sabre.XXXXXX) || exit 1
-MODE="-mode 0"
+MODE="NEVER USED"
 RZ_STEPS=
 SABRE="-mode $MODE" #default flight parameters
 DEMO=
@@ -81,7 +84,7 @@ view_file()
 # load mission or demo
 load_scenario()
 {
- path=/usr/share/games/sabre/$1
+ path=$DIR/scenarios/$1
  echo "$1 $2 = $path $MODE $WINDOW" >> $LOADLOG
  
  if [ -x $path ]
@@ -92,8 +95,10 @@ load_scenario()
    --infobox  "Scenario coming up: Please standby!" \
    3 44
    export SABRE
-   export SABRE_BIN=/usr/games/sabre
-   $path $DEMO $MODE $WINDOW $YOKE $RDDR $THRT > $LOG
+   export SABRE_BIN=$DIR/src/sabre
+   cd $DIR
+   $path $DEMO $MODE $WINDOW $YOKE $RDDR $THRT 2>&1 > $LOG
+   cd -
     stty sane
    $DLG \
    --backtitle "$banner" \
@@ -104,7 +109,7 @@ load_scenario()
      view_file $LOG
    fi
   else
-   if [ -e $1 ]
+   if [ -e $path ]
     then
      fatal loading EACCES $1
     else
@@ -146,8 +151,8 @@ sabre_documentation() {
    "keys" | \
    "takeoff" | \
    "gru" | \
-   "shoot") view_file /usr/share/games/sabre/doc/$choice.txt ;;
-   "COPYING") view_file /usr/share/common-licenses/GPL ;;
+   "shoot") view_file $DIR/doc/$choice.txt ;;
+   "COPYING") view_file $DIR/COPYING ;;
    "HISTORY"      | \
    "README"       | \
    "CONTRIBUTORS" | \
@@ -157,8 +162,8 @@ sabre_documentation() {
    "WHATSNEW" | \
    "JOYSTICK.README" | \
    "TROUBLE_SHOOTING" | \
-   "TODO" ) view_file /usr/share/games/sabre/doc/$choice ;;
-   "User Interface" ) view_file /usr/share/games/sabre/doc/README-dialog ;;
+   "TODO" ) view_file $DIR/$choice ;;
+   "User Interface" ) view_file $DIR/doc/README-dialog ;;
    "")  looping=0;;
   esac
  done 
@@ -475,7 +480,7 @@ do
   "svgamode")      sabre_vgamodes;;
   "window")        sabre_vgawindow;;
   "documentation") sabre_documentation;;
-  "quit" | "") rm -f $FOO $LOG $LOADLOG; exit;;
+  "quit" | "") exit;;
  esac
 done
 # the end

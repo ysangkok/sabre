@@ -86,7 +86,7 @@ int           MXSCREEN_WIDTH  = 320;
 int           MXSCREEN_HEIGHT = 200;
 int           MAX_X           = 319;
 int           MAX_Y           = 199;
-int           VGAMODE         = G320x200x256;
+int           VGAMODE         = G1024x768x256;
 const int           PALETTE_SIZE    = 768;
 const int           N_COLORS        = 256;
 
