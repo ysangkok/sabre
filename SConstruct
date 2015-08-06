@@ -5,7 +5,7 @@ everything = 1
 do_vga = 0
 do_sdl = not do_vga
 memdebug = 1
-coverage = 0
+coverage = 1
 profile = 0
 opt = []
 
@@ -40,7 +40,7 @@ if everything:
 if memdebug:
         debug_profile_and_coverage = []
 	#debug_profile_and_coverage += Split("-fsanitize=memory -fsanitize-blacklist=blacklist.txt -fno-omit-frame-pointer -fsanitize-memory-track-origins")
-	#debug_profile_and_coverage += Split("-fsanitize=undefined")
+	debug_profile_and_coverage += Split("-fsanitize=undefined")
 	link_lto += debug_profile_and_coverage
 else:
 # Profile
