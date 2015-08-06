@@ -1,4 +1,5 @@
 - fix XXX, TODO, FIXME
+- fix cockpit (c) on 32bit (tested and failed on fugl with clang3.6)
 - fix screenshot
 - document as far as possible
 - removed unused functions (gcov) / make test suite

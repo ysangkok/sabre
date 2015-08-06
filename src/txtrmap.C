@@ -184,7 +184,7 @@ std::ofstream os;
 				os.write(reinterpret_cast<char *>(&tmp),sizeof(tmp));
 				tmp = htole32(static_cast<uint32_t>(n));
 				os.write(reinterpret_cast<char *>(&tmp),sizeof(tmp));
-				os.write(tgt,n);
+				os.write(tgt,static_cast<int>(n));
 			}
 			delete [] fname;
 		}
@@ -219,7 +219,7 @@ char              *fname;
 		if (!fread(&n,sizeof(n),1,f)) abort();
 		n = htole32(n);
 		size = map_w * map_h;
-		csize = n;
+		csize = static_cast<long>(n);
 		cbytes = new unsigned char[csize];
 		MYCHECK(cbytes != NULL);
 		nread = static_cast<int>(fread(cbytes,1,static_cast<size_t>(csize),f));

@@ -267,11 +267,14 @@
  * This is not mandatory, just a speed optimization. The compressed
  * output is strictly identical.
  */
+// disabled by janus (prefer portability over performance, and aligned is likely to perform better anyway. we have more memory than in the 90es)
+#if 0
 #if (defined(MSDOS) && !defined(WIN32)) || defined(i386)
 #    define UNALIGNED_OK
 #endif
 #if defined(mc68020) || defined(vax)
 #    define UNALIGNED_OK
+#endif
 #endif
 
 /* Under MSDOS we may run out of memory when processing a large number

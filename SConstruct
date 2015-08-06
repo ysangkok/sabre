@@ -4,10 +4,13 @@ clang = 1
 everything = 1
 do_vga = 0
 do_sdl = not do_vga
-memdebug = 1
-coverage = 1
+memdebug = 0
+coverage = 0
 profile = 0
+lto = 0
 opt = []
+
+compilerpostfix = '-3.6'
 
 warn = []
 #machine = ["-m32"]
@@ -27,10 +30,11 @@ else:
 lto = []
 link_lto = []
 
-if not memdebug:
-	lto += ["-flto"]
-if clang and not memdebug:
-	link_lto += lto + ["-B/usr/lib/gold-ld"]
+if lto:
+    if not memdebug:
+    	lto += ["-flto"]
+    if clang and not memdebug:
+    	link_lto += lto + ["-B/usr/lib/gold-ld"]
 
 if everything:
 	warn += ["-Wno-variadic-macros"]
@@ -62,8 +66,8 @@ if coverage:
 debug_profile_and_coverage += Split("-fPIC")
 
 orgenv = Environment(
-	CC="clang" if clang else "gcc", CFLAGS=lto + opt + warn + debug_profile_and_coverage + ([] if not everything else Split('-ansi -pedantic -std=gnu11')), CXX="clang++" if clang else "gcc", CXXFLAGS=lto + opt + warn + debug_profile_and_coverage + ["-std=c++11"] + ([] if not everything else Split('-pedantic')), LIBS=["m"],
-	LINK="clang++" if clang else "g++",
+	CC="clang" + compilerpostfix if clang else "gcc" + compilerpostfix, CFLAGS=lto + opt + warn + debug_profile_and_coverage + ([] if not everything else Split('-ansi -pedantic -std=gnu11')), CXX="clang++" + compilerpostfix if clang else "gcc" + compilerpostfix, CXXFLAGS=lto + opt + warn + debug_profile_and_coverage + ["-std=c++11"] + ([] if not everything else Split('-pedantic')), LIBS=["m"],
+	LINK="clang++" + compilerpostfix if clang else "g++" + compilerpostfix,
 	#CXXFLAGS="-nodefaultlibs -fno-exceptions -w",
 	CPPDEFINES = {"VERSION":"\\\"0.2.4b\\\"","REV_DATE":"\\\"11/21/99\\\"","JSTICK_INSTALLED":"1"},
 	CPPPATH=(["gdev"] if do_vga else []) + ["src"]
