@@ -1,3 +1,10 @@
+NEW README
+===
+90'es Linux combat flight sim. A review: http://www.tldp.org/LDP/LG/issue30/ayers3.html
+
+OLD README
+===
+
 README file for Sabre Fighter Plane Simulator
 Version 0.2.4  January, 1999
 
