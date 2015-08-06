@@ -2,6 +2,14 @@ NEW README
 ===
 90'es Linux combat flight sim. A review: http://www.tldp.org/LDP/LG/issue30/ayers3.html
 
+Changes:
+* works on 64-bit
+* removed svgalib support (only works on i386 anyway)
+* added DirectFB support
+* new build system (scons based)
+* removed C-style casts
+* compiles cleanly on Clang 3.6 with many warnings enabled
+
 OLD README
 ===
 
