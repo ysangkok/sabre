@@ -125,7 +125,7 @@ void tr_init()
   if (zbuff != NULL)
     free(zbuff);
 
-  zbuff_size = static_cast<int>(static_cast<unsigned long>(SCREEN_WIDTH * SCREEN_HEIGHT) * sizeof(R2D_TYPE)); // XXX why is this necessary (inner cast)
+  zbuff_size = SCREEN_WIDTH * SCREEN_HEIGHT * static_cast<int>(sizeof(R2D_TYPE));
   zbuff = static_cast<R2D_TYPE *>(malloc(static_cast<size_t>(zbuff_size)));
   if (zbuff == NULL)
     error_jump("Unable to allocate %d bytes for zbuffer\n",
