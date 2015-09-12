@@ -1,6 +1,7 @@
 - fix XXX, TODO, FIXME
-- fix cockpit (c) on 32bit (tested and failed on fugl with clang3.6)
+- fix cockpit (c) on 32bit (scratch that, just only shows in 320x240)
 - fix screenshot
+- use shake: https://github.com/ndmitchell/shake
 - document as far as possible
 - removed unused functions (gcov) / make test suite
 - C++'ize (instead of C-style arrays), unique_ptr,shared_ptr
