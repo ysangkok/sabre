@@ -196,7 +196,7 @@ int read_int(std::istream &is)
   return (result);
 }
 
-int __cdecl sim_printf(const char *format, ...)
+int sim_printf(const char *format, ...)
 {
   int r;
   va_list ap;

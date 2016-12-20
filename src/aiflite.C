@@ -40,7 +40,7 @@
 
 //#define INIT_FORMATION_LEN 250
 
-extern "C" void __cdecl sim_printf(char *, ...);
+extern "C" void sim_printf(char *, ...);
 
 aiFlite::aiFlite()
   :pilots(3,0),

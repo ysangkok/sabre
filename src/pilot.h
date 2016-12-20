@@ -181,7 +181,7 @@ private:
 	static float    gunsGunsSoundTime;
 
 	int broadcast(const char *mss, int priority, int freq = -1, const char * = NULL);
-	int __cdecl brdcst(int priority, int freq, const char *mss, ...);
+	int brdcst(int priority, int freq, const char *mss, ...);
 	void sound_on(const char *soundId, int affiliation = -1); 
 	const char *buildSoundId(const char *suffix, Flight *targetFlight);
 	int damage_check(void);

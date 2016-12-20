@@ -75,7 +75,7 @@ public:
 	void doPaletteEffect();
 	void printResults(std::ostream &);
 	void printResult(Flight_Node &, std::ostream &);
-	void __cdecl show_message(int bot, const char *str, ... );
+	void show_message(int bot, const char *str, ... );
 	Flight_Controls *getFlightControls()
 	{
 		Flight &flt = fm.get_view_flight();

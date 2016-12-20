@@ -320,7 +320,7 @@ public:
 	static void FlushaiPilots();
 	static void RemoveaiPilot(aiPilot *pil);
 	static aiPilot *GetPilotByIndex(int i);
-	static void __cdecl TextMessageToPlayer(const char *, ...);
+	static void TextMessageToPlayer(const char *, ...);
 	static void BodyVector2WorldVector(int idx, const sVector &body, sVector &world);
 	static void WorldVector2BodyVector(int idx, const sVector &world, sVector &body);
 	static void BodyPoint2WorldPoint(int idx, const sPoint &body, sPoint &world);

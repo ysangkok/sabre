@@ -34,7 +34,7 @@
 #include "aipilot.h"
 #include "aipildef.h"
 
-extern "C" void __cdecl sim_printf(char *, ...);
+extern "C" void sim_printf(char *, ...);
 
 /*******************************************
  * aiPilot members                          *

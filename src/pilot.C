@@ -341,7 +341,7 @@ int result = 0;
 	return result;
 }
 
-int __cdecl Pilot::brdcst(int priority, int freq, const char *mss, ...)
+int Pilot::brdcst(int priority, int freq, const char *mss, ...)
 {
 static char mssbuff[200];
 	va_list ap;

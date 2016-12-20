@@ -49,7 +49,7 @@ public:
   void readWorldFile();
   void edit();
   void drawScene(Port_3D &);
-  void __cdecl show_message(int bot, char *str, ... );
+  void show_message(int bot, char *str, ... );
 };
 
 #endif

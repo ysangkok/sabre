@@ -305,7 +305,7 @@ void aiBase::CloseLog()
 	logFlag = 0;
 }
 
-void __cdecl aiBase::LOG(const char *format, ...)
+void aiBase::LOG(const char *format, ...)
 {
 	if (logFlag && logFile)
 	{

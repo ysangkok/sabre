@@ -55,6 +55,6 @@ else \
 if (!(is)) error_jump("%s %s: Unexpected end-of-file", current_path, file_context);
 
 extern FILE * simlog;
-int __cdecl sim_printf(const char *format, ...);
+int sim_printf(const char *format, ...);
 
 #endif

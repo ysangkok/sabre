@@ -117,7 +117,7 @@ public:
 
 	int OpenLog(const char *path = NULL);
 	void CloseLog();
-	void __cdecl LOG(const char *, ...);
+	void LOG(const char *, ...);
 	sREAL GetTimeFrame()
 	{
 		return timeFrame;

@@ -763,7 +763,7 @@ void /*_cdecl*/ GameSession::show_message(int bot, const char *str, ...)
     }
 }
 
-void __cdecl aiPilot::TextMessageToPlayer(const char *str, ...)
+void aiPilot::TextMessageToPlayer(const char *str, ...)
 {
 char buf[512];
 va_list ap;

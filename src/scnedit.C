@@ -173,7 +173,7 @@ DrawList dlist;
 	vga13_end_scene();
 }
 
-void __cdecl SceneEdit::show_message(int bot, char *str, ...)
+void SceneEdit::show_message(int bot, char *str, ...)
 {
   char buf[512];
   va_list ap;
