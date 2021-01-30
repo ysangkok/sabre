@@ -206,7 +206,7 @@ src/vga_13.C
 objects = [orgenv.Object(x) for x in files]
 displobjects = [env.Object(x) for x in displ]
 
-env.Program("src/sabre", objects + displ)
+env.Program("src/sabre", objects + displobjects)
 
 joyenv = orgenv.Clone()
 
