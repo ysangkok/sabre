@@ -1,5 +1,5 @@
 - fix XXX, TODO, FIXME
-- fix cockpit (c) on 32bit (scratch that, just only shows in 320x240)
+- fix cockpit (c) on 32bit (scratch that, just only shows in 320x200)
 - fix screenshot
 - use shake: https://github.com/ndmitchell/shake
 - document as far as possible
