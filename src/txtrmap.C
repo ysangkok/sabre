@@ -328,7 +328,7 @@ int n;
 		MYCHECK(tmaps != NULL);
 		for (int i=0;i<n_maps;i++)
 			is >> tmaps[i];
-			nxt = n_maps - 1;
+		nxt = n_maps - 1;
 	}
 	else
 	{
