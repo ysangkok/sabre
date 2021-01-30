@@ -17,41 +17,41 @@ warn = []
 machine = []
 
 if everything:
-	if clang:
-		warn += machine + ["-Weverything"]
-		warn += ["-Wno-date-time"]
-		#warn += ["-Wno-sign-conversion", "-Wno-old-style-cast", "-Wno-sign-compare"]
-	else:
-		warn += machine + ["-Wall", "-Wextra"]
-		warn += ["-Wno-attributes", "-Wno-unused-local-typedefs"]
+        if clang:
+                warn += machine + ["-Weverything"]
+                warn += ["-Wno-date-time"]
+                #warn += ["-Wno-sign-conversion", "-Wno-old-style-cast", "-Wno-sign-compare"]
+        else:
+                warn += machine + ["-Wall", "-Wextra"]
+                warn += ["-Wno-attributes", "-Wno-unused-local-typedefs"]
 else:
-	warn += machine + ["-Wall"]
+        warn += machine + ["-Wall"]
 
 lto = []
 link_lto = []
 
 if lto:
     if not memdebug:
-    	lto += ["-flto"]
+            lto += ["-flto"]
     if clang and not memdebug:
-    	link_lto += lto + ["-B/usr/lib/gold-ld"]
+            link_lto += lto + ["-B/usr/lib/gold-ld"]
 
 if everything:
-	warn += ["-Wno-variadic-macros"]
-	warn += ["-Werror"]
+        warn += ["-Wno-variadic-macros"]
+        warn += ["-Werror"]
 
 # AddressSanitizer
 if memdebug:
         debug_profile_and_coverage = []
-	#debug_profile_and_coverage += Split("-fsanitize=memory -fsanitize-blacklist=blacklist.txt -fno-omit-frame-pointer -fsanitize-memory-track-origins")
-	debug_profile_and_coverage += Split("-fsanitize=undefined")
-	link_lto += debug_profile_and_coverage
+        #debug_profile_and_coverage += Split("-fsanitize=memory -fsanitize-blacklist=blacklist.txt -fno-omit-frame-pointer -fsanitize-memory-track-origins")
+        debug_profile_and_coverage += Split("-fsanitize=undefined")
+        link_lto += debug_profile_and_coverage
 else:
 # Profile
-	if profile:
-		debug_profile_and_coverage = Split("-pg")
-	else:
-		debug_profile_and_coverage = []
+        if profile:
+                debug_profile_and_coverage = Split("-pg")
+        else:
+                debug_profile_and_coverage = []
 
 # Stack protection
 debug_profile_and_coverage += Split("-fstack-protector-all")
@@ -61,16 +61,16 @@ debug_profile_and_coverage += Split("-ggdb3")
 
 # Coverage
 if coverage:
-	debug_profile_and_coverage += Split("-ftest-coverage -fprofile-arcs")
+        debug_profile_and_coverage += Split("-ftest-coverage -fprofile-arcs")
 
 debug_profile_and_coverage += Split("-fPIC")
 
 orgenv = Environment(
-	CC="clang" + compilerpostfix if clang else "gcc" + compilerpostfix, CFLAGS=lto + opt + warn + debug_profile_and_coverage + ([] if not everything else Split('-ansi -pedantic -std=gnu11')), CXX="clang++" + compilerpostfix if clang else "gcc" + compilerpostfix, CXXFLAGS=lto + opt + warn + debug_profile_and_coverage + ["-std=c++11"] + ([] if not everything else Split('-pedantic')), LIBS=["m"],
-	LINK="clang++" + compilerpostfix if clang else "g++" + compilerpostfix,
-	#CXXFLAGS="-nodefaultlibs -fno-exceptions -w",
-	CPPDEFINES = {"VERSION":"\\\"0.2.4b\\\"","REV_DATE":"\\\"11/21/99\\\"","JSTICK_INSTALLED":"1"},
-	CPPPATH=(["gdev"] if do_vga else []) + ["src"]
+        CC="clang" + compilerpostfix if clang else "gcc" + compilerpostfix, CFLAGS=lto + opt + warn + debug_profile_and_coverage + ([] if not everything else Split('-ansi -pedantic -std=gnu11')), CXX="clang++" + compilerpostfix if clang else "gcc" + compilerpostfix, CXXFLAGS=lto + opt + warn + debug_profile_and_coverage + ["-std=c++11"] + ([] if not everything else Split('-pedantic')), LIBS=["m"],
+        LINK="clang++" + compilerpostfix if clang else "g++" + compilerpostfix,
+        #CXXFLAGS="-nodefaultlibs -fno-exceptions -w",
+        CPPDEFINES = {"VERSION":"\\\"0.2.4b\\\"","REV_DATE":"\\\"11/21/99\\\"","JSTICK_INSTALLED":"1"},
+        CPPPATH=(["gdev"] if do_vga else []) + ["src"]
 )
 
 orgenv['ENV']['TERM'] = os.environ['TERM']
@@ -78,25 +78,25 @@ orgenv['ENV']['TERM'] = os.environ['TERM']
 orgenv.Append(LINKFLAGS=machine + link_lto)
 
 if everything:
-	orgenv.Append(LINKFLAGS=debug_profile_and_coverage + Split("-Wl,--gc-sections")) #,--print-gc-sections
+        orgenv.Append(LINKFLAGS=debug_profile_and_coverage + Split("-Wl,--gc-sections")) #,--print-gc-sections
 
 if clang:
-	orgenv.Append(CXXFLAGS=["-stdlib=libc++"] + (["-ferror-limit=5"] if everything else []))
-	orgenv.Append(LINKFLAGS="-stdlib=libc++")
-	if everything:
-		common_flags = ["-Wno-c++11-long-long", "-Wno-float-equal", "-Wno-padded", "-Wno-format-nonliteral", "-Wno-disabled-macro-expansion", "-Wno-shift-sign-overflow"]
-		orgenv.Append(CXXFLAGS=common_flags + ["-Wno-c99-extensions", "-Wno-c++11-compat", "-Wno-c++11-extensions", "-Wno-c++98-compat-pedantic", "-Wno-exit-time-destructors", "-Wno-global-constructors"])
-		orgenv.Append(CFLAGS=common_flags)
+        orgenv.Append(CXXFLAGS=["-stdlib=libc++"] + (["-ferror-limit=5"] if everything else []))
+        orgenv.Append(LINKFLAGS="-stdlib=libc++")
+        if everything:
+                common_flags = ["-Wno-c++11-long-long", "-Wno-float-equal", "-Wno-padded", "-Wno-format-nonliteral", "-Wno-disabled-macro-expansion", "-Wno-shift-sign-overflow"]
+                orgenv.Append(CXXFLAGS=common_flags + ["-Wno-c99-extensions", "-Wno-c++11-compat", "-Wno-c++11-extensions", "-Wno-c++98-compat-pedantic", "-Wno-exit-time-destructors", "-Wno-global-constructors"])
+                orgenv.Append(CFLAGS=common_flags)
 else:
-	orgenv.Append(CXXFLAGS=["-fdiagnostics-color=always"])
+        orgenv.Append(CXXFLAGS=["-fdiagnostics-color=always"])
 
 env = orgenv.Clone()
 
 if do_vga: env.Append(CPPDEFINES = {"HAVE_LIBVGA":"1"})
 
 if do_sdl:
-	env.ParseConfig('PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig/ pkg-config --libs --cflags sdl2')
-	env.Append(CPPDEFINES = {"HAVE_LIBSDL": "1"})
+        env.ParseConfig('PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig/ pkg-config --libs --cflags sdl2')
+        env.Append(CPPDEFINES = {"HAVE_LIBSDL": "1"})
 
 if do_vga: env.ParseConfig('pkg-config --libs --cflags directfb')
 
@@ -221,8 +221,8 @@ gdevenv.ParseConfig('pkg-config --libs --cflags directfb')
 gdevenv.Append(CPPDEFINES = {"HAVE_LIBVGA":"1"})
 
 #if do_vga:
-#	gdevenv.Program("tools/fontedit", [gdevenv.Object("tools/fontedit.C"), gdevenv.Object("tools/fontutils.C"), gdev_objs]) #gdev + svgalib
-#	gdevenv.Program("tools/hello", [gdevenv.Object("tools/hello.C"), gdevenv.Object("tools/fontutils.C"), gdev_objs])
+#        gdevenv.Program("tools/fontedit", [gdevenv.Object("tools/fontedit.C"), gdevenv.Object("tools/fontutils.C"), gdev_objs]) #gdev + svgalib
+#        gdevenv.Program("tools/hello", [gdevenv.Object("tools/hello.C"), gdevenv.Object("tools/fontutils.C"), gdev_objs])
 
 orgenv.Program(orgenv.Object("tools/mkterrain.c"))
 orgenv = orgenv.Clone()
