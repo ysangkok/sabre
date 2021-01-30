@@ -15,7 +15,7 @@ using e.g.
 
     ./src/sabre -flt furball.flt -demo
 
-Look in the `lib` directory for other demos.
+Look in the `lib` directory for the names of other demos.
 
 You can view the plane from different POVs using the number keys.
 
@@ -28,6 +28,7 @@ you may need to enable optimizations, such that you can run
 in higher resolutions with a decent framerate. This can be done by using
 `opt = ["-O3", "-ffast-math"]` in `SConstruct`.
 
+Make sure to check out the `doc` directory which contains the key mappings.
 
 OLD README
 ===
