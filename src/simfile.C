@@ -136,7 +136,7 @@ int get_line(std::istream &is, char *buff, int size)
 	      if (buff[l-1] == '\r')
 		{
 		  buff[l-1] = 0;
-		  sim_printf("warning: %s contains DOS cr/lf\n");
+		  sim_printf("warning: contains DOS cr/lf\n");
 		}
 	      return static_cast<int>(strlen(buff));
 	    }
