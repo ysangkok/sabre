@@ -216,11 +216,11 @@ joyenv.Append(CPPDEFINES = ["JOYCAL"])
 
 joyenv.Program(joyenv.Object("tools/calibrate.C"))
 
-gdevenv = orgenv.Clone()
-gdevenv.ParseConfig('pkg-config --libs --cflags directfb')
-gdevenv.Append(CPPDEFINES = {"HAVE_LIBVGA":"1"})
 
 #if do_vga:
+#        gdevenv = orgenv.Clone()
+#        gdevenv.ParseConfig('pkg-config --libs --cflags directfb')
+#        gdevenv.Append(CPPDEFINES = {"HAVE_LIBVGA":"1"})
 #        gdevenv.Program("tools/fontedit", [gdevenv.Object("tools/fontedit.C"), gdevenv.Object("tools/fontutils.C"), gdev_objs]) #gdev + svgalib
 #        gdevenv.Program("tools/hello", [gdevenv.Object("tools/hello.C"), gdevenv.Object("tools/fontutils.C"), gdev_objs])
 
