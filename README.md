@@ -10,6 +10,20 @@ Changes:
 * removed C-style casts
 * compiles cleanly on Clang 3.6 with many warnings enabled
 
+There are a couple of demos included. You can launch one (after compilation using SCons)
+using e.g.
+
+    ./src/sabre -flt furball.flt -demo
+
+Look in the `lib` directory for other demos.
+
+You can view the plane from different POVs using the number keys.
+
+Known bug: The cockpit sprite is only visible if you run with the argument
+`-window 320 200`. I raised the default resolution to 1024x768, so by
+default it is not visible.
+
+
 OLD README
 ===
 
