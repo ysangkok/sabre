@@ -23,6 +23,11 @@ Known bug: The cockpit sprite is only visible if you run with the argument
 `-window 320 200`. I raised the default resolution to 1024x768, so by
 default it is not visible.
 
+If you have a HiDPI screen and 1024x768 is too small for you,
+you may need to enable optimizations, such that you can run
+in higher resolutions with a decent framerate. This can be done by using
+`opt = ["-O3", "-ffast-math"]` in `SConstruct`.
+
 
 OLD README
 ===
